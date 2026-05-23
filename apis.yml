@@ -1,0 +1,125 @@
+aid: novu
+name: Novu
+description: >-
+  Novu is an open-source notifications infrastructure that lets developers
+  design, send, and manage multi-channel notifications (in-app, email, SMS,
+  push, chat) through a single REST API and workflow engine. It ships with
+  language SDKs, an Inbox React component, a CLI, and integrations with
+  channel providers like SendGrid, Twilio, Mailgun, Firebase Cloud Messaging,
+  Slack, Discord, and more.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml
+created: '2026-05-23'
+modified: '2026-05-23'
+specificationVersion: '0.19'
+tags:
+  - Notifications
+  - Messaging
+  - In-App
+  - Email
+  - SMS
+  - Push
+  - Chat
+  - Workflows
+  - Open Source
+  - Subscribers
+apis:
+  - aid: novu:rest-api
+    name: Novu REST API
+    description: >-
+      Server-side REST API for triggering notification events, managing
+      subscribers, workflows (notification templates), topics, environments,
+      integrations, layouts, feeds, messages, tenants, and notification
+      preferences. Authenticated with an ApiKey header and exposed via a
+      published OpenAPI/Swagger document.
+    humanURL: https://docs.novu.co/api-reference/overview
+    baseURL: https://api.novu.co/v1
+    tags:
+      - REST
+      - Events
+      - Subscribers
+      - Workflows
+      - Topics
+      - Integrations
+      - Messages
+      - Notifications
+    properties:
+      - type: Documentation
+        url: https://docs.novu.co/api-reference/overview
+      - type: Swagger
+        url: https://api.novu.co/api
+      - type: OpenAPI
+        url: https://api.novu.co/openapi.json
+      - type: Authentication
+        url: https://docs.novu.co/api-reference/overview#authentication
+  - aid: novu:rest-api-eu
+    name: Novu REST API (EU Region)
+    description: >-
+      EU-hosted instance of the Novu REST API for customers requiring data
+      residency in the European Union. Exposes the same endpoints, schema, and
+      authentication as the global instance.
+    humanURL: https://docs.novu.co/api-reference/overview
+    baseURL: https://eu.api.novu.co/v1
+    tags:
+      - REST
+      - EU
+      - Data Residency
+    properties:
+      - type: Documentation
+        url: https://docs.novu.co/api-reference/overview
+  - aid: novu:inbox-api
+    name: Novu Inbox / In-App API
+    description: >-
+      Client-side API and React Inbox component for rendering an embedded
+      in-app notification center, marking notifications as read, archiving,
+      and managing user notification preferences in the browser.
+    humanURL: https://docs.novu.co/inbox/introduction
+    baseURL: https://api.novu.co/v1
+    tags:
+      - In-App
+      - Inbox
+      - React
+      - Client SDK
+    properties:
+      - type: Documentation
+        url: https://docs.novu.co/inbox/introduction
+      - type: SDK
+        url: https://www.npmjs.com/package/@novu/react
+common:
+  - type: Website
+    url: https://novu.co
+  - type: Portal
+    url: https://docs.novu.co
+  - type: Documentation
+    url: https://docs.novu.co
+  - type: SignUp
+    url: https://web.novu.co/auth/signup
+  - type: Login
+    url: https://web.novu.co
+  - type: Pricing
+    url: https://novu.co/pricing
+  - type: Blog
+    url: https://novu.co/blog
+  - type: GitHub
+    url: https://github.com/novuhq/novu
+  - type: SDK
+    url: https://docs.novu.co/sdks/introduction
+  - type: CLI
+    url: https://docs.novu.co/community/run-in-local-machine
+  - type: Integrations
+    url: https://docs.novu.co/platform/integrations
+  - type: ChangeLog
+    url: https://novu.co/changelog
+  - type: StatusPage
+    url: https://status.novu.co
+  - type: TermsOfService
+    url: https://novu.co/terms
+  - type: PrivacyPolicy
+    url: https://novu.co/privacy
+  - type: Community
+    url: https://discord.gg/novu
+maintainers:
+  - FN: Kin Lane
+    email: kinlane@gmail.com
