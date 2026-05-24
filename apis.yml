@@ -120,6 +120,8 @@ common:
     url: https://novu.co/privacy
   - type: Community
     url: https://discord.gg/novu
+  - type: LLMsTxt
+    url: https://docs.novu.co/llms.txt
 maintainers:
   - FN: Kin Lane
     email: kinlane@gmail.com
