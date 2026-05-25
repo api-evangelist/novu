@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "TriggerEventResponseDto",
+  "description": "JSON Schema for Novu TriggerEventResponseDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "acknowledged",
+      "type": "boolean",
+      "description": "Indicates whether the trigger was acknowledged or not",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "Status of the trigger",
+      "required": true
+    },
+    {
+      "name": "error",
+      "type": "array",
+      "description": "In case of an error, this field will contain the error message(s)",
+      "required": false
+    },
+    {
+      "name": "transactionId",
+      "type": "string",
+      "description": "The returned transaction ID of the trigger",
+      "required": false
+    },
+    {
+      "name": "activityFeedLink",
+      "type": "string",
+      "description": "Link to the activity feed for this trigger event",
+      "required": false
+    },
+    {
+      "name": "jobData",
+      "type": "object",
+      "description": "",
+      "required": false
+    }
+  ]
+}

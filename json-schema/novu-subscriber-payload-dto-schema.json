@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/novu/main/json-schema/novu-subscriber-payload-dto-schema.json",
+  "title": "SubscriberPayloadDto",
+  "description": "JSON Schema for Novu SubscriberPayloadDto.",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "First name of the subscriber",
+      "example": "John"
+    },
+    "lastName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Last name of the subscriber",
+      "example": "Doe"
+    },
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Email address of the subscriber",
+      "example": "john.doe@example.com"
+    },
+    "phone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Phone number of the subscriber",
+      "example": "+1234567890"
+    },
+    "avatar": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Avatar URL or identifier",
+      "example": "https://example.com/avatar.jpg"
+    },
+    "locale": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Locale of the subscriber",
+      "example": "en-US"
+    },
+    "timezone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Timezone of the subscriber",
+      "example": "America/New_York"
+    },
+    "data": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Additional custom data associated with the subscriber",
+      "additionalProperties": true
+    },
+    "subscriberId": {
+      "type": "string",
+      "description": "The internal identifier you used to create this subscriber, usually correlates to the id the user in your systems",
+      "minLength": 1
+    },
+    "channels": {
+      "description": "An optional array of subscriber channels.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "providerId": {
+            "type": "string",
+            "description": "The ID of the chat or push provider.",
+            "enum": [
+              "slack",
+              "discord",
+              "msteams",
+              "mattermost",
+              "ryver",
+              "zulip",
+              "grafana-on-call",
+              "getstream",
+              "rocket-chat",
+              "whatsapp-business",
+              "chat-webhook",
+              "novu-slack",
+              "telegram",
+              "fcm",
+              "apns",
+              "expo",
+              "one-signal",
+              "pushpad",
+              "push-webhook",
+              "pusher-beams",
+              "appio"
+            ]
+          },
+          "integrationIdentifier": {
+            "type": "string",
+            "description": "An optional identifier for the integration."
+          },
+          "credentials": {
+            "description": "Credentials for the channel.",
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "webhookUrl": {
+                    "type": "string",
+                    "description": "The URL for the webhook associated with the channel."
+                  },
+                  "deviceTokens": {
+                    "description": "An array of device tokens for push notifications.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "providerId",
+          "credentials"
+        ]
+      }
+    }
+  },
+  "required": [
+    "subscriberId"
+  ]
+}

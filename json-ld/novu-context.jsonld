@@ -1,0 +1,461 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "novu": "https://novu.co/schema/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "BulkSubscriberCreateDto": "novu:BulkSubscriberCreateDto",
+    "BulkTriggerEventDto": "novu:BulkTriggerEventDto",
+    "CreateEnvironmentRequestDto": "novu:CreateEnvironmentRequestDto",
+    "CreateIntegrationRequestDto": "novu:CreateIntegrationRequestDto",
+    "CreateSubscriberRequestDto": "novu:CreateSubscriberRequestDto",
+    "CreateWorkflowDto": "novu:CreateWorkflowDto",
+    "EnvironmentResponseDto": "novu:EnvironmentResponseDto",
+    "ErrorDto": "novu:ErrorDto",
+    "IntegrationResponseDto": "novu:IntegrationResponseDto",
+    "LayoutResponseDto": "novu:LayoutResponseDto",
+    "MessageResponseDto": "novu:MessageResponseDto",
+    "SubscriberPayloadDto": "novu:SubscriberPayloadDto",
+    "SubscriberResponseDto": "novu:SubscriberResponseDto",
+    "TopicResponseDto": "novu:TopicResponseDto",
+    "TriggerEventRequestDto": "novu:TriggerEventRequestDto",
+    "TriggerEventResponseDto": "novu:TriggerEventResponseDto",
+    "UpdateEnvironmentRequestDto": "novu:UpdateEnvironmentRequestDto",
+    "UpdateIntegrationRequestDto": "novu:UpdateIntegrationRequestDto",
+    "UpdateWorkflowDto": "novu:UpdateWorkflowDto",
+    "WorkflowResponseDto": "novu:WorkflowResponseDto",
+    "__source": {
+      "@id": "novu:__source",
+      "@type": "xsd:string"
+    },
+    "__v": {
+      "@id": "novu:__v",
+      "@type": "xsd:decimal"
+    },
+    "_environmentId": {
+      "@id": "novu:_environmentId",
+      "@type": "xsd:string"
+    },
+    "_feedId": {
+      "@id": "novu:_feedId",
+      "@type": "xsd:string"
+    },
+    "_id": {
+      "@id": "novu:_id",
+      "@type": "xsd:string"
+    },
+    "_messageTemplateId": {
+      "@id": "novu:_messageTemplateId",
+      "@type": "xsd:string"
+    },
+    "_notificationId": {
+      "@id": "novu:_notificationId",
+      "@type": "xsd:string"
+    },
+    "_organizationId": {
+      "@id": "novu:_organizationId",
+      "@type": "xsd:string"
+    },
+    "_parentId": {
+      "@id": "novu:_parentId",
+      "@type": "xsd:string"
+    },
+    "_subscriberId": {
+      "@id": "novu:_subscriberId",
+      "@type": "xsd:string"
+    },
+    "_templateId": {
+      "@id": "novu:_templateId",
+      "@type": "xsd:string"
+    },
+    "acknowledged": {
+      "@id": "novu:acknowledged",
+      "@type": "xsd:boolean"
+    },
+    "active": {
+      "@id": "novu:active",
+      "@type": "xsd:boolean"
+    },
+    "activityFeedLink": {
+      "@id": "novu:activityFeedLink",
+      "@type": "xsd:string"
+    },
+    "actor": {
+      "@id": "novu:actor",
+      "@type": "xsd:string"
+    },
+    "apiKeys": {
+      "@id": "novu:apiKeys",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "avatar": {
+      "@id": "schema:image",
+      "@type": "xsd:string"
+    },
+    "bridge": {
+      "@id": "novu:bridge",
+      "@type": "@id"
+    },
+    "channel": {
+      "@id": "novu:channel",
+      "@type": "xsd:string"
+    },
+    "channels": {
+      "@id": "novu:channels",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "check": {
+      "@id": "novu:check",
+      "@type": "xsd:boolean"
+    },
+    "color": {
+      "@id": "novu:color",
+      "@type": "xsd:string"
+    },
+    "conditions": {
+      "@id": "novu:conditions",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "configurations": {
+      "@id": "novu:configurations",
+      "@type": "@id"
+    },
+    "content": {
+      "@id": "novu:content",
+      "@type": "xsd:string"
+    },
+    "context": {
+      "@id": "novu:context",
+      "@type": "@id"
+    },
+    "contextKeys": {
+      "@id": "novu:contextKeys",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "controls": {
+      "@id": "novu:controls",
+      "@type": "xsd:string"
+    },
+    "createdAt": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:string"
+    },
+    "credentials": {
+      "@id": "novu:credentials",
+      "@type": "@id"
+    },
+    "cta": {
+      "@id": "novu:cta",
+      "@type": "xsd:string"
+    },
+    "ctx": {
+      "@id": "novu:ctx",
+      "@type": "@id"
+    },
+    "data": {
+      "@id": "novu:data",
+      "@type": "@id"
+    },
+    "deleted": {
+      "@id": "novu:deleted",
+      "@type": "xsd:boolean"
+    },
+    "deletedAt": {
+      "@id": "novu:deletedAt",
+      "@type": "xsd:string"
+    },
+    "deletedBy": {
+      "@id": "novu:deletedBy",
+      "@type": "xsd:string"
+    },
+    "deliveredAt": {
+      "@id": "novu:deliveredAt",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "deviceTokens": {
+      "@id": "novu:deviceTokens",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "directWebhookUrl": {
+      "@id": "novu:directWebhookUrl",
+      "@type": "xsd:string"
+    },
+    "dns": {
+      "@id": "novu:dns",
+      "@type": "@id"
+    },
+    "email": {
+      "@id": "schema:email",
+      "@type": "xsd:string"
+    },
+    "error": {
+      "@id": "novu:error",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "errorId": {
+      "@id": "novu:errorId",
+      "@type": "xsd:string"
+    },
+    "errorText": {
+      "@id": "novu:errorText",
+      "@type": "xsd:string"
+    },
+    "events": {
+      "@id": "novu:events",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "firstName": {
+      "@id": "schema:givenName",
+      "@type": "xsd:string"
+    },
+    "identifier": {
+      "@id": "dcterms:identifier",
+      "@type": "xsd:string"
+    },
+    "isDefault": {
+      "@id": "novu:isDefault",
+      "@type": "xsd:boolean"
+    },
+    "isOnline": {
+      "@id": "novu:isOnline",
+      "@type": "xsd:boolean"
+    },
+    "isTranslationEnabled": {
+      "@id": "novu:isTranslationEnabled",
+      "@type": "xsd:boolean"
+    },
+    "issues": {
+      "@id": "novu:issues",
+      "@type": "@id"
+    },
+    "jobData": {
+      "@id": "novu:jobData",
+      "@type": "@id"
+    },
+    "key": {
+      "@id": "novu:key",
+      "@type": "xsd:string"
+    },
+    "kind": {
+      "@id": "novu:kind",
+      "@type": "xsd:string"
+    },
+    "lastName": {
+      "@id": "schema:familyName",
+      "@type": "xsd:string"
+    },
+    "lastOnlineAt": {
+      "@id": "novu:lastOnlineAt",
+      "@type": "xsd:string"
+    },
+    "lastPublishedAt": {
+      "@id": "novu:lastPublishedAt",
+      "@type": "xsd:string"
+    },
+    "lastPublishedBy": {
+      "@id": "novu:lastPublishedBy",
+      "@type": "xsd:string"
+    },
+    "lastReadDate": {
+      "@id": "novu:lastReadDate",
+      "@type": "xsd:string"
+    },
+    "lastSeenDate": {
+      "@id": "novu:lastSeenDate",
+      "@type": "xsd:string"
+    },
+    "lastTriggeredAt": {
+      "@id": "novu:lastTriggeredAt",
+      "@type": "xsd:string"
+    },
+    "layoutId": {
+      "@id": "novu:layoutId",
+      "@type": "xsd:string"
+    },
+    "locale": {
+      "@id": "schema:inLanguage",
+      "@type": "xsd:string"
+    },
+    "message": {
+      "@id": "novu:message",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "origin": {
+      "@id": "novu:origin",
+      "@type": "xsd:string"
+    },
+    "overrides": {
+      "@id": "novu:overrides",
+      "@type": "xsd:string"
+    },
+    "parentId": {
+      "@id": "novu:parentId",
+      "@type": "xsd:string"
+    },
+    "path": {
+      "@id": "novu:path",
+      "@type": "xsd:string"
+    },
+    "payload": {
+      "@id": "novu:payload",
+      "@type": "@id"
+    },
+    "payloadExample": {
+      "@id": "novu:payloadExample",
+      "@type": "@id"
+    },
+    "payloadSchema": {
+      "@id": "novu:payloadSchema",
+      "@type": "@id"
+    },
+    "phone": {
+      "@id": "schema:telephone",
+      "@type": "xsd:string"
+    },
+    "preferences": {
+      "@id": "novu:preferences",
+      "@type": "xsd:string"
+    },
+    "primary": {
+      "@id": "novu:primary",
+      "@type": "xsd:boolean"
+    },
+    "providerId": {
+      "@id": "novu:providerId",
+      "@type": "xsd:string"
+    },
+    "read": {
+      "@id": "novu:read",
+      "@type": "xsd:boolean"
+    },
+    "seen": {
+      "@id": "novu:seen",
+      "@type": "xsd:boolean"
+    },
+    "severity": {
+      "@id": "novu:severity",
+      "@type": "xsd:string"
+    },
+    "slug": {
+      "@id": "novu:slug",
+      "@type": "xsd:string"
+    },
+    "snoozedUntil": {
+      "@id": "novu:snoozedUntil",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "novu:status",
+      "@type": "xsd:string"
+    },
+    "statusCode": {
+      "@id": "novu:statusCode",
+      "@type": "xsd:decimal"
+    },
+    "steps": {
+      "@id": "novu:steps",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "subject": {
+      "@id": "novu:subject",
+      "@type": "xsd:string"
+    },
+    "subscriber": {
+      "@id": "novu:subscriber",
+      "@type": "xsd:string"
+    },
+    "subscriberId": {
+      "@id": "novu:subscriberId",
+      "@type": "xsd:string"
+    },
+    "subscribers": {
+      "@id": "novu:subscribers",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "tags": {
+      "@id": "novu:tags",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "template": {
+      "@id": "novu:template",
+      "@type": "xsd:string"
+    },
+    "templateIdentifier": {
+      "@id": "novu:templateIdentifier",
+      "@type": "xsd:string"
+    },
+    "tenant": {
+      "@id": "novu:tenant",
+      "@type": "xsd:string"
+    },
+    "timestamp": {
+      "@id": "novu:timestamp",
+      "@type": "xsd:string"
+    },
+    "timezone": {
+      "@id": "schema:timeZone",
+      "@type": "xsd:string"
+    },
+    "title": {
+      "@id": "novu:title",
+      "@type": "xsd:string"
+    },
+    "to": {
+      "@id": "novu:to",
+      "@type": "xsd:string"
+    },
+    "topics": {
+      "@id": "novu:topics",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "transactionId": {
+      "@id": "novu:transactionId",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "novu:type",
+      "@type": "xsd:string"
+    },
+    "updatedAt": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:string"
+    },
+    "updatedBy": {
+      "@id": "novu:updatedBy",
+      "@type": "xsd:string"
+    },
+    "validatePayload": {
+      "@id": "novu:validatePayload",
+      "@type": "xsd:boolean"
+    },
+    "variables": {
+      "@id": "novu:variables",
+      "@type": "@id"
+    },
+    "workflowId": {
+      "@id": "novu:workflowId",
+      "@type": "xsd:string"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "subscribers": [
+    {
+      "subscriberId": "subscriber_001",
+      "email": "a@example.com",
+      "firstName": "Alice"
+    },
+    {
+      "subscriberId": "subscriber_002",
+      "email": "b@example.com",
+      "firstName": "Bob"
+    },
+    {
+      "subscriberId": "subscriber_003",
+      "email": "c@example.com",
+      "firstName": "Carol"
+    }
+  ]
+}

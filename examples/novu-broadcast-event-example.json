@@ -1,0 +1,8 @@
+{
+  "name": "maintenance-window-tonight",
+  "payload": {
+    "startTime": "2026-05-26T02:00:00Z",
+    "endTime": "2026-05-26T04:00:00Z",
+    "durationMinutes": 120
+  }
+}

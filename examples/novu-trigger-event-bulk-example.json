@@ -1,0 +1,26 @@
+{
+  "events": [
+    {
+      "name": "invoice-paid",
+      "to": {
+        "subscriberId": "subscriber_001"
+      },
+      "payload": {
+        "amount": 4999,
+        "currency": "USD",
+        "invoiceId": "in_42"
+      }
+    },
+    {
+      "name": "invoice-paid",
+      "to": {
+        "subscriberId": "subscriber_002"
+      },
+      "payload": {
+        "amount": 9999,
+        "currency": "USD",
+        "invoiceId": "in_43"
+      }
+    }
+  ]
+}

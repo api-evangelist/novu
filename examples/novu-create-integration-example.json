@@ -1,0 +1,11 @@
+{
+  "name": "Acme SendGrid Email",
+  "providerId": "sendgrid",
+  "channel": "email",
+  "credentials": {
+    "apiKey": "SG.xxxxxxxxxxxxxxxxxxxxxx",
+    "from": "notify@acme.com",
+    "senderName": "Acme Notifications"
+  },
+  "active": true
+}

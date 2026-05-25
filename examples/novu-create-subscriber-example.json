@@ -1,0 +1,14 @@
+{
+  "subscriberId": "subscriber_123",
+  "email": "jane@example.com",
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "phone": "+15555550101",
+  "avatar": "https://cdn.acme.com/avatars/jane.png",
+  "locale": "en-US",
+  "timezone": "America/Los_Angeles",
+  "data": {
+    "plan": "pro",
+    "organizationId": "org_acme"
+  }
+}

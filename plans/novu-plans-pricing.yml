@@ -3,53 +3,273 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: Novu
 providerId: novu
-created: '2026-05-22'
-modified: '2026-05-22'
+created: '2026-05-25'
+modified: '2026-05-25'
 tags:
-- Notifications
-- Messaging
-- In-App
-- Email
-- SMS
-- Push
-- Chat
-- Workflows
-- Open Source
-- Subscribers
-description: Machine-readable plans scaffold for the Novu API surface. Conforms to the API Commons Plans schema. Tier limits
-  and prices are scaffold defaults; replace with provider-published values.
+  - Novu
+  - Notifications
+  - Multi Channel
+  - Workflows
+  - In App
+  - Email
+  - SMS
+  - Push
+  - Chat
+  - Open Source
+description: >-
+  Machine-readable plans for the Novu Cloud commercial surface. Sourced from
+  novu.co/pricing. Quotas count "workflow runs" — each run can fan out across
+  every channel of a workflow. Overage applies above the included quota.
 plans:
-- id: novu-free
-  name: Free
-  type: freemium
-  description: Free entry tier for the Novu API surface. Intended for evaluation, prototyping, and low-volume integrations.
-    Real limits and pricing must be reconciled with the provider's published plan documentation.
-  entries:
-  - label: API Requests
-    description: Monthly API request quota across all included endpoints
-    name: api_requests
-    type: quota
-    metric: requests
-    limit: 1000
+  - id: novu-free
+    name: Free
+    type: freemium
+    description: Free tier for evaluation and low-volume production use. Includes every channel and 2 environments.
+    price: '0.00'
+    currency: USD
     timeFrame: month
-    geo: global
-    domains:
-    - https://api.novu.co/v1
-    unit: 1
-    price: '0.00'
-    userMultiplied: false
-  - label: Rate Limit
-    description: Maximum requests per minute on the free tier
-    name: rate_limit
-    type: rate
-    metric: requests_per_minute
-    limit: 10
-    timeFrame: minute
-    geo: global
-    domains:
-    - https://api.novu.co/v1
-    unit: 1
-    price: '0.00'
+    entries:
+      - label: Workflow Runs
+        description: Monthly included workflow runs across every channel.
+        name: workflow_runs
+        type: quota
+        metric: runs
+        limit: 10000
+        timeFrame: month
+        geo: global
+        domains:
+          - https://api.novu.co
+          - https://eu.api.novu.co
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: API Rate Limit
+        description: Steady-state requests-per-second cap for the Free tier.
+        name: rate_limit
+        type: rate
+        metric: requests_per_second
+        limit: 60
+        timeFrame: second
+        geo: global
+        domains:
+          - https://api.novu.co
+        unit: 1
+        price: '0.00'
+      - label: Environments
+        description: Number of isolated environments included.
+        name: environments
+        type: capacity
+        metric: environments
+        limit: 2
+        unit: 1
+        price: '0.00'
+      - label: Team Members
+        description: Number of dashboard seats included.
+        name: team_members
+        type: capacity
+        metric: seats
+        limit: 3
+        unit: 1
+        price: '0.00'
+      - label: Activity Retention
+        description: Length of time activity logs are retained.
+        name: activity_retention_days
+        type: capacity
+        metric: days
+        limit: 1
+        unit: 1
+        price: '0.00'
+  - id: novu-pro
+    name: Pro
+    type: subscription
+    description: Production tier with advanced editor, branding removal, and longer retention.
+    price: '30.00'
+    currency: USD
+    timeFrame: month
+    entries:
+      - label: Workflow Runs (Included)
+        description: Monthly included workflow runs across every channel.
+        name: workflow_runs
+        type: quota
+        metric: runs
+        limit: 30000
+        timeFrame: month
+        geo: global
+        domains:
+          - https://api.novu.co
+          - https://eu.api.novu.co
+        unit: 1
+        price: '0.00'
+      - label: Workflow Runs (Overage)
+        description: Per-thousand-runs charge above the included quota.
+        name: workflow_runs_overage
+        type: usage
+        metric: runs_per_1k
+        unit: 1
+        price: '1.20'
+        currency: USD
+      - label: API Rate Limit
+        description: Steady-state requests-per-second cap for the Pro tier.
+        name: rate_limit
+        type: rate
+        metric: requests_per_second
+        limit: 240
+        timeFrame: second
+        geo: global
+      - label: Activity Retention
+        description: Length of time activity logs are retained on the Pro tier.
+        name: activity_retention_days
+        type: capacity
+        metric: days
+        limit: 7
+        unit: 1
+        price: '0.00'
+  - id: novu-team
+    name: Team
+    type: subscription
+    description: Higher-throughput tier with RBAC, longer retention, and unlimited team members.
+    price: '250.00'
+    currency: USD
+    timeFrame: month
+    entries:
+      - label: Workflow Runs (Included)
+        description: Monthly included workflow runs across every channel.
+        name: workflow_runs
+        type: quota
+        metric: runs
+        limit: 250000
+        timeFrame: month
+        geo: global
+        domains:
+          - https://api.novu.co
+          - https://eu.api.novu.co
+        unit: 1
+        price: '0.00'
+      - label: Workflow Runs (Overage)
+        description: Per-thousand-runs charge above the included quota.
+        name: workflow_runs_overage
+        type: usage
+        metric: runs_per_1k
+        unit: 1
+        price: '1.20'
+        currency: USD
+      - label: API Rate Limit
+        description: Steady-state requests-per-second cap for the Team tier.
+        name: rate_limit
+        type: rate
+        metric: requests_per_second
+        limit: 600
+        timeFrame: second
+        geo: global
+      - label: Environments
+        description: Number of isolated environments included.
+        name: environments
+        type: capacity
+        metric: environments
+        limit: 10
+        unit: 1
+        price: '0.00'
+      - label: Activity Retention
+        description: Length of time activity logs are retained on the Team tier.
+        name: activity_retention_days
+        type: capacity
+        metric: days
+        limit: 90
+        unit: 1
+        price: '0.00'
+      - label: Team Members
+        description: Unlimited dashboard seats on the Team tier.
+        name: team_members
+        type: capacity
+        metric: seats
+        limit: 0
+        unlimited: true
+        unit: 1
+        price: '0.00'
+  - id: novu-enterprise
+    name: Enterprise
+    type: enterprise
+    description: Custom-priced tier with 10M+ workflow runs, HIPAA BAA, SSO, SCIM, custom data residency.
+    price: contact-sales
+    currency: USD
+    timeFrame: month
+    entries:
+      - label: Workflow Runs
+        description: Custom committed monthly workflow runs (starting at 10M).
+        name: workflow_runs
+        type: quota
+        metric: runs
+        limit: 10000000
+        timeFrame: month
+        geo: configurable
+        domains:
+          - https://api.novu.co
+          - https://eu.api.novu.co
+        unit: 1
+        price: contact-sales
+      - label: API Rate Limit
+        description: Custom-negotiated rate envelope per contract.
+        name: rate_limit
+        type: rate
+        metric: requests_per_second
+        limit: 0
+        unlimited: true
+      - label: Data Residency
+        description: Customer-selected residency region (US, EU, UK, Singapore, Australia, Japan, South Korea).
+        name: data_residency
+        type: capability
+        unit: 1
+        price: contact-sales
+      - label: Compliance
+        description: HIPAA Business Associate Agreement available on Enterprise.
+        name: hipaa_baa
+        type: capability
+        unit: 1
+        price: contact-sales
+      - label: Identity Federation
+        description: Custom SSO and SCIM directory sync.
+        name: sso_scim
+        type: capability
+        unit: 1
+        price: contact-sales
+
+features:
+  - tier: novu-free
+    features:
+      - Email, In-App, SMS, Chat, Push channels
+      - 2 environments
+      - Up to 3 team members
+      - 1-day activity log retention
+      - Novu branding on emails
+  - tier: novu-pro
+    features:
+      - Everything in Free
+      - Advanced email editor
+      - 7-day activity log retention
+      - Novu branding removed
+      - Increased throughput (240 RPS)
+  - tier: novu-team
+    features:
+      - Everything in Pro
+      - 10 environments
+      - 90-day activity log retention
+      - Role-based access control (RBAC)
+      - Unlimited team members
+      - Increased throughput (600 RPS)
+  - tier: novu-enterprise
+    features:
+      - Everything in Team
+      - HIPAA Business Associate Agreement
+      - Custom SSO
+      - SCIM directory sync
+      - Unlimited environments
+      - Custom data residency (US, EU, UK, Singapore, Australia, Japan, South Korea)
+      - Dedicated support and SLA
+
 references:
-- name: Novu API Documentation
-  url: https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml
+  - name: Novu Pricing Page
+    url: https://novu.co/pricing
+  - name: Novu API Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - name: APIs.yml
+    url: https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml

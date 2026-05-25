@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "SubscriberPayloadDto",
+  "description": "JSON Schema for Novu SubscriberPayloadDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "firstName",
+      "type": "string",
+      "description": "First name of the subscriber",
+      "required": false
+    },
+    {
+      "name": "lastName",
+      "type": "string",
+      "description": "Last name of the subscriber",
+      "required": false
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "description": "Email address of the subscriber",
+      "required": false
+    },
+    {
+      "name": "phone",
+      "type": "string",
+      "description": "Phone number of the subscriber",
+      "required": false
+    },
+    {
+      "name": "avatar",
+      "type": "string",
+      "description": "Avatar URL or identifier",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Locale of the subscriber",
+      "required": false
+    },
+    {
+      "name": "timezone",
+      "type": "string",
+      "description": "Timezone of the subscriber",
+      "required": false
+    },
+    {
+      "name": "data",
+      "type": "object",
+      "description": "Additional custom data associated with the subscriber",
+      "required": false
+    },
+    {
+      "name": "subscriberId",
+      "type": "string",
+      "description": "The internal identifier you used to create this subscriber, usually correlates to the id the user in your systems",
+      "required": true
+    },
+    {
+      "name": "channels",
+      "type": "array",
+      "description": "An optional array of subscriber channels.",
+      "required": false
+    }
+  ]
+}

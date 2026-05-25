@@ -1,0 +1,411 @@
+vocabulary: "1.0.0"
+
+info:
+  provider: Novu
+  description: >-
+    Unified vocabulary for the Novu open-source notification infrastructure. Maps the operational
+    surface (OpenAPI v3.15) to the capability surface (Naftiko v1.0.0-alpha2) across notification
+    triggering, subscriber management, workflow orchestration, integrations, topics, and the in-app
+    Inbox component.
+  created: '2026-05-25'
+  modified: '2026-05-25'
+  tags:
+    - Novu
+    - Notifications
+    - Multi Channel
+    - Workflows
+    - Open Source
+
+operational:
+  apis:
+    - name: Novu REST API
+      namespace: novu-rest
+      version: '3.15'
+      baseUrl: https://api.novu.co
+      status: active
+    - name: Novu REST API (EU)
+      namespace: novu-rest-eu
+      version: '3.15'
+      baseUrl: https://eu.api.novu.co
+      status: active
+    - name: Novu Inbox API
+      namespace: novu-inbox
+      version: '3.15'
+      baseUrl: https://api.novu.co
+      status: active
+
+  resources:
+    - name: Events
+      description: Notification trigger payloads dispatched against a workflow identifier.
+      apis: [novu-rest]
+      actions: [trigger, broadcast, bulk-trigger, cancel]
+    - name: Subscribers
+      description: End users who receive notifications across channels.
+      apis: [novu-rest]
+      actions: [list, get, create, update, delete, bulk-create, update-preferences, list-credentials]
+    - name: Workflows
+      description: Notification template trees (formerly notification templates) — branching, digest, delay, channels.
+      apis: [novu-rest]
+      actions: [list, get, create, update, delete, set-active, sync]
+    - name: Topics
+      description: Named broadcast groups of subscribers used for fan-out.
+      apis: [novu-rest]
+      actions: [list, get, create, rename, delete, add-subscribers, remove-subscribers, check-membership]
+    - name: Integrations
+      description: Channel provider credentials (SendGrid, Twilio, Mailgun, FCM, Slack, Discord, etc.).
+      apis: [novu-rest]
+      actions: [list, get, create, update, delete, set-primary, list-active, list-channels]
+    - name: Environments
+      description: Isolated configuration scopes (Development, Production, Staging) per organization.
+      apis: [novu-rest]
+      actions: [list, get, create, update, delete, list-variables]
+    - name: Messages
+      description: Per-channel notification deliveries with status, content, and provider trace.
+      apis: [novu-rest]
+      actions: [list, get, delete, mark-as, mark-all, message-actions]
+    - name: Notifications
+      description: Persisted notification events linking workflow runs to delivered messages.
+      apis: [novu-rest, novu-inbox]
+      actions: [list, get, feed, count, mark-read, mark-unread, archive, snooze]
+    - name: Layouts
+      description: Reusable layout templates wrapping channel-specific message content.
+      apis: [novu-rest]
+      actions: [list, get, create, update, delete, set-default]
+    - name: Translations
+      description: Localized strings keyed by workflow + locale + step.
+      apis: [novu-rest]
+      actions: [list, get, create, update, delete]
+    - name: Domains
+      description: Sender domains configured for outbound email delivery and DKIM/SPF verification.
+      apis: [novu-rest]
+      actions: [list, get, create, delete, verify, diagnose, auto-configure]
+    - name: Channel Connections
+      description: OAuth and webhook channel hookups (Slack, Discord, MS Teams, etc.).
+      apis: [novu-rest]
+      actions: [list, oauth-callback, exchange]
+    - name: Activity
+      description: Workflow run execution traces and step outcomes.
+      apis: [novu-rest]
+      actions: [list, statistics]
+    - name: Contexts
+      description: Re-usable context objects (tenants, organizations) referenced by triggers.
+      apis: [novu-rest]
+      actions: [list, get, create, update, delete]
+
+  actions:
+    - name: trigger
+      method: POST
+      pattern: write
+      description: Dispatch a notification event to one or more recipients.
+    - name: broadcast
+      method: POST
+      pattern: write
+      description: Fan-out a single payload to every subscriber matched by a topic or scope.
+    - name: bulk-trigger
+      method: POST
+      pattern: write
+      description: Submit a batch of trigger events in a single request.
+    - name: cancel
+      method: DELETE
+      pattern: destructive
+      description: Cancel an in-flight workflow run by transactionId.
+    - name: list
+      method: GET
+      pattern: read
+      description: List a paginated collection of resources.
+    - name: get
+      method: GET
+      pattern: read
+      description: Retrieve a single resource by identifier.
+    - name: create
+      method: POST
+      pattern: write
+      description: Create a new resource.
+    - name: update
+      method: PUT
+      pattern: write
+      description: Replace an existing resource with new values.
+    - name: patch
+      method: PATCH
+      pattern: write
+      description: Partially update a resource.
+    - name: delete
+      method: DELETE
+      pattern: destructive
+      description: Delete a resource.
+    - name: mark-as
+      method: POST
+      pattern: write
+      description: Update the status of one or many messages (read, seen, archived).
+    - name: snooze
+      method: POST
+      pattern: write
+      description: Hide a notification until a future timestamp.
+
+  parameters:
+    pagination:
+      - page (query, integer)
+      - limit (query, integer)
+      - pageSize (query, integer)
+      - after (query, string, cursor)
+      - before (query, string, cursor)
+    identifiers:
+      - subscriberId (path, string)
+      - environmentId (path, string)
+      - notificationId (path, string)
+      - messageId (path, string)
+      - workflowId (path, string)
+      - integrationId (path, string)
+      - transactionId (path, string)
+      - topicKey (path, string)
+    filters:
+      - channel (query, enum: in_app | email | sms | push | chat)
+      - status (query, enum)
+      - read (query, boolean)
+      - archived (query, boolean)
+      - workflowIds (query, array)
+      - subscriberIds (query, array)
+    headers:
+      - Authorization (header, ApiKey scheme)
+      - Idempotency-Key (header, string)
+      - Novu-Environment-Id (header, string)
+
+  enums:
+    channels: [in_app, email, sms, push, chat, custom]
+    workflowStatuses: [active, inactive, draft]
+    messageStatuses: [sent, error, warning, queued, completed]
+    integrationStatuses: [active, inactive, primary]
+    notificationActions: [read, unread, seen, archived, unarchived, snoozed]
+
+  authentication:
+    - name: secretKey
+      type: apiKey
+      placement: header
+      header: Authorization
+      scope: server-side
+      apis: [novu-rest, novu-rest-eu]
+      description: Long-lived per-environment API key issued from the Novu Dashboard.
+    - name: subscriberToken
+      type: bearer
+      scope: client-side
+      apis: [novu-inbox]
+      description: HMAC-signed short-lived subscriber token issued for the Inbox component.
+
+capability:
+  workflows:
+    - file: capabilities/novu-events.yaml
+      apis: [novu-rest]
+      tools: 4
+      description: Trigger notification events including bulk and broadcast variants.
+      personas: [Backend Engineer, Notifications Operator]
+    - file: capabilities/novu-subscribers.yaml
+      apis: [novu-rest]
+      tools: 35
+      description: End-user subscriber lifecycle, preferences, credentials, and the v2 paginated surface.
+      personas: [Backend Engineer, Growth Engineer]
+    - file: capabilities/novu-workflows.yaml
+      apis: [novu-rest]
+      tools: 9
+      description: Notification workflow CRUD and activation.
+      personas: [Notifications Operator, Product Engineer]
+    - file: capabilities/novu-topics.yaml
+      apis: [novu-rest]
+      tools: 11
+      description: Topic creation and subscriber membership management for broadcasts.
+      personas: [Backend Engineer, Lifecycle Marketer]
+    - file: capabilities/novu-integrations.yaml
+      apis: [novu-rest]
+      tools: 10
+      description: Channel provider integration management.
+      personas: [Platform Engineer, Notifications Operator]
+    - file: capabilities/novu-environments.yaml
+      apis: [novu-rest]
+      tools: 7
+      description: Environment scope CRUD and API-key issuance.
+      personas: [Platform Engineer]
+    - file: capabilities/novu-environment-variables.yaml
+      apis: [novu-rest]
+      tools: 6
+      description: Per-environment configuration variables.
+      personas: [Platform Engineer]
+    - file: capabilities/novu-messages.yaml
+      apis: [novu-rest]
+      tools: 3
+      description: Per-channel message inspection and deletion.
+      personas: [Support Engineer, Backend Engineer]
+    - file: capabilities/novu-notifications.yaml
+      apis: [novu-rest]
+      tools: 2
+      description: Notification event inspection.
+      personas: [Support Engineer]
+    - file: capabilities/novu-layouts.yaml
+      apis: [novu-rest]
+      tools: 8
+      description: Layout template management.
+      personas: [Notifications Operator]
+    - file: capabilities/novu-translations.yaml
+      apis: [novu-rest]
+      tools: 9
+      description: Per-workflow translation strings management.
+      personas: [Localization Engineer, Notifications Operator]
+    - file: capabilities/novu-domains.yaml
+      apis: [novu-rest]
+      tools: 15
+      description: Sender domain configuration and verification.
+      personas: [Platform Engineer, Deliverability Engineer]
+    - file: capabilities/novu-channel-connections.yaml
+      apis: [novu-rest]
+      tools: 5
+      description: OAuth channel hookups for Slack, Discord, MS Teams.
+      personas: [Platform Engineer]
+    - file: capabilities/novu-channel-endpoints.yaml
+      apis: [novu-rest]
+      tools: 5
+      description: Channel endpoint resolution and OAuth callbacks.
+      personas: [Platform Engineer]
+    - file: capabilities/novu-activity.yaml
+      apis: [novu-rest]
+      tools: 1
+      description: Activity feed for workflow runs.
+      personas: [Support Engineer, SRE]
+    - file: capabilities/novu-contexts.yaml
+      apis: [novu-rest]
+      tools: 5
+      description: Tenant / organization context object management.
+      personas: [Backend Engineer]
+
+  personas:
+    - id: backend-engineer
+      name: Backend Engineer
+      description: Engineer integrating Novu into a server-side service using SDKs and the REST API.
+      workflows: [novu-events, novu-subscribers, novu-topics, novu-contexts, novu-messages]
+    - id: notifications-operator
+      name: Notifications Operator
+      description: Operator managing workflows, templates, and integrations from the Novu Dashboard.
+      workflows: [novu-workflows, novu-layouts, novu-integrations, novu-translations]
+    - id: platform-engineer
+      name: Platform Engineer
+      description: Engineer responsible for environment, domain, and channel-connection configuration.
+      workflows: [novu-environments, novu-environment-variables, novu-domains, novu-channel-connections, novu-channel-endpoints, novu-integrations]
+    - id: support-engineer
+      name: Support Engineer
+      description: First-line responder inspecting failed sends and activity traces.
+      workflows: [novu-messages, novu-notifications, novu-activity]
+    - id: growth-engineer
+      name: Growth Engineer
+      description: Engineer running onboarding, retention, and lifecycle notification flows.
+      workflows: [novu-subscribers, novu-topics, novu-workflows, novu-events]
+    - id: lifecycle-marketer
+      name: Lifecycle Marketer
+      description: Marketer composing campaigns through the Novu Dashboard and broadcast topics.
+      workflows: [novu-topics, novu-workflows]
+    - id: localization-engineer
+      name: Localization Engineer
+      description: Engineer managing translation strings for workflows.
+      workflows: [novu-translations]
+    - id: deliverability-engineer
+      name: Deliverability Engineer
+      description: Engineer maintaining sender domains, DKIM, SPF, and bounce hygiene.
+      workflows: [novu-domains, novu-integrations]
+    - id: sre
+      name: Site Reliability Engineer
+      description: Engineer monitoring workflow run health and rate-limit headroom.
+      workflows: [novu-activity, novu-messages]
+
+  domains:
+    - name: Notification Delivery
+      resources: [Events, Workflows, Layouts, Messages, Notifications]
+    - name: Audience
+      resources: [Subscribers, Topics, Contexts]
+    - name: Channel Configuration
+      resources: [Integrations, Channel Connections, Channel Endpoints, Domains]
+    - name: Platform Operations
+      resources: [Environments, Environment Variables, Activity, Translations]
+
+  namespaces:
+    consumed:
+      - novu-events
+      - novu-subscribers
+      - novu-workflows
+      - novu-topics
+      - novu-integrations
+      - novu-environments
+      - novu-environment-variables
+      - novu-messages
+      - novu-notifications
+      - novu-layouts
+      - novu-translations
+      - novu-domains
+      - novu-channel-connections
+      - novu-channel-endpoints
+      - novu-activity
+      - novu-contexts
+    restExposed:
+      - novu-events-rest (port 8080)
+      - novu-subscribers-rest (port 8080)
+      - novu-workflows-rest (port 8080)
+      - novu-topics-rest (port 8080)
+      - novu-integrations-rest (port 8080)
+      - novu-environments-rest (port 8080)
+      - novu-environment-variables-rest (port 8080)
+      - novu-messages-rest (port 8080)
+      - novu-notifications-rest (port 8080)
+      - novu-layouts-rest (port 8080)
+      - novu-translations-rest (port 8080)
+      - novu-domains-rest (port 8080)
+      - novu-channel-connections-rest (port 8080)
+      - novu-channel-endpoints-rest (port 8080)
+      - novu-activity-rest (port 8080)
+      - novu-contexts-rest (port 8080)
+    mcpExposed:
+      - novu-events-mcp (port 9090)
+      - novu-subscribers-mcp (port 9090)
+      - novu-workflows-mcp (port 9090)
+      - novu-topics-mcp (port 9090)
+      - novu-integrations-mcp (port 9090)
+      - novu-environments-mcp (port 9090)
+      - novu-environment-variables-mcp (port 9090)
+      - novu-messages-mcp (port 9090)
+      - novu-notifications-mcp (port 9090)
+      - novu-layouts-mcp (port 9090)
+      - novu-translations-mcp (port 9090)
+      - novu-domains-mcp (port 9090)
+      - novu-channel-connections-mcp (port 9090)
+      - novu-channel-endpoints-mcp (port 9090)
+      - novu-activity-mcp (port 9090)
+      - novu-contexts-mcp (port 9090)
+
+  binds:
+    - name: NOVU_API_KEY
+      description: Long-lived Novu environment API key used as the ApiKey header for every capability.
+      workflows: all
+
+crossReference:
+  - resource: Events
+    operations: [trigger, bulk-trigger, broadcast, cancel]
+    workflows: [novu-events]
+    personas: [backend-engineer, growth-engineer]
+  - resource: Subscribers
+    operations: [list, get, create, update, delete, bulk-create]
+    workflows: [novu-subscribers]
+    personas: [backend-engineer, growth-engineer]
+  - resource: Workflows
+    operations: [list, get, create, update, delete, set-active]
+    workflows: [novu-workflows]
+    personas: [notifications-operator, growth-engineer]
+  - resource: Topics
+    operations: [list, get, create, delete, add-subscribers, remove-subscribers]
+    workflows: [novu-topics]
+    personas: [backend-engineer, lifecycle-marketer]
+  - resource: Integrations
+    operations: [list, get, create, update, delete, set-primary]
+    workflows: [novu-integrations]
+    personas: [platform-engineer, notifications-operator]
+  - resource: Messages
+    operations: [list, get, delete, mark-as]
+    workflows: [novu-messages]
+    personas: [support-engineer, sre]
+  - resource: Domains
+    operations: [list, get, create, delete, verify, diagnose, auto-configure]
+    workflows: [novu-domains]
+    personas: [platform-engineer, deliverability-engineer]

@@ -1,0 +1,402 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Novu API — Layouts
+  description: 'Notifications — Layouts. 8 operations. Lead operation: Create a Layout. Self-contained Naftiko capability covering one Novu business surface.'
+  tags:
+  - Novu
+  - Notifications
+  - Layouts
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    NOVU_API_KEY: NOVU_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: novu-layouts
+    baseUri: https://api.novu.co
+    description: Novu REST API — Layouts business capability. Self-contained, no shared references.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.NOVU_API_KEY}}'
+      placement: header
+    resources:
+    - name: v2-layouts
+      path: /v2/layouts
+      operations:
+      - name: LayoutsController_create
+        method: POST
+        description: Novu Create a Layout
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: LayoutsController_list
+        method: GET
+        description: Novu List All Layouts
+        inputParameters:
+        - name: limit
+          in: query
+          type: number
+          required: false
+          description: Number of items to return per page
+        - name: offset
+          in: query
+          type: number
+          required: false
+          description: Number of items to skip before starting to return results
+        - name: orderDirection
+          in: query
+          type: string
+          required: false
+          description: Direction of sorting
+        - name: orderBy
+          in: query
+          type: string
+          required: false
+          description: Field to sort the results by
+        - name: query
+          in: query
+          type: string
+          required: false
+          description: Search query to filter layouts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-layouts-layoutid
+      path: /v2/layouts/{layoutId}
+      operations:
+      - name: LayoutsController_update
+        method: PUT
+        description: Novu Update a Layout
+        inputParameters:
+        - name: layoutId
+          in: path
+          type: string
+          required: true
+          description: layoutId
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: LayoutsController_get
+        method: GET
+        description: Novu Retrieve a Layout
+        inputParameters:
+        - name: layoutId
+          in: path
+          type: string
+          required: true
+          description: layoutId
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: LayoutsController__delete
+        method: DELETE
+        description: Novu Delete a Layout
+        inputParameters:
+        - name: layoutId
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the layout
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-layouts-layoutid-duplicate
+      path: /v2/layouts/{layoutId}/duplicate
+      operations:
+      - name: LayoutsController_duplicate
+        method: POST
+        description: Novu Duplicate a Layout
+        inputParameters:
+        - name: layoutId
+          in: path
+          type: string
+          required: true
+          description: layoutId
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-layouts-layoutid-preview
+      path: /v2/layouts/{layoutId}/preview
+      operations:
+      - name: LayoutsController_generatePreview
+        method: POST
+        description: Novu Generate Layout Preview
+        inputParameters:
+        - name: layoutId
+          in: path
+          type: string
+          required: true
+          description: layoutId
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-layouts-layoutid-usage
+      path: /v2/layouts/{layoutId}/usage
+      operations:
+      - name: LayoutsController_getUsage
+        method: GET
+        description: Novu Get Layout Usage
+        inputParameters:
+        - name: layoutId
+          in: path
+          type: string
+          required: true
+          description: layoutId
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: novu-layouts-rest
+    port: 8080
+    description: REST adapter for Novu API — Layouts. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v2/layouts
+      name: v2-layouts
+      description: REST surface for /v2/layouts.
+      operations:
+      - method: POST
+        name: LayoutsController_create
+        description: Novu Create a Layout
+        call: novu-layouts.LayoutsController_create
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: LayoutsController_list
+        description: Novu List All Layouts
+        call: novu-layouts.LayoutsController_list
+        with:
+          limit: rest.limit
+          offset: rest.offset
+          orderDirection: rest.orderDirection
+          orderBy: rest.orderBy
+          query: rest.query
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/layouts/{layoutId}
+      name: v2-layouts-layoutid
+      description: REST surface for /v2/layouts/{layoutId}.
+      operations:
+      - method: PUT
+        name: LayoutsController_update
+        description: Novu Update a Layout
+        call: novu-layouts.LayoutsController_update
+        with:
+          layoutId: rest.layoutId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: LayoutsController_get
+        description: Novu Retrieve a Layout
+        call: novu-layouts.LayoutsController_get
+        with:
+          layoutId: rest.layoutId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: LayoutsController__delete
+        description: Novu Delete a Layout
+        call: novu-layouts.LayoutsController__delete
+        with:
+          layoutId: rest.layoutId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/layouts/{layoutId}/duplicate
+      name: v2-layouts-layoutid-duplicate
+      description: REST surface for /v2/layouts/{layoutId}/duplicate.
+      operations:
+      - method: POST
+        name: LayoutsController_duplicate
+        description: Novu Duplicate a Layout
+        call: novu-layouts.LayoutsController_duplicate
+        with:
+          layoutId: rest.layoutId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/layouts/{layoutId}/preview
+      name: v2-layouts-layoutid-preview
+      description: REST surface for /v2/layouts/{layoutId}/preview.
+      operations:
+      - method: POST
+        name: LayoutsController_generatePreview
+        description: Novu Generate Layout Preview
+        call: novu-layouts.LayoutsController_generatePreview
+        with:
+          layoutId: rest.layoutId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/layouts/{layoutId}/usage
+      name: v2-layouts-layoutid-usage
+      description: REST surface for /v2/layouts/{layoutId}/usage.
+      operations:
+      - method: GET
+        name: LayoutsController_getUsage
+        description: Novu Get Layout Usage
+        call: novu-layouts.LayoutsController_getUsage
+        with:
+          layoutId: rest.layoutId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: novu-layouts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Novu API — Layouts. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: create-layout
+      description: Novu Create a Layout
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-layouts.LayoutsController_create
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-all-layouts
+      description: Novu List All Layouts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-layouts.LayoutsController_list
+      with:
+        limit: tools.limit
+        offset: tools.offset
+        orderDirection: tools.orderDirection
+        orderBy: tools.orderBy
+        query: tools.query
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-layout
+      description: Novu Update a Layout
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: novu-layouts.LayoutsController_update
+      with:
+        layoutId: tools.layoutId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-layout
+      description: Novu Retrieve a Layout
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-layouts.LayoutsController_get
+      with:
+        layoutId: tools.layoutId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-layout
+      description: Novu Delete a Layout
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: novu-layouts.LayoutsController__delete
+      with:
+        layoutId: tools.layoutId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: duplicate-layout
+      description: Novu Duplicate a Layout
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-layouts.LayoutsController_duplicate
+      with:
+        layoutId: tools.layoutId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generate-layout-preview
+      description: Novu Generate Layout Preview
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-layouts.LayoutsController_generatePreview
+      with:
+        layoutId: tools.layoutId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-layout-usage
+      description: Novu Get Layout Usage
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-layouts.LayoutsController_getUsage
+      with:
+        layoutId: tools.layoutId
+      outputParameters:
+      - type: object
+        mapping: $.

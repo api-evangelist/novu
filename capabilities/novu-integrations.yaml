@@ -1,0 +1,437 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Novu API — Integrations
+  description: 'Notifications — Integrations. 10 operations. Lead operation: List All Integrations. Self-contained Naftiko capability covering one Novu business surface.'
+  tags:
+  - Novu
+  - Notifications
+  - Integrations
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    NOVU_API_KEY: NOVU_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: novu-integrations
+    baseUri: https://api.novu.co
+    description: Novu REST API — Integrations business capability. Self-contained, no shared references.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.NOVU_API_KEY}}'
+      placement: header
+    resources:
+    - name: v1-integrations
+      path: /v1/integrations
+      operations:
+      - name: IntegrationsController_listIntegrations
+        method: GET
+        description: Novu List All Integrations
+        inputParameters: []
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: IntegrationsController_createIntegration
+        method: POST
+        description: Novu Create an Integration
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-integrations-active
+      path: /v1/integrations/active
+      operations:
+      - name: IntegrationsController_getActiveIntegrations
+        method: GET
+        description: Novu List Active Integrations
+        inputParameters: []
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-integrations-integrationid
+      path: /v1/integrations/{integrationId}
+      operations:
+      - name: IntegrationsController_updateIntegrationById
+        method: PUT
+        description: Novu Update an Integration
+        inputParameters:
+        - name: integrationId
+          in: path
+          type: string
+          required: true
+          description: integrationId
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: IntegrationsController_removeIntegration
+        method: DELETE
+        description: Novu Delete an Integration
+        inputParameters:
+        - name: integrationId
+          in: path
+          type: string
+          required: true
+          description: integrationId
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-integrations-integrationid-auto-configure
+      path: /v1/integrations/{integrationId}/auto-configure
+      operations:
+      - name: IntegrationsController_autoConfigureIntegration
+        method: POST
+        description: Novu Auto-configure an Integration for Inbound Webhooks
+        inputParameters:
+        - name: integrationId
+          in: path
+          type: string
+          required: true
+          description: integrationId
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-integrations-integrationid-set-primary
+      path: /v1/integrations/{integrationId}/set-primary
+      operations:
+      - name: IntegrationsController_setIntegrationAsPrimary
+        method: POST
+        description: Novu Update Integration as Primary
+        inputParameters:
+        - name: integrationId
+          in: path
+          type: string
+          required: true
+          description: integrationId
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-integrations-chat-oauth
+      path: /v1/integrations/chat/oauth
+      operations:
+      - name: IntegrationsController_getChatOAuthUrl
+        method: POST
+        description: Novu Generate Chat OAuth URL
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-integrations-channel-connections-oauth
+      path: /v1/integrations/channel-connections/oauth
+      operations:
+      - name: IntegrationsController_generateConnectOAuthUrl
+        method: POST
+        description: Novu Generate OAuth URL for a Workspace/tenant Connection
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-integrations-channel-endpoints-oauth
+      path: /v1/integrations/channel-endpoints/oauth
+      operations:
+      - name: IntegrationsController_generateLinkUserOAuthUrl
+        method: POST
+        description: Novu Generate OAuth URL to Link a Subscriber User Identity
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: novu-integrations-rest
+    port: 8080
+    description: REST adapter for Novu API — Integrations. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/integrations
+      name: v1-integrations
+      description: REST surface for /v1/integrations.
+      operations:
+      - method: GET
+        name: IntegrationsController_listIntegrations
+        description: Novu List All Integrations
+        call: novu-integrations.IntegrationsController_listIntegrations
+        with: {}
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: IntegrationsController_createIntegration
+        description: Novu Create an Integration
+        call: novu-integrations.IntegrationsController_createIntegration
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/active
+      name: v1-integrations-active
+      description: REST surface for /v1/integrations/active.
+      operations:
+      - method: GET
+        name: IntegrationsController_getActiveIntegrations
+        description: Novu List Active Integrations
+        call: novu-integrations.IntegrationsController_getActiveIntegrations
+        with: {}
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/{integrationId}
+      name: v1-integrations-integrationid
+      description: REST surface for /v1/integrations/{integrationId}.
+      operations:
+      - method: PUT
+        name: IntegrationsController_updateIntegrationById
+        description: Novu Update an Integration
+        call: novu-integrations.IntegrationsController_updateIntegrationById
+        with:
+          integrationId: rest.integrationId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: IntegrationsController_removeIntegration
+        description: Novu Delete an Integration
+        call: novu-integrations.IntegrationsController_removeIntegration
+        with:
+          integrationId: rest.integrationId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/{integrationId}/auto-configure
+      name: v1-integrations-integrationid-auto-configure
+      description: REST surface for /v1/integrations/{integrationId}/auto-configure.
+      operations:
+      - method: POST
+        name: IntegrationsController_autoConfigureIntegration
+        description: Novu Auto-configure an Integration for Inbound Webhooks
+        call: novu-integrations.IntegrationsController_autoConfigureIntegration
+        with:
+          integrationId: rest.integrationId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/{integrationId}/set-primary
+      name: v1-integrations-integrationid-set-primary
+      description: REST surface for /v1/integrations/{integrationId}/set-primary.
+      operations:
+      - method: POST
+        name: IntegrationsController_setIntegrationAsPrimary
+        description: Novu Update Integration as Primary
+        call: novu-integrations.IntegrationsController_setIntegrationAsPrimary
+        with:
+          integrationId: rest.integrationId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/chat/oauth
+      name: v1-integrations-chat-oauth
+      description: REST surface for /v1/integrations/chat/oauth.
+      operations:
+      - method: POST
+        name: IntegrationsController_getChatOAuthUrl
+        description: Novu Generate Chat OAuth URL
+        call: novu-integrations.IntegrationsController_getChatOAuthUrl
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/channel-connections/oauth
+      name: v1-integrations-channel-connections-oauth
+      description: REST surface for /v1/integrations/channel-connections/oauth.
+      operations:
+      - method: POST
+        name: IntegrationsController_generateConnectOAuthUrl
+        description: Novu Generate OAuth URL for a Workspace/tenant Connection
+        call: novu-integrations.IntegrationsController_generateConnectOAuthUrl
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/integrations/channel-endpoints/oauth
+      name: v1-integrations-channel-endpoints-oauth
+      description: REST surface for /v1/integrations/channel-endpoints/oauth.
+      operations:
+      - method: POST
+        name: IntegrationsController_generateLinkUserOAuthUrl
+        description: Novu Generate OAuth URL to Link a Subscriber User Identity
+        call: novu-integrations.IntegrationsController_generateLinkUserOAuthUrl
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: novu-integrations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Novu API — Integrations. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: list-all-integrations
+      description: Novu List All Integrations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-integrations.IntegrationsController_listIntegrations
+      with: {}
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-integration
+      description: Novu Create an Integration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-integrations.IntegrationsController_createIntegration
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-active-integrations
+      description: Novu List Active Integrations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-integrations.IntegrationsController_getActiveIntegrations
+      with: {}
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-integration
+      description: Novu Update an Integration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: novu-integrations.IntegrationsController_updateIntegrationById
+      with:
+        integrationId: tools.integrationId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-integration
+      description: Novu Delete an Integration
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: novu-integrations.IntegrationsController_removeIntegration
+      with:
+        integrationId: tools.integrationId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: auto-configure-integration-inbound-webhooks
+      description: Novu Auto-configure an Integration for Inbound Webhooks
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-integrations.IntegrationsController_autoConfigureIntegration
+      with:
+        integrationId: tools.integrationId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-integration-primary
+      description: Novu Update Integration as Primary
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-integrations.IntegrationsController_setIntegrationAsPrimary
+      with:
+        integrationId: tools.integrationId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generate-chat-oauth-url
+      description: Novu Generate Chat OAuth URL
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-integrations.IntegrationsController_getChatOAuthUrl
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generate-oauth-url-workspace-tenant-connection
+      description: Novu Generate OAuth URL for a Workspace/tenant Connection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-integrations.IntegrationsController_generateConnectOAuthUrl
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: generate-oauth-url-link-subscriber-user-identity
+      description: Novu Generate OAuth URL to Link a Subscriber User Identity
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-integrations.IntegrationsController_generateLinkUserOAuthUrl
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

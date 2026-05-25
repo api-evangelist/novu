@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "WorkflowResponseDto",
+  "description": "JSON Schema for Novu WorkflowResponseDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the workflow",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Description of the workflow",
+      "required": false
+    },
+    {
+      "name": "tags",
+      "type": "array",
+      "description": "Tags associated with the workflow",
+      "required": false
+    },
+    {
+      "name": "active",
+      "type": "boolean",
+      "description": "Whether the workflow is active",
+      "required": false
+    },
+    {
+      "name": "validatePayload",
+      "type": "boolean",
+      "description": "Enable or disable payload schema validation",
+      "required": false
+    },
+    {
+      "name": "payloadSchema",
+      "type": "object",
+      "description": "The payload JSON Schema for the workflow",
+      "required": false
+    },
+    {
+      "name": "isTranslationEnabled",
+      "type": "boolean",
+      "description": "Enable or disable translations for this workflow",
+      "required": false
+    },
+    {
+      "name": "_id",
+      "type": "string",
+      "description": "Database identifier of the workflow",
+      "required": true
+    },
+    {
+      "name": "workflowId",
+      "type": "string",
+      "description": "Workflow identifier",
+      "required": true
+    },
+    {
+      "name": "slug",
+      "type": "string",
+      "description": "Slug of the workflow",
+      "required": true
+    },
+    {
+      "name": "updatedAt",
+      "type": "string",
+      "description": "Last updated timestamp",
+      "required": true
+    },
+    {
+      "name": "createdAt",
+      "type": "string",
+      "description": "Creation timestamp",
+      "required": true
+    },
+    {
+      "name": "updatedBy",
+      "type": "object",
+      "description": "User who last updated the workflow",
+      "required": false
+    },
+    {
+      "name": "lastPublishedAt",
+      "type": "string",
+      "description": "Timestamp of the last workflow publication",
+      "required": false
+    },
+    {
+      "name": "lastPublishedBy",
+      "type": "object",
+      "description": "User who last published the workflow",
+      "required": false
+    },
+    {
+      "name": "steps",
+      "type": "array",
+      "description": "Steps of the workflow",
+      "required": true
+    },
+    {
+      "name": "origin",
+      "type": "string",
+      "description": "Origin of the layout",
+      "required": true
+    },
+    {
+      "name": "preferences",
+      "type": "object",
+      "description": "Preferences for the workflow",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "Status of the workflow",
+      "required": true
+    },
+    {
+      "name": "issues",
+      "type": "object",
+      "description": "Runtime issues for workflow creation and update",
+      "required": false
+    },
+    {
+      "name": "lastTriggeredAt",
+      "type": "string",
+      "description": "Timestamp of the last workflow trigger",
+      "required": false
+    },
+    {
+      "name": "payloadExample",
+      "type": "object",
+      "description": "Generated payload example based on the payload schema",
+      "required": false
+    },
+    {
+      "name": "severity",
+      "type": "string",
+      "description": "Severity of the workflow",
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,4527 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/novu/main/json-schema/novu-workflow-response-dto-schema.json",
+  "title": "WorkflowResponseDto",
+  "description": "JSON Schema for Novu WorkflowResponseDto.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the workflow"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the workflow"
+    },
+    "tags": {
+      "description": "Tags associated with the workflow",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "active": {
+      "type": "boolean",
+      "description": "Whether the workflow is active",
+      "default": false
+    },
+    "validatePayload": {
+      "type": "boolean",
+      "description": "Enable or disable payload schema validation"
+    },
+    "payloadSchema": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The payload JSON Schema for the workflow",
+      "additionalProperties": true
+    },
+    "isTranslationEnabled": {
+      "type": "boolean",
+      "description": "Enable or disable translations for this workflow",
+      "default": false
+    },
+    "_id": {
+      "type": "string",
+      "description": "Database identifier of the workflow"
+    },
+    "workflowId": {
+      "type": "string",
+      "description": "Workflow identifier"
+    },
+    "slug": {
+      "type": "string",
+      "description": "Slug of the workflow"
+    },
+    "updatedAt": {
+      "type": "string",
+      "description": "Last updated timestamp"
+    },
+    "createdAt": {
+      "type": "string",
+      "description": "Creation timestamp"
+    },
+    "updatedBy": {
+      "description": "User who last updated the workflow",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "User ID"
+            },
+            "firstName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "User first name"
+            },
+            "lastName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "User last name"
+            },
+            "externalId": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "User external ID"
+            }
+          },
+          "required": [
+            "_id"
+          ]
+        }
+      ]
+    },
+    "lastPublishedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Timestamp of the last workflow publication"
+    },
+    "lastPublishedBy": {
+      "description": "User who last published the workflow",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "User ID"
+            },
+            "firstName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "User first name"
+            },
+            "lastName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "User last name"
+            },
+            "externalId": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "User external ID"
+            }
+          },
+          "required": [
+            "_id"
+          ]
+        }
+      ]
+    },
+    "steps": {
+      "type": "array",
+      "description": "Steps of the workflow",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the in-app step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to In-App",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "skip": {
+                                "type": "object",
+                                "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                                "example": {
+                                  "and": [
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "payload.tier"
+                                        },
+                                        "pro"
+                                      ]
+                                    },
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "subscriber.data.role"
+                                        },
+                                        "admin"
+                                      ]
+                                    },
+                                    {
+                                      ">": [
+                                        {
+                                          "var": "payload.amount"
+                                        },
+                                        "4"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "additionalProperties": true
+                              },
+                              "body": {
+                                "type": "string",
+                                "description": "Content/body of the in-app message. Required if subject is empty.",
+                                "minLength": 1
+                              },
+                              "subject": {
+                                "type": "string",
+                                "description": "Subject/title of the in-app message. Required if body is empty.",
+                                "minLength": 1
+                              },
+                              "avatar": {
+                                "type": "string",
+                                "description": "URL for an avatar image. Must be a valid URL or start with / or {{ variable }}."
+                              },
+                              "primaryAction": {
+                                "description": "Primary action button details.",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "label": {
+                                        "type": "string",
+                                        "description": "Label for the action button."
+                                      },
+                                      "redirect": {
+                                        "description": "Redirect configuration for the action.",
+                                        "allOf": [
+                                          {
+                                            "type": "object"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "secondaryAction": {
+                                "description": "Secondary action button details.",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "label": {
+                                        "type": "string",
+                                        "description": "Label for the action button."
+                                      },
+                                      "redirect": {
+                                        "description": "Redirect configuration for the action.",
+                                        "allOf": [
+                                          {
+                                            "type": "object"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "redirect": {
+                                "description": "Redirection URL configuration for the main content click (if no actions defined/clicked)..",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "url": {
+                                        "type": "string",
+                                        "description": "URL to redirect to"
+                                      },
+                                      "target": {
+                                        "type": "string",
+                                        "description": "Target attribute for the redirect link",
+                                        "enum": [
+                                          "_self",
+                                          "_blank",
+                                          "_parent",
+                                          "_top",
+                                          "_unfencedTop"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "url"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "disableOutputSanitization": {
+                                "type": "boolean",
+                                "description": "Disable sanitization of the output.",
+                                "default": false
+                              },
+                              "data": {
+                                "type": "object",
+                                "description": "Additional data payload for the step.",
+                                "additionalProperties": true
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the in-app step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Content/body of the in-app message. Required if subject is empty.",
+                        "minLength": 1
+                      },
+                      "subject": {
+                        "type": "string",
+                        "description": "Subject/title of the in-app message. Required if body is empty.",
+                        "minLength": 1
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "description": "URL for an avatar image. Must be a valid URL or start with / or {{ variable }}."
+                      },
+                      "primaryAction": {
+                        "description": "Primary action button details.",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "description": "Label for the action button."
+                              },
+                              "redirect": {
+                                "description": "Redirect configuration for the action.",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "url": {
+                                        "type": "string",
+                                        "description": "URL to redirect to"
+                                      },
+                                      "target": {
+                                        "type": "string",
+                                        "description": "Target attribute for the redirect link",
+                                        "enum": [
+                                          "_self",
+                                          "_blank",
+                                          "_parent",
+                                          "_top",
+                                          "_unfencedTop"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "url"
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "secondaryAction": {
+                        "description": "Secondary action button details.",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "description": "Label for the action button."
+                              },
+                              "redirect": {
+                                "description": "Redirect configuration for the action.",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "url": {
+                                        "type": "string",
+                                        "description": "URL to redirect to"
+                                      },
+                                      "target": {
+                                        "type": "string",
+                                        "description": "Target attribute for the redirect link",
+                                        "enum": [
+                                          "_self",
+                                          "_blank",
+                                          "_parent",
+                                          "_top",
+                                          "_unfencedTop"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "url"
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "redirect": {
+                        "description": "Redirection URL configuration for the main content click (if no actions defined/clicked)..",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "description": "URL to redirect to"
+                              },
+                              "target": {
+                                "type": "string",
+                                "description": "Target attribute for the redirect link",
+                                "enum": [
+                                  "_self",
+                                  "_blank",
+                                  "_parent",
+                                  "_top",
+                                  "_unfencedTop"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "url"
+                            ]
+                          }
+                        ]
+                      },
+                      "disableOutputSanitization": {
+                        "type": "boolean",
+                        "description": "Disable sanitization of the output.",
+                        "default": false
+                      },
+                      "data": {
+                        "type": "object",
+                        "description": "Additional data payload for the step.",
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the email step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to Email",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "skip": {
+                                "type": "object",
+                                "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                                "example": {
+                                  "and": [
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "payload.tier"
+                                        },
+                                        "pro"
+                                      ]
+                                    },
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "subscriber.data.role"
+                                        },
+                                        "admin"
+                                      ]
+                                    },
+                                    {
+                                      ">": [
+                                        {
+                                          "var": "payload.amount"
+                                        },
+                                        "4"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "additionalProperties": true
+                              },
+                              "subject": {
+                                "type": "string",
+                                "description": "Subject of the email.",
+                                "minLength": 1
+                              },
+                              "body": {
+                                "type": "string",
+                                "description": "Body content of the email, either a valid Maily JSON object, or html string.",
+                                "default": ""
+                              },
+                              "editorType": {
+                                "type": "string",
+                                "description": "Type of editor to use for the body.",
+                                "enum": [
+                                  "block",
+                                  "html"
+                                ],
+                                "default": "block"
+                              },
+                              "disableOutputSanitization": {
+                                "type": "boolean",
+                                "description": "Disable sanitization of the output.",
+                                "default": false
+                              },
+                              "layoutId": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Layout ID to use for the email. Null means no layout, undefined means default layout."
+                              }
+                            },
+                            "required": [
+                              "subject",
+                              "body"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the email step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "subject": {
+                        "type": "string",
+                        "description": "Subject of the email.",
+                        "minLength": 1
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Body content of the email, either a valid Maily JSON object, or html string.",
+                        "default": ""
+                      },
+                      "editorType": {
+                        "type": "string",
+                        "description": "Type of editor to use for the body.",
+                        "enum": [
+                          "block",
+                          "html"
+                        ],
+                        "default": "block"
+                      },
+                      "disableOutputSanitization": {
+                        "type": "boolean",
+                        "description": "Disable sanitization of the output.",
+                        "default": false
+                      },
+                      "layoutId": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "Layout ID to use for the email. Null means no layout, undefined means default layout."
+                      }
+                    },
+                    "required": [
+                      "subject",
+                      "body"
+                    ]
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the SMS step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to SMS",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "skip": {
+                                "type": "object",
+                                "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                                "example": {
+                                  "and": [
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "payload.tier"
+                                        },
+                                        "pro"
+                                      ]
+                                    },
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "subscriber.data.role"
+                                        },
+                                        "admin"
+                                      ]
+                                    },
+                                    {
+                                      ">": [
+                                        {
+                                          "var": "payload.amount"
+                                        },
+                                        "4"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "additionalProperties": true
+                              },
+                              "body": {
+                                "type": "string",
+                                "description": "Content of the SMS message."
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the SMS step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Content of the SMS message."
+                      }
+                    }
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the push step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to Push",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "skip": {
+                                "type": "object",
+                                "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                                "example": {
+                                  "and": [
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "payload.tier"
+                                        },
+                                        "pro"
+                                      ]
+                                    },
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "subscriber.data.role"
+                                        },
+                                        "admin"
+                                      ]
+                                    },
+                                    {
+                                      ">": [
+                                        {
+                                          "var": "payload.amount"
+                                        },
+                                        "4"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "additionalProperties": true
+                              },
+                              "subject": {
+                                "type": "string",
+                                "description": "Subject/title of the push notification."
+                              },
+                              "body": {
+                                "type": "string",
+                                "description": "Body content of the push notification."
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the push step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "subject": {
+                        "type": "string",
+                        "description": "Subject/title of the push notification."
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Body content of the push notification."
+                      }
+                    }
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the chat step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to Chat",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "skip": {
+                                "type": "object",
+                                "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                                "example": {
+                                  "and": [
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "payload.tier"
+                                        },
+                                        "pro"
+                                      ]
+                                    },
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "subscriber.data.role"
+                                        },
+                                        "admin"
+                                      ]
+                                    },
+                                    {
+                                      ">": [
+                                        {
+                                          "var": "payload.amount"
+                                        },
+                                        "4"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "additionalProperties": true
+                              },
+                              "body": {
+                                "type": "string",
+                                "description": "Content of the chat message."
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the chat step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Content of the chat message."
+                      }
+                    }
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the delay step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to Delay",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "skip": {
+                                "type": "object",
+                                "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                                "example": {
+                                  "and": [
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "payload.tier"
+                                        },
+                                        "pro"
+                                      ]
+                                    },
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "subscriber.data.role"
+                                        },
+                                        "admin"
+                                      ]
+                                    },
+                                    {
+                                      ">": [
+                                        {
+                                          "var": "payload.amount"
+                                        },
+                                        "4"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "additionalProperties": true
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Type of the delay. Currently only 'regular' is supported by the schema.",
+                                "enum": [
+                                  "regular",
+                                  "timed"
+                                ],
+                                "default": "regular"
+                              },
+                              "amount": {
+                                "type": "number",
+                                "description": "Amount of time to delay.",
+                                "minimum": 1
+                              },
+                              "unit": {
+                                "type": "string",
+                                "description": "Unit of time for the delay amount.",
+                                "enum": [
+                                  "seconds",
+                                  "minutes",
+                                  "hours",
+                                  "days",
+                                  "weeks",
+                                  "months"
+                                ]
+                              },
+                              "cron": {
+                                "type": "string",
+                                "description": "Cron expression for the delay. Min length 1."
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the delay step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Type of the delay. Currently only 'regular' is supported by the schema.",
+                        "enum": [
+                          "regular",
+                          "timed"
+                        ],
+                        "default": "regular"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "Amount of time to delay.",
+                        "minimum": 1
+                      },
+                      "unit": {
+                        "type": "string",
+                        "description": "Unit of time for the delay amount.",
+                        "enum": [
+                          "seconds",
+                          "minutes",
+                          "hours",
+                          "days",
+                          "weeks",
+                          "months"
+                        ]
+                      },
+                      "cron": {
+                        "type": "string",
+                        "description": "Cron expression for the delay. Min length 1."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ]
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the digest step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to Digest",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "skip": {
+                                "type": "object",
+                                "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                                "example": {
+                                  "and": [
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "payload.tier"
+                                        },
+                                        "pro"
+                                      ]
+                                    },
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "subscriber.data.role"
+                                        },
+                                        "admin"
+                                      ]
+                                    },
+                                    {
+                                      ">": [
+                                        {
+                                          "var": "payload.amount"
+                                        },
+                                        "4"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "additionalProperties": true
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "The type of digest strategy. Determines which fields are applicable.",
+                                "enum": [
+                                  "regular",
+                                  "timed"
+                                ]
+                              },
+                              "amount": {
+                                "type": "number",
+                                "description": "The amount of time for the digest interval (for REGULAR type). Min 1.",
+                                "minimum": 1
+                              },
+                              "unit": {
+                                "type": "string",
+                                "description": "The unit of time for the digest interval (for REGULAR type).",
+                                "enum": [
+                                  "seconds",
+                                  "minutes",
+                                  "hours",
+                                  "days",
+                                  "weeks",
+                                  "months"
+                                ]
+                              },
+                              "lookBackWindow": {
+                                "description": "Configuration for look-back window (for REGULAR type).",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "amount": {
+                                        "type": "number",
+                                        "description": "Amount of time for the look-back window.",
+                                        "minimum": 1
+                                      },
+                                      "unit": {
+                                        "type": "string",
+                                        "description": "Unit of time for the look-back window.",
+                                        "enum": [
+                                          "seconds",
+                                          "minutes",
+                                          "hours",
+                                          "days",
+                                          "weeks",
+                                          "months"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "amount",
+                                      "unit"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "cron": {
+                                "type": "string",
+                                "description": "Cron expression for TIMED digest. Min length 1."
+                              },
+                              "digestKey": {
+                                "type": "string",
+                                "description": "Specify a custom key for digesting events instead of the default event key."
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the digest step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of digest strategy. Determines which fields are applicable.",
+                        "enum": [
+                          "regular",
+                          "timed"
+                        ]
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "The amount of time for the digest interval (for REGULAR type). Min 1.",
+                        "minimum": 1
+                      },
+                      "unit": {
+                        "type": "string",
+                        "description": "The unit of time for the digest interval (for REGULAR type).",
+                        "enum": [
+                          "seconds",
+                          "minutes",
+                          "hours",
+                          "days",
+                          "weeks",
+                          "months"
+                        ]
+                      },
+                      "lookBackWindow": {
+                        "description": "Configuration for look-back window (for REGULAR type).",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "amount": {
+                                "type": "number",
+                                "description": "Amount of time for the look-back window.",
+                                "minimum": 1
+                              },
+                              "unit": {
+                                "type": "string",
+                                "description": "Unit of time for the look-back window.",
+                                "enum": [
+                                  "seconds",
+                                  "minutes",
+                                  "hours",
+                                  "days",
+                                  "weeks",
+                                  "months"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "amount",
+                              "unit"
+                            ]
+                          }
+                        ]
+                      },
+                      "cron": {
+                        "type": "string",
+                        "description": "Cron expression for TIMED digest. Min length 1."
+                      },
+                      "digestKey": {
+                        "type": "string",
+                        "description": "Specify a custom key for digesting events instead of the default event key."
+                      }
+                    }
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the custom step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to Custom step",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "custom": {
+                                "type": "object",
+                                "description": "Custom control values for the step.",
+                                "additionalProperties": true
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the custom step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "custom": {
+                        "type": "object",
+                        "description": "Custom control values for the step.",
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the throttle step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to Throttle",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "skip": {
+                                "type": "object",
+                                "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                                "example": {
+                                  "and": [
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "payload.tier"
+                                        },
+                                        "pro"
+                                      ]
+                                    },
+                                    {
+                                      "==": [
+                                        {
+                                          "var": "subscriber.data.role"
+                                        },
+                                        "admin"
+                                      ]
+                                    },
+                                    {
+                                      ">": [
+                                        {
+                                          "var": "payload.amount"
+                                        },
+                                        "4"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "additionalProperties": true
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "The type of throttle window.",
+                                "enum": [
+                                  "fixed",
+                                  "dynamic"
+                                ],
+                                "default": "fixed"
+                              },
+                              "amount": {
+                                "type": "number",
+                                "description": "The amount of time for the throttle window (required for fixed type).",
+                                "minimum": 1
+                              },
+                              "unit": {
+                                "type": "string",
+                                "description": "The unit of time for the throttle window (required for fixed type).",
+                                "enum": [
+                                  "minutes",
+                                  "hours",
+                                  "days"
+                                ]
+                              },
+                              "dynamicKey": {
+                                "type": "string",
+                                "description": "Key path to retrieve dynamic window value (required for dynamic type).",
+                                "example": "payload.timestamp"
+                              },
+                              "threshold": {
+                                "type": "number",
+                                "description": "The maximum number of executions allowed within the window. Defaults to 1.",
+                                "minimum": 1,
+                                "default": 1
+                              },
+                              "throttleKey": {
+                                "type": "string",
+                                "description": "Optional key for grouping throttle rules. If not provided, defaults to workflow and subscriber combination."
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the throttle step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of throttle window.",
+                        "enum": [
+                          "fixed",
+                          "dynamic"
+                        ],
+                        "default": "fixed"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "The amount of time for the throttle window (required for fixed type).",
+                        "minimum": 1
+                      },
+                      "unit": {
+                        "type": "string",
+                        "description": "The unit of time for the throttle window (required for fixed type).",
+                        "enum": [
+                          "minutes",
+                          "hours",
+                          "days"
+                        ]
+                      },
+                      "dynamicKey": {
+                        "type": "string",
+                        "description": "Key path to retrieve dynamic window value (required for dynamic type).",
+                        "example": "payload.timestamp"
+                      },
+                      "threshold": {
+                        "type": "number",
+                        "description": "The maximum number of executions allowed within the window. Defaults to 1.",
+                        "minimum": 1,
+                        "default": 1
+                      },
+                      "throttleKey": {
+                        "type": "string",
+                        "description": "Optional key for grouping throttle rules. If not provided, defaults to workflow and subscriber combination."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ]
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "controls": {
+                "description": "Controls metadata for the HTTP request step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "dataSchema": {
+                        "type": "object",
+                        "description": "JSON Schema for data",
+                        "additionalProperties": true
+                      },
+                      "uiSchema": {
+                        "description": "UI Schema for rendering",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "group": {
+                                "type": "string",
+                                "description": "Group of the UI Schema",
+                                "enum": [
+                                  "IN_APP",
+                                  "EMAIL",
+                                  "DIGEST",
+                                  "DELAY",
+                                  "THROTTLE",
+                                  "SMS",
+                                  "CHAT",
+                                  "PUSH",
+                                  "SKIP",
+                                  "LAYOUT",
+                                  "HTTP_REQUEST"
+                                ]
+                              },
+                              "properties": {
+                                "type": "object",
+                                "description": "Properties of the UI Schema",
+                                "additionalProperties": {
+                                  "type": "object",
+                                  "properties": {
+                                    "placeholder": {
+                                      "description": "Placeholder for the UI Schema Property",
+                                      "anyOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "additionalProperties": true
+                                        },
+                                        {
+                                          "type": "array",
+                                          "items": {
+                                            "anyOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "number"
+                                              },
+                                              {
+                                                "type": "boolean"
+                                              },
+                                              {
+                                                "type": "object",
+                                                "additionalProperties": true
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "component": {
+                                      "type": "object"
+                                    },
+                                    "properties": {
+                                      "type": "object",
+                                      "description": "Properties of the UI Schema",
+                                      "additionalProperties": {
+                                        "type": "object",
+                                        "description": "Reference to UiSchemaProperty"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "component"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "values": {
+                        "description": "Control values specific to HTTP Request step",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "method": {
+                                "type": "string",
+                                "description": "HTTP method",
+                                "enum": [
+                                  "GET",
+                                  "POST",
+                                  "PUT",
+                                  "DELETE",
+                                  "PATCH"
+                                ]
+                              },
+                              "url": {
+                                "type": "string",
+                                "description": "Target URL for the HTTP request"
+                              },
+                              "headers": {
+                                "description": "Request headers as key-value pairs",
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "key": {
+                                      "type": "string",
+                                      "description": "Key of the key-value pair"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "description": "Value of the key-value pair"
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "value"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "description": "Request body as a raw JSON string. Key-value arrays are supported for legacy workflows.",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "key": {
+                                          "type": "string",
+                                          "description": "Key of the key-value pair"
+                                        },
+                                        "value": {
+                                          "type": "string",
+                                          "description": "Value of the key-value pair"
+                                        }
+                                      },
+                                      "required": [
+                                        "key",
+                                        "value"
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "responseBodySchema": {
+                                "type": "object",
+                                "description": "JSON schema to validate response body against",
+                                "additionalProperties": true
+                              },
+                              "enforceSchemaValidation": {
+                                "type": "boolean",
+                                "description": "Whether to enforce response body schema validation"
+                              },
+                              "continueOnFailure": {
+                                "type": "boolean",
+                                "description": "Whether to continue workflow execution on failure"
+                              }
+                            },
+                            "required": [
+                              "method",
+                              "url"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "values"
+                    ]
+                  }
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the HTTP request step",
+                "additionalProperties": true,
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "description": "HTTP method",
+                        "enum": [
+                          "GET",
+                          "POST",
+                          "PUT",
+                          "DELETE",
+                          "PATCH"
+                        ]
+                      },
+                      "url": {
+                        "type": "string",
+                        "description": "Target URL for the HTTP request"
+                      },
+                      "headers": {
+                        "description": "Request headers as key-value pairs",
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string",
+                              "description": "Key of the key-value pair"
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "Value of the key-value pair"
+                            }
+                          },
+                          "required": [
+                            "key",
+                            "value"
+                          ]
+                        }
+                      },
+                      "body": {
+                        "description": "Request body as a raw JSON string. Key-value arrays are supported for legacy workflows.",
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "key": {
+                                  "type": "string",
+                                  "description": "Key of the key-value pair"
+                                },
+                                "value": {
+                                  "type": "string",
+                                  "description": "Value of the key-value pair"
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "value"
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "responseBodySchema": {
+                        "type": "object",
+                        "description": "JSON schema to validate response body against",
+                        "additionalProperties": true
+                      },
+                      "enforceSchemaValidation": {
+                        "type": "boolean",
+                        "description": "Whether to enforce response body schema validation"
+                      },
+                      "continueOnFailure": {
+                        "type": "boolean",
+                        "description": "Whether to continue workflow execution on failure"
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "url"
+                    ]
+                  }
+                ]
+              },
+              "variables": {
+                "type": "object",
+                "description": "JSON Schema for variables, follows the JSON Schema standard",
+                "additionalProperties": true
+              },
+              "stepId": {
+                "type": "string",
+                "description": "Unique identifier of the step"
+              },
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "slug": {
+                "type": "string",
+                "description": "Slug of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "origin": {
+                "type": "string",
+                "description": "Origin of the layout",
+                "enum": [
+                  "novu-cloud",
+                  "novu-cloud-v1",
+                  "external"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "Workflow identifier"
+              },
+              "workflowDatabaseId": {
+                "type": "string",
+                "description": "Workflow database identifier"
+              },
+              "issues": {
+                "description": "Issues associated with the step",
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "controls": {
+                        "type": "object",
+                        "description": "Controls-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of step content issue",
+                                "enum": [
+                                  "ILLEGAL_VARIABLE_IN_CONTROL_VALUE",
+                                  "INVALID_FILTER_ARG_IN_VARIABLE",
+                                  "INVALID_URL",
+                                  "MISSING_VALUE",
+                                  "TIER_LIMIT_EXCEEDED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "description": "Integration-related issues",
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "issueType": {
+                                "type": "string",
+                                "description": "Type of integration issue",
+                                "enum": [
+                                  "MISSING_INTEGRATION",
+                                  "INBOX_NOT_CONNECTED"
+                                ]
+                              },
+                              "variableName": {
+                                "type": "string",
+                                "description": "Name of the variable related to the issue"
+                              },
+                              "message": {
+                                "type": "string",
+                                "description": "Detailed message describing the issue"
+                              }
+                            },
+                            "required": [
+                              "issueType",
+                              "message"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "stepResolverHash": {
+                "type": "string",
+                "description": "Hash identifying the deployed Cloudflare Worker for this step"
+              }
+            },
+            "required": [
+              "controls",
+              "variables",
+              "stepId",
+              "_id",
+              "name",
+              "slug",
+              "type",
+              "origin",
+              "workflowId",
+              "workflowDatabaseId"
+            ]
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "in_app": "#/components/schemas/InAppStepResponseDto",
+            "email": "#/components/schemas/EmailStepResponseDto",
+            "sms": "#/components/schemas/SmsStepResponseDto",
+            "push": "#/components/schemas/PushStepResponseDto",
+            "chat": "#/components/schemas/ChatStepResponseDto",
+            "delay": "#/components/schemas/DelayStepResponseDto",
+            "digest": "#/components/schemas/DigestStepResponseDto",
+            "custom": "#/components/schemas/CustomStepResponseDto",
+            "throttle": "#/components/schemas/ThrottleStepResponseDto",
+            "http_request": "#/components/schemas/HttpRequestStepResponseDto"
+          }
+        }
+      }
+    },
+    "origin": {
+      "type": "string",
+      "description": "Origin of the layout",
+      "enum": [
+        "novu-cloud",
+        "novu-cloud-v1",
+        "external"
+      ]
+    },
+    "preferences": {
+      "description": "Preferences for the workflow",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "user": {
+              "description": "User-specific workflow preferences",
+              "allOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "all": {
+                      "description": "A preference for the workflow. The values specified here will be used if no preference is specified for a channel.",
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.",
+                              "default": true
+                            },
+                            "readOnly": {
+                              "type": "boolean",
+                              "description": "A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.",
+                              "default": false
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "readOnly"
+                          ]
+                        }
+                      ],
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.",
+                              "default": true
+                            },
+                            "readOnly": {
+                              "type": "boolean",
+                              "description": "A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.",
+                              "default": false
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "readOnly"
+                          ]
+                        }
+                      ]
+                    },
+                    "channels": {
+                      "type": "object",
+                      "description": "Preferences for different communication channels",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "description": "A flag specifying if notification delivery is enabled for the channel. If true, notification delivery is enabled.",
+                            "default": true
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ]
+                      },
+                      "example": {
+                        "email": {
+                          "enabled": true
+                        },
+                        "sms": {
+                          "enabled": false
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "all",
+                    "channels"
+                  ]
+                }
+              ]
+            },
+            "default": {
+              "description": "Default workflow preferences",
+              "allOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "all": {
+                      "description": "A preference for the workflow. The values specified here will be used if no preference is specified for a channel.",
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.",
+                              "default": true
+                            },
+                            "readOnly": {
+                              "type": "boolean",
+                              "description": "A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.",
+                              "default": false
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "readOnly"
+                          ]
+                        }
+                      ],
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.",
+                              "default": true
+                            },
+                            "readOnly": {
+                              "type": "boolean",
+                              "description": "A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.",
+                              "default": false
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "readOnly"
+                          ]
+                        }
+                      ]
+                    },
+                    "channels": {
+                      "type": "object",
+                      "description": "Preferences for different communication channels",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "description": "A flag specifying if notification delivery is enabled for the channel. If true, notification delivery is enabled.",
+                            "default": true
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ]
+                      },
+                      "example": {
+                        "email": {
+                          "enabled": true
+                        },
+                        "sms": {
+                          "enabled": false
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "all",
+                    "channels"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "default"
+          ]
+        }
+      ]
+    },
+    "status": {
+      "type": "string",
+      "description": "Status of the workflow",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE",
+        "ERROR"
+      ]
+    },
+    "issues": {
+      "type": "object",
+      "description": "Runtime issues for workflow creation and update",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    "lastTriggeredAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Timestamp of the last workflow trigger"
+    },
+    "payloadExample": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Generated payload example based on the payload schema",
+      "additionalProperties": true
+    },
+    "severity": {
+      "type": "string",
+      "description": "Severity of the workflow",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "none"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "_id",
+    "workflowId",
+    "slug",
+    "updatedAt",
+    "createdAt",
+    "steps",
+    "origin",
+    "preferences",
+    "status",
+    "severity"
+  ]
+}

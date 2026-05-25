@@ -1,0 +1,276 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Novu API — Environment Variables
+  description: 'Notifications — Environment Variables. 6 operations. Lead operation: List All Variables. Self-contained Naftiko capability covering one Novu business surface.'
+  tags:
+  - Novu
+  - Notifications
+  - Environment Variables
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    NOVU_API_KEY: NOVU_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: novu-environment-variables
+    baseUri: https://api.novu.co
+    description: Novu REST API — Environment Variables business capability. Self-contained, no shared references.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.NOVU_API_KEY}}'
+      placement: header
+    resources:
+    - name: v1-environment-variables
+      path: /v1/environment-variables
+      operations:
+      - name: EnvironmentVariablesController_listEnvironmentVariables
+        method: GET
+        description: Novu List All Variables
+        inputParameters:
+        - name: search
+          in: query
+          type: string
+          required: false
+          description: Filter variables by key (case-insensitive partial match)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: EnvironmentVariablesController_createEnvironmentVariable
+        method: POST
+        description: Novu Create a Variable
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-environment-variables-variablekey-usage
+      path: /v1/environment-variables/{variableKey}/usage
+      operations:
+      - name: EnvironmentVariablesController_getEnvironmentVariableUsage
+        method: GET
+        description: Novu Retrieve a Variable Usage
+        inputParameters:
+        - name: variableKey
+          in: path
+          type: string
+          required: true
+          description: The unique key of the environment variable (e.g. BASE_URL)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-environment-variables-variablekey
+      path: /v1/environment-variables/{variableKey}
+      operations:
+      - name: EnvironmentVariablesController_getEnvironmentVariable
+        method: GET
+        description: Novu Get Environment Variable
+        inputParameters:
+        - name: variableKey
+          in: path
+          type: string
+          required: true
+          description: The unique key of the environment variable (e.g. BASE_URL)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: EnvironmentVariablesController_updateEnvironmentVariable
+        method: PATCH
+        description: Novu Update a Variable
+        inputParameters:
+        - name: variableKey
+          in: path
+          type: string
+          required: true
+          description: The unique key of the environment variable (e.g. BASE_URL)
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: EnvironmentVariablesController_deleteEnvironmentVariable
+        method: DELETE
+        description: Novu Delete Environment Variable
+        inputParameters:
+        - name: variableKey
+          in: path
+          type: string
+          required: true
+          description: The unique key of the environment variable (e.g. BASE_URL)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: novu-environment-variables-rest
+    port: 8080
+    description: REST adapter for Novu API — Environment Variables. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/environment-variables
+      name: v1-environment-variables
+      description: REST surface for /v1/environment-variables.
+      operations:
+      - method: GET
+        name: EnvironmentVariablesController_listEnvironmentVariables
+        description: Novu List All Variables
+        call: novu-environment-variables.EnvironmentVariablesController_listEnvironmentVariables
+        with:
+          search: rest.search
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: EnvironmentVariablesController_createEnvironmentVariable
+        description: Novu Create a Variable
+        call: novu-environment-variables.EnvironmentVariablesController_createEnvironmentVariable
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/environment-variables/{variableKey}/usage
+      name: v1-environment-variables-variablekey-usage
+      description: REST surface for /v1/environment-variables/{variableKey}/usage.
+      operations:
+      - method: GET
+        name: EnvironmentVariablesController_getEnvironmentVariableUsage
+        description: Novu Retrieve a Variable Usage
+        call: novu-environment-variables.EnvironmentVariablesController_getEnvironmentVariableUsage
+        with:
+          variableKey: rest.variableKey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/environment-variables/{variableKey}
+      name: v1-environment-variables-variablekey
+      description: REST surface for /v1/environment-variables/{variableKey}.
+      operations:
+      - method: GET
+        name: EnvironmentVariablesController_getEnvironmentVariable
+        description: Novu Get Environment Variable
+        call: novu-environment-variables.EnvironmentVariablesController_getEnvironmentVariable
+        with:
+          variableKey: rest.variableKey
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: EnvironmentVariablesController_updateEnvironmentVariable
+        description: Novu Update a Variable
+        call: novu-environment-variables.EnvironmentVariablesController_updateEnvironmentVariable
+        with:
+          variableKey: rest.variableKey
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: EnvironmentVariablesController_deleteEnvironmentVariable
+        description: Novu Delete Environment Variable
+        call: novu-environment-variables.EnvironmentVariablesController_deleteEnvironmentVariable
+        with:
+          variableKey: rest.variableKey
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: novu-environment-variables-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Novu API — Environment Variables. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: list-all-variables
+      description: Novu List All Variables
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-environment-variables.EnvironmentVariablesController_listEnvironmentVariables
+      with:
+        search: tools.search
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-variable
+      description: Novu Create a Variable
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-environment-variables.EnvironmentVariablesController_createEnvironmentVariable
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-variable-usage
+      description: Novu Retrieve a Variable Usage
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-environment-variables.EnvironmentVariablesController_getEnvironmentVariableUsage
+      with:
+        variableKey: tools.variableKey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-environment-variable
+      description: Novu Get Environment Variable
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-environment-variables.EnvironmentVariablesController_getEnvironmentVariable
+      with:
+        variableKey: tools.variableKey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-variable
+      description: Novu Update a Variable
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: novu-environment-variables.EnvironmentVariablesController_updateEnvironmentVariable
+      with:
+        variableKey: tools.variableKey
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-environment-variable
+      description: Novu Delete Environment Variable
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: novu-environment-variables.EnvironmentVariablesController_deleteEnvironmentVariable
+      with:
+        variableKey: tools.variableKey
+      outputParameters:
+      - type: object
+        mapping: $.

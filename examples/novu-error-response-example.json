@@ -1,0 +1,6 @@
+{
+  "statusCode": 401,
+  "message": "API key missing or invalid",
+  "error": "Unauthorized",
+  "requestId": "req_5e4d3c2b1a09"
+}

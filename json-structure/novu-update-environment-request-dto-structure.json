@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "UpdateEnvironmentRequestDto",
+  "description": "JSON Schema for Novu UpdateEnvironmentRequestDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "identifier",
+      "type": "string",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "parentId",
+      "type": "string",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "dns",
+      "type": "object",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "bridge",
+      "type": "object",
+      "description": "",
+      "required": false
+    }
+  ]
+}

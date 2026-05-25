@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "UpdateWorkflowDto",
+  "description": "JSON Schema for Novu UpdateWorkflowDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the workflow",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Description of the workflow",
+      "required": false
+    },
+    {
+      "name": "tags",
+      "type": "array",
+      "description": "Tags associated with the workflow",
+      "required": false
+    },
+    {
+      "name": "active",
+      "type": "boolean",
+      "description": "Whether the workflow is active",
+      "required": false
+    },
+    {
+      "name": "validatePayload",
+      "type": "boolean",
+      "description": "Enable or disable payload schema validation",
+      "required": false
+    },
+    {
+      "name": "payloadSchema",
+      "type": "object",
+      "description": "The payload JSON Schema for the workflow",
+      "required": false
+    },
+    {
+      "name": "isTranslationEnabled",
+      "type": "boolean",
+      "description": "Enable or disable translations for this workflow",
+      "required": false
+    },
+    {
+      "name": "workflowId",
+      "type": "string",
+      "description": "Workflow ID (allowed only for code-first workflows)",
+      "required": false
+    },
+    {
+      "name": "steps",
+      "type": "array",
+      "description": "Steps of the workflow",
+      "required": true
+    },
+    {
+      "name": "preferences",
+      "type": "object",
+      "description": "Workflow preferences",
+      "required": true
+    },
+    {
+      "name": "origin",
+      "type": "string",
+      "description": "Origin of the layout",
+      "required": true
+    },
+    {
+      "name": "severity",
+      "type": "string",
+      "description": "Severity of the workflow",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "UpdateIntegrationRequestDto",
+  "description": "JSON Schema for Novu UpdateIntegrationRequestDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "identifier",
+      "type": "string",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "_environmentId",
+      "type": "string",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "active",
+      "type": "boolean",
+      "description": "If the integration is active the validation on the credentials field will run",
+      "required": false
+    },
+    {
+      "name": "credentials",
+      "type": "object",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "check",
+      "type": "boolean",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "conditions",
+      "type": "array",
+      "description": "",
+      "required": false
+    },
+    {
+      "name": "configurations",
+      "type": "object",
+      "description": "Configurations for the integration",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,304 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Novu API — Contexts
+  description: 'Notifications — Contexts. 5 operations. Lead operation: Create a Context. Self-contained Naftiko capability covering one Novu business surface.'
+  tags:
+  - Novu
+  - Notifications
+  - Contexts
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    NOVU_API_KEY: NOVU_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: novu-contexts
+    baseUri: https://api.novu.co
+    description: Novu REST API — Contexts business capability. Self-contained, no shared references.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.NOVU_API_KEY}}'
+      placement: header
+    resources:
+    - name: v2-contexts
+      path: /v2/contexts
+      operations:
+      - name: ContextsController_createContext
+        method: POST
+        description: Novu Create a Context
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: ContextsController_listContexts
+        method: GET
+        description: Novu List All Contexts
+        inputParameters:
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Cursor for pagination indicating the starting point after which to fetch results.
+        - name: before
+          in: query
+          type: string
+          required: false
+          description: Cursor for pagination indicating the ending point before which to fetch results.
+        - name: limit
+          in: query
+          type: number
+          required: false
+          description: Limit the number of items to return
+        - name: orderDirection
+          in: query
+          type: string
+          required: false
+          description: Direction of sorting
+        - name: orderBy
+          in: query
+          type: string
+          required: false
+          description: Field to order by
+        - name: includeCursor
+          in: query
+          type: boolean
+          required: false
+          description: Include cursor item in response
+        - name: id
+          in: query
+          type: string
+          required: false
+          description: Filter contexts by id
+        - name: search
+          in: query
+          type: string
+          required: false
+          description: Search contexts by type or id (supports partial matching across both fields)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-contexts-type-id
+      path: /v2/contexts/{type}/{id}
+      operations:
+      - name: ContextsController_updateContext
+        method: PATCH
+        description: Novu Update a Context
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+          description: Context ID
+        - name: type
+          in: path
+          type: string
+          required: true
+          description: Context type
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: ContextsController_getContext
+        method: GET
+        description: Novu Retrieve a Context
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+          description: Context ID
+        - name: type
+          in: path
+          type: string
+          required: true
+          description: Context type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: ContextsController_deleteContext
+        method: DELETE
+        description: Novu Delete a Context
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+          description: Context ID
+        - name: type
+          in: path
+          type: string
+          required: true
+          description: Context type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: novu-contexts-rest
+    port: 8080
+    description: REST adapter for Novu API — Contexts. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v2/contexts
+      name: v2-contexts
+      description: REST surface for /v2/contexts.
+      operations:
+      - method: POST
+        name: ContextsController_createContext
+        description: Novu Create a Context
+        call: novu-contexts.ContextsController_createContext
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: ContextsController_listContexts
+        description: Novu List All Contexts
+        call: novu-contexts.ContextsController_listContexts
+        with:
+          after: rest.after
+          before: rest.before
+          limit: rest.limit
+          orderDirection: rest.orderDirection
+          orderBy: rest.orderBy
+          includeCursor: rest.includeCursor
+          id: rest.id
+          search: rest.search
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/contexts/{type}/{id}
+      name: v2-contexts-type-id
+      description: REST surface for /v2/contexts/{type}/{id}.
+      operations:
+      - method: PATCH
+        name: ContextsController_updateContext
+        description: Novu Update a Context
+        call: novu-contexts.ContextsController_updateContext
+        with:
+          id: rest.id
+          type: rest.type
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: ContextsController_getContext
+        description: Novu Retrieve a Context
+        call: novu-contexts.ContextsController_getContext
+        with:
+          id: rest.id
+          type: rest.type
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: ContextsController_deleteContext
+        description: Novu Delete a Context
+        call: novu-contexts.ContextsController_deleteContext
+        with:
+          id: rest.id
+          type: rest.type
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: novu-contexts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Novu API — Contexts. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: create-context
+      description: Novu Create a Context
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-contexts.ContextsController_createContext
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-all-contexts
+      description: Novu List All Contexts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-contexts.ContextsController_listContexts
+      with:
+        after: tools.after
+        before: tools.before
+        limit: tools.limit
+        orderDirection: tools.orderDirection
+        orderBy: tools.orderBy
+        includeCursor: tools.includeCursor
+        id: tools.id
+        search: tools.search
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-context
+      description: Novu Update a Context
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: novu-contexts.ContextsController_updateContext
+      with:
+        id: tools.id
+        type: tools.type
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-context
+      description: Novu Retrieve a Context
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-contexts.ContextsController_getContext
+      with:
+        id: tools.id
+        type: tools.type
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-context
+      description: Novu Delete a Context
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: novu-contexts.ContextsController_deleteContext
+      with:
+        id: tools.id
+        type: tools.type
+      outputParameters:
+      - type: object
+        mapping: $.

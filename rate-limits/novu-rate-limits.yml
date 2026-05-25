@@ -3,59 +3,122 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: Novu
 providerId: novu
-created: '2026-05-22'
-modified: '2026-05-22'
+created: '2026-05-25'
+modified: '2026-05-25'
 tags:
-- Notifications
-- Messaging
-- In-App
-- Email
-- SMS
-- Push
-- Chat
-- Workflows
-- Open Source
-- Subscribers
-- Rate Limiting
-- Quotas
-- Throttling
-description: Scaffolded rate limit definitions for the Novu API surface. Captures per-tier quotas, burst behavior, response
-  signaling, and recovery semantics. Defaults are scaffold values to be replaced with published provider limits.
+  - Novu
+  - Notifications
+  - Rate Limiting
+  - Quotas
+  - Throttling
+  - Multi Channel
+description: >-
+  Rate-limit policy for the Novu REST API. Per-tier requests-per-second envelopes are published
+  on the Novu pricing page; every response carries IETF draft RateLimit-* headers plus the
+  upstream RateLimit-Policy header documenting the active window. Mutating operations honor
+  the Idempotency-Key header.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
+  limit: RateLimit-Limit
+  remaining: RateLimit-Remaining
+  reset: RateLimit-Reset
   policy: RateLimit-Policy
+  retryAfter: Retry-After
+  idempotencyKey: Idempotency-Key
+  idempotencyReplay: Idempotency-Replay
 responseCodes:
   throttled: 429
   quotaExceeded: 429
+  paymentRequired: 402
   serviceUnavailable: 503
 limits:
-- tier: free
-  name: Free Tier Default
-  scope: api-key
-  metric: requests_per_minute
-  limit: 10
-  burst: 20
-  timeFrame: minute
-  applies:
-  - https://api.novu.co/v1
-  description: Default per-token request rate for the free tier. Bursts above the limit return HTTP 429 with Retry-After.
-- tier: pro
-  name: Pro Tier Default
-  scope: api-key
-  metric: requests_per_minute
-  limit: 120
-  burst: 240
-  timeFrame: minute
-  applies:
-  - https://api.novu.co/v1
-  description: Higher rate envelope for paid plans; reconcile against published commercial terms.
+  - tier: free
+    name: Free Tier
+    scope: api-key
+    metric: requests_per_second
+    limit: 60
+    burst: 120
+    timeFrame: second
+    applies:
+      - https://api.novu.co
+      - https://eu.api.novu.co
+    monthlyQuota:
+      metric: workflow_runs
+      limit: 10000
+      timeFrame: month
+    description: Free tier per-API-key envelope. 10K workflow runs per month, no overage path.
+  - tier: pro
+    name: Pro Tier
+    scope: api-key
+    metric: requests_per_second
+    limit: 240
+    burst: 480
+    timeFrame: second
+    applies:
+      - https://api.novu.co
+      - https://eu.api.novu.co
+    monthlyQuota:
+      metric: workflow_runs
+      limit: 30000
+      timeFrame: month
+    overage:
+      unit: per_1k_runs
+      price: '1.20'
+      currency: USD
+    description: Pro tier per-API-key envelope. Overage charged at $1.20 per 1K workflow runs.
+  - tier: team
+    name: Team Tier
+    scope: api-key
+    metric: requests_per_second
+    limit: 600
+    burst: 1200
+    timeFrame: second
+    applies:
+      - https://api.novu.co
+      - https://eu.api.novu.co
+    monthlyQuota:
+      metric: workflow_runs
+      limit: 250000
+      timeFrame: month
+    overage:
+      unit: per_1k_runs
+      price: '1.20'
+      currency: USD
+    description: Team tier per-API-key envelope. Overage charged at $1.20 per 1K workflow runs.
+  - tier: enterprise
+    name: Enterprise Tier
+    scope: organization
+    metric: requests_per_second
+    limit: 0
+    timeFrame: second
+    applies:
+      - https://api.novu.co
+      - https://eu.api.novu.co
+    monthlyQuota:
+      metric: workflow_runs
+      limit: 10000000
+      timeFrame: month
+    description: Custom-negotiated envelope. Starting at 10M monthly workflow runs.
+
 recoveryStrategies:
-- name: Exponential Backoff
-  description: Wait Retry-After seconds (or back off exponentially up to 60s) before retrying.
-- name: Queue and Retry
-  description: Submit bulk work in batches under the burst envelope.
+  - name: Honor Retry-After
+    description: When you receive a 429, wait at least the number of seconds indicated by Retry-After before retrying.
+  - name: Exponential Backoff with Jitter
+    description: When Retry-After is absent, back off exponentially up to 60 seconds with full jitter to avoid synchronized retries.
+  - name: Use Bulk Trigger
+    description: Submit batches via /v1/events/trigger/bulk to amortize per-call overhead within a single request envelope.
+  - name: Use Topics for Fan-out
+    description: Use /v1/topics + /v1/events/trigger with a topic recipient to fan out to many subscribers with a single request.
+  - name: Honor Idempotency-Key
+    description: Re-send the same Idempotency-Key on retries; Novu returns the original response and sets Idempotency-Replay=true.
+
 notes:
-- Replace scaffold values with the provider's published rate limit policy.
+  - Rate limits are enforced per API key, per environment.
+  - The 429 response body uses the standard ErrorDto schema and includes a machine-readable reason.
+  - All mutating operations accept and respond with Idempotency-Key headers.
+  - Tier upgrades / downgrades take effect on the next billing window.
+
+references:
+  - name: Novu Pricing Page
+    url: https://novu.co/pricing
+  - name: Novu API Reference
+    url: https://docs.novu.co/api-reference/overview

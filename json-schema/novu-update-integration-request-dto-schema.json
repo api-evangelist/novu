@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/novu/main/json-schema/novu-update-integration-request-dto-schema.json",
+  "title": "UpdateIntegrationRequestDto",
+  "description": "JSON Schema for Novu UpdateIntegrationRequestDto.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "identifier": {
+      "type": "string"
+    },
+    "_environmentId": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean",
+      "description": "If the integration is active the validation on the credentials field will run"
+    },
+    "credentials": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "secretKey": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        },
+        "secure": {
+          "type": "boolean"
+        },
+        "region": {
+          "type": "string"
+        },
+        "accountSid": {
+          "type": "string"
+        },
+        "messageProfileId": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "senderName": {
+          "type": "string"
+        },
+        "projectName": {
+          "type": "string"
+        },
+        "applicationId": {
+          "type": "string"
+        },
+        "clientId": {
+          "type": "string"
+        },
+        "requireTls": {
+          "type": "boolean"
+        },
+        "ignoreTls": {
+          "type": "boolean"
+        },
+        "tlsOptions": {
+          "type": "object"
+        },
+        "baseUrl": {
+          "type": "string"
+        },
+        "webhookUrl": {
+          "type": "string"
+        },
+        "redirectUrl": {
+          "type": "string"
+        },
+        "hmac": {
+          "type": "boolean"
+        },
+        "serviceAccount": {
+          "type": "string"
+        },
+        "ipPoolName": {
+          "type": "string"
+        },
+        "apiKeyRequestHeader": {
+          "type": "string"
+        },
+        "secretKeyRequestHeader": {
+          "type": "string"
+        },
+        "idPath": {
+          "type": "string"
+        },
+        "datePath": {
+          "type": "string"
+        },
+        "apiToken": {
+          "type": "string"
+        },
+        "authenticateByToken": {
+          "type": "boolean"
+        },
+        "authenticationTokenKey": {
+          "type": "string"
+        },
+        "instanceId": {
+          "type": "string"
+        },
+        "alertUid": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "externalLink": {
+          "type": "string"
+        },
+        "channelId": {
+          "type": "string"
+        },
+        "phoneNumberIdentification": {
+          "type": "string"
+        },
+        "accessKey": {
+          "type": "string"
+        },
+        "appSid": {
+          "type": "string"
+        },
+        "senderId": {
+          "type": "string"
+        },
+        "tenantId": {
+          "type": "string"
+        },
+        "AppIOBaseUrl": {
+          "type": "string"
+        },
+        "signingSecret": {
+          "type": "string"
+        },
+        "outboundIntegrationId": {
+          "type": "string"
+        },
+        "useFromAddressOverride": {
+          "type": "boolean"
+        },
+        "fromAddressOverride": {
+          "type": "string"
+        },
+        "emailSlugPrefix": {
+          "type": "string",
+          "description": "Agent default shared inbox slug prefix used in `{emailSlugPrefix}-{agentId}@<shared-domain>`. Only meaningful on the NovuAgent email integration."
+        },
+        "externalEnvironmentId": {
+          "type": "string",
+          "description": "Claude Managed Agents: ID of the Anthropic environment tied to this integration. Hydrated by the API at integration provisioning time."
+        },
+        "externalWorkspaceId": {
+          "type": "string",
+          "description": "Claude Managed Agents: id of the Anthropic workspace used in console deep links. Defaults to `'default'` (the Default Workspace). Set this when the API key is scoped to a custom workspace (e.g. `wrkspc_\u2026`)."
+        }
+      }
+    },
+    "check": {
+      "type": "boolean"
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "isNegated": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "BOOLEAN",
+              "TEXT",
+              "DATE",
+              "NUMBER",
+              "STATEMENT",
+              "LIST",
+              "MULTI_LIST",
+              "GROUP"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "enum": [
+              "AND",
+              "OR"
+            ]
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "operator": {
+                  "type": "string",
+                  "enum": [
+                    "LARGER",
+                    "SMALLER",
+                    "LARGER_EQUAL",
+                    "SMALLER_EQUAL",
+                    "EQUAL",
+                    "NOT_EQUAL",
+                    "ALL_IN",
+                    "ANY_IN",
+                    "NOT_IN",
+                    "BETWEEN",
+                    "NOT_BETWEEN",
+                    "LIKE",
+                    "NOT_LIKE",
+                    "IN"
+                  ]
+                },
+                "on": {
+                  "type": "string",
+                  "enum": [
+                    "subscriber",
+                    "payload"
+                  ]
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "operator",
+                "on"
+              ]
+            }
+          }
+        },
+        "required": [
+          "isNegated",
+          "type",
+          "value",
+          "children"
+        ]
+      }
+    },
+    "configurations": {
+      "type": "object",
+      "description": "Configurations for the integration"
+    }
+  }
+}

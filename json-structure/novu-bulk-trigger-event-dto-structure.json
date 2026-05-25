@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "BulkTriggerEventDto",
+  "description": "JSON Schema for Novu BulkTriggerEventDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "events",
+      "type": "array",
+      "description": "",
+      "required": true
+    }
+  ]
+}

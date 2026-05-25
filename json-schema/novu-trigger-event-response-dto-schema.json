@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/novu/main/json-schema/novu-trigger-event-response-dto-schema.json",
+  "title": "TriggerEventResponseDto",
+  "description": "JSON Schema for Novu TriggerEventResponseDto.",
+  "type": "object",
+  "properties": {
+    "acknowledged": {
+      "type": "boolean",
+      "description": "Indicates whether the trigger was acknowledged or not"
+    },
+    "status": {
+      "enum": [
+        "error",
+        "trigger_not_active",
+        "no_workflow_active_steps_defined",
+        "no_workflow_steps_defined",
+        "processed",
+        "no_tenant_found",
+        "invalid_recipients"
+      ],
+      "type": "string",
+      "description": "Status of the trigger"
+    },
+    "error": {
+      "description": "In case of an error, this field will contain the error message(s)",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "transactionId": {
+      "type": "string",
+      "description": "The returned transaction ID of the trigger"
+    },
+    "activityFeedLink": {
+      "type": "string",
+      "description": "Link to the activity feed for this trigger event"
+    },
+    "jobData": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "acknowledged",
+    "status"
+  ]
+}

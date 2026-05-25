@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "EnvironmentResponseDto",
+  "description": "JSON Schema for Novu EnvironmentResponseDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "_id",
+      "type": "string",
+      "description": "Unique identifier of the environment",
+      "required": true
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the environment",
+      "required": true
+    },
+    {
+      "name": "_organizationId",
+      "type": "string",
+      "description": "Organization ID associated with the environment",
+      "required": true
+    },
+    {
+      "name": "identifier",
+      "type": "string",
+      "description": "Unique identifier for the environment",
+      "required": true
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "description": "Type of the environment",
+      "required": false
+    },
+    {
+      "name": "apiKeys",
+      "type": "array",
+      "description": "List of API keys associated with the environment",
+      "required": false
+    },
+    {
+      "name": "_parentId",
+      "type": "string",
+      "description": "Parent environment ID",
+      "required": false
+    },
+    {
+      "name": "slug",
+      "type": "string",
+      "description": "URL-friendly slug for the environment",
+      "required": false
+    }
+  ]
+}

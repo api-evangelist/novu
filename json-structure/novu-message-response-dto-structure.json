@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "MessageResponseDto",
+  "description": "JSON Schema for Novu MessageResponseDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "_id",
+      "type": "string",
+      "description": "Unique identifier for the message",
+      "required": false
+    },
+    {
+      "name": "_templateId",
+      "type": "string",
+      "description": "Template ID associated with the message",
+      "required": false
+    },
+    {
+      "name": "_environmentId",
+      "type": "string",
+      "description": "Environment ID where the message is sent",
+      "required": true
+    },
+    {
+      "name": "_messageTemplateId",
+      "type": "string",
+      "description": "Message template ID",
+      "required": false
+    },
+    {
+      "name": "_organizationId",
+      "type": "string",
+      "description": "Organization ID associated with the message",
+      "required": true
+    },
+    {
+      "name": "_notificationId",
+      "type": "string",
+      "description": "Notification ID associated with the message",
+      "required": true
+    },
+    {
+      "name": "_subscriberId",
+      "type": "string",
+      "description": "Subscriber ID associated with the message",
+      "required": true
+    },
+    {
+      "name": "subscriber",
+      "type": "object",
+      "description": "Subscriber details, if available",
+      "required": false
+    },
+    {
+      "name": "template",
+      "type": "object",
+      "description": "Workflow template associated with the message",
+      "required": false
+    },
+    {
+      "name": "templateIdentifier",
+      "type": "string",
+      "description": "Identifier for the message template",
+      "required": false
+    },
+    {
+      "name": "createdAt",
+      "type": "string",
+      "description": "Creation date of the message",
+      "required": true
+    },
+    {
+      "name": "deliveredAt",
+      "type": "array",
+      "description": "Array of delivery dates for the message, if the message has multiple delivery dates, for example after being snoozed",
+      "required": false
+    },
+    {
+      "name": "lastSeenDate",
+      "type": "string",
+      "description": "Last seen date of the message, if available",
+      "required": false
+    },
+    {
+      "name": "lastReadDate",
+      "type": "string",
+      "description": "Last read date of the message, if available",
+      "required": false
+    },
+    {
+      "name": "content",
+      "type": "object",
+      "description": "Content of the message, can be an email block or a string",
+      "required": false
+    },
+    {
+      "name": "transactionId",
+      "type": "string",
+      "description": "Transaction ID associated with the message",
+      "required": true
+    },
+    {
+      "name": "subject",
+      "type": "string",
+      "description": "Subject of the message, if applicable",
+      "required": false
+    },
+    {
+      "name": "channel",
+      "type": "string",
+      "description": "Channel type through which the message is sent",
+      "required": true
+    },
+    {
+      "name": "read",
+      "type": "boolean",
+      "description": "Indicates if the message has been read",
+      "required": true
+    },
+    {
+      "name": "seen",
+      "type": "boolean",
+      "description": "Indicates if the message has been seen",
+      "required": true
+    },
+    {
+      "name": "snoozedUntil",
+      "type": "string",
+      "description": "Date when the message will be unsnoozed",
+      "required": false
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "description": "Email address associated with the message, if applicable",
+      "required": false
+    },
+    {
+      "name": "phone",
+      "type": "string",
+      "description": "Phone number associated with the message, if applicable",
+      "required": false
+    },
+    {
+      "name": "directWebhookUrl",
+      "type": "string",
+      "description": "Direct webhook URL for the message, if applicable",
+      "required": false
+    },
+    {
+      "name": "providerId",
+      "type": "string",
+      "description": "Provider ID associated with the message, if applicable",
+      "required": false
+    },
+    {
+      "name": "deviceTokens",
+      "type": "array",
+      "description": "Device tokens associated with the message, if applicable",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Title of the message, if applicable",
+      "required": false
+    },
+    {
+      "name": "cta",
+      "type": "object",
+      "description": "Call to action associated with the message",
+      "required": true
+    },
+    {
+      "name": "_feedId",
+      "type": "string",
+      "description": "Feed ID associated with the message, if applicable",
+      "required": false
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "Status of the message",
+      "required": true
+    },
+    {
+      "name": "errorId",
+      "type": "string",
+      "description": "Error ID if the message has an error",
+      "required": false
+    },
+    {
+      "name": "errorText",
+      "type": "string",
+      "description": "Error text if the message has an error",
+      "required": false
+    },
+    {
+      "name": "payload",
+      "type": "object",
+      "description": "The payload that was used to send the notification trigger",
+      "required": false
+    },
+    {
+      "name": "overrides",
+      "type": "object",
+      "description": "Provider specific overrides used when triggering the notification",
+      "required": false
+    },
+    {
+      "name": "contextKeys",
+      "type": "array",
+      "description": "Context (single or multi) in which the message was sent",
+      "required": false
+    }
+  ]
+}

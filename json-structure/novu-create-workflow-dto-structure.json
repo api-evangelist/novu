@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "CreateWorkflowDto",
+  "description": "JSON Schema for Novu CreateWorkflowDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the workflow",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Description of the workflow",
+      "required": false
+    },
+    {
+      "name": "tags",
+      "type": "array",
+      "description": "Tags associated with the workflow",
+      "required": false
+    },
+    {
+      "name": "active",
+      "type": "boolean",
+      "description": "Whether the workflow is active",
+      "required": false
+    },
+    {
+      "name": "validatePayload",
+      "type": "boolean",
+      "description": "Enable or disable payload schema validation",
+      "required": false
+    },
+    {
+      "name": "payloadSchema",
+      "type": "object",
+      "description": "The payload JSON Schema for the workflow",
+      "required": false
+    },
+    {
+      "name": "isTranslationEnabled",
+      "type": "boolean",
+      "description": "Enable or disable translations for this workflow",
+      "required": false
+    },
+    {
+      "name": "workflowId",
+      "type": "string",
+      "description": "Unique identifier for the workflow",
+      "required": true
+    },
+    {
+      "name": "steps",
+      "type": "array",
+      "description": "Steps of the workflow",
+      "required": true
+    },
+    {
+      "name": "__source",
+      "type": "string",
+      "description": "Source of workflow creation",
+      "required": false
+    },
+    {
+      "name": "preferences",
+      "type": "object",
+      "description": "Workflow preferences",
+      "required": false
+    },
+    {
+      "name": "severity",
+      "type": "string",
+      "description": "Severity of the workflow",
+      "required": false
+    }
+  ]
+}

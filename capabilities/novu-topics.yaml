@@ -1,0 +1,619 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Novu API — Topics
+  description: 'Notifications — Topics. 11 operations. Lead operation: Check Topic Subscriber. Self-contained Naftiko capability covering one Novu business surface.'
+  tags:
+  - Novu
+  - Notifications
+  - Topics
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    NOVU_API_KEY: NOVU_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: novu-topics
+    baseUri: https://api.novu.co
+    description: Novu REST API — Topics business capability. Self-contained, no shared references.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.NOVU_API_KEY}}'
+      placement: header
+    resources:
+    - name: v1-topics-topickey-subscribers-externalsubscriberid
+      path: /v1/topics/{topicKey}/subscribers/{externalSubscriberId}
+      operations:
+      - name: TopicsV1Controller_getTopicSubscriber
+        method: GET
+        description: Novu Check Topic Subscriber
+        inputParameters:
+        - name: externalSubscriberId
+          in: path
+          type: string
+          required: true
+          description: The external subscriber id
+        - name: topicKey
+          in: path
+          type: string
+          required: true
+          description: The topic key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-topics
+      path: /v2/topics
+      operations:
+      - name: TopicsController_listTopics
+        method: GET
+        description: Novu List All Topics
+        inputParameters:
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Cursor for pagination indicating the starting point after which to fetch results.
+        - name: before
+          in: query
+          type: string
+          required: false
+          description: Cursor for pagination indicating the ending point before which to fetch results.
+        - name: limit
+          in: query
+          type: number
+          required: false
+          description: Limit the number of items to return (max 100)
+        - name: orderDirection
+          in: query
+          type: string
+          required: false
+          description: Direction of sorting
+        - name: orderBy
+          in: query
+          type: string
+          required: false
+          description: Field to order by
+        - name: includeCursor
+          in: query
+          type: boolean
+          required: false
+          description: Include cursor item in response
+        - name: key
+          in: query
+          type: string
+          required: false
+          description: Key of the topic to filter results.
+        - name: name
+          in: query
+          type: string
+          required: false
+          description: Name of the topic to filter results.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: TopicsController_upsertTopic
+        method: POST
+        description: Novu Create a Topic
+        inputParameters:
+        - name: failIfExists
+          in: query
+          type: boolean
+          required: false
+          description: If true, the request will fail if a topic with the same key already exists
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-topics-topickey
+      path: /v2/topics/{topicKey}
+      operations:
+      - name: TopicsController_getTopic
+        method: GET
+        description: Novu Retrieve a Topic
+        inputParameters:
+        - name: topicKey
+          in: path
+          type: string
+          required: true
+          description: The key identifier of the topic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: TopicsController_updateTopic
+        method: PATCH
+        description: Novu Update a Topic
+        inputParameters:
+        - name: topicKey
+          in: path
+          type: string
+          required: true
+          description: The key identifier of the topic
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: TopicsController_deleteTopic
+        method: DELETE
+        description: Novu Delete a Topic
+        inputParameters:
+        - name: topicKey
+          in: path
+          type: string
+          required: true
+          description: The key identifier of the topic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-topics-topickey-subscriptions
+      path: /v2/topics/{topicKey}/subscriptions
+      operations:
+      - name: TopicsController_listTopicSubscriptions
+        method: GET
+        description: Novu List Topic Subscriptions
+        inputParameters:
+        - name: topicKey
+          in: path
+          type: string
+          required: true
+          description: The key identifier of the topic
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Cursor for pagination indicating the starting point after which to fetch results.
+        - name: before
+          in: query
+          type: string
+          required: false
+          description: Cursor for pagination indicating the ending point before which to fetch results.
+        - name: limit
+          in: query
+          type: number
+          required: false
+          description: Limit the number of items to return (max 100)
+        - name: orderDirection
+          in: query
+          type: string
+          required: false
+          description: Direction of sorting
+        - name: orderBy
+          in: query
+          type: string
+          required: false
+          description: Field to order by
+        - name: includeCursor
+          in: query
+          type: boolean
+          required: false
+          description: Include cursor item in response
+        - name: subscriberId
+          in: query
+          type: string
+          required: false
+          description: Filter by subscriber ID
+        - name: contextKeys
+          in: query
+          type: array
+          required: false
+          description: 'Filter by exact context keys, order insensitive (format: "type:id")'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: TopicsController_createTopicSubscriptions
+        method: POST
+        description: Novu Create Topic Subscriptions
+        inputParameters:
+        - name: topicKey
+          in: path
+          type: string
+          required: true
+          description: The key identifier of the topic
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: TopicsController_deleteTopicSubscriptions
+        method: DELETE
+        description: Novu Delete Topic Subscriptions
+        inputParameters:
+        - name: topicKey
+          in: path
+          type: string
+          required: true
+          description: The key identifier of the topic
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-topics-topickey-subscriptions-identifier
+      path: /v2/topics/{topicKey}/subscriptions/{identifier}
+      operations:
+      - name: TopicsController_getTopicSubscription
+        method: GET
+        description: Novu Retrieve a Topic Subscription
+        inputParameters:
+        - name: topicKey
+          in: path
+          type: string
+          required: true
+          description: The key identifier of the topic
+        - name: identifier
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: TopicsController_updateTopicSubscription
+        method: PATCH
+        description: Novu Update a Topic Subscription
+        inputParameters:
+        - name: topicKey
+          in: path
+          type: string
+          required: true
+          description: The key identifier of the topic
+        - name: identifier
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the subscription
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: novu-topics-rest
+    port: 8080
+    description: REST adapter for Novu API — Topics. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/topics/{topicKey}/subscribers/{externalSubscriberId}
+      name: v1-topics-topickey-subscribers-externalsubscriberid
+      description: REST surface for /v1/topics/{topicKey}/subscribers/{externalSubscriberId}.
+      operations:
+      - method: GET
+        name: TopicsV1Controller_getTopicSubscriber
+        description: Novu Check Topic Subscriber
+        call: novu-topics.TopicsV1Controller_getTopicSubscriber
+        with:
+          externalSubscriberId: rest.externalSubscriberId
+          topicKey: rest.topicKey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/topics
+      name: v2-topics
+      description: REST surface for /v2/topics.
+      operations:
+      - method: GET
+        name: TopicsController_listTopics
+        description: Novu List All Topics
+        call: novu-topics.TopicsController_listTopics
+        with:
+          after: rest.after
+          before: rest.before
+          limit: rest.limit
+          orderDirection: rest.orderDirection
+          orderBy: rest.orderBy
+          includeCursor: rest.includeCursor
+          key: rest.key
+          name: rest.name
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: TopicsController_upsertTopic
+        description: Novu Create a Topic
+        call: novu-topics.TopicsController_upsertTopic
+        with:
+          failIfExists: rest.failIfExists
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/topics/{topicKey}
+      name: v2-topics-topickey
+      description: REST surface for /v2/topics/{topicKey}.
+      operations:
+      - method: GET
+        name: TopicsController_getTopic
+        description: Novu Retrieve a Topic
+        call: novu-topics.TopicsController_getTopic
+        with:
+          topicKey: rest.topicKey
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: TopicsController_updateTopic
+        description: Novu Update a Topic
+        call: novu-topics.TopicsController_updateTopic
+        with:
+          topicKey: rest.topicKey
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: TopicsController_deleteTopic
+        description: Novu Delete a Topic
+        call: novu-topics.TopicsController_deleteTopic
+        with:
+          topicKey: rest.topicKey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/topics/{topicKey}/subscriptions
+      name: v2-topics-topickey-subscriptions
+      description: REST surface for /v2/topics/{topicKey}/subscriptions.
+      operations:
+      - method: GET
+        name: TopicsController_listTopicSubscriptions
+        description: Novu List Topic Subscriptions
+        call: novu-topics.TopicsController_listTopicSubscriptions
+        with:
+          topicKey: rest.topicKey
+          after: rest.after
+          before: rest.before
+          limit: rest.limit
+          orderDirection: rest.orderDirection
+          orderBy: rest.orderBy
+          includeCursor: rest.includeCursor
+          subscriberId: rest.subscriberId
+          contextKeys: rest.contextKeys
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: TopicsController_createTopicSubscriptions
+        description: Novu Create Topic Subscriptions
+        call: novu-topics.TopicsController_createTopicSubscriptions
+        with:
+          topicKey: rest.topicKey
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: TopicsController_deleteTopicSubscriptions
+        description: Novu Delete Topic Subscriptions
+        call: novu-topics.TopicsController_deleteTopicSubscriptions
+        with:
+          topicKey: rest.topicKey
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/topics/{topicKey}/subscriptions/{identifier}
+      name: v2-topics-topickey-subscriptions-identifier
+      description: REST surface for /v2/topics/{topicKey}/subscriptions/{identifier}.
+      operations:
+      - method: GET
+        name: TopicsController_getTopicSubscription
+        description: Novu Retrieve a Topic Subscription
+        call: novu-topics.TopicsController_getTopicSubscription
+        with:
+          topicKey: rest.topicKey
+          identifier: rest.identifier
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: TopicsController_updateTopicSubscription
+        description: Novu Update a Topic Subscription
+        call: novu-topics.TopicsController_updateTopicSubscription
+        with:
+          topicKey: rest.topicKey
+          identifier: rest.identifier
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: novu-topics-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Novu API — Topics. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: check-topic-subscriber
+      description: Novu Check Topic Subscriber
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-topics.TopicsV1Controller_getTopicSubscriber
+      with:
+        externalSubscriberId: tools.externalSubscriberId
+        topicKey: tools.topicKey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-all-topics
+      description: Novu List All Topics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-topics.TopicsController_listTopics
+      with:
+        after: tools.after
+        before: tools.before
+        limit: tools.limit
+        orderDirection: tools.orderDirection
+        orderBy: tools.orderBy
+        includeCursor: tools.includeCursor
+        key: tools.key
+        name: tools.name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-topic
+      description: Novu Create a Topic
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-topics.TopicsController_upsertTopic
+      with:
+        failIfExists: tools.failIfExists
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-topic
+      description: Novu Retrieve a Topic
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-topics.TopicsController_getTopic
+      with:
+        topicKey: tools.topicKey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-topic
+      description: Novu Update a Topic
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: novu-topics.TopicsController_updateTopic
+      with:
+        topicKey: tools.topicKey
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-topic
+      description: Novu Delete a Topic
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: novu-topics.TopicsController_deleteTopic
+      with:
+        topicKey: tools.topicKey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-topic-subscriptions
+      description: Novu List Topic Subscriptions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-topics.TopicsController_listTopicSubscriptions
+      with:
+        topicKey: tools.topicKey
+        after: tools.after
+        before: tools.before
+        limit: tools.limit
+        orderDirection: tools.orderDirection
+        orderBy: tools.orderBy
+        includeCursor: tools.includeCursor
+        subscriberId: tools.subscriberId
+        contextKeys: tools.contextKeys
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-topic-subscriptions
+      description: Novu Create Topic Subscriptions
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-topics.TopicsController_createTopicSubscriptions
+      with:
+        topicKey: tools.topicKey
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-topic-subscriptions
+      description: Novu Delete Topic Subscriptions
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: novu-topics.TopicsController_deleteTopicSubscriptions
+      with:
+        topicKey: tools.topicKey
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-topic-subscription
+      description: Novu Retrieve a Topic Subscription
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-topics.TopicsController_getTopicSubscription
+      with:
+        topicKey: tools.topicKey
+        identifier: tools.identifier
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-topic-subscription
+      description: Novu Update a Topic Subscription
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: novu-topics.TopicsController_updateTopicSubscription
+      with:
+        topicKey: tools.topicKey
+        identifier: tools.identifier
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

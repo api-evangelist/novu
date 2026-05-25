@@ -1,0 +1,213 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Novu API — Notifications
+  description: 'Notifications — Notifications. 2 operations. Lead operation: List All Events. Self-contained Naftiko capability covering one Novu business surface.'
+  tags:
+  - Novu
+  - Notifications
+  - Notifications
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    NOVU_API_KEY: NOVU_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: novu-notifications
+    baseUri: https://api.novu.co
+    description: Novu REST API — Notifications business capability. Self-contained, no shared references.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.NOVU_API_KEY}}'
+      placement: header
+    resources:
+    - name: v1-notifications
+      path: /v1/notifications
+      operations:
+      - name: NotificationsController_listNotifications
+        method: GET
+        description: Novu List All Events
+        inputParameters:
+        - name: channels
+          in: query
+          type: array
+          required: false
+          description: Array of channel types
+        - name: templates
+          in: query
+          type: array
+          required: false
+          description: Array of template IDs or a single template ID
+        - name: emails
+          in: query
+          type: array
+          required: false
+          description: Array of email addresses or a single email address
+        - name: search
+          in: query
+          type: string
+          required: false
+          description: Search term (deprecated)
+        - name: subscriberIds
+          in: query
+          type: array
+          required: false
+          description: Array of subscriber IDs or a single subscriber ID
+        - name: severity
+          in: query
+          type: array
+          required: false
+          description: Array of severity levels or a single severity level
+        - name: page
+          in: query
+          type: number
+          required: false
+          description: Page number for pagination
+        - name: limit
+          in: query
+          type: number
+          required: false
+          description: Limit for pagination
+        - name: transactionId
+          in: query
+          type: string
+          required: false
+          description: The transaction ID to filter by
+        - name: topicKey
+          in: query
+          type: string
+          required: false
+          description: Topic Key for filtering notifications by topic
+        - name: subscriptionId
+          in: query
+          type: string
+          required: false
+          description: Subscription ID for filtering notifications by subscription
+        - name: contextKeys
+          in: query
+          type: array
+          required: false
+          description: 'Filter by exact context keys, order insensitive (format: "type:id")'
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Date filter for records after this timestamp. Defaults to earliest date allowed by subscription plan
+        - name: before
+          in: query
+          type: string
+          required: false
+          description: Date filter for records before this timestamp. Defaults to current time of request (now)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-notifications-notificationid
+      path: /v1/notifications/{notificationId}
+      operations:
+      - name: NotificationsController_getNotification
+        method: GET
+        description: Novu Retrieve an Event
+        inputParameters:
+        - name: notificationId
+          in: path
+          type: string
+          required: true
+          description: notificationId
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: novu-notifications-rest
+    port: 8080
+    description: REST adapter for Novu API — Notifications. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/notifications
+      name: v1-notifications
+      description: REST surface for /v1/notifications.
+      operations:
+      - method: GET
+        name: NotificationsController_listNotifications
+        description: Novu List All Events
+        call: novu-notifications.NotificationsController_listNotifications
+        with:
+          channels: rest.channels
+          templates: rest.templates
+          emails: rest.emails
+          search: rest.search
+          subscriberIds: rest.subscriberIds
+          severity: rest.severity
+          page: rest.page
+          limit: rest.limit
+          transactionId: rest.transactionId
+          topicKey: rest.topicKey
+          subscriptionId: rest.subscriptionId
+          contextKeys: rest.contextKeys
+          after: rest.after
+          before: rest.before
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/notifications/{notificationId}
+      name: v1-notifications-notificationid
+      description: REST surface for /v1/notifications/{notificationId}.
+      operations:
+      - method: GET
+        name: NotificationsController_getNotification
+        description: Novu Retrieve an Event
+        call: novu-notifications.NotificationsController_getNotification
+        with:
+          notificationId: rest.notificationId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: novu-notifications-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Novu API — Notifications. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: list-all-events
+      description: Novu List All Events
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-notifications.NotificationsController_listNotifications
+      with:
+        channels: tools.channels
+        templates: tools.templates
+        emails: tools.emails
+        search: tools.search
+        subscriberIds: tools.subscriberIds
+        severity: tools.severity
+        page: tools.page
+        limit: tools.limit
+        transactionId: tools.transactionId
+        topicKey: tools.topicKey
+        subscriptionId: tools.subscriptionId
+        contextKeys: tools.contextKeys
+        after: tools.after
+        before: tools.before
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-event
+      description: Novu Retrieve an Event
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-notifications.NotificationsController_getNotification
+      with:
+        notificationId: tools.notificationId
+      outputParameters:
+      - type: object
+        mapping: $.

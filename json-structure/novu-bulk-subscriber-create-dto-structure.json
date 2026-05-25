@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "BulkSubscriberCreateDto",
+  "description": "JSON Schema for Novu BulkSubscriberCreateDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "subscribers",
+      "type": "array",
+      "description": "An array of subscribers to be created in bulk.",
+      "required": true
+    }
+  ]
+}

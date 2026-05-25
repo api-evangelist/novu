@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "ErrorDto",
+  "description": "JSON Schema for Novu ErrorDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "statusCode",
+      "type": "number",
+      "description": "HTTP status code of the error response.",
+      "required": true
+    },
+    {
+      "name": "timestamp",
+      "type": "string",
+      "description": "Timestamp of when the error occurred.",
+      "required": true
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "description": "The path where the error occurred.",
+      "required": true
+    },
+    {
+      "name": "message",
+      "type": "object",
+      "description": "Value that failed validation",
+      "required": false
+    },
+    {
+      "name": "ctx",
+      "type": "object",
+      "description": "Optional context object for additional error details.",
+      "required": false
+    },
+    {
+      "name": "errorId",
+      "type": "string",
+      "description": "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500.",
+      "required": false
+    }
+  ]
+}

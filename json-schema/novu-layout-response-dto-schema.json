@@ -1,0 +1,308 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/novu/main/json-schema/novu-layout-response-dto-schema.json",
+  "title": "LayoutResponseDto",
+  "description": "JSON Schema for Novu LayoutResponseDto.",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string",
+      "description": "Unique internal identifier of the layout"
+    },
+    "layoutId": {
+      "type": "string",
+      "description": "Unique identifier for the layout"
+    },
+    "slug": {
+      "type": "string",
+      "description": "Slug of the layout"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the layout"
+    },
+    "isDefault": {
+      "type": "boolean",
+      "description": "Whether the layout is the default layout"
+    },
+    "isTranslationEnabled": {
+      "type": "boolean",
+      "description": "Whether the layout translations are enabled"
+    },
+    "updatedAt": {
+      "type": "string",
+      "description": "Last updated timestamp"
+    },
+    "updatedBy": {
+      "description": "User who last updated the layout",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "User ID"
+            },
+            "firstName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "User first name"
+            },
+            "lastName": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "User last name"
+            },
+            "externalId": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "User external ID"
+            }
+          },
+          "required": [
+            "_id"
+          ]
+        }
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "description": "Creation timestamp"
+    },
+    "origin": {
+      "type": "string",
+      "description": "Origin of the layout",
+      "enum": [
+        "novu-cloud",
+        "novu-cloud-v1",
+        "external"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "description": "Type of the layout",
+      "enum": [
+        "REGULAR",
+        "ECHO",
+        "BRIDGE"
+      ]
+    },
+    "variables": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The variables JSON Schema for the layout",
+      "additionalProperties": true
+    },
+    "controls": {
+      "description": "Controls metadata for the layout",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "dataSchema": {
+              "type": "object",
+              "description": "JSON Schema for data",
+              "additionalProperties": true
+            },
+            "uiSchema": {
+              "description": "UI Schema for rendering",
+              "allOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "group": {
+                      "type": "string",
+                      "description": "Group of the UI Schema",
+                      "enum": [
+                        "IN_APP",
+                        "EMAIL",
+                        "DIGEST",
+                        "DELAY",
+                        "THROTTLE",
+                        "SMS",
+                        "CHAT",
+                        "PUSH",
+                        "SKIP",
+                        "LAYOUT",
+                        "HTTP_REQUEST"
+                      ]
+                    },
+                    "properties": {
+                      "type": "object",
+                      "description": "Properties of the UI Schema",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "placeholder": {
+                            "description": "Placeholder for the UI Schema Property",
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "boolean"
+                              },
+                              {
+                                "type": "object",
+                                "additionalProperties": true
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "boolean"
+                                    },
+                                    {
+                                      "type": "object",
+                                      "additionalProperties": true
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "component": {
+                            "type": "string",
+                            "description": "Component type for the UI Schema Property",
+                            "enum": [
+                              "EMAIL_EDITOR_SELECT",
+                              "LAYOUT_SELECT",
+                              "BLOCK_EDITOR",
+                              "EMAIL_BODY",
+                              "TEXT_FULL_LINE",
+                              "TEXT_INLINE_LABEL",
+                              "IN_APP_BODY",
+                              "IN_APP_AVATAR",
+                              "IN_APP_PRIMARY_SUBJECT",
+                              "IN_APP_BUTTON_DROPDOWN",
+                              "IN_APP_DISABLE_SANITIZATION_SWITCH",
+                              "DISABLE_SANITIZATION_SWITCH",
+                              "URL_TEXT_BOX",
+                              "DIGEST_AMOUNT",
+                              "DIGEST_UNIT",
+                              "DIGEST_TYPE",
+                              "DIGEST_KEY",
+                              "DIGEST_CRON",
+                              "DELAY_AMOUNT",
+                              "DELAY_UNIT",
+                              "DELAY_TYPE",
+                              "DELAY_CRON",
+                              "DELAY_DYNAMIC_KEY",
+                              "THROTTLE_TYPE",
+                              "THROTTLE_WINDOW",
+                              "THROTTLE_UNIT",
+                              "THROTTLE_DYNAMIC_KEY",
+                              "THROTTLE_THRESHOLD",
+                              "THROTTLE_KEY",
+                              "EXTEND_TO_SCHEDULE",
+                              "SMS_BODY",
+                              "CHAT_BODY",
+                              "PUSH_BODY",
+                              "PUSH_SUBJECT",
+                              "QUERY_EDITOR",
+                              "DATA",
+                              "LAYOUT_EMAIL",
+                              "DESTINATION_METHOD",
+                              "DESTINATION_URL",
+                              "DESTINATION_HEADERS",
+                              "DESTINATION_BODY",
+                              "DESTINATION_RESPONSE_BODY_SCHEMA",
+                              "DESTINATION_ENFORCE_SCHEMA_VALIDATION",
+                              "DESTINATION_CONTINUE_ON_FAILURE",
+                              "DESTINATION_TIMEOUT"
+                            ]
+                          },
+                          "properties": {
+                            "type": "object",
+                            "description": "Properties of the UI Schema",
+                            "additionalProperties": {
+                              "type": "object",
+                              "description": "Reference to UiSchemaProperty"
+                            }
+                          }
+                        },
+                        "required": [
+                          "component"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "values": {
+              "description": "Email layout controls",
+              "allOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "description": "Email layout controls",
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "body": {
+                              "type": "string",
+                              "description": "Body of the layout."
+                            },
+                            "editorType": {
+                              "type": "string",
+                              "description": "Editor type of the layout.",
+                              "enum": [
+                                "html",
+                                "block"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "body",
+                            "editorType"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "required": [
+            "values"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "_id",
+    "layoutId",
+    "slug",
+    "name",
+    "isDefault",
+    "isTranslationEnabled",
+    "updatedAt",
+    "createdAt",
+    "origin",
+    "type",
+    "controls"
+  ]
+}

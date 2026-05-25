@@ -1,0 +1,1490 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/novu/main/json-schema/novu-create-workflow-dto-schema.json",
+  "title": "CreateWorkflowDto",
+  "description": "JSON Schema for Novu CreateWorkflowDto.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the workflow"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the workflow"
+    },
+    "tags": {
+      "description": "Tags associated with the workflow",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "active": {
+      "type": "boolean",
+      "description": "Whether the workflow is active",
+      "default": false
+    },
+    "validatePayload": {
+      "type": "boolean",
+      "description": "Enable or disable payload schema validation"
+    },
+    "payloadSchema": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The payload JSON Schema for the workflow",
+      "additionalProperties": true
+    },
+    "isTranslationEnabled": {
+      "type": "boolean",
+      "description": "Enable or disable translations for this workflow",
+      "default": false
+    },
+    "workflowId": {
+      "type": "string",
+      "pattern": "SLUG_IDENTIFIER_REGEX",
+      "description": "Unique identifier for the workflow"
+    },
+    "steps": {
+      "type": "array",
+      "description": "Steps of the workflow",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the In-App step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Content/body of the in-app message. Required if subject is empty.",
+                        "minLength": 1
+                      },
+                      "subject": {
+                        "type": "string",
+                        "description": "Subject/title of the in-app message. Required if body is empty.",
+                        "minLength": 1
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "description": "URL for an avatar image. Must be a valid URL or start with / or {{ variable }}."
+                      },
+                      "primaryAction": {
+                        "description": "Primary action button details.",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "description": "Label for the action button."
+                              },
+                              "redirect": {
+                                "description": "Redirect configuration for the action.",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "url": {
+                                        "type": "string",
+                                        "description": "URL to redirect to"
+                                      },
+                                      "target": {
+                                        "type": "string",
+                                        "description": "Target attribute for the redirect link",
+                                        "enum": [
+                                          "_self",
+                                          "_blank",
+                                          "_parent",
+                                          "_top",
+                                          "_unfencedTop"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "url"
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "secondaryAction": {
+                        "description": "Secondary action button details.",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "label": {
+                                "type": "string",
+                                "description": "Label for the action button."
+                              },
+                              "redirect": {
+                                "description": "Redirect configuration for the action.",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "url": {
+                                        "type": "string",
+                                        "description": "URL to redirect to"
+                                      },
+                                      "target": {
+                                        "type": "string",
+                                        "description": "Target attribute for the redirect link",
+                                        "enum": [
+                                          "_self",
+                                          "_blank",
+                                          "_parent",
+                                          "_top",
+                                          "_unfencedTop"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "url"
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "redirect": {
+                        "description": "Redirection URL configuration for the main content click (if no actions defined/clicked)..",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "description": "URL to redirect to"
+                              },
+                              "target": {
+                                "type": "string",
+                                "description": "Target attribute for the redirect link",
+                                "enum": [
+                                  "_self",
+                                  "_blank",
+                                  "_parent",
+                                  "_top",
+                                  "_unfencedTop"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "url"
+                            ]
+                          }
+                        ]
+                      },
+                      "disableOutputSanitization": {
+                        "type": "boolean",
+                        "description": "Disable sanitization of the output.",
+                        "default": false
+                      },
+                      "data": {
+                        "type": "object",
+                        "description": "Additional data payload for the step.",
+                        "additionalProperties": true
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the Email step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "subject": {
+                        "type": "string",
+                        "description": "Subject of the email.",
+                        "minLength": 1
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Body content of the email, either a valid Maily JSON object, or html string.",
+                        "default": ""
+                      },
+                      "editorType": {
+                        "type": "string",
+                        "description": "Type of editor to use for the body.",
+                        "enum": [
+                          "block",
+                          "html"
+                        ],
+                        "default": "block"
+                      },
+                      "disableOutputSanitization": {
+                        "type": "boolean",
+                        "description": "Disable sanitization of the output.",
+                        "default": false
+                      },
+                      "layoutId": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "Layout ID to use for the email. Null means no layout, undefined means default layout."
+                      }
+                    },
+                    "required": [
+                      "subject",
+                      "body"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the SMS step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Content of the SMS message."
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the Push step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "subject": {
+                        "type": "string",
+                        "description": "Subject/title of the push notification."
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Body content of the push notification."
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the Chat step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "body": {
+                        "type": "string",
+                        "description": "Content of the chat message."
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the Delay step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Type of the delay. Currently only 'regular' is supported by the schema.",
+                        "enum": [
+                          "regular",
+                          "timed"
+                        ],
+                        "default": "regular"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "Amount of time to delay.",
+                        "minimum": 1
+                      },
+                      "unit": {
+                        "type": "string",
+                        "description": "Unit of time for the delay amount.",
+                        "enum": [
+                          "seconds",
+                          "minutes",
+                          "hours",
+                          "days",
+                          "weeks",
+                          "months"
+                        ]
+                      },
+                      "cron": {
+                        "type": "string",
+                        "description": "Cron expression for the delay. Min length 1."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the Digest step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of digest strategy. Determines which fields are applicable.",
+                        "enum": [
+                          "regular",
+                          "timed"
+                        ]
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "The amount of time for the digest interval (for REGULAR type). Min 1.",
+                        "minimum": 1
+                      },
+                      "unit": {
+                        "type": "string",
+                        "description": "The unit of time for the digest interval (for REGULAR type).",
+                        "enum": [
+                          "seconds",
+                          "minutes",
+                          "hours",
+                          "days",
+                          "weeks",
+                          "months"
+                        ]
+                      },
+                      "lookBackWindow": {
+                        "description": "Configuration for look-back window (for REGULAR type).",
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "amount": {
+                                "type": "number",
+                                "description": "Amount of time for the look-back window.",
+                                "minimum": 1
+                              },
+                              "unit": {
+                                "type": "string",
+                                "description": "Unit of time for the look-back window.",
+                                "enum": [
+                                  "seconds",
+                                  "minutes",
+                                  "hours",
+                                  "days",
+                                  "weeks",
+                                  "months"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "amount",
+                              "unit"
+                            ]
+                          }
+                        ]
+                      },
+                      "cron": {
+                        "type": "string",
+                        "description": "Cron expression for TIMED digest. Min length 1."
+                      },
+                      "digestKey": {
+                        "type": "string",
+                        "description": "Specify a custom key for digesting events instead of the default event key."
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the Throttle step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "skip": {
+                        "type": "object",
+                        "description": "JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.",
+                        "example": {
+                          "and": [
+                            {
+                              "==": [
+                                {
+                                  "var": "payload.tier"
+                                },
+                                "pro"
+                              ]
+                            },
+                            {
+                              "==": [
+                                {
+                                  "var": "subscriber.data.role"
+                                },
+                                "admin"
+                              ]
+                            },
+                            {
+                              ">": [
+                                {
+                                  "var": "payload.amount"
+                                },
+                                "4"
+                              ]
+                            }
+                          ]
+                        },
+                        "additionalProperties": true
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of throttle window.",
+                        "enum": [
+                          "fixed",
+                          "dynamic"
+                        ],
+                        "default": "fixed"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "The amount of time for the throttle window (required for fixed type).",
+                        "minimum": 1
+                      },
+                      "unit": {
+                        "type": "string",
+                        "description": "The unit of time for the throttle window (required for fixed type).",
+                        "enum": [
+                          "minutes",
+                          "hours",
+                          "days"
+                        ]
+                      },
+                      "dynamicKey": {
+                        "type": "string",
+                        "description": "Key path to retrieve dynamic window value (required for dynamic type).",
+                        "example": "payload.timestamp"
+                      },
+                      "threshold": {
+                        "type": "number",
+                        "description": "The maximum number of executions allowed within the window. Defaults to 1.",
+                        "minimum": 1,
+                        "default": 1
+                      },
+                      "throttleKey": {
+                        "type": "string",
+                        "description": "Optional key for grouping throttle rules. If not provided, defaults to workflow and subscriber combination."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the Custom step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "custom": {
+                        "type": "object",
+                        "description": "Custom control values for the step.",
+                        "additionalProperties": true
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Database identifier of the step. Used for updating the step."
+              },
+              "stepId": {
+                "type": "string",
+                "pattern": "SLUG_IDENTIFIER_REGEX",
+                "description": "Unique identifier for the step"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the step"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the step",
+                "enum": [
+                  "in_app",
+                  "email",
+                  "sms",
+                  "chat",
+                  "push",
+                  "digest",
+                  "trigger",
+                  "delay",
+                  "throttle",
+                  "custom",
+                  "http_request"
+                ]
+              },
+              "controlValues": {
+                "description": "Control values for the HTTP Request step.",
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "description": "HTTP method",
+                        "enum": [
+                          "GET",
+                          "POST",
+                          "PUT",
+                          "DELETE",
+                          "PATCH"
+                        ]
+                      },
+                      "url": {
+                        "type": "string",
+                        "description": "Target URL for the HTTP request"
+                      },
+                      "headers": {
+                        "description": "Request headers as key-value pairs",
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string",
+                              "description": "Key of the key-value pair"
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "Value of the key-value pair"
+                            }
+                          },
+                          "required": [
+                            "key",
+                            "value"
+                          ]
+                        }
+                      },
+                      "body": {
+                        "description": "Request body as a raw JSON string. Key-value arrays are supported for legacy workflows.",
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "key": {
+                                  "type": "string",
+                                  "description": "Key of the key-value pair"
+                                },
+                                "value": {
+                                  "type": "string",
+                                  "description": "Value of the key-value pair"
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "value"
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "responseBodySchema": {
+                        "type": "object",
+                        "description": "JSON schema to validate response body against",
+                        "additionalProperties": true
+                      },
+                      "enforceSchemaValidation": {
+                        "type": "boolean",
+                        "description": "Whether to enforce response body schema validation"
+                      },
+                      "continueOnFailure": {
+                        "type": "boolean",
+                        "description": "Whether to continue workflow execution on failure"
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "url"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "in_app": "#/components/schemas/InAppStepUpsertDto",
+            "email": "#/components/schemas/EmailStepUpsertDto",
+            "sms": "#/components/schemas/SmsStepUpsertDto",
+            "push": "#/components/schemas/PushStepUpsertDto",
+            "chat": "#/components/schemas/ChatStepUpsertDto",
+            "delay": "#/components/schemas/DelayStepUpsertDto",
+            "digest": "#/components/schemas/DigestStepUpsertDto",
+            "throttle": "#/components/schemas/ThrottleStepUpsertDto",
+            "custom": "#/components/schemas/CustomStepUpsertDto",
+            "http_request": "#/components/schemas/HttpRequestStepUpsertDto"
+          }
+        }
+      }
+    },
+    "__source": {
+      "type": "string",
+      "description": "Source of workflow creation",
+      "default": "editor",
+      "enum": [
+        "template_store",
+        "editor",
+        "notification_directory",
+        "onboarding_digest_demo",
+        "onboarding_in_app",
+        "empty_state",
+        "dropdown",
+        "onboarding_get_started",
+        "bridge",
+        "dashboard",
+        "ai"
+      ]
+    },
+    "preferences": {
+      "description": "Workflow preferences",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "user": {
+              "description": "User workflow preferences",
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "all": {
+                      "description": "A preference for the workflow. The values specified here will be used if no preference is specified for a channel.",
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.",
+                              "default": true
+                            },
+                            "readOnly": {
+                              "type": "boolean",
+                              "description": "A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.",
+                              "default": false
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "readOnly"
+                          ]
+                        }
+                      ],
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.",
+                              "default": true
+                            },
+                            "readOnly": {
+                              "type": "boolean",
+                              "description": "A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.",
+                              "default": false
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "readOnly"
+                          ]
+                        }
+                      ]
+                    },
+                    "channels": {
+                      "type": "object",
+                      "description": "Preferences for different communication channels",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "description": "A flag specifying if notification delivery is enabled for the channel. If true, notification delivery is enabled.",
+                            "default": true
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ]
+                      },
+                      "example": {
+                        "email": {
+                          "enabled": true
+                        },
+                        "sms": {
+                          "enabled": false
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "all",
+                    "channels"
+                  ]
+                }
+              ]
+            },
+            "workflow": {
+              "description": "Workflow-specific preferences",
+              "allOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "all": {
+                      "description": "A preference for the workflow. The values specified here will be used if no preference is specified for a channel.",
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.",
+                              "default": true
+                            },
+                            "readOnly": {
+                              "type": "boolean",
+                              "description": "A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.",
+                              "default": false
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "readOnly"
+                          ]
+                        }
+                      ],
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.",
+                              "default": true
+                            },
+                            "readOnly": {
+                              "type": "boolean",
+                              "description": "A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.",
+                              "default": false
+                            }
+                          },
+                          "required": [
+                            "enabled",
+                            "readOnly"
+                          ]
+                        }
+                      ]
+                    },
+                    "channels": {
+                      "type": "object",
+                      "description": "Preferences for different communication channels",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "description": "A flag specifying if notification delivery is enabled for the channel. If true, notification delivery is enabled.",
+                            "default": true
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ]
+                      },
+                      "example": {
+                        "email": {
+                          "enabled": true
+                        },
+                        "sms": {
+                          "enabled": false
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "all",
+                    "channels"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "description": "Severity of the workflow",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "none"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "workflowId",
+    "steps"
+  ]
+}

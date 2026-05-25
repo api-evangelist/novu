@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "TriggerEventRequestDto",
+  "description": "JSON Schema for Novu TriggerEventRequestDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "The trigger identifier of the workflow you wish to send. This identifier can be found on the workflow page.",
+      "required": true
+    },
+    {
+      "name": "payload",
+      "type": "object",
+      "description": "The payload object is used to pass additional custom information that could be \n    used to render the workflow, or perform routing rules based on it. \n      This data will also be available when fetc",
+      "required": false
+    },
+    {
+      "name": "overrides",
+      "type": "object",
+      "description": "This could be used to override provider specific configurations",
+      "required": false
+    },
+    {
+      "name": "to",
+      "type": "object",
+      "description": "The recipients list of people who will receive the notification. Maximum number of recipients can be 100.",
+      "required": true
+    },
+    {
+      "name": "transactionId",
+      "type": "string",
+      "description": "A unique identifier for deduplication. If the same **transactionId** is sent again, \n      the trigger is ignored. Useful to prevent duplicate notifications. The retention period depends on your billi",
+      "required": false
+    },
+    {
+      "name": "actor",
+      "type": "object",
+      "description": "It is used to display the Avatar of the provided actor's subscriber id or actor object.\n    If a new actor object is provided, we will create a new subscriber in our system",
+      "required": false
+    },
+    {
+      "name": "tenant",
+      "type": "object",
+      "description": "It is used to specify a tenant context during trigger event.\n    Existing tenants will be updated with the provided details.",
+      "required": false
+    },
+    {
+      "name": "context",
+      "type": "object",
+      "description": "",
+      "required": false
+    }
+  ]
+}

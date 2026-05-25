@@ -1,0 +1,206 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Novu API — Events
+  description: 'Notifications — Events. 4 operations. Lead operation: Trigger Event. Self-contained Naftiko capability covering one Novu business surface.'
+  tags:
+  - Novu
+  - Notifications
+  - Events
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    NOVU_API_KEY: NOVU_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: novu-events
+    baseUri: https://api.novu.co
+    description: Novu REST API — Events business capability. Self-contained, no shared references.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.NOVU_API_KEY}}'
+      placement: header
+    resources:
+    - name: v1-events-trigger
+      path: /v1/events/trigger
+      operations:
+      - name: EventsController_trigger
+        method: POST
+        description: Novu Trigger Event
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-events-trigger-bulk
+      path: /v1/events/trigger/bulk
+      operations:
+      - name: EventsController_triggerBulk
+        method: POST
+        description: Novu Bulk Trigger Event
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-events-trigger-broadcast
+      path: /v1/events/trigger/broadcast
+      operations:
+      - name: EventsController_broadcastEventToAll
+        method: POST
+        description: Novu Broadcast Event to All
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-events-trigger-transactionid
+      path: /v1/events/trigger/{transactionId}
+      operations:
+      - name: EventsController_cancel
+        method: DELETE
+        description: Novu Cancel Triggered Event
+        inputParameters:
+        - name: transactionId
+          in: path
+          type: string
+          required: true
+          description: transactionId
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: novu-events-rest
+    port: 8080
+    description: REST adapter for Novu API — Events. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/events/trigger
+      name: v1-events-trigger
+      description: REST surface for /v1/events/trigger.
+      operations:
+      - method: POST
+        name: EventsController_trigger
+        description: Novu Trigger Event
+        call: novu-events.EventsController_trigger
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/events/trigger/bulk
+      name: v1-events-trigger-bulk
+      description: REST surface for /v1/events/trigger/bulk.
+      operations:
+      - method: POST
+        name: EventsController_triggerBulk
+        description: Novu Bulk Trigger Event
+        call: novu-events.EventsController_triggerBulk
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/events/trigger/broadcast
+      name: v1-events-trigger-broadcast
+      description: REST surface for /v1/events/trigger/broadcast.
+      operations:
+      - method: POST
+        name: EventsController_broadcastEventToAll
+        description: Novu Broadcast Event to All
+        call: novu-events.EventsController_broadcastEventToAll
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/events/trigger/{transactionId}
+      name: v1-events-trigger-transactionid
+      description: REST surface for /v1/events/trigger/{transactionId}.
+      operations:
+      - method: DELETE
+        name: EventsController_cancel
+        description: Novu Cancel Triggered Event
+        call: novu-events.EventsController_cancel
+        with:
+          transactionId: rest.transactionId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: novu-events-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Novu API — Events. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: trigger-event
+      description: Novu Trigger Event
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-events.EventsController_trigger
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: bulk-trigger-event
+      description: Novu Bulk Trigger Event
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-events.EventsController_triggerBulk
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: broadcast-event-all
+      description: Novu Broadcast Event to All
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-events.EventsController_broadcastEventToAll
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cancel-triggered-event
+      description: Novu Cancel Triggered Event
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: novu-events.EventsController_cancel
+      with:
+        transactionId: tools.transactionId
+      outputParameters:
+      - type: object
+        mapping: $.

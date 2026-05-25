@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "TopicResponseDto",
+  "description": "JSON Schema for Novu TopicResponseDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "_id",
+      "type": "string",
+      "description": "The identifier of the topic",
+      "required": true
+    },
+    {
+      "name": "key",
+      "type": "string",
+      "description": "The unique key of the topic",
+      "required": true
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "The name of the topic",
+      "required": false
+    },
+    {
+      "name": "createdAt",
+      "type": "string",
+      "description": "The date the topic was created",
+      "required": false
+    },
+    {
+      "name": "updatedAt",
+      "type": "string",
+      "description": "The date the topic was last updated",
+      "required": false
+    }
+  ]
+}

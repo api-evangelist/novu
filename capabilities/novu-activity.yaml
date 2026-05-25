@@ -1,0 +1,94 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Novu API — Activity
+  description: 'Notifications — Activity. 1 operations. Lead operation: Track Provider Activity and Engagement Events. Self-contained Naftiko capability covering one Novu business surface.'
+  tags:
+  - Novu
+  - Notifications
+  - Activity
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    NOVU_API_KEY: NOVU_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: novu-activity
+    baseUri: https://api.novu.co
+    description: Novu REST API — Activity business capability. Self-contained, no shared references.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.NOVU_API_KEY}}'
+      placement: header
+    resources:
+    - name: v2-inbound-webhooks-delivery-providers-environmentid-integrationid
+      path: /v2/inbound-webhooks/delivery-providers/{environmentId}/{integrationId}
+      operations:
+      - name: InboundWebhooksController_handleWebhook
+        method: POST
+        description: Novu Track Provider Activity and Engagement Events
+        inputParameters:
+        - name: environmentId
+          in: path
+          type: string
+          required: true
+          description: The environment identifier
+        - name: integrationId
+          in: path
+          type: string
+          required: true
+          description: The integration identifier for the delivery provider
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: novu-activity-rest
+    port: 8080
+    description: REST adapter for Novu API — Activity. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v2/inbound-webhooks/delivery-providers/{environmentId}/{integrationId}
+      name: v2-inbound-webhooks-delivery-providers-environmentid-integrationid
+      description: REST surface for /v2/inbound-webhooks/delivery-providers/{environmentId}/{integrationId}.
+      operations:
+      - method: POST
+        name: InboundWebhooksController_handleWebhook
+        description: Novu Track Provider Activity and Engagement Events
+        call: novu-activity.InboundWebhooksController_handleWebhook
+        with:
+          environmentId: rest.environmentId
+          integrationId: rest.integrationId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: novu-activity-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Novu API — Activity. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: track-provider-activity-engagement-events
+      description: Novu Track Provider Activity and Engagement Events
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-activity.InboundWebhooksController_handleWebhook
+      with:
+        environmentId: tools.environmentId
+        integrationId: tools.integrationId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

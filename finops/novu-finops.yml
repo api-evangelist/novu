@@ -10,73 +10,124 @@ provider: Novu
 providerId: novu
 publisherName: Novu
 serviceCategory: API
-created: '2026-05-22'
-modified: '2026-05-22'
+serviceSubcategory: Notification Infrastructure
+created: '2026-05-25'
+modified: '2026-05-25'
 tags:
-- Notifications
-- Messaging
-- In-App
-- Email
-- SMS
-- Push
-- Chat
-- Workflows
-- Open Source
-- Subscribers
-- FinOps
-- Cost Management
-- FOCUS
-description: FinOps framework alignment for the Novu API surface. Provides a FOCUS-shaped mapping for cost allocation, usage
-  measurement, and unit-economics reporting.
+  - Novu
+  - Notifications
+  - FinOps
+  - Cost Management
+  - FOCUS
+  - Multi Channel
+description: >-
+  FinOps alignment for Novu Cloud. The chargeable unit is the workflow run; each plan ships an
+  included monthly quota and Pro/Team carry per-1K-runs overage at $1.20. Cost-per-notification
+  is dominated by the workflow run base rate plus any third-party provider costs (SendGrid,
+  Twilio, FCM, etc.) routed through your own integrations.
+
 principles:
-- name: Visibility
-  description: Make API consumption costs visible to engineering, product, and finance teams in near real-time.
-- name: Allocation
-  description: Tag every chargeable API call with the consuming team, environment, application, and feature so cost can be
-    allocated.
-- name: Optimization
-  description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce cost per useful unit
-    of work.
-- name: Accountability
-  description: Establish budget owners and chargeback / showback flows for each consuming team.
+  - name: Visibility
+    description: Surface workflow-run consumption per environment, workflow, and channel in near real-time using the Activity feed and the /v1/notifications endpoint.
+  - name: Allocation
+    description: Tag every trigger with subscriberId, tenant, and payload metadata so workflow-run cost can be attributed to product surface, team, and customer cohort.
+  - name: Optimization
+    description: Continuously evaluate workflow design (digest steps, topics for fan-out, channel selection) to lower workflow-run count and provider-side delivery cost.
+  - name: Accountability
+    description: Assign workflow owners and route overage alerts to the team that owns the consuming product surface.
+
 domains:
-- name: API Consumption
-  description: Per-call and per-quota usage charges across the Novu API surface.
-  costDrivers:
-  - request_volume
-  - tier_selection
-  - feature_use
-  focusMapping:
-    ChargeCategory: Usage
-    ChargeClass: Consumption
-    ServiceCategory: API
-    ServiceSubcategory: Provider API
+  - name: Workflow Runs
+    description: Per-run charge across every channel in a workflow. The pricing unit Novu meters.
+    costDrivers:
+      - trigger_volume
+      - broadcast_fan_out_size
+      - digest_window_efficiency
+      - retry_storms
+    focusMapping:
+      ChargeCategory: Usage
+      ChargeClass: Consumption
+      ServiceCategory: API
+      ServiceSubcategory: Notification Infrastructure
+      PricingUnit: workflow_run
+  - name: Channel Provider Pass-Through
+    description: Third-party costs (SendGrid emails, Twilio SMS, FCM push, Slack/MS Teams) billed directly by the channel provider you wire into Novu Integrations.
+    costDrivers:
+      - email_volume
+      - sms_volume_per_country
+      - push_volume
+    focusMapping:
+      ChargeCategory: Usage
+      ChargeClass: Consumption
+      ServiceCategory: Other
+      ServiceSubcategory: Channel Delivery
+  - name: Platform Capabilities
+    description: Capabilities billed at the plan level (RBAC, SSO, SCIM, HIPAA BAA, data residency).
+    focusMapping:
+      ChargeCategory: Subscription
+      ChargeClass: Commitment
+      ServiceCategory: API
+
+unitEconomics:
+  - name: Cost per Workflow Run
+    description: Plan list price divided by included runs, plus overage above quota.
+    formula: (planMonthlyPrice / includedRuns) + overageRunsAboveQuota * overageRatePer1k / 1000
+  - name: Cost per Subscriber Touch
+    description: Cost per delivered notification, accounting for fan-out across channels in a single workflow run.
+    formula: workflowRunCost / channelsPerWorkflow
+
 focusFields:
   required:
-  - BillingPeriodStart
-  - BillingPeriodEnd
-  - ChargeCategory
-  - ChargePeriodStart
-  - ChargePeriodEnd
-  - ProviderName
-  - PublisherName
-  - InvoiceIssuerName
-  - ServiceName
-  - ServiceCategory
-  - BilledCost
-  - EffectiveCost
-  - ListCost
-  - ContractedCost
-  - PricingCategory
-  - PricingUnit
-  - PricingQuantity
+    - BillingPeriodStart
+    - BillingPeriodEnd
+    - ChargeCategory
+    - ChargePeriodStart
+    - ChargePeriodEnd
+    - ProviderName
+    - PublisherName
+    - InvoiceIssuerName
+    - ServiceName
+    - ServiceCategory
+    - BilledCost
+    - EffectiveCost
+    - ListCost
+    - ContractedCost
+    - PricingCategory
+    - PricingUnit
+    - PricingQuantity
   recommended:
-  - SubAccountId
-  - SubAccountName
-  - ResourceId
-  - ResourceName
-  - ResourceType
-  - Region
-  - Tags
+    - SubAccountId
+    - SubAccountName
+    - ResourceId
+    - ResourceName
+    - ResourceType
+    - Region
+    - Tags
+
+allocationTags:
+  - environmentId
+  - workflowId
+  - tenantId
+  - subscriberCohort
+  - product_area
+
+guardrails:
+  - name: Per-environment Workflow-run Budget
+    description: Set an alert at 80% of the monthly included runs per environment.
+  - name: Overage Cap
+    description: Configure an automatic notification when per-1K overage charges exceed a defined dollar threshold.
+  - name: Digest Window Hygiene
+    description: Audit workflows that aggregate triggers into digest steps so high-frequency events don't bloat run counts.
+
 notes:
-- Reconcile the scaffolded mapping above against Novu's actual invoice / billing model.
+  - Pricing data points were last reconciled against novu.co/pricing on 2026-05-25.
+  - Channel provider costs (SendGrid, Twilio, FCM, Mailgun, Slack) flow through your own integration credentials and are NOT included in Novu's published per-run price.
+  - Enterprise contracts can negotiate region-specific data residency that affects egress and storage costs.
+
+references:
+  - name: Novu Pricing Page
+    url: https://novu.co/pricing
+  - name: FinOps Framework
+    url: https://www.finops.org/framework/
+  - name: FOCUS Specification v1.3
+    url: https://focus.finops.org/focus-specification/v1-3/

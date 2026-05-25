@@ -1,0 +1,757 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/novu/main/json-schema/novu-bulk-trigger-event-dto-schema.json",
+  "title": "BulkTriggerEventDto",
+  "description": "JSON Schema for Novu BulkTriggerEventDto.",
+  "type": "object",
+  "properties": {
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The trigger identifier of the workflow you wish to send. This identifier can be found on the workflow page.",
+            "example": "workflow_identifier",
+            "x-speakeasy-name-override": "workflowId"
+          },
+          "payload": {
+            "type": "object",
+            "description": "The payload object is used to pass additional custom information that could be \n    used to render the workflow, or perform routing rules based on it. \n      This data will also be available when fetching the notifications feed from the API to display certain parts of the UI.",
+            "additionalProperties": true,
+            "example": {
+              "comment_id": "string",
+              "post": {
+                "text": "string"
+              }
+            }
+          },
+          "overrides": {
+            "description": "This could be used to override provider specific configurations",
+            "example": {
+              "fcm": {
+                "data": {
+                  "key": "value"
+                }
+              }
+            },
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "steps": {
+                    "type": "object",
+                    "description": "This could be used to override provider specific configurations or layout at the step level",
+                    "example": {
+                      "email-step": {
+                        "providers": {
+                          "sendgrid": {
+                            "templateId": "1234567890"
+                          }
+                        },
+                        "layoutId": "step-specific-layout"
+                      }
+                    },
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "providers": {
+                          "type": "object",
+                          "description": "Passing the provider id and the provider specific configurations",
+                          "example": {
+                            "sendgrid": {
+                              "templateId": "1234567890"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "object",
+                            "additionalProperties": true
+                          }
+                        },
+                        "layoutId": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Override the or remove the layout for this specific step",
+                          "example": "welcome-email-layout"
+                        }
+                      }
+                    }
+                  },
+                  "channels": {
+                    "description": "Channel-specific overrides that apply to all steps of a particular channel type. Step-level overrides take precedence over channel-level overrides.",
+                    "example": {
+                      "email": {
+                        "layoutId": "promotional-layout-2024"
+                      }
+                    },
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "email": {
+                            "description": "Email channel specific overrides",
+                            "allOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "layoutId": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ],
+                                    "description": "Override or remove the layout for all email steps in the workflow",
+                                    "example": "promotional-layout-2024"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "providers": {
+                    "type": "object",
+                    "description": "Overrides the provider configuration for the entire workflow and all steps",
+                    "example": {
+                      "sendgrid": {
+                        "templateId": "1234567890"
+                      }
+                    },
+                    "additionalProperties": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "email": {
+                    "type": "object",
+                    "description": "Override the email provider specific configurations for the entire workflow",
+                    "deprecated": true,
+                    "additionalProperties": true
+                  },
+                  "push": {
+                    "type": "object",
+                    "description": "Override the push provider specific configurations for the entire workflow",
+                    "deprecated": true,
+                    "additionalProperties": true
+                  },
+                  "sms": {
+                    "type": "object",
+                    "description": "Override the sms provider specific configurations for the entire workflow",
+                    "deprecated": true,
+                    "additionalProperties": true
+                  },
+                  "chat": {
+                    "type": "object",
+                    "description": "Override the chat provider specific configurations for the entire workflow",
+                    "deprecated": true,
+                    "additionalProperties": true
+                  },
+                  "layoutIdentifier": {
+                    "type": "string",
+                    "description": "Override the layout identifier for the entire workflow",
+                    "deprecated": true
+                  },
+                  "severity": {
+                    "type": "string",
+                    "description": "Severity of the workflow",
+                    "enum": [
+                      "high",
+                      "medium",
+                      "low",
+                      "none"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "to": {
+            "description": "The recipients list of people who will receive the notification. Maximum number of recipients can be 100.",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "First name of the subscriber",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Last name of the subscriber",
+                          "example": "Doe"
+                        },
+                        "email": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Email address of the subscriber",
+                          "example": "john.doe@example.com"
+                        },
+                        "phone": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Phone number of the subscriber",
+                          "example": "+1234567890"
+                        },
+                        "avatar": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Avatar URL or identifier",
+                          "example": "https://example.com/avatar.jpg"
+                        },
+                        "locale": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Locale of the subscriber",
+                          "example": "en-US"
+                        },
+                        "timezone": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Timezone of the subscriber",
+                          "example": "America/New_York"
+                        },
+                        "data": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "description": "Additional custom data associated with the subscriber",
+                          "additionalProperties": true
+                        },
+                        "subscriberId": {
+                          "type": "string",
+                          "description": "The internal identifier you used to create this subscriber, usually correlates to the id the user in your systems",
+                          "minLength": 1
+                        },
+                        "channels": {
+                          "description": "An optional array of subscriber channels.",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "providerId": {
+                                "type": "string",
+                                "description": "The ID of the chat or push provider.",
+                                "enum": [
+                                  "slack",
+                                  "discord",
+                                  "msteams",
+                                  "mattermost",
+                                  "ryver",
+                                  "zulip",
+                                  "grafana-on-call",
+                                  "getstream",
+                                  "rocket-chat",
+                                  "whatsapp-business",
+                                  "chat-webhook",
+                                  "novu-slack",
+                                  "telegram",
+                                  "fcm",
+                                  "apns",
+                                  "expo",
+                                  "one-signal",
+                                  "pushpad",
+                                  "push-webhook",
+                                  "pusher-beams",
+                                  "appio"
+                                ]
+                              },
+                              "integrationIdentifier": {
+                                "type": "string",
+                                "description": "An optional identifier for the integration."
+                              },
+                              "credentials": {
+                                "description": "Credentials for the channel.",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "webhookUrl": {
+                                        "type": "string",
+                                        "description": "The URL for the webhook associated with the channel."
+                                      },
+                                      "deviceTokens": {
+                                        "description": "An array of device tokens for push notifications.",
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "providerId",
+                              "credentials"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "subscriberId"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "topicKey": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "Subscriber",
+                            "Topic"
+                          ]
+                        },
+                        "exclude": {
+                          "description": "Optional array of subscriber IDs to exclude from the topic trigger",
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "topicKey",
+                        "type"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Unique identifier of a subscriber in your systems",
+                      "example": "SUBSCRIBER_ID"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier of a subscriber in your systems",
+                "example": "SUBSCRIBER_ID"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "First name of the subscriber",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Last name of the subscriber",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Email address of the subscriber",
+                    "example": "john.doe@example.com"
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Phone number of the subscriber",
+                    "example": "+1234567890"
+                  },
+                  "avatar": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Avatar URL or identifier",
+                    "example": "https://example.com/avatar.jpg"
+                  },
+                  "locale": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Locale of the subscriber",
+                    "example": "en-US"
+                  },
+                  "timezone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Timezone of the subscriber",
+                    "example": "America/New_York"
+                  },
+                  "data": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "description": "Additional custom data associated with the subscriber",
+                    "additionalProperties": true
+                  },
+                  "subscriberId": {
+                    "type": "string",
+                    "description": "The internal identifier you used to create this subscriber, usually correlates to the id the user in your systems",
+                    "minLength": 1
+                  },
+                  "channels": {
+                    "description": "An optional array of subscriber channels.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "providerId": {
+                          "type": "string",
+                          "description": "The ID of the chat or push provider.",
+                          "enum": [
+                            "slack",
+                            "discord",
+                            "msteams",
+                            "mattermost",
+                            "ryver",
+                            "zulip",
+                            "grafana-on-call",
+                            "getstream",
+                            "rocket-chat",
+                            "whatsapp-business",
+                            "chat-webhook",
+                            "novu-slack",
+                            "telegram",
+                            "fcm",
+                            "apns",
+                            "expo",
+                            "one-signal",
+                            "pushpad",
+                            "push-webhook",
+                            "pusher-beams",
+                            "appio"
+                          ]
+                        },
+                        "integrationIdentifier": {
+                          "type": "string",
+                          "description": "An optional identifier for the integration."
+                        },
+                        "credentials": {
+                          "description": "Credentials for the channel.",
+                          "allOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "webhookUrl": {
+                                  "type": "string",
+                                  "description": "The URL for the webhook associated with the channel."
+                                },
+                                "deviceTokens": {
+                                  "description": "An array of device tokens for push notifications.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "providerId",
+                        "credentials"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "subscriberId"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "topicKey": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Subscriber",
+                      "Topic"
+                    ]
+                  },
+                  "exclude": {
+                    "description": "Optional array of subscriber IDs to exclude from the topic trigger",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "topicKey",
+                  "type"
+                ]
+              }
+            ]
+          },
+          "transactionId": {
+            "type": "string",
+            "description": "A unique identifier for deduplication. If the same **transactionId** is sent again, \n      the trigger is ignored. Useful to prevent duplicate notifications. The retention period depends on your billing tier."
+          },
+          "actor": {
+            "description": "It is used to display the Avatar of the provided actor's subscriber id or actor object.\n    If a new actor object is provided, we will create a new subscriber in our system",
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Unique identifier of a subscriber in your systems"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "First name of the subscriber",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Last name of the subscriber",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Email address of the subscriber",
+                    "example": "john.doe@example.com"
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Phone number of the subscriber",
+                    "example": "+1234567890"
+                  },
+                  "avatar": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Avatar URL or identifier",
+                    "example": "https://example.com/avatar.jpg"
+                  },
+                  "locale": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Locale of the subscriber",
+                    "example": "en-US"
+                  },
+                  "timezone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Timezone of the subscriber",
+                    "example": "America/New_York"
+                  },
+                  "data": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "description": "Additional custom data associated with the subscriber",
+                    "additionalProperties": true
+                  },
+                  "subscriberId": {
+                    "type": "string",
+                    "description": "The internal identifier you used to create this subscriber, usually correlates to the id the user in your systems",
+                    "minLength": 1
+                  },
+                  "channels": {
+                    "description": "An optional array of subscriber channels.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "providerId": {
+                          "type": "string",
+                          "description": "The ID of the chat or push provider.",
+                          "enum": [
+                            "slack",
+                            "discord",
+                            "msteams",
+                            "mattermost",
+                            "ryver",
+                            "zulip",
+                            "grafana-on-call",
+                            "getstream",
+                            "rocket-chat",
+                            "whatsapp-business",
+                            "chat-webhook",
+                            "novu-slack",
+                            "telegram",
+                            "fcm",
+                            "apns",
+                            "expo",
+                            "one-signal",
+                            "pushpad",
+                            "push-webhook",
+                            "pusher-beams",
+                            "appio"
+                          ]
+                        },
+                        "integrationIdentifier": {
+                          "type": "string",
+                          "description": "An optional identifier for the integration."
+                        },
+                        "credentials": {
+                          "description": "Credentials for the channel.",
+                          "allOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "webhookUrl": {
+                                  "type": "string",
+                                  "description": "The URL for the webhook associated with the channel."
+                                },
+                                "deviceTokens": {
+                                  "description": "An array of device tokens for push notifications.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "providerId",
+                        "credentials"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "subscriberId"
+                ]
+              }
+            ]
+          },
+          "tenant": {
+            "description": "It is used to specify a tenant context during trigger event.\n    Existing tenants will be updated with the provided details.",
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Unique identifier of a tenant in your system"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "identifier": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "object"
+                  }
+                }
+              }
+            ]
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "description": "Simple context id",
+                  "example": "org-acme"
+                },
+                {
+                  "type": "object",
+                  "description": "Rich context object with id and optional data",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "org-acme"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Optional additional context data",
+                      "additionalProperties": true,
+                      "example": {
+                        "name": "Acme Corp",
+                        "region": "us-east-1"
+                      }
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "name",
+          "to"
+        ]
+      }
+    }
+  },
+  "required": [
+    "events"
+  ]
+}

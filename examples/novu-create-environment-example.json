@@ -1,0 +1,5 @@
+{
+  "name": "Staging",
+  "color": "#FFB300",
+  "parentId": "env_production"
+}

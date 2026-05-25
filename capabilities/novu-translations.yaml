@@ -1,0 +1,444 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Novu API — Translations
+  description: 'Notifications — Translations. 9 operations. Lead operation: Upload Translation Files. Self-contained Naftiko capability covering one Novu business surface.'
+  tags:
+  - Novu
+  - Notifications
+  - Translations
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    NOVU_API_KEY: NOVU_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: novu-translations
+    baseUri: https://api.novu.co
+    description: Novu REST API — Translations business capability. Self-contained, no shared references.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.NOVU_API_KEY}}'
+      placement: header
+    resources:
+    - name: v2-translations-upload
+      path: /v2/translations/upload
+      operations:
+      - name: TranslationController_uploadTranslationFiles
+        method: POST
+        description: Novu Upload Translation Files
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-translations
+      path: /v2/translations
+      operations:
+      - name: TranslationController_createTranslationEndpoint
+        method: POST
+        description: Novu Create a Translation
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-translations-master-json
+      path: /v2/translations/master-json
+      operations:
+      - name: TranslationController_getMasterJsonEndpoint
+        method: GET
+        description: Novu Retrieve Master Translations JSON
+        inputParameters:
+        - name: locale
+          in: query
+          type: string
+          required: false
+          description: Locale to export. If not provided, exports organization default locale
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: TranslationController_importMasterJsonEndpoint
+        method: POST
+        description: Novu Import Master Translations JSON
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-translations-master-json-upload
+      path: /v2/translations/master-json/upload
+      operations:
+      - name: TranslationController_uploadMasterJsonEndpoint
+        method: POST
+        description: Novu Upload Master Translations JSON File
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request body payload
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-translations-group-resourcetype-resourceid
+      path: /v2/translations/group/{resourceType}/{resourceId}
+      operations:
+      - name: TranslationController_getTranslationGroupEndpoint
+        method: GET
+        description: Novu Retrieve a Translation Group
+        inputParameters:
+        - name: resourceType
+          in: path
+          type: string
+          required: true
+          description: Resource type
+        - name: resourceId
+          in: path
+          type: string
+          required: true
+          description: Resource ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-translations-resourcetype-resourceid-locale
+      path: /v2/translations/{resourceType}/{resourceId}/{locale}
+      operations:
+      - name: TranslationController_getSingleTranslation
+        method: GET
+        description: Novu Retrieve a Translation
+        inputParameters:
+        - name: resourceType
+          in: path
+          type: string
+          required: true
+          description: Resource type
+        - name: resourceId
+          in: path
+          type: string
+          required: true
+          description: Resource ID
+        - name: locale
+          in: path
+          type: string
+          required: true
+          description: Locale code
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: TranslationController_deleteTranslationEndpoint
+        method: DELETE
+        description: Novu Delete a Translation
+        inputParameters:
+        - name: resourceType
+          in: path
+          type: string
+          required: true
+          description: Resource type
+        - name: resourceId
+          in: path
+          type: string
+          required: true
+          description: Resource ID
+        - name: locale
+          in: path
+          type: string
+          required: true
+          description: Locale code
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-translations-resourcetype-resourceid
+      path: /v2/translations/{resourceType}/{resourceId}
+      operations:
+      - name: TranslationController_deleteTranslationGroupEndpoint
+        method: DELETE
+        description: Novu Delete a Translation Group
+        inputParameters:
+        - name: resourceType
+          in: path
+          type: string
+          required: true
+          description: Resource type
+        - name: resourceId
+          in: path
+          type: string
+          required: true
+          description: Resource ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: novu-translations-rest
+    port: 8080
+    description: REST adapter for Novu API — Translations. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v2/translations/upload
+      name: v2-translations-upload
+      description: REST surface for /v2/translations/upload.
+      operations:
+      - method: POST
+        name: TranslationController_uploadTranslationFiles
+        description: Novu Upload Translation Files
+        call: novu-translations.TranslationController_uploadTranslationFiles
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/translations
+      name: v2-translations
+      description: REST surface for /v2/translations.
+      operations:
+      - method: POST
+        name: TranslationController_createTranslationEndpoint
+        description: Novu Create a Translation
+        call: novu-translations.TranslationController_createTranslationEndpoint
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/translations/master-json
+      name: v2-translations-master-json
+      description: REST surface for /v2/translations/master-json.
+      operations:
+      - method: GET
+        name: TranslationController_getMasterJsonEndpoint
+        description: Novu Retrieve Master Translations JSON
+        call: novu-translations.TranslationController_getMasterJsonEndpoint
+        with:
+          locale: rest.locale
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: TranslationController_importMasterJsonEndpoint
+        description: Novu Import Master Translations JSON
+        call: novu-translations.TranslationController_importMasterJsonEndpoint
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/translations/master-json/upload
+      name: v2-translations-master-json-upload
+      description: REST surface for /v2/translations/master-json/upload.
+      operations:
+      - method: POST
+        name: TranslationController_uploadMasterJsonEndpoint
+        description: Novu Upload Master Translations JSON File
+        call: novu-translations.TranslationController_uploadMasterJsonEndpoint
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/translations/group/{resourceType}/{resourceId}
+      name: v2-translations-group-resourcetype-resourceid
+      description: REST surface for /v2/translations/group/{resourceType}/{resourceId}.
+      operations:
+      - method: GET
+        name: TranslationController_getTranslationGroupEndpoint
+        description: Novu Retrieve a Translation Group
+        call: novu-translations.TranslationController_getTranslationGroupEndpoint
+        with:
+          resourceType: rest.resourceType
+          resourceId: rest.resourceId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/translations/{resourceType}/{resourceId}/{locale}
+      name: v2-translations-resourcetype-resourceid-locale
+      description: REST surface for /v2/translations/{resourceType}/{resourceId}/{locale}.
+      operations:
+      - method: GET
+        name: TranslationController_getSingleTranslation
+        description: Novu Retrieve a Translation
+        call: novu-translations.TranslationController_getSingleTranslation
+        with:
+          resourceType: rest.resourceType
+          resourceId: rest.resourceId
+          locale: rest.locale
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: TranslationController_deleteTranslationEndpoint
+        description: Novu Delete a Translation
+        call: novu-translations.TranslationController_deleteTranslationEndpoint
+        with:
+          resourceType: rest.resourceType
+          resourceId: rest.resourceId
+          locale: rest.locale
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/translations/{resourceType}/{resourceId}
+      name: v2-translations-resourcetype-resourceid
+      description: REST surface for /v2/translations/{resourceType}/{resourceId}.
+      operations:
+      - method: DELETE
+        name: TranslationController_deleteTranslationGroupEndpoint
+        description: Novu Delete a Translation Group
+        call: novu-translations.TranslationController_deleteTranslationGroupEndpoint
+        with:
+          resourceType: rest.resourceType
+          resourceId: rest.resourceId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: novu-translations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Novu API — Translations. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: upload-translation-files
+      description: Novu Upload Translation Files
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-translations.TranslationController_uploadTranslationFiles
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-translation
+      description: Novu Create a Translation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-translations.TranslationController_createTranslationEndpoint
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-master-translations-json
+      description: Novu Retrieve Master Translations JSON
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-translations.TranslationController_getMasterJsonEndpoint
+      with:
+        locale: tools.locale
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: import-master-translations-json
+      description: Novu Import Master Translations JSON
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-translations.TranslationController_importMasterJsonEndpoint
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: upload-master-translations-json-file
+      description: Novu Upload Master Translations JSON File
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: novu-translations.TranslationController_uploadMasterJsonEndpoint
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-translation-group
+      description: Novu Retrieve a Translation Group
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-translations.TranslationController_getTranslationGroupEndpoint
+      with:
+        resourceType: tools.resourceType
+        resourceId: tools.resourceId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-translation
+      description: Novu Retrieve a Translation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: novu-translations.TranslationController_getSingleTranslation
+      with:
+        resourceType: tools.resourceType
+        resourceId: tools.resourceId
+        locale: tools.locale
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-translation
+      description: Novu Delete a Translation
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: novu-translations.TranslationController_deleteTranslationEndpoint
+      with:
+        resourceType: tools.resourceType
+        resourceId: tools.resourceId
+        locale: tools.locale
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-translation-group
+      description: Novu Delete a Translation Group
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: novu-translations.TranslationController_deleteTranslationGroupEndpoint
+      with:
+        resourceType: tools.resourceType
+        resourceId: tools.resourceId
+      outputParameters:
+      - type: object
+        mapping: $.

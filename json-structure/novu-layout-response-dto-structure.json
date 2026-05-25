@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-structure.org/v0.1/schema",
+  "name": "LayoutResponseDto",
+  "description": "JSON Schema for Novu LayoutResponseDto.",
+  "sourceFormat": "OpenAPI 3.x components.schemas",
+  "fields": [
+    {
+      "name": "_id",
+      "type": "string",
+      "description": "Unique internal identifier of the layout",
+      "required": true
+    },
+    {
+      "name": "layoutId",
+      "type": "string",
+      "description": "Unique identifier for the layout",
+      "required": true
+    },
+    {
+      "name": "slug",
+      "type": "string",
+      "description": "Slug of the layout",
+      "required": true
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Name of the layout",
+      "required": true
+    },
+    {
+      "name": "isDefault",
+      "type": "boolean",
+      "description": "Whether the layout is the default layout",
+      "required": true
+    },
+    {
+      "name": "isTranslationEnabled",
+      "type": "boolean",
+      "description": "Whether the layout translations are enabled",
+      "required": true
+    },
+    {
+      "name": "updatedAt",
+      "type": "string",
+      "description": "Last updated timestamp",
+      "required": true
+    },
+    {
+      "name": "updatedBy",
+      "type": "object",
+      "description": "User who last updated the layout",
+      "required": false
+    },
+    {
+      "name": "createdAt",
+      "type": "string",
+      "description": "Creation timestamp",
+      "required": true
+    },
+    {
+      "name": "origin",
+      "type": "string",
+      "description": "Origin of the layout",
+      "required": true
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "description": "Type of the layout",
+      "required": true
+    },
+    {
+      "name": "variables",
+      "type": "object",
+      "description": "The variables JSON Schema for the layout",
+      "required": false
+    },
+    {
+      "name": "controls",
+      "type": "object",
+      "description": "Controls metadata for the layout",
+      "required": true
+    }
+  ]
+}

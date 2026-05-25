@@ -1,23 +1,26 @@
 aid: novu
 name: Novu
 description: >-
-  Novu is an open-source notifications infrastructure that lets developers
-  design, send, and manage multi-channel notifications (in-app, email, SMS,
-  push, chat) through a single REST API and workflow engine. It ships with
-  language SDKs, an Inbox React component, a CLI, and integrations with
-  channel providers like SendGrid, Twilio, Mailgun, Firebase Cloud Messaging,
-  Slack, Discord, and more.
+  Novu is the open-source notification infrastructure for developers. A single
+  REST API and workflow engine route a triggered event across in-app inbox,
+  email, SMS, push, chat (Slack / Discord / MS Teams / WhatsApp) and custom
+  channels — with subscriber preferences, topics, digest, snooze, and full
+  workflow orchestration on top. Ships with the embeddable React Inbox
+  component, the Novu Framework for code-first workflow authoring,
+  language SDKs for nine ecosystems, a Postman collection, an MCP server,
+  GitHub Action sync, the Maily block-based email editor, framework
+  starters for Next.js / Remix / Nuxt / SvelteKit, and webhook bridges
+  for Stripe / Clerk / Segment.
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml
 created: '2026-05-23'
-modified: '2026-05-23'
+modified: '2026-05-25'
 specificationVersion: '0.19'
 tags:
   - Notifications
   - Messaging
-  - In-App
+  - In App
   - Email
   - SMS
   - Push
@@ -25,17 +28,27 @@ tags:
   - Workflows
   - Open Source
   - Subscribers
+  - Topics
+  - Inbox
+  - Workflow Orchestration
+  - Multi Channel
+  - Digest
+  - MCP
+  - Framework
+  - React
 apis:
   - aid: novu:rest-api
     name: Novu REST API
     description: >-
-      Server-side REST API for triggering notification events, managing
-      subscribers, workflows (notification templates), topics, environments,
-      integrations, layouts, feeds, messages, tenants, and notification
-      preferences. Authenticated with an ApiKey header and exposed via a
-      published OpenAPI/Swagger document.
+      Server-side REST API exposing 135 operations across Events, Subscribers,
+      Workflows, Topics, Integrations, Layouts, Messages, Notifications,
+      Environments, Environment Variables, Domains, Channel Connections,
+      Channel Endpoints, Translations, Activity, and Contexts. Authenticated
+      with an ApiKey scheme delivered in the Authorization header. Honors
+      IETF RateLimit-* headers, Idempotency-Key, and a published OpenAPI 3
+      document available at /openapi.json on every region.
     humanURL: https://docs.novu.co/api-reference/overview
-    baseURL: https://api.novu.co/v1
+    baseURL: https://api.novu.co
     tags:
       - REST
       - Events
@@ -45,23 +58,183 @@ apis:
       - Integrations
       - Messages
       - Notifications
+      - Environments
+      - Domains
+      - Idempotency
+      - Rate Limits
     properties:
       - type: Documentation
         url: https://docs.novu.co/api-reference/overview
-      - type: Swagger
-        url: https://api.novu.co/api
+      - type: APIReference
+        url: https://docs.novu.co/api-reference/overview
+      - type: OpenAPI
+        url: openapi/novu-openapi.yml
       - type: OpenAPI
         url: https://api.novu.co/openapi.json
+        title: Live OpenAPI 3 spec
+      - type: Swagger
+        url: https://api.novu.co/api
+      - type: Postman
+        url: https://github.com/novuhq/novu-postman
       - type: Authentication
         url: https://docs.novu.co/api-reference/overview#authentication
+      - type: RateLimits
+        url: rate-limits/novu-rate-limits.yml
+      - type: Quickstart
+        url: https://docs.novu.co/platform/quickstart/nextjs
+      - type: SDK
+        url: https://www.npmjs.com/package/@novu/api
+        title: TypeScript / Node.js SDK
+      - type: SDK
+        url: https://pypi.org/project/novu-py/
+        title: Python SDK
+      - type: SDK
+        url: https://github.com/novuhq/novu-go
+        title: Go SDK
+      - type: SDK
+        url: https://github.com/novuhq/php-novu
+        title: PHP SDK
+      - type: SDK
+        url: https://github.com/novuhq/novu-csharp
+        title: C# SDK
+      - type: SDK
+        url: https://github.com/novuhq/novu-java
+        title: Java SDK
+      - type: SDK
+        url: https://github.com/novuhq/novu-elixir
+        title: Elixir SDK
+      - type: SDK
+        url: https://github.com/novuhq/novu-kotlin
+        title: Kotlin SDK
+      - type: SDK
+        url: https://github.com/novuhq/novu-ruby
+        title: Ruby SDK
+      - type: SDK
+        url: https://github.com/novuhq/novu-rust
+        title: Rust SDK
+      - type: SDK
+        url: https://github.com/novuhq/novu-dotnet
+        title: .NET SDK
+      - type: CodeExamples
+        url: https://github.com/novuhq/examples
+      - type: NaftikoCapability
+        url: capabilities/novu-events.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-subscribers.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-workflows.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-topics.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-integrations.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-environments.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-environment-variables.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-messages.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-notifications.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-layouts.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-translations.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-domains.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-channel-connections.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-channel-endpoints.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-activity.yaml
+      - type: NaftikoCapability
+        url: capabilities/novu-contexts.yaml
+      - type: JSONSchema
+        url: json-schema/novu-trigger-event-request-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-trigger-event-response-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-bulk-trigger-event-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-subscriber-response-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-create-subscriber-request-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-create-environment-request-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-update-environment-request-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-environment-response-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-topic-response-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-create-integration-request-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-update-integration-request-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-integration-response-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-message-response-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-create-workflow-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-update-workflow-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-workflow-response-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-layout-response-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-subscriber-payload-dto-schema.json
+      - type: JSONSchema
+        url: json-schema/novu-error-dto-schema.json
+      - type: JSONStructure
+        url: json-structure/novu-trigger-event-request-dto-structure.json
+      - type: JSONStructure
+        url: json-structure/novu-subscriber-response-dto-structure.json
+      - type: JSONStructure
+        url: json-structure/novu-workflow-response-dto-structure.json
+      - type: JSONStructure
+        url: json-structure/novu-message-response-dto-structure.json
+      - type: JSONStructure
+        url: json-structure/novu-topic-response-dto-structure.json
+      - type: JSONStructure
+        url: json-structure/novu-integration-response-dto-structure.json
+      - type: Example
+        url: examples/novu-trigger-event-example.json
+      - type: Example
+        url: examples/novu-trigger-event-bulk-example.json
+      - type: Example
+        url: examples/novu-broadcast-event-example.json
+      - type: Example
+        url: examples/novu-create-subscriber-example.json
+      - type: Example
+        url: examples/novu-bulk-create-subscribers-example.json
+      - type: Example
+        url: examples/novu-create-topic-example.json
+      - type: Example
+        url: examples/novu-add-subscribers-to-topic-example.json
+      - type: Example
+        url: examples/novu-create-environment-example.json
+      - type: Example
+        url: examples/novu-create-integration-example.json
+      - type: Example
+        url: examples/novu-workflow-response-example.json
+      - type: Example
+        url: examples/novu-list-messages-example.json
+      - type: Example
+        url: examples/novu-error-response-example.json
   - aid: novu:rest-api-eu
     name: Novu REST API (EU Region)
     description: >-
       EU-hosted instance of the Novu REST API for customers requiring data
-      residency in the European Union. Exposes the same endpoints, schema, and
-      authentication as the global instance.
+      residency in the European Union. Exposes the same 135 operations,
+      schemas, security, and rate-limit policy as the global instance.
+      Enterprise data residency can extend to UK, Singapore, Australia,
+      Japan, and South Korea.
     humanURL: https://docs.novu.co/api-reference/overview
-    baseURL: https://eu.api.novu.co/v1
+    baseURL: https://eu.api.novu.co
     tags:
       - REST
       - EU
@@ -69,24 +242,122 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.novu.co/api-reference/overview
+      - type: OpenAPI
+        url: openapi/novu-openapi.yml
+      - type: Authentication
+        url: https://docs.novu.co/api-reference/overview#authentication
+      - type: RateLimits
+        url: rate-limits/novu-rate-limits.yml
   - aid: novu:inbox-api
     name: Novu Inbox / In-App API
     description: >-
       Client-side API and React Inbox component for rendering an embedded
-      in-app notification center, marking notifications as read, archiving,
-      and managing user notification preferences in the browser.
-    humanURL: https://docs.novu.co/inbox/introduction
-    baseURL: https://api.novu.co/v1
+      in-app notification center, marking notifications as read / archived
+      / snoozed, and managing per-user notification preferences directly
+      in the browser. Ships with @novu/react, @novu/react-native, and
+      @novu/js (vanilla) packages, plus pre-built Notion / Linear / Novu
+      themes and full headless API access.
+    humanURL: https://docs.novu.co/platform/inbox/overview
+    baseURL: https://api.novu.co
     tags:
-      - In-App
+      - In App
       - Inbox
       - React
+      - React Native
       - Client SDK
+      - Headless
     properties:
       - type: Documentation
-        url: https://docs.novu.co/inbox/introduction
+        url: https://docs.novu.co/platform/inbox/overview
+      - type: Quickstart
+        url: https://docs.novu.co/platform/quickstart/react
       - type: SDK
         url: https://www.npmjs.com/package/@novu/react
+        title: React Inbox SDK
+      - type: SDK
+        url: https://www.npmjs.com/package/@novu/react-native
+        title: React Native Inbox SDK
+      - type: SDK
+        url: https://www.npmjs.com/package/@novu/js
+        title: Headless JS Inbox SDK
+      - type: SDK
+        url: https://www.npmjs.com/package/@novu/nextjs
+        title: Next.js Inbox helpers
+      - type: CodeExamples
+        url: https://github.com/novuhq/inbox-playground
+        title: Inbox Playground
+  - aid: novu:framework
+    name: Novu Framework (Code-First Workflows)
+    description: >-
+      Code-first workflow framework that lets developers define notification
+      workflows in TypeScript / JavaScript using `@novu/framework`, then
+      sync them to Novu Cloud (or a self-hosted instance) via the
+      `npx novu-sync` CLI or the `novuhq/actions-novu-sync` GitHub Action.
+      Supports Express, Next.js, NestJS, Remix, SvelteKit, Nuxt, H3, AWS
+      Lambda, and any node-runtime HTTP handler. The framework owns the
+      workflow source-of-truth — the Dashboard editor stays in sync via
+      a deterministic bridge URL.
+    humanURL: https://docs.novu.co/framework/overview
+    baseURL: https://docs.novu.co/framework
+    tags:
+      - Framework
+      - Code First
+      - Workflows
+      - TypeScript
+      - Next.js
+      - Express
+      - NestJS
+      - Remix
+      - SvelteKit
+      - Nuxt
+      - AWS Lambda
+    properties:
+      - type: Documentation
+        url: https://docs.novu.co/framework/overview
+      - type: Quickstart
+        url: https://docs.novu.co/framework/quickstart/nextjs
+      - type: SDK
+        url: https://www.npmjs.com/package/@novu/framework
+        title: '@novu/framework'
+      - type: CLI
+        url: https://www.npmjs.com/package/novu
+        title: 'npx novu-sync'
+      - type: CodeExamples
+        url: https://github.com/novuhq/novu-framework-nextjs-react-email-example
+        title: Next.js + React Email
+      - type: CodeExamples
+        url: https://github.com/novuhq/novu-framework-remix-example
+        title: Remix
+      - type: CodeExamples
+        url: https://github.com/novuhq/novu-framework-nuxt-example
+        title: Nuxt
+      - type: CodeExamples
+        url: https://github.com/novuhq/novu-framework-nuxt-vue-email-example
+        title: Nuxt + VueEmail
+      - type: CodeExamples
+        url: https://github.com/novuhq/novu-framework-newsletter-app-example
+        title: Newsletter App
+  - aid: novu:mcp-server
+    name: Novu MCP Server
+    description: >-
+      Official Model Context Protocol server exposing the Novu REST API
+      surface as MCP tools so AI agents (Claude Desktop, Cursor, agent
+      frameworks) can trigger workflows, manage subscribers, list workflows,
+      and inspect activity without bespoke wrapping. Distributed as a
+      stdio server runnable via `npx @novu/mcp-server`.
+    humanURL: https://github.com/novuhq/novu-mcp-server
+    baseURL: https://github.com/novuhq/novu-mcp-server
+    tags:
+      - MCP
+      - AI Agents
+      - LLM
+      - Tools
+      - Notifications
+    properties:
+      - type: Documentation
+        url: https://github.com/novuhq/novu-mcp-server
+      - type: SourceCode
+        url: https://github.com/novuhq/novu-mcp-server
 common:
   - type: Website
     url: https://novu.co
@@ -100,18 +371,43 @@ common:
     url: https://web.novu.co
   - type: Pricing
     url: https://novu.co/pricing
+  - type: Plans
+    url: plans/novu-plans-pricing.yml
+  - type: FinOps
+    url: finops/novu-finops.yml
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
   - type: Blog
     url: https://novu.co/blog
   - type: GitHub
+    url: https://github.com/novuhq
+  - type: GitHubOrganization
+    url: https://github.com/novuhq
+  - type: GitHubRepository
     url: https://github.com/novuhq/novu
+    title: novuhq/novu (main monorepo, 39k+ stars)
+  - type: SourceCode
+    url: https://github.com/novuhq/novu
+  - type: License
+    url: https://github.com/novuhq/novu/blob/next/LICENSE
+    title: MIT License
   - type: SDK
     url: https://docs.novu.co/sdks/introduction
   - type: CLI
     url: https://docs.novu.co/community/run-in-local-machine
+    title: Novu CLI
+  - type: Framework
+    url: https://docs.novu.co/framework/overview
+    title: Novu Framework
+  - type: Inbox
+    url: https://docs.novu.co/platform/inbox/overview
+    title: Novu Inbox
   - type: Integrations
     url: https://docs.novu.co/platform/integrations
   - type: ChangeLog
     url: https://novu.co/changelog
+  - type: ReleaseNotes
+    url: https://github.com/novuhq/novu/releases
   - type: StatusPage
     url: https://status.novu.co
   - type: TermsOfService
@@ -120,8 +416,152 @@ common:
     url: https://novu.co/privacy
   - type: Community
     url: https://discord.gg/novu
+    title: Novu Discord
+  - type: StackOverflow
+    url: https://stackoverflow.com/questions/tagged/novu
+  - type: YouTube
+    url: https://www.youtube.com/@novuhq
   - type: LLMsTxt
     url: https://docs.novu.co/llms.txt
+  - type: SpectralRules
+    url: rules/novu-spectral-rules.yml
+  - type: Vocabulary
+    url: vocabulary/novu-vocabulary.yml
+  - type: JSON-LD
+    url: json-ld/novu-context.jsonld
+  - type: Tools
+    url: https://github.com/novuhq/novu-mcp-server
+    title: Novu MCP Server
+  - type: Tools
+    url: https://github.com/novuhq/maily.to
+    title: Maily — block-based email editor (used by Novu Cloud)
+  - type: Tools
+    url: https://github.com/novuhq/actions-novu-sync
+    title: actions-novu-sync — GitHub Action to sync workflows to Novu Cloud
+  - type: Tools
+    url: https://github.com/novuhq/stripe-to-novu-webhooks
+    title: Stripe → Novu webhook bridge
+  - type: Tools
+    url: https://github.com/novuhq/clerk-to-novu-webhooks
+    title: Clerk → Novu webhook bridge
+  - type: Tools
+    url: https://github.com/novuhq/segment-to-novu-webhooks
+    title: Segment → Novu webhook bridge
+  - type: Tools
+    url: https://github.com/novuhq/community-k8s
+    title: Community Kubernetes manifests for self-hosting
+  - type: Tutorials
+    url: https://github.com/novuhq/inbox-playground
+    title: Inbox Playground
+  - type: Tutorials
+    url: https://github.com/novuhq/examples
+    title: Novu Examples
+  - type: Tutorials
+    url: https://github.com/novuhq/awesome-novu
+    title: Awesome Novu
+  - type: Tutorials
+    url: https://docs.novu.co/guides
+  - type: Skills
+    url: https://github.com/novuhq/skills
+    title: Novu Skill Set for AI Agents
+  - data:
+      - name: Multi-channel Workflow Orchestration
+        description: Author a single workflow tree that fans out across in-app, email, SMS, push, and chat with branching, delay, and digest steps.
+      - name: Embedded React Inbox
+        description: Drop-in <Inbox /> React (and React Native) component with per-user preferences, read / archive / snooze, themes (Novu / Notion / Linear), and full headless API access.
+      - name: Subscriber Identity
+        description: First-class Subscribers resource with credentials per channel, locale, timezone, preferences, and bulk import.
+      - name: Topics for Fan-out
+        description: Named broadcast groups subscribed by users for one-call fan-out to thousands of subscribers.
+      - name: Digest Engine
+        description: Aggregate high-frequency triggers into a single delivery using configurable digest windows and back-off keys.
+      - name: Code-First Framework
+        description: Define workflows in TypeScript using @novu/framework and sync to Novu Cloud via novu-sync or a GitHub Action.
+      - name: Block-Based Email Editor
+        description: WYSIWYG block-based editor (open-sourced as Maily.to) powered by React Email under the hood.
+      - name: Tenant / Context Objects
+        description: Reusable tenant and organization context objects referenced by trigger payloads for multi-tenant routing.
+      - name: Idempotency + RateLimit Headers
+        description: IETF-style RateLimit-* headers on every response, Idempotency-Key on every mutating request.
+      - name: MCP Server
+        description: Official Model Context Protocol server exposing the Novu REST API to AI agents.
+      - name: Self-Hosting
+        description: Apache-/MIT-licensed monorepo with Docker Compose and community Kubernetes manifests for fully self-hosted deployments.
+      - name: 9 Language SDKs
+        description: TypeScript, Python, Go, PHP, C#, Java, Elixir, Kotlin, Ruby, Rust, .NET clients.
+    type: Features
+  - data:
+      - name: Product Onboarding
+        description: Welcome sequences combining transactional email, in-app inbox messages, and reminders.
+      - name: Transactional Notifications
+        description: Order confirmations, password resets, magic links, payment receipts, and shipping updates.
+      - name: Real-Time Collaboration Alerts
+        description: Comment mentions, document shares, and review requests delivered to the in-app inbox and email.
+      - name: Subscription Lifecycle
+        description: Trial reminders, renewal warnings, dunning, and cancellation flows driven by billing events.
+      - name: Authentication Events
+        description: Sign-up confirmations, MFA prompts, suspicious-login alerts, and OTP codes.
+      - name: Marketing Broadcasts
+        description: Product announcements and weekly digests fanned out via topics.
+      - name: Operational Alerts
+        description: On-call paging, deploy notifications, and incident updates routed through Slack / MS Teams.
+      - name: Multi-Tenant SaaS
+        description: Per-customer routing using tenant context and subscriber data inheritance.
+      - name: AI Agent Notifications
+        description: Agent workflows triggering Novu via the MCP server to keep humans in the loop.
+    type: UseCases
+  - data:
+      - name: SendGrid
+        description: Outbound email integration via SendGrid credentials.
+      - name: Mailgun
+        description: Outbound email integration via Mailgun.
+      - name: Resend
+        description: Outbound email integration via Resend.
+      - name: Postmark
+        description: Outbound transactional email via Postmark.
+      - name: AWS SES
+        description: Outbound email via Amazon Simple Email Service.
+      - name: Twilio
+        description: SMS delivery via Twilio.
+      - name: MessageBird
+        description: SMS delivery via MessageBird.
+      - name: Plivo
+        description: SMS delivery via Plivo.
+      - name: Firebase Cloud Messaging
+        description: Mobile push delivery via FCM.
+      - name: Apple Push Notification Service
+        description: iOS push delivery via APNs.
+      - name: OneSignal
+        description: Push delivery via OneSignal.
+      - name: Slack
+        description: Chat notifications to Slack channels and users.
+      - name: Microsoft Teams
+        description: Chat notifications to MS Teams channels.
+      - name: Discord
+        description: Chat notifications to Discord channels.
+      - name: WhatsApp
+        description: Conversational notifications via WhatsApp.
+      - name: Stripe
+        description: Billing-event-to-notification bridge via stripe-to-novu-webhooks.
+      - name: Clerk
+        description: Authentication-event-to-notification bridge via clerk-to-novu-webhooks.
+      - name: Segment
+        description: CDP-event-to-notification bridge via segment-to-novu-webhooks.
+      - name: React
+        description: First-class React Inbox component and Next.js helpers.
+      - name: GitHub Actions
+        description: actions-novu-sync syncs framework workflows to Novu Cloud on every push.
+    type: Integrations
+  - data:
+      - name: Novu Cloud
+        description: Managed Novu hosted by the Novu team. Free / Pro / Team / Enterprise plans.
+      - name: Self-Hosted Open Source
+        description: Run the full Novu monorepo on your own infrastructure under MIT license. Docker Compose for development, community Kubernetes manifests for production.
+      - name: Novu EU Cloud
+        description: EU-resident Novu Cloud deployment at eu.api.novu.co.
+      - name: Enterprise (HIPAA, SSO, SCIM)
+        description: HIPAA BAA, custom SSO, SCIM directory sync, and custom data-residency regions (US, EU, UK, Singapore, Australia, Japan, South Korea).
+    type: Solutions
 maintainers:
   - FN: Kin Lane
     email: kinlane@gmail.com

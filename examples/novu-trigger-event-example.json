@@ -1,0 +1,16 @@
+{
+  "name": "welcome-onboarding-email",
+  "to": [
+    {
+      "subscriberId": "subscriber_123",
+      "email": "jane@example.com"
+    }
+  ],
+  "payload": {
+    "firstName": "Jane",
+    "appName": "Acme",
+    "verificationUrl": "https://app.acme.com/verify?token=abc"
+  },
+  "transactionId": "tx_8f7e6d5c-4321-4abc-9def-1234567890ab",
+  "tenant": "tenant_acme"
+}
