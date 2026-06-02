@@ -1,0 +1,463 @@
+asyncapi: '2.6.0'
+id: 'urn:novu:websocket'
+info:
+  title: Novu Notification Center WebSocket API
+  version: '1.0.0'
+  description: >-
+    Real-time WebSocket interface used by the Novu Notification Center / Inbox
+    (the `<Inbox />` React component, `@novu/react-native`, the headless `@novu/js`
+    SDK, and any custom client). The transport is Socket.IO over WebSocket
+    (`wss`). The server emits three canonical events — `notification_received`,
+    `unread_count_changed`, and `unseen_count_changed` — scoped to a single
+    authenticated subscriber and (optionally) a set of inbox `contextKeys`.
+
+
+    Connection is authenticated with a short-lived Subscriber JWT (audience
+    `widget_user`) issued by `POST /v1/widgets/session` on the Novu REST API.
+    The token is supplied in the Socket.IO handshake as either `auth.token`
+    or `query.token`. On a successful handshake the socket joins a room keyed
+    on the internal subscriber id (`_id`) and the server begins fan-out of
+    in-app inbox events for that subscriber.
+
+
+    Source of truth for the event names is
+    `packages/shared/src/types/ws.ts::WebSocketEventEnum` in the open-source
+    `novuhq/novu` monorepo. Payload shapes are derived from the WS gateway
+    (`apps/ws/src/socket/ws.gateway.ts`) and the
+    `ExternalServicesRoute` use case
+    (`apps/ws/src/socket/usecases/external-services-route/external-services-route.usecase.ts`).
+  contact:
+    name: Novu
+    url: https://docs.novu.co
+  license:
+    name: MIT
+    url: https://github.com/novuhq/novu/blob/next/LICENSE
+  termsOfService: https://novu.co/terms
+  x-source-repository: https://github.com/novuhq/novu
+  x-source-paths:
+    - packages/shared/src/types/ws.ts
+    - apps/ws/src/socket/ws.gateway.ts
+    - apps/ws/src/socket/usecases/external-services-route/external-services-route.usecase.ts
+    - packages/shared/src/dto/session/session.dto.ts
+defaultContentType: application/json
+servers:
+  production-us:
+    url: wss://ws.novu.co
+    protocol: wss
+    description: >-
+      Novu Cloud — US region. Socket.IO upgrades the HTTPS handshake
+      (https://ws.novu.co) to a `wss` WebSocket on the upstream Socket.IO
+      pod (`wss://socket.novu.co`). Clients should always connect to
+      `https://ws.novu.co` (or `wss://ws.novu.co`) — the upgrade and
+      sticky-routing are handled by the platform.
+    bindings:
+      ws:
+        bindingVersion: '0.1.0'
+  production-eu:
+    url: wss://eu.ws.novu.co
+    protocol: wss
+    description: >-
+      Novu Cloud — EU region (data residency: European Union). Same protocol
+      and event surface as `production-us`; required when the REST API is
+      `https://eu.api.novu.co`.
+    bindings:
+      ws:
+        bindingVersion: '0.1.0'
+  development:
+    url: wss://dev.ws.novu.co
+    protocol: wss
+    description: >-
+      Novu staging / development cluster used by the Novu team for pre-release
+      builds. Provided for completeness — not intended for customer traffic.
+  self-hosted:
+    url: '{scheme}://{host}:{port}'
+    protocol: wss
+    description: >-
+      Self-hosted Novu deployment. Points at the `@novu/ws` NestJS service
+      (defaults to port 3002 in the reference Docker Compose). Use `ws://`
+      for un-terminated local development and `wss://` when TLS is fronted
+      by a reverse proxy / ingress.
+    variables:
+      scheme:
+        enum:
+          - ws
+          - wss
+        default: wss
+      host:
+        default: localhost
+        description: Hostname or IP of the self-hosted `@novu/ws` service.
+      port:
+        default: '3002'
+        description: TCP port the `@novu/ws` service listens on.
+channels:
+  /:
+    description: >-
+      The single Socket.IO default namespace (`/`). All Novu Notification
+      Center events are emitted on this namespace, addressed to the room
+      identified by the authenticated subscriber's internal `_id`. Clients
+      do not need to `join` or `subscribe` — the server joins the socket
+      to the correct room during the handshake (see `bindings.ws` below
+      for the handshake auth contract).
+    bindings:
+      ws:
+        bindingVersion: '0.1.0'
+        method: GET
+        query:
+          type: object
+          description: >-
+            Socket.IO handshake query parameters. The Novu WS gateway accepts
+            the JWT via either `auth.token` (preferred, Socket.IO v4 style)
+            or `query.token` (legacy / browser-friendly).
+          properties:
+            token:
+              type: string
+              description: >-
+                Subscriber JWT obtained from `POST /v1/widgets/session` on the
+                Novu REST API. Must have `aud` = `widget_user`. The gateway
+                disconnects the socket if the token is missing, `"null"`,
+                fails JWT verification, or has the wrong audience.
+            EIO:
+              type: string
+              description: Socket.IO Engine.IO protocol version (e.g. `4`).
+            transport:
+              type: string
+              enum: [polling, websocket]
+              description: Socket.IO transport. The browser SDK starts on `polling` and upgrades to `websocket`.
+        headers:
+          type: object
+          properties:
+            Origin:
+              type: string
+              description: Browser Origin header — must be allow-listed in the WS service CORS config.
+    subscribe:
+      operationId: subscribeNotificationCenter
+      summary: Receive real-time Notification Center events for the authenticated subscriber.
+      description: >-
+        After the handshake the server emits any of three events to this
+        connection whenever the subscriber's in-app inbox state changes:
+        a new in-app message is generated by the workflow engine, the
+        unread count changes (mark-as-read, mark-as-unread, delete, mark-all),
+        or the unseen count changes (mark-as-seen, mark-as-unseen).
+      message:
+        oneOf:
+          - $ref: '#/components/messages/NotificationReceived'
+          - $ref: '#/components/messages/UnreadCountChanged'
+          - $ref: '#/components/messages/UnseenCountChanged'
+components:
+  messages:
+    NotificationReceived:
+      name: notification_received
+      title: Notification Received
+      summary: A new in-app notification was delivered to the authenticated subscriber's inbox.
+      description: >-
+        Emitted by `ExternalServicesRoute.processReceivedEvent` when the
+        workflow engine produces a new in-app message for this subscriber.
+        The payload contains the full Message entity so the client can
+        render the new row without an extra REST round-trip. The server
+        always follows a `notification_received` emission with a
+        `unread_count_changed` and a `unseen_count_changed` emission so
+        the badge in the bell icon stays in sync.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/NotificationReceivedPayload'
+      x-socket-event: notification_received
+      x-source-enum: WebSocketEventEnum.RECEIVED
+    UnreadCountChanged:
+      name: unread_count_changed
+      title: Unread Count Changed
+      summary: The subscriber's unread in-app notification count changed.
+      description: >-
+        Emitted whenever the unread count for this subscriber changes —
+        a new message arrives, the user marks one or many as read /
+        unread, deletes a message, marks all as read, or a snoozed
+        message becomes active again. The payload includes a
+        per-severity breakdown (`high`, `medium`, `low`, `none`) and a
+        `hasMore` flag indicating whether the unread count exceeds the
+        display cap of 100.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/UnreadCountChangedPayload'
+      x-socket-event: unread_count_changed
+      x-source-enum: WebSocketEventEnum.UNREAD
+    UnseenCountChanged:
+      name: unseen_count_changed
+      title: Unseen Count Changed
+      summary: The subscriber's unseen in-app notification count changed.
+      description: >-
+        Emitted whenever the unseen count changes — a new message
+        arrives, the user marks one or many as seen / unseen, or
+        deletes a message. The payload includes a `hasMore` flag
+        indicating whether the unseen count exceeds the display
+        cap of 100.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/UnseenCountChangedPayload'
+      x-socket-event: unseen_count_changed
+      x-source-enum: WebSocketEventEnum.UNSEEN
+  schemas:
+    NotificationReceivedPayload:
+      type: object
+      description: >-
+        Payload of a `notification_received` Socket.IO event. Carries the
+        full Message entity that the React Inbox component renders as a
+        new row. When the queued WS job only had a `messageId`, the WS
+        service hydrates the message from the database before emission,
+        so clients always receive the `message` shape below.
+      required:
+        - message
+      properties:
+        message:
+          $ref: '#/components/schemas/Message'
+    UnreadCountChangedPayload:
+      type: object
+      description: >-
+        Payload of an `unread_count_changed` Socket.IO event.
+      required:
+        - unreadCount
+        - counts
+        - hasMore
+      properties:
+        unreadCount:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: >-
+            Number of unread in-app messages for this subscriber, capped at
+            100 for display purposes. Use `hasMore` to detect overflow.
+        counts:
+          type: object
+          description: Aggregate counts broken out by severity (excludes snoozed).
+          required:
+            - total
+            - severity
+          properties:
+            total:
+              type: integer
+              minimum: 0
+              description: Total unread (uncapped — may exceed 100).
+            severity:
+              type: object
+              description: Per-severity breakdown of unread, non-snoozed messages.
+              required:
+                - high
+                - medium
+                - low
+                - none
+              properties:
+                high:
+                  type: integer
+                  minimum: 0
+                medium:
+                  type: integer
+                  minimum: 0
+                low:
+                  type: integer
+                  minimum: 0
+                none:
+                  type: integer
+                  minimum: 0
+        hasMore:
+          type: boolean
+          description: >-
+            `true` when the underlying unread count exceeds 100 and
+            `unreadCount` has been clamped.
+    UnseenCountChangedPayload:
+      type: object
+      description: >-
+        Payload of an `unseen_count_changed` Socket.IO event.
+      required:
+        - unseenCount
+        - hasMore
+      properties:
+        unseenCount:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: >-
+            Number of unseen in-app messages for this subscriber, capped
+            at 100. Use `hasMore` to detect overflow.
+        hasMore:
+          type: boolean
+          description: >-
+            `true` when the underlying unseen count exceeds 100 and
+            `unseenCount` has been clamped.
+    Message:
+      type: object
+      description: >-
+        Novu in-app Message entity as persisted by `@novu/dal` and serialized
+        over the WS connection. This is the same shape returned by
+        `GET /v1/inbox/notifications` on the REST API.
+      properties:
+        _id:
+          type: string
+          description: Internal message identifier (MongoDB ObjectId).
+        _templateId:
+          type: string
+          description: Internal workflow id this message was produced by.
+        _environmentId:
+          type: string
+        _messageTemplateId:
+          type: string
+        _notificationId:
+          type: string
+        _organizationId:
+          type: string
+        _subscriberId:
+          type: string
+        _feedId:
+          type: string
+          nullable: true
+        _jobId:
+          type: string
+        channel:
+          type: string
+          enum: [in_app, email, sms, chat, push]
+          description: Always `in_app` for messages emitted over this WebSocket.
+        templateIdentifier:
+          type: string
+          description: Workflow identifier (slug) used in REST triggers.
+        content:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: object
+          description: Rendered in-app body — either a string or an array of structured content blocks.
+        subject:
+          type: string
+          description: Optional subject / title for the in-app row.
+        avatar:
+          type: string
+          nullable: true
+          description: Optional avatar URL displayed next to the row.
+        cta:
+          type: object
+          description: Call-to-action descriptor (action buttons, redirect targets).
+          properties:
+            type:
+              type: string
+              description: CTA type — e.g. `redirect`.
+            data:
+              type: object
+              properties:
+                url:
+                  type: string
+            action:
+              type: object
+              description: Inline action buttons (primary / secondary) with result status.
+        seen:
+          type: boolean
+          description: Whether this message has been marked as seen by the subscriber.
+        read:
+          type: boolean
+          description: Whether this message has been marked as read by the subscriber.
+        archived:
+          type: boolean
+          description: Whether this message has been archived from the inbox view.
+        snoozedUntil:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO timestamp the message is snoozed until, or null.
+        deleted:
+          type: boolean
+        status:
+          type: string
+          enum: [sent, error, warning]
+        transactionId:
+          type: string
+          description: Transaction id supplied to `POST /v1/events/trigger`.
+        payload:
+          type: object
+          additionalProperties: true
+          description: Free-form payload that was passed into the workflow trigger.
+        overrides:
+          type: object
+          additionalProperties: true
+          description: Channel-specific overrides supplied at trigger time.
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags attached to the workflow that produced this message.
+        severity:
+          type: string
+          enum: [high, medium, low, none]
+          description: Severity attached to the in-app step (drives `counts.severity`).
+        data:
+          type: object
+          additionalProperties: true
+          description: Custom data attached to the in-app step.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        lastSeenDate:
+          type: string
+          format: date-time
+          nullable: true
+        lastReadDate:
+          type: string
+          format: date-time
+          nullable: true
+    SubscriberJwtClaims:
+      type: object
+      description: >-
+        Decoded payload of the Subscriber JWT supplied in the Socket.IO
+        handshake (`auth.token` / `query.token`). Issued by
+        `POST /v1/widgets/session`. The WS gateway rejects any token whose
+        `aud` is not `widget_user`.
+      required:
+        - _id
+        - subscriberId
+        - environmentId
+        - organizationId
+        - aud
+      properties:
+        _id:
+          type: string
+          description: Internal subscriber id (MongoDB ObjectId). Used as the Socket.IO room name.
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+          nullable: true
+        subscriberId:
+          type: string
+          description: External subscriber identifier supplied by the customer when the subscriber was created.
+        organizationId:
+          type: string
+        environmentId:
+          type: string
+        contextKeys:
+          type: array
+          items:
+            type: string
+          description: >-
+            Optional inbox context keys. The WS gateway uses these to filter
+            which events are fanned out to a given socket — only messages
+            whose context keys are an exact (order-independent) match for
+            the socket's context keys are delivered.
+        aud:
+          type: string
+          enum: [widget_user]
+          description: JWT audience — must be `widget_user` or the WS gateway disconnects the socket.
+  securitySchemes:
+    SubscriberJWT:
+      type: httpApiKey
+      in: query
+      name: token
+      description: >-
+        Subscriber JWT in the Socket.IO handshake. Supplied either as
+        `auth.token` (Socket.IO v4 style — recommended) or as the `token`
+        query string parameter on the upgrade request. Obtain by calling
+        `POST /v1/widgets/session` on the Novu REST API with your
+        `applicationIdentifier` and the subscriber identifier (and HMAC
+        signature when HMAC encryption is enabled for the environment).

@@ -15,7 +15,7 @@ type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml
 created: '2026-05-23'
-modified: '2026-05-25'
+modified: '2026-05-29'
 specificationVersion: '0.19'
 tags:
   - Notifications
@@ -269,6 +269,9 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.novu.co/platform/inbox/overview
+      - type: AsyncAPI
+        url: asyncapi/novu-asyncapi.yml
+        title: Notification Center WebSocket (Socket.IO) — AsyncAPI 2.6
       - type: Quickstart
         url: https://docs.novu.co/platform/quickstart/react
       - type: SDK
