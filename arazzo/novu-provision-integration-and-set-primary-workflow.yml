@@ -1,0 +1,90 @@
+arazzo: 1.0.1
+info:
+  title: Novu Provision a Delivery Integration and Make It Primary
+  summary: Create a channel integration, promote it to primary for its channel, and confirm it is active.
+  description: >-
+    Sets up the delivery provider that Novu uses to send a channel. The workflow
+    creates an integration (for example an email or SMS provider) with its
+    credentials, promotes that integration to primary for its channel so it
+    becomes the default delivery route, and lists the active integrations to
+    confirm the new primary is in place. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-integration-and-set-primary
+  summary: Create an integration, set it as primary, then list active integrations.
+  description: >-
+    Creates a delivery integration with credentials, marks it primary for its
+    channel, and verifies it appears among the active integrations.
+  inputs:
+    type: object
+    required:
+    - name
+    - providerId
+    - channel
+    properties:
+      name:
+        type: string
+        description: Display name of the integration.
+      identifier:
+        type: string
+        description: Unique identifier for the integration.
+      providerId:
+        type: string
+        description: The provider id (e.g. "sendgrid", "twilio").
+      channel:
+        type: string
+        description: The channel type (in_app, email, sms, chat, push).
+      credentials:
+        type: object
+        description: Provider-specific credentials for the integration.
+  steps:
+  - stepId: createIntegration
+    description: >-
+      Create the integration for the current environment with its credentials.
+      Setting active true causes Novu to validate the credentials.
+    operationId: IntegrationsController_createIntegration
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.name
+        identifier: $inputs.identifier
+        providerId: $inputs.providerId
+        channel: $inputs.channel
+        credentials: $inputs.credentials
+        active: true
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      integrationId: $response.body#/data/_id
+      channel: $response.body#/data/channel
+  - stepId: setPrimary
+    description: >-
+      Promote the new integration to primary for its channel so it becomes the
+      default delivery route for that channel in the environment.
+    operationId: IntegrationsController_setIntegrationAsPrimary
+    parameters:
+    - name: integrationId
+      in: path
+      value: $steps.createIntegration.outputs.integrationId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      integration: $response.body#/data
+  - stepId: listActive
+    description: >-
+      List the active integrations to confirm the newly created integration is
+      active and serving as primary for its channel.
+    operationId: IntegrationsController_getActiveIntegrations
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      activeIntegrations: $response.body
+  outputs:
+    integrationId: $steps.createIntegration.outputs.integrationId
+    activeIntegrations: $steps.listActive.outputs.activeIntegrations

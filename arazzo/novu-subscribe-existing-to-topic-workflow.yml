@@ -1,0 +1,88 @@
+arazzo: 1.0.1
+info:
+  title: Novu Subscribe an Existing Subscriber to a Topic
+  summary: Find a subscriber by search, subscribe them to a topic, and confirm the subscription.
+  description: >-
+    Adds a known subscriber to an audience topic. The workflow searches the
+    environment for a subscriber, subscribes the matched subscriber id to the
+    target topic, and then lists the topic's subscriptions to confirm the new
+    member is present. Every step spells out its request inline so the flow can
+    be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: subscribe-existing-to-topic
+  summary: Search for a subscriber, add them to a topic, then verify the subscription.
+  description: >-
+    Searches subscribers, subscribes the first matched subscriber id to the
+    supplied topic key, and lists the topic subscriptions to confirm the
+    membership.
+  inputs:
+    type: object
+    required:
+    - email
+    - topicKey
+    properties:
+      email:
+        type: string
+        description: Email address used to locate the subscriber.
+      topicKey:
+        type: string
+        description: The key identifier of the topic to subscribe the subscriber to.
+  steps:
+  - stepId: findSubscriber
+    description: >-
+      Search subscribers by email and return the first match so its subscriber
+      id can be used for the subscription.
+    operationId: SubscribersController_searchSubscribers
+    parameters:
+    - name: email
+      in: query
+      value: $inputs.email
+    - name: limit
+      in: query
+      value: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      subscriberId: $response.body#/data/data/0/subscriberId
+  - stepId: subscribeToTopic
+    description: >-
+      Subscribe the matched subscriber to the topic. Novu creates the
+      subscription and returns 201.
+    operationId: TopicsController_createTopicSubscriptions
+    parameters:
+    - name: topicKey
+      in: path
+      value: $inputs.topicKey
+    requestBody:
+      contentType: application/json
+      payload:
+        subscriptions:
+        - $steps.findSubscriber.outputs.subscriberId
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      result: $response.body#/data
+  - stepId: confirmSubscription
+    description: >-
+      List the topic's subscriptions to confirm the subscriber is now a member
+      of the topic.
+    operationId: TopicsController_listTopicSubscriptions
+    parameters:
+    - name: topicKey
+      in: path
+      value: $inputs.topicKey
+    - name: limit
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      subscriptions: $response.body#/data
+  outputs:
+    subscriberId: $steps.findSubscriber.outputs.subscriberId
+    subscriptions: $steps.confirmSubscription.outputs.subscriptions

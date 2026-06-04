@@ -1,0 +1,121 @@
+arazzo: 1.0.1
+info:
+  title: Novu Onboard a Subscriber and Send Their First Notification
+  summary: Create a subscriber, trigger a workflow to them, and read back the resulting event.
+  description: >-
+    The core Novu onboarding loop. The workflow creates (or upserts) a
+    subscriber from your application's user record, triggers a notification
+    workflow addressed to that subscriber, and then lists the environment's
+    events filtered to the new subscriber so the freshly created notification
+    event can be retrieved in detail. Every step spells out its request inline
+    so the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: onboard-subscriber-and-notify
+  summary: Create a subscriber then trigger and inspect their first notification.
+  description: >-
+    Creates a subscriber with the supplied profile, triggers the named workflow
+    to that subscriber with a custom payload, then lists and retrieves the
+    resulting notification event for verification.
+  inputs:
+    type: object
+    required:
+    - subscriberId
+    - workflowId
+    properties:
+      subscriberId:
+        type: string
+        description: The external identifier of the subscriber (your system's user id).
+      email:
+        type: string
+        description: Email address of the subscriber.
+      firstName:
+        type: string
+        description: First name of the subscriber.
+      lastName:
+        type: string
+        description: Last name of the subscriber.
+      workflowId:
+        type: string
+        description: The trigger identifier of the workflow to send.
+      payload:
+        type: object
+        description: Custom payload object used to render the workflow.
+  steps:
+  - stepId: createSubscriber
+    description: >-
+      Create the subscriber. subscriberId is required; if the subscriber already
+      exists it is updated rather than duplicated.
+    operationId: SubscribersController_createSubscriber
+    requestBody:
+      contentType: application/json
+      payload:
+        subscriberId: $inputs.subscriberId
+        email: $inputs.email
+        firstName: $inputs.firstName
+        lastName: $inputs.lastName
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      subscriberId: $response.body#/data/subscriberId
+      internalId: $response.body#/data/_id
+  - stepId: triggerEvent
+    description: >-
+      Trigger the named workflow addressed to the newly created subscriber,
+      passing the custom payload. Novu returns a transactionId for the trigger.
+    operationId: EventsController_trigger
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.workflowId
+        to: $steps.createSubscriber.outputs.subscriberId
+        payload: $inputs.payload
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      acknowledged: $response.body#/data/acknowledged
+      status: $response.body#/data/status
+      transactionId: $response.body#/data/transactionId
+  - stepId: listEvents
+    description: >-
+      List notification events for the environment filtered to the new
+      subscriber, returning the most recent triggered event so its id can be
+      resolved for a detailed lookup.
+    operationId: NotificationsController_listNotifications
+    parameters:
+    - name: subscriberIds
+      in: query
+      value:
+      - $steps.createSubscriber.outputs.subscriberId
+    - name: page
+      in: query
+      value: 0
+    - name: limit
+      in: query
+      value: 10
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      notificationId: $response.body#/data/0/_id
+  - stepId: getNotification
+    description: >-
+      Retrieve the full event detail (execution logs, status, generated
+      messages) for the notification produced by the trigger.
+    operationId: NotificationsController_getNotification
+    parameters:
+    - name: notificationId
+      in: path
+      value: $steps.listEvents.outputs.notificationId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      notification: $response.body#/data
+  outputs:
+    subscriberId: $steps.createSubscriber.outputs.subscriberId
+    transactionId: $steps.triggerEvent.outputs.transactionId
+    notificationId: $steps.listEvents.outputs.notificationId

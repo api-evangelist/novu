@@ -1,0 +1,113 @@
+arazzo: 1.0.1
+info:
+  title: Novu Create a Workflow and Trigger It
+  summary: Define a new in-app notification workflow, then immediately trigger it to a subscriber.
+  description: >-
+    Provisions a notification workflow from code and proves it works end to end.
+    The workflow creates a new active Novu workflow with a single in-app step,
+    then triggers that workflow's identifier to a subscriber and lists the
+    resulting events to confirm the trigger was processed. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-workflow-and-trigger
+  summary: Create an in-app workflow, then trigger it to a subscriber and verify.
+  description: >-
+    Creates a new workflow with one in-app step, triggers the returned workflow
+    identifier to the supplied subscriber, and lists events to confirm the
+    trigger landed.
+  inputs:
+    type: object
+    required:
+    - workflowId
+    - name
+    - stepName
+    - subscriberId
+    properties:
+      workflowId:
+        type: string
+        description: The unique slug identifier to assign to the new workflow.
+      name:
+        type: string
+        description: Display name of the workflow.
+      description:
+        type: string
+        description: Optional description of the workflow.
+      stepName:
+        type: string
+        description: Name for the single in-app step in the workflow.
+      subscriberId:
+        type: string
+        description: Subscriber id to trigger the new workflow to.
+      payload:
+        type: object
+        description: Custom payload object used to render the workflow.
+  steps:
+  - stepId: createWorkflow
+    description: >-
+      Create a new active workflow with a single in-app step. Novu returns 201
+      with the created workflow including its workflowId.
+    operationId: WorkflowController_create
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.name
+        description: $inputs.description
+        workflowId: $inputs.workflowId
+        active: true
+        __source: editor
+        steps:
+        - name: $inputs.stepName
+          type: in_app
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      workflowId: $response.body#/data/workflowId
+      internalId: $response.body#/data/_id
+      status: $response.body#/data/status
+  - stepId: triggerNewWorkflow
+    description: >-
+      Trigger the newly created workflow to the subscriber using the returned
+      workflow identifier.
+    operationId: EventsController_trigger
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $steps.createWorkflow.outputs.workflowId
+        to: $inputs.subscriberId
+        payload: $inputs.payload
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      acknowledged: $response.body#/data/acknowledged
+      status: $response.body#/data/status
+      transactionId: $response.body#/data/transactionId
+  - stepId: verifyEvents
+    description: >-
+      List notification events filtered to the workflow's trigger identifier and
+      subscriber to confirm the event was produced.
+    operationId: NotificationsController_listNotifications
+    parameters:
+    - name: templates
+      in: query
+      value:
+      - $steps.createWorkflow.outputs.workflowId
+    - name: subscriberIds
+      in: query
+      value:
+      - $inputs.subscriberId
+    - name: limit
+      in: query
+      value: 10
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      events: $response.body#/data
+  outputs:
+    workflowId: $steps.createWorkflow.outputs.workflowId
+    transactionId: $steps.triggerNewWorkflow.outputs.transactionId

@@ -1,0 +1,94 @@
+arazzo: 1.0.1
+info:
+  title: Novu Trigger a Notification and Verify Delivery
+  summary: Trigger a workflow to a subscriber, then inspect the event and the per-channel messages it produced.
+  description: >-
+    An observability pattern that closes the loop after sending. The workflow
+    triggers a notification to a subscriber, lists the environment events
+    filtered to that subscriber to locate the produced event, and then lists the
+    individual channel messages for the subscriber so the actual rendered
+    notifications (email, sms, in-app, etc.) can be inspected. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: trigger-and-verify-delivery
+  summary: Trigger a workflow, find its event, then list the channel messages.
+  description: >-
+    Triggers the named workflow to a subscriber, lists events filtered to that
+    subscriber to confirm the trigger, and lists the channel messages produced
+    for the subscriber.
+  inputs:
+    type: object
+    required:
+    - workflowId
+    - subscriberId
+    properties:
+      workflowId:
+        type: string
+        description: The trigger identifier of the workflow to send.
+      subscriberId:
+        type: string
+        description: The subscriber id to notify and to verify delivery for.
+      payload:
+        type: object
+        description: Custom payload object used to render the workflow.
+  steps:
+  - stepId: triggerEvent
+    description: >-
+      Trigger the workflow to the subscriber and capture the returned
+      transactionId for correlation.
+    operationId: EventsController_trigger
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.workflowId
+        to: $inputs.subscriberId
+        payload: $inputs.payload
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      status: $response.body#/data/status
+      transactionId: $response.body#/data/transactionId
+  - stepId: findEvent
+    description: >-
+      List events filtered to the subscriber to locate the event produced by the
+      trigger.
+    operationId: NotificationsController_listNotifications
+    parameters:
+    - name: subscriberIds
+      in: query
+      value:
+      - $inputs.subscriberId
+    - name: limit
+      in: query
+      value: 10
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      notificationId: $response.body#/data/0/_id
+  - stepId: listMessages
+    description: >-
+      List the channel messages produced for the subscriber so the rendered
+      notifications can be inspected per channel.
+    operationId: MessagesController_getMessages
+    parameters:
+    - name: subscriberId
+      in: query
+      value: $inputs.subscriberId
+    - name: limit
+      in: query
+      value: 10
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      messages: $response.body#/data
+      hasMore: $response.body#/hasMore
+  outputs:
+    transactionId: $steps.triggerEvent.outputs.transactionId
+    notificationId: $steps.findEvent.outputs.notificationId
+    messages: $steps.listMessages.outputs.messages

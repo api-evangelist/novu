@@ -1,0 +1,79 @@
+arazzo: 1.0.1
+info:
+  title: Novu Trigger a Deferred Notification and Cancel It
+  summary: Trigger a workflow with a caller-supplied transactionId, then cancel any pending delay or digest using that id.
+  description: >-
+    A reversible-send pattern useful for workflows containing delay, digest, or
+    other deferred steps. The workflow triggers the notification with a
+    deterministic transactionId supplied by the caller, then cancels any still
+    active or pending jobs for that same transactionId - for example to retract
+    a scheduled reminder before it fires. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: trigger-then-cancel
+  summary: Trigger a workflow with a known transactionId, then cancel it by that id.
+  description: >-
+    Triggers the named workflow to a subscriber using a caller-provided
+    transactionId, then cancels any active or pending workflow jobs for that
+    transactionId.
+  inputs:
+    type: object
+    required:
+    - workflowId
+    - subscriberId
+    - transactionId
+    properties:
+      workflowId:
+        type: string
+        description: The trigger identifier of the workflow to send.
+      subscriberId:
+        type: string
+        description: The subscriber id to notify.
+      transactionId:
+        type: string
+        description: >-
+          A caller-supplied unique transaction id used both for deduplication on
+          the trigger and to target the cancel call.
+      payload:
+        type: object
+        description: Custom payload object used to render the workflow.
+  steps:
+  - stepId: triggerDeferred
+    description: >-
+      Trigger the workflow to the subscriber passing the caller-supplied
+      transactionId so it can later be referenced for cancellation.
+    operationId: EventsController_trigger
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.workflowId
+        to: $inputs.subscriberId
+        transactionId: $inputs.transactionId
+        payload: $inputs.payload
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      status: $response.body#/data/status
+      transactionId: $response.body#/data/transactionId
+  - stepId: cancelEvent
+    description: >-
+      Cancel any active or pending workflow jobs (delays, digests) associated
+      with the transactionId. Novu returns a boolean acknowledgement.
+    operationId: EventsController_cancel
+    parameters:
+    - name: transactionId
+      in: path
+      value: $inputs.transactionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      cancelled: $response.body
+  outputs:
+    transactionId: $steps.triggerDeferred.outputs.transactionId
+    cancelled: $steps.cancelEvent.outputs.cancelled

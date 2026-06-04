@@ -1,0 +1,96 @@
+arazzo: 1.0.1
+info:
+  title: Novu Set Subscriber Preferences Then Notify
+  summary: Confirm a subscriber exists, set their workflow channel preferences, then trigger a respectful notification.
+  description: >-
+    A consent-aware notification pattern. The workflow first retrieves the
+    subscriber to confirm they exist, updates their per-workflow channel
+    preferences (for example enabling email but disabling SMS), and then
+    triggers the workflow so the notification is delivered honoring the
+    preferences just set. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: set-preferences-then-notify
+  summary: Retrieve subscriber, set their channel preferences, then trigger a workflow.
+  description: >-
+    Retrieves the subscriber, patches their channel preferences for a specific
+    workflow, and triggers that workflow to them.
+  inputs:
+    type: object
+    required:
+    - subscriberId
+    - workflowId
+    - channels
+    properties:
+      subscriberId:
+        type: string
+        description: The identifier of the subscriber.
+      workflowId:
+        type: string
+        description: The workflow identifier whose preferences to set and trigger.
+      channels:
+        type: object
+        description: >-
+          Channel toggles (email, sms, in_app, push, chat) as booleans for the
+          subscriber's preferences on this workflow.
+      payload:
+        type: object
+        description: Custom payload object used to render the workflow.
+  steps:
+  - stepId: getSubscriber
+    description: >-
+      Retrieve the subscriber by id to confirm they exist before changing their
+      preferences.
+    operationId: SubscribersController_getSubscriber
+    parameters:
+    - name: subscriberId
+      in: path
+      value: $inputs.subscriberId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      subscriberId: $response.body#/data/subscriberId
+  - stepId: updatePreferences
+    description: >-
+      Patch the subscriber's channel preferences for the supplied workflow so
+      the upcoming trigger respects their channel choices.
+    operationId: SubscribersController_updateSubscriberPreferences
+    parameters:
+    - name: subscriberId
+      in: path
+      value: $steps.getSubscriber.outputs.subscriberId
+    requestBody:
+      contentType: application/json
+      payload:
+        workflowId: $inputs.workflowId
+        channels: $inputs.channels
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      preferences: $response.body#/data
+  - stepId: notifySubscriber
+    description: >-
+      Trigger the workflow to the subscriber; delivery honors the preferences
+      set in the previous step.
+    operationId: EventsController_trigger
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.workflowId
+        to: $steps.getSubscriber.outputs.subscriberId
+        payload: $inputs.payload
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      acknowledged: $response.body#/data/acknowledged
+      status: $response.body#/data/status
+      transactionId: $response.body#/data/transactionId
+  outputs:
+    subscriberId: $steps.getSubscriber.outputs.subscriberId
+    transactionId: $steps.notifySubscriber.outputs.transactionId

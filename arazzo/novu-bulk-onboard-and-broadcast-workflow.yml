@@ -1,0 +1,85 @@
+arazzo: 1.0.1
+info:
+  title: Novu Bulk Onboard Subscribers and Broadcast an Announcement
+  summary: Create many subscribers in one call, then broadcast a single announcement to all subscribers.
+  description: >-
+    A migration and announcement pattern. The workflow bulk-creates a batch of
+    subscribers (up to 500 per request) and then broadcasts a workflow to every
+    subscriber in the environment - useful for seeding an audience and
+    immediately sending a system-wide announcement. Every step spells out its
+    request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: bulk-onboard-and-broadcast
+  summary: Bulk create subscribers, then broadcast an announcement to all of them.
+  description: >-
+    Creates a batch of subscribers in a single request and broadcasts the named
+    workflow to all existing subscribers in the environment.
+  inputs:
+    type: object
+    required:
+    - subscribers
+    - workflowId
+    properties:
+      subscribers:
+        type: array
+        description: Array of subscriber objects to create in bulk (each requires subscriberId).
+        items:
+          type: object
+          required:
+          - subscriberId
+          properties:
+            subscriberId:
+              type: string
+            email:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+      workflowId:
+        type: string
+        description: The trigger identifier of the workflow to broadcast.
+      payload:
+        type: object
+        description: Custom payload object used to render the broadcast workflow.
+  steps:
+  - stepId: bulkCreateSubscribers
+    description: >-
+      Create the supplied subscribers in a single bulk request. Novu returns the
+      created, updated, and failed sets.
+    operationId: SubscribersV1Controller_bulkCreateSubscribers
+    requestBody:
+      contentType: application/json
+      payload:
+        subscribers: $inputs.subscribers
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      created: $response.body#/data/created
+      updated: $response.body#/data/updated
+      failed: $response.body#/data/failed
+  - stepId: broadcastAnnouncement
+    description: >-
+      Broadcast the named workflow to all existing subscribers in the
+      environment. Novu returns 200 with the trigger acknowledgement.
+    operationId: EventsController_broadcastEventToAll
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.workflowId
+        payload: $inputs.payload
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      acknowledged: $response.body#/data/acknowledged
+      status: $response.body#/data/status
+      transactionId: $response.body#/data/transactionId
+  outputs:
+    created: $steps.bulkCreateSubscribers.outputs.created
+    transactionId: $steps.broadcastAnnouncement.outputs.transactionId

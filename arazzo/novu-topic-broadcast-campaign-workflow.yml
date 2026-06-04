@@ -1,0 +1,102 @@
+arazzo: 1.0.1
+info:
+  title: Novu Topic Broadcast Campaign
+  summary: Create a topic, subscribe an audience to it, and trigger a single notification to the whole topic.
+  description: >-
+    The canonical Novu fan-out pattern. The workflow upserts a topic (a named
+    audience bucket), subscribes a list of subscribers to that topic, and then
+    triggers a workflow addressed to the topic so every current member receives
+    the notification from one trigger call. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: topic-broadcast-campaign
+  summary: Upsert a topic, add subscribers, then trigger one notification to the topic.
+  description: >-
+    Creates or updates a topic by key, subscribes the supplied subscriber ids,
+    and triggers the named workflow to the topic so all members are notified in
+    a single fan-out.
+  inputs:
+    type: object
+    required:
+    - topicKey
+    - subscriberIds
+    - workflowId
+    properties:
+      topicKey:
+        type: string
+        description: The unique key identifier for the topic (e.g. "product-updates").
+      topicName:
+        type: string
+        description: Display name for the topic.
+      subscriberIds:
+        type: array
+        description: List of subscriber ids to subscribe to the topic.
+        items:
+          type: string
+      workflowId:
+        type: string
+        description: The trigger identifier of the workflow to broadcast to the topic.
+      payload:
+        type: object
+        description: Custom payload object used to render the workflow.
+  steps:
+  - stepId: upsertTopic
+    description: >-
+      Create the topic if it does not exist, or update its name if it does.
+      Novu returns 200 on update and 201 on first creation.
+    operationId: TopicsController_upsertTopic
+    requestBody:
+      contentType: application/json
+      payload:
+        key: $inputs.topicKey
+        name: $inputs.topicName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      topicId: $response.body#/data/_id
+      topicKey: $response.body#/data/key
+  - stepId: addSubscribers
+    description: >-
+      Subscribe the supplied subscriber ids to the topic. If the topic does not
+      yet exist it will be created by this call.
+    operationId: TopicsController_createTopicSubscriptions
+    parameters:
+    - name: topicKey
+      in: path
+      value: $inputs.topicKey
+    requestBody:
+      contentType: application/json
+      payload:
+        subscriptions: $inputs.subscriberIds
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      result: $response.body#/data
+  - stepId: triggerToTopic
+    description: >-
+      Trigger the named workflow addressed to the whole topic so every current
+      subscriber of the topic receives the notification.
+    operationId: EventsController_trigger
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.workflowId
+        to:
+          type: Topic
+          topicKey: $inputs.topicKey
+        payload: $inputs.payload
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      acknowledged: $response.body#/data/acknowledged
+      status: $response.body#/data/status
+      transactionId: $response.body#/data/transactionId
+  outputs:
+    topicKey: $steps.upsertTopic.outputs.topicKey
+    transactionId: $steps.triggerToTopic.outputs.transactionId

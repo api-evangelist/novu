@@ -1,0 +1,73 @@
+arazzo: 1.0.1
+info:
+  title: Novu Unsubscribe Subscribers From a Topic
+  summary: Remove a set of subscribers from a topic, then list the remaining subscriptions to confirm.
+  description: >-
+    The inverse of the topic subscribe flow, used when subscribers opt out of an
+    audience. The workflow deletes the supplied subscribers' subscriptions from
+    a topic and then lists the topic's remaining subscriptions to confirm the
+    removals took effect. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: unsubscribe-from-topic
+  summary: Delete subscribers from a topic, then verify the remaining subscriptions.
+  description: >-
+    Removes the supplied subscriber ids from the topic and lists the remaining
+    topic subscriptions to confirm the change.
+  inputs:
+    type: object
+    required:
+    - topicKey
+    - subscriberIds
+    properties:
+      topicKey:
+        type: string
+        description: The key identifier of the topic to unsubscribe from.
+      subscriberIds:
+        type: array
+        description: List of subscriber ids to unsubscribe from the topic.
+        items:
+          type: string
+  steps:
+  - stepId: unsubscribe
+    description: >-
+      Delete the supplied subscribers' subscriptions from the topic. Novu
+      returns 200 with the result of the delete operation.
+    operationId: TopicsController_deleteTopicSubscriptions
+    parameters:
+    - name: topicKey
+      in: path
+      value: $inputs.topicKey
+    requestBody:
+      contentType: application/json
+      payload:
+        subscriptions: $inputs.subscriberIds
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      result: $response.body#/data
+  - stepId: verifyRemaining
+    description: >-
+      List the topic's remaining subscriptions to confirm the unsubscribed
+      subscribers are no longer members.
+    operationId: TopicsController_listTopicSubscriptions
+    parameters:
+    - name: topicKey
+      in: path
+      value: $inputs.topicKey
+    - name: limit
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      remaining: $response.body#/data
+  outputs:
+    topicKey: $inputs.topicKey
+    remaining: $steps.verifyRemaining.outputs.remaining

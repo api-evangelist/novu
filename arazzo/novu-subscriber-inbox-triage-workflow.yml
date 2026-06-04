@@ -1,0 +1,83 @@
+arazzo: 1.0.1
+info:
+  title: Novu Subscriber Inbox Triage
+  summary: Confirm a subscriber, read their unread in-app inbox, then mark all notifications as read.
+  description: >-
+    A help-desk / inbox-management pattern for the Novu in-app (Inbox) channel.
+    The workflow retrieves the subscriber to confirm they exist, lists their
+    unread in-app notifications so the current backlog can be reviewed, and then
+    marks all matching in-app notifications as read to clear the inbox. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: subscriber-inbox-triage
+  summary: Retrieve a subscriber, read unread inbox notifications, then mark all read.
+  description: >-
+    Retrieves the subscriber, lists their unread in-app notifications, and marks
+    all of their in-app notifications as read.
+  inputs:
+    type: object
+    required:
+    - subscriberId
+    properties:
+      subscriberId:
+        type: string
+        description: The identifier of the subscriber whose inbox to triage.
+  steps:
+  - stepId: getSubscriber
+    description: >-
+      Retrieve the subscriber by id to confirm they exist before reading their
+      inbox.
+    operationId: SubscribersController_getSubscriber
+    parameters:
+    - name: subscriberId
+      in: path
+      value: $inputs.subscriberId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      subscriberId: $response.body#/data/subscriberId
+  - stepId: listUnread
+    description: >-
+      List the subscriber's unread in-app notifications to review the current
+      backlog before clearing it.
+    operationId: SubscribersController_getSubscriberNotifications
+    parameters:
+    - name: subscriberId
+      in: path
+      value: $steps.getSubscriber.outputs.subscriberId
+    - name: read
+      in: query
+      value: false
+    - name: limit
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      notifications: $response.body#/data/data
+      hasMore: $response.body#/data/hasMore
+  - stepId: markAllRead
+    description: >-
+      Mark all of the subscriber's in-app notifications as read to clear the
+      inbox. An empty body applies to all notifications with no extra filtering.
+    operationId: SubscribersController_markAllNotificationsAsRead
+    parameters:
+    - name: subscriberId
+      in: path
+      value: $steps.getSubscriber.outputs.subscriberId
+    requestBody:
+      contentType: application/json
+      payload: {}
+    successCriteria:
+    - condition: $statusCode == 204
+    outputs:
+      cleared: $statusCode
+  outputs:
+    subscriberId: $steps.getSubscriber.outputs.subscriberId
+    notifications: $steps.listUnread.outputs.notifications

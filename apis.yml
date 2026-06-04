@@ -362,6 +362,45 @@ apis:
       - type: SourceCode
         url: https://github.com/novuhq/novu-mcp-server
 common:
+  - type: ArazzoWorkflows
+    url: arazzo/
+    workflows:
+    - url: arazzo/novu-bulk-onboard-and-broadcast-workflow.yml
+      name: Novu Bulk Onboard Subscribers and Broadcast an Announcement
+      summary: Create many subscribers in one call, then broadcast a single announcement to all subscribers.
+    - url: arazzo/novu-create-workflow-and-trigger-workflow.yml
+      name: Novu Create a Workflow and Trigger It
+      summary: Define a new in-app notification workflow, then immediately trigger it to a subscriber.
+    - url: arazzo/novu-offboard-subscriber-workflow.yml
+      name: Novu Offboard a Subscriber
+      summary: Confirm a subscriber, audit their topic subscriptions, then delete the subscriber and all associated data.
+    - url: arazzo/novu-onboard-subscriber-and-notify-workflow.yml
+      name: Novu Onboard a Subscriber and Send Their First Notification
+      summary: Create a subscriber, trigger a workflow to them, and read back the resulting event.
+    - url: arazzo/novu-provision-integration-and-set-primary-workflow.yml
+      name: Novu Provision a Delivery Integration and Make It Primary
+      summary: Create a channel integration, promote it to primary for its channel, and confirm it is active.
+    - url: arazzo/novu-set-preferences-then-notify-workflow.yml
+      name: Novu Set Subscriber Preferences Then Notify
+      summary: Confirm a subscriber exists, set their workflow channel preferences, then trigger a respectful notification.
+    - url: arazzo/novu-subscribe-existing-to-topic-workflow.yml
+      name: Novu Subscribe an Existing Subscriber to a Topic
+      summary: Find a subscriber by search, subscribe them to a topic, and confirm the subscription.
+    - url: arazzo/novu-subscriber-inbox-triage-workflow.yml
+      name: Novu Subscriber Inbox Triage
+      summary: Confirm a subscriber, read their unread in-app inbox, then mark all notifications as read.
+    - url: arazzo/novu-topic-broadcast-campaign-workflow.yml
+      name: Novu Topic Broadcast Campaign
+      summary: Create a topic, subscribe an audience to it, and trigger a single notification to the whole topic.
+    - url: arazzo/novu-trigger-and-verify-delivery-workflow.yml
+      name: Novu Trigger a Notification and Verify Delivery
+      summary: Trigger a workflow to a subscriber, then inspect the event and the per-channel messages it produced.
+    - url: arazzo/novu-trigger-then-cancel-workflow.yml
+      name: Novu Trigger a Deferred Notification and Cancel It
+      summary: Trigger a workflow with a caller-supplied transactionId, then cancel any pending delay or digest using that id.
+    - url: arazzo/novu-unsubscribe-from-topic-workflow.yml
+      name: Novu Unsubscribe Subscribers From a Topic
+      summary: Remove a set of subscribers from a topic, then list the remaining subscriptions to confirm.
   - type: Website
     url: https://novu.co
   - type: Portal

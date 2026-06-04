@@ -1,0 +1,76 @@
+arazzo: 1.0.1
+info:
+  title: Novu Offboard a Subscriber
+  summary: Confirm a subscriber, audit their topic subscriptions, then delete the subscriber and all associated data.
+  description: >-
+    A clean teardown for a departing user. The workflow retrieves the subscriber
+    to confirm they exist, lists their current topic subscriptions for an audit
+    record, and then deletes the subscriber - which also removes their messages,
+    preferences, and topic subscriptions from the Novu platform. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: novuApi
+  url: ../openapi/novu-openapi.yml
+  type: openapi
+workflows:
+- workflowId: offboard-subscriber
+  summary: Retrieve a subscriber, audit their subscriptions, then delete them.
+  description: >-
+    Retrieves the subscriber, lists their topic subscriptions for an audit
+    trail, and deletes the subscriber along with all associated data.
+  inputs:
+    type: object
+    required:
+    - subscriberId
+    properties:
+      subscriberId:
+        type: string
+        description: The identifier of the subscriber to offboard.
+  steps:
+  - stepId: getSubscriber
+    description: >-
+      Retrieve the subscriber by id to confirm they exist before deletion.
+    operationId: SubscribersController_getSubscriber
+    parameters:
+    - name: subscriberId
+      in: path
+      value: $inputs.subscriberId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      subscriberId: $response.body#/data/subscriberId
+  - stepId: auditSubscriptions
+    description: >-
+      List the subscriber's topic subscriptions to capture an audit record of
+      their memberships before they are removed.
+    operationId: SubscribersController_listSubscriberTopics
+    parameters:
+    - name: subscriberId
+      in: path
+      value: $steps.getSubscriber.outputs.subscriberId
+    - name: limit
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      subscriptions: $response.body#/data/data
+  - stepId: deleteSubscriber
+    description: >-
+      Delete the subscriber. Novu also removes the subscriber's messages,
+      preferences, and topic subscriptions as part of this operation.
+    operationId: SubscribersController_removeSubscriber
+    parameters:
+    - name: subscriberId
+      in: path
+      value: $steps.getSubscriber.outputs.subscriberId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      acknowledged: $response.body#/data/acknowledged
+  outputs:
+    subscriberId: $steps.getSubscriber.outputs.subscriberId
+    subscriptions: $steps.auditSubscriptions.outputs.subscriptions
+    acknowledged: $steps.deleteSubscriber.outputs.acknowledged
