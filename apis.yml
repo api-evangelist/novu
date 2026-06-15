@@ -1,16 +1,12 @@
 aid: novu
 name: Novu
 description: >-
-  Novu is the open-source notification infrastructure for developers. A single
-  REST API and workflow engine route a triggered event across in-app inbox,
-  email, SMS, push, chat (Slack / Discord / MS Teams / WhatsApp) and custom
-  channels — with subscriber preferences, topics, digest, snooze, and full
-  workflow orchestration on top. Ships with the embeddable React Inbox
-  component, the Novu Framework for code-first workflow authoring,
-  language SDKs for nine ecosystems, a Postman collection, an MCP server,
-  GitHub Action sync, the Maily block-based email editor, framework
-  starters for Next.js / Remix / Nuxt / SvelteKit, and webhook bridges
-  for Stripe / Clerk / Segment.
+  Novu is the open-source notification infrastructure for developers. A single REST API and workflow engine route a
+  triggered event across in-app inbox, email, SMS, push, chat (Slack / Discord / MS Teams / WhatsApp) and custom
+  channels — with subscriber preferences, topics, digest, snooze, and full workflow orchestration on top. Ships with the
+  embeddable React Inbox component, the Novu Framework for code-first workflow authoring, language SDKs for nine
+  ecosystems, a Postman collection, an MCP server, GitHub Action sync, the Maily block-based email editor, framework
+  starters for Next.js / Remix / Nuxt / SvelteKit, and webhook bridges for Stripe / Clerk / Segment.
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml
@@ -40,13 +36,11 @@ apis:
   - aid: novu:rest-api
     name: Novu REST API
     description: >-
-      Server-side REST API exposing 135 operations across Events, Subscribers,
-      Workflows, Topics, Integrations, Layouts, Messages, Notifications,
-      Environments, Environment Variables, Domains, Channel Connections,
-      Channel Endpoints, Translations, Activity, and Contexts. Authenticated
-      with an ApiKey scheme delivered in the Authorization header. Honors
-      IETF RateLimit-* headers, Idempotency-Key, and a published OpenAPI 3
-      document available at /openapi.json on every region.
+      Server-side REST API exposing 135 operations across Events, Subscribers, Workflows, Topics, Integrations, Layouts,
+      Messages, Notifications, Environments, Environment Variables, Domains, Channel Connections, Channel Endpoints,
+      Translations, Activity, and Contexts. Authenticated with an ApiKey scheme delivered in the Authorization header.
+      Honors IETF RateLimit-* headers, Idempotency-Key, and a published OpenAPI 3 document available at /openapi.json on
+      every region.
     humanURL: https://docs.novu.co/api-reference/overview
     baseURL: https://api.novu.co
     tags:
@@ -117,38 +111,6 @@ apis:
         title: .NET SDK
       - type: CodeExamples
         url: https://github.com/novuhq/examples
-      - type: NaftikoCapability
-        url: capabilities/novu-events.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-subscribers.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-workflows.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-topics.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-integrations.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-environments.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-environment-variables.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-messages.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-notifications.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-layouts.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-translations.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-domains.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-channel-connections.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-channel-endpoints.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-activity.yaml
-      - type: NaftikoCapability
-        url: capabilities/novu-contexts.yaml
       - type: JSONSchema
         url: json-schema/novu-trigger-event-request-dto-schema.json
       - type: JSONSchema
@@ -228,11 +190,9 @@ apis:
   - aid: novu:rest-api-eu
     name: Novu REST API (EU Region)
     description: >-
-      EU-hosted instance of the Novu REST API for customers requiring data
-      residency in the European Union. Exposes the same 135 operations,
-      schemas, security, and rate-limit policy as the global instance.
-      Enterprise data residency can extend to UK, Singapore, Australia,
-      Japan, and South Korea.
+      EU-hosted instance of the Novu REST API for customers requiring data residency in the European Union. Exposes the
+      same 135 operations, schemas, security, and rate-limit policy as the global instance. Enterprise data residency
+      can extend to UK, Singapore, Australia, Japan, and South Korea.
     humanURL: https://docs.novu.co/api-reference/overview
     baseURL: https://eu.api.novu.co
     tags:
@@ -251,12 +211,10 @@ apis:
   - aid: novu:inbox-api
     name: Novu Inbox / In-App API
     description: >-
-      Client-side API and React Inbox component for rendering an embedded
-      in-app notification center, marking notifications as read / archived
-      / snoozed, and managing per-user notification preferences directly
-      in the browser. Ships with @novu/react, @novu/react-native, and
-      @novu/js (vanilla) packages, plus pre-built Notion / Linear / Novu
-      themes and full headless API access.
+      Client-side API and React Inbox component for rendering an embedded in-app notification center, marking
+      notifications as read / archived / snoozed, and managing per-user notification preferences directly in the
+      browser. Ships with @novu/react, @novu/react-native, and @novu/js (vanilla) packages, plus pre-built Notion /
+      Linear / Novu themes and full headless API access.
     humanURL: https://docs.novu.co/platform/inbox/overview
     baseURL: https://api.novu.co
     tags:
@@ -292,14 +250,11 @@ apis:
   - aid: novu:framework
     name: Novu Framework (Code-First Workflows)
     description: >-
-      Code-first workflow framework that lets developers define notification
-      workflows in TypeScript / JavaScript using `@novu/framework`, then
-      sync them to Novu Cloud (or a self-hosted instance) via the
-      `npx novu-sync` CLI or the `novuhq/actions-novu-sync` GitHub Action.
-      Supports Express, Next.js, NestJS, Remix, SvelteKit, Nuxt, H3, AWS
-      Lambda, and any node-runtime HTTP handler. The framework owns the
-      workflow source-of-truth — the Dashboard editor stays in sync via
-      a deterministic bridge URL.
+      Code-first workflow framework that lets developers define notification workflows in TypeScript / JavaScript using
+      `@novu/framework`, then sync them to Novu Cloud (or a self-hosted instance) via the `npx novu-sync` CLI or the
+      `novuhq/actions-novu-sync` GitHub Action. Supports Express, Next.js, NestJS, Remix, SvelteKit, Nuxt, H3, AWS
+      Lambda, and any node-runtime HTTP handler. The framework owns the workflow source-of-truth — the Dashboard editor
+      stays in sync via a deterministic bridge URL.
     humanURL: https://docs.novu.co/framework/overview
     baseURL: https://docs.novu.co/framework
     tags:
@@ -324,7 +279,7 @@ apis:
         title: '@novu/framework'
       - type: CLI
         url: https://www.npmjs.com/package/novu
-        title: 'npx novu-sync'
+        title: npx novu-sync
       - type: CodeExamples
         url: https://github.com/novuhq/novu-framework-nextjs-react-email-example
         title: Next.js + React Email
@@ -343,11 +298,9 @@ apis:
   - aid: novu:mcp-server
     name: Novu MCP Server
     description: >-
-      Official Model Context Protocol server exposing the Novu REST API
-      surface as MCP tools so AI agents (Claude Desktop, Cursor, agent
-      frameworks) can trigger workflows, manage subscribers, list workflows,
-      and inspect activity without bespoke wrapping. Distributed as a
-      stdio server runnable via `npx @novu/mcp-server`.
+      Official Model Context Protocol server exposing the Novu REST API surface as MCP tools so AI agents (Claude
+      Desktop, Cursor, agent frameworks) can trigger workflows, manage subscribers, list workflows, and inspect activity
+      without bespoke wrapping. Distributed as a stdio server runnable via `npx @novu/mcp-server`.
     humanURL: https://github.com/novuhq/novu-mcp-server
     baseURL: https://github.com/novuhq/novu-mcp-server
     tags:
@@ -362,45 +315,49 @@ apis:
       - type: SourceCode
         url: https://github.com/novuhq/novu-mcp-server
 common:
+  - type: PostmanWorkspace
+    url: https://www.postman.com/kinlaneapi/novu/overview
   - type: ArazzoWorkflows
     url: arazzo/
     workflows:
-    - url: arazzo/novu-bulk-onboard-and-broadcast-workflow.yml
-      name: Novu Bulk Onboard Subscribers and Broadcast an Announcement
-      summary: Create many subscribers in one call, then broadcast a single announcement to all subscribers.
-    - url: arazzo/novu-create-workflow-and-trigger-workflow.yml
-      name: Novu Create a Workflow and Trigger It
-      summary: Define a new in-app notification workflow, then immediately trigger it to a subscriber.
-    - url: arazzo/novu-offboard-subscriber-workflow.yml
-      name: Novu Offboard a Subscriber
-      summary: Confirm a subscriber, audit their topic subscriptions, then delete the subscriber and all associated data.
-    - url: arazzo/novu-onboard-subscriber-and-notify-workflow.yml
-      name: Novu Onboard a Subscriber and Send Their First Notification
-      summary: Create a subscriber, trigger a workflow to them, and read back the resulting event.
-    - url: arazzo/novu-provision-integration-and-set-primary-workflow.yml
-      name: Novu Provision a Delivery Integration and Make It Primary
-      summary: Create a channel integration, promote it to primary for its channel, and confirm it is active.
-    - url: arazzo/novu-set-preferences-then-notify-workflow.yml
-      name: Novu Set Subscriber Preferences Then Notify
-      summary: Confirm a subscriber exists, set their workflow channel preferences, then trigger a respectful notification.
-    - url: arazzo/novu-subscribe-existing-to-topic-workflow.yml
-      name: Novu Subscribe an Existing Subscriber to a Topic
-      summary: Find a subscriber by search, subscribe them to a topic, and confirm the subscription.
-    - url: arazzo/novu-subscriber-inbox-triage-workflow.yml
-      name: Novu Subscriber Inbox Triage
-      summary: Confirm a subscriber, read their unread in-app inbox, then mark all notifications as read.
-    - url: arazzo/novu-topic-broadcast-campaign-workflow.yml
-      name: Novu Topic Broadcast Campaign
-      summary: Create a topic, subscribe an audience to it, and trigger a single notification to the whole topic.
-    - url: arazzo/novu-trigger-and-verify-delivery-workflow.yml
-      name: Novu Trigger a Notification and Verify Delivery
-      summary: Trigger a workflow to a subscriber, then inspect the event and the per-channel messages it produced.
-    - url: arazzo/novu-trigger-then-cancel-workflow.yml
-      name: Novu Trigger a Deferred Notification and Cancel It
-      summary: Trigger a workflow with a caller-supplied transactionId, then cancel any pending delay or digest using that id.
-    - url: arazzo/novu-unsubscribe-from-topic-workflow.yml
-      name: Novu Unsubscribe Subscribers From a Topic
-      summary: Remove a set of subscribers from a topic, then list the remaining subscriptions to confirm.
+      - url: arazzo/novu-bulk-onboard-and-broadcast-workflow.yml
+        name: Novu Bulk Onboard Subscribers and Broadcast an Announcement
+        summary: Create many subscribers in one call, then broadcast a single announcement to all subscribers.
+      - url: arazzo/novu-create-workflow-and-trigger-workflow.yml
+        name: Novu Create a Workflow and Trigger It
+        summary: Define a new in-app notification workflow, then immediately trigger it to a subscriber.
+      - url: arazzo/novu-offboard-subscriber-workflow.yml
+        name: Novu Offboard a Subscriber
+        summary: Confirm a subscriber, audit their topic subscriptions, then delete the subscriber and all associated data.
+      - url: arazzo/novu-onboard-subscriber-and-notify-workflow.yml
+        name: Novu Onboard a Subscriber and Send Their First Notification
+        summary: Create a subscriber, trigger a workflow to them, and read back the resulting event.
+      - url: arazzo/novu-provision-integration-and-set-primary-workflow.yml
+        name: Novu Provision a Delivery Integration and Make It Primary
+        summary: Create a channel integration, promote it to primary for its channel, and confirm it is active.
+      - url: arazzo/novu-set-preferences-then-notify-workflow.yml
+        name: Novu Set Subscriber Preferences Then Notify
+        summary: Confirm a subscriber exists, set their workflow channel preferences, then trigger a respectful notification.
+      - url: arazzo/novu-subscribe-existing-to-topic-workflow.yml
+        name: Novu Subscribe an Existing Subscriber to a Topic
+        summary: Find a subscriber by search, subscribe them to a topic, and confirm the subscription.
+      - url: arazzo/novu-subscriber-inbox-triage-workflow.yml
+        name: Novu Subscriber Inbox Triage
+        summary: Confirm a subscriber, read their unread in-app inbox, then mark all notifications as read.
+      - url: arazzo/novu-topic-broadcast-campaign-workflow.yml
+        name: Novu Topic Broadcast Campaign
+        summary: Create a topic, subscribe an audience to it, and trigger a single notification to the whole topic.
+      - url: arazzo/novu-trigger-and-verify-delivery-workflow.yml
+        name: Novu Trigger a Notification and Verify Delivery
+        summary: Trigger a workflow to a subscriber, then inspect the event and the per-channel messages it produced.
+      - url: arazzo/novu-trigger-then-cancel-workflow.yml
+        name: Novu Trigger a Deferred Notification and Cancel It
+        summary: >-
+          Trigger a workflow with a caller-supplied transactionId, then cancel any pending delay or digest using that
+          id.
+      - url: arazzo/novu-unsubscribe-from-topic-workflow.yml
+        name: Novu Unsubscribe Subscribers From a Topic
+        summary: Remove a set of subscribers from a topic, then list the remaining subscriptions to confirm.
   - type: Website
     url: https://novu.co
   - type: Portal
@@ -508,9 +465,13 @@ common:
     title: Novu Skill Set for AI Agents
   - data:
       - name: Multi-channel Workflow Orchestration
-        description: Author a single workflow tree that fans out across in-app, email, SMS, push, and chat with branching, delay, and digest steps.
+        description: >-
+          Author a single workflow tree that fans out across in-app, email, SMS, push, and chat with branching, delay,
+          and digest steps.
       - name: Embedded React Inbox
-        description: Drop-in <Inbox /> React (and React Native) component with per-user preferences, read / archive / snooze, themes (Novu / Notion / Linear), and full headless API access.
+        description: >-
+          Drop-in <Inbox /> React (and React Native) component with per-user preferences, read / archive / snooze,
+          themes (Novu / Notion / Linear), and full headless API access.
       - name: Subscriber Identity
         description: First-class Subscribers resource with credentials per channel, locale, timezone, preferences, and bulk import.
       - name: Topics for Fan-out
@@ -528,7 +489,9 @@ common:
       - name: MCP Server
         description: Official Model Context Protocol server exposing the Novu REST API to AI agents.
       - name: Self-Hosting
-        description: Apache-/MIT-licensed monorepo with Docker Compose and community Kubernetes manifests for fully self-hosted deployments.
+        description: >-
+          Apache-/MIT-licensed monorepo with Docker Compose and community Kubernetes manifests for fully self-hosted
+          deployments.
       - name: 9 Language SDKs
         description: TypeScript, Python, Go, PHP, C#, Java, Elixir, Kotlin, Ruby, Rust, .NET clients.
     type: Features
@@ -598,11 +561,15 @@ common:
       - name: Novu Cloud
         description: Managed Novu hosted by the Novu team. Free / Pro / Team / Enterprise plans.
       - name: Self-Hosted Open Source
-        description: Run the full Novu monorepo on your own infrastructure under MIT license. Docker Compose for development, community Kubernetes manifests for production.
+        description: >-
+          Run the full Novu monorepo on your own infrastructure under MIT license. Docker Compose for development,
+          community Kubernetes manifests for production.
       - name: Novu EU Cloud
         description: EU-resident Novu Cloud deployment at eu.api.novu.co.
       - name: Enterprise (HIPAA, SSO, SCIM)
-        description: HIPAA BAA, custom SSO, SCIM directory sync, and custom data-residency regions (US, EU, UK, Singapore, Australia, Japan, South Korea).
+        description: >-
+          HIPAA BAA, custom SSO, SCIM directory sync, and custom data-residency regions (US, EU, UK, Singapore,
+          Australia, Japan, South Korea).
     type: Solutions
 maintainers:
   - FN: Kin Lane

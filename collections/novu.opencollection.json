@@ -1,0 +1,4538 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Novu API",
+    "version": "3.15.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Environments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Environments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/environments",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API returns a list of environments for the current organization. \n    Each environment contains its configuration, API keys (if user has access), and metadata."
+        },
+        {
+          "info": {
+            "name": "Novu Create an Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/environments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new environment within the current organization. \n    Environments allow you to manage different stages of your application development lifecycle.\n    Each environment has its own set of API keys and configurations."
+        },
+        {
+          "info": {
+            "name": "Novu Update an Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.novu.co/v1/environments/:environmentId",
+            "params": [
+              {
+                "name": "environmentId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the environment"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an environment by its unique identifier **environmentId**. \n    You can modify the environment name, identifier, color, and other configuration settings."
+        },
+        {
+          "info": {
+            "name": "Novu Delete an Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/environments/:environmentId",
+            "params": [
+              {
+                "name": "environmentId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the environment"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an environment by its unique identifier **environmentId**. \n    This action is irreversible and will remove the environment and all its associated data."
+        },
+        {
+          "info": {
+            "name": "Novu List Environment Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/environments/:environmentId/tags",
+            "params": [
+              {
+                "name": "environmentId",
+                "value": "6615943e7ace93b0540ae377",
+                "type": "path",
+                "description": "Environment internal ID (MongoDB ObjectId) or identifier"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all unique tags used in workflows within the specified environment. These tags can be used for filtering workflows."
+        },
+        {
+          "info": {
+            "name": "Novu Publish Resources to Target Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/environments/:targetEnvironmentId/publish",
+            "params": [
+              {
+                "name": "targetEnvironmentId",
+                "value": "6615943e7ace93b0540ae377",
+                "type": "path",
+                "description": "Target environment ID (MongoDB ObjectId) to publish resources to"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Publishes all workflows and resources from the source environment to the target environment. Optionally specify specific resources to publish or use dryRun mode to preview changes."
+        },
+        {
+          "info": {
+            "name": "Novu Compare Resources Between Environments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/environments/:targetEnvironmentId/diff",
+            "params": [
+              {
+                "name": "targetEnvironmentId",
+                "value": "6615943e7ace93b0540ae377",
+                "type": "path",
+                "description": "Target environment ID (MongoDB ObjectId) to compare against"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Compares workflows and other resources between the source and target environments, returning detailed diff information including additions, modifications, and deletions."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu Trigger Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/events/trigger",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "\n    Trigger event is the main (and only) way to send notifications to subscribers. The trigger identifier is used to match the particular workflow associated with it. Maximum number of recipients can be 100. Additional information can be passed according the body interface below.\n    To prevent duplicate triggers, you can optionally pass a **transactionId** in the request body. If the same **transactionId** is used again, the trigger will be ignored. The retention period depends on your billing"
+        },
+        {
+          "info": {
+            "name": "Novu Bulk Trigger Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/events/trigger/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "\n      Using this endpoint you can trigger multiple events at once, to avoid multiple calls to the API.\n      The bulk API is limited to 100 events per request.\n    "
+        },
+        {
+          "info": {
+            "name": "Novu Broadcast Event to All",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/events/trigger/broadcast",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Trigger a broadcast event to all existing subscribers, could be used to send announcements, etc.\n      In the future could be used to trigger events to a subset of subscribers based on defined filters."
+        },
+        {
+          "info": {
+            "name": "Novu Cancel Triggered Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/events/trigger/:transactionId",
+            "params": [
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "\n    Using a previously generated transactionId during the event trigger,\n     will cancel any active or pending workflows. This is useful to cancel active digests, delays etc...\n    "
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Notifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/notifications",
+            "params": [
+              {
+                "name": "channels",
+                "value": "",
+                "type": "query",
+                "description": "Array of channel types"
+              },
+              {
+                "name": "templates",
+                "value": "",
+                "type": "query",
+                "description": "Array of template IDs or a single template ID"
+              },
+              {
+                "name": "emails",
+                "value": "",
+                "type": "query",
+                "description": "Array of email addresses or a single email address"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search term (deprecated)"
+              },
+              {
+                "name": "subscriberIds",
+                "value": "",
+                "type": "query",
+                "description": "Array of subscriber IDs or a single subscriber ID"
+              },
+              {
+                "name": "severity",
+                "value": "",
+                "type": "query",
+                "description": "Array of severity levels or a single severity level"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit for pagination"
+              },
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "query",
+                "description": "The transaction ID to filter by"
+              },
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "query",
+                "description": "Topic Key for filtering notifications by topic"
+              },
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "query",
+                "description": "Subscription ID for filtering notifications by subscription"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Date filter for records after this timestamp. Defaults to earliest date allowed by subscription plan"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Date filter for records before this timestamp. Defaults to current time of request (now)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all notification events (triggered events) for the current environment. \n    This API supports filtering by **channels**, **templates**, **emails**, **subscriberIds**, **transactionId**, **topicKey**, **severity**, **contextKeys**. \n    Checkout all available filters in the query section.\n    This API returns event triggers, to list each channel notifications, check messages APIs."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve an Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/notifications/:notificationId",
+            "params": [
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve an event by its unique key identifier **notificationId**. \n    Here **notificationId** is of mongodbId type. \n    This API returns the event details - execution logs, status, actual notification (message) generated by each workflow step."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Domains",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List Domains for an Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/domains",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Domain name to filter results by."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of inbound-email domains in the current environment. Supports cursor pagination and a name contains filter."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/domains",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Registers a new inbound-email domain. The response includes the DNS records customers must add at their DNS provider before the domain can receive mail."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Domain by Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the domain configuration and the DNS records that must be in place. This is a pure read; call `domains.verify` to refresh verification status from DNS."
+        },
+        {
+          "info": {
+            "name": "Novu Update a Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v1/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates optional domain fields. When `data` is provided, it replaces the entire metadata object; omit `data` to leave it unchanged."
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes the domain and cascades the deletion to all of its routes. Inbound mail for that domain stops being processed immediately."
+        },
+        {
+          "info": {
+            "name": "Novu Verify a Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/domains/:domain/verify",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Performs a live DNS lookup to refresh the MX record status of the domain and updates the verification status accordingly. Returns the latest domain configuration."
+        },
+        {
+          "info": {
+            "name": "Novu Diagnose Inbound DNS for a Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/domains/:domain/diagnose",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Runs live DNS checks for inbound email readiness (MX correctness, apex CNAME collision, and common DNS blocklists for the Novu mail host). Returns structured issues with plain-language fixes."
+        },
+        {
+          "info": {
+            "name": "Novu List Routes for a Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/domains/:domain/routes",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "query",
+                "description": "Agent identifier to filter routes by."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of routes attached to the domain. Optionally filter by an agent identifier to find routes pointing to a specific agent."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Route",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/domains/:domain/routes",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a route on the domain that forwards inbound mail addressed to `<address>@<domain>` to either a webhook or an agent. Each address on a domain may only have a single route."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Route by Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/domains/:domain/routes/:address",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "address",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the route bound to `<address>@<domain>`. Use `*` as the address to retrieve the wildcard route for the domain."
+        },
+        {
+          "info": {
+            "name": "Novu Update a Route",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v1/domains/:domain/routes/:address",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "address",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the destination of the route bound to `<address>@<domain>`. The address itself is the resource identity and cannot be changed; delete and recreate the route to rename it."
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Route",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/domains/:domain/routes/:address",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "address",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes the route bound to `<address>@<domain>`. Inbound mail for that address will no longer be processed."
+        },
+        {
+          "info": {
+            "name": "Novu Test an Inbound Route",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/domains/:domain/routes/:address/test",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "address",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Sends a synthetic inbound email through the same delivery path as production (outbound webhooks for webhook routes, signed HTTP to the agent for agent routes). Use `dryRun: true` to preview the payload without delivering."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Auto-configuration Availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/domains/:domain/auto-configure",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns whether DNS auto-configuration (Domain Connect) is available for this domain. When `available` is `false`, `manualRecords` lists the DNS records the customer must add manually."
+        },
+        {
+          "info": {
+            "name": "Novu Start DNS Auto-configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/domains/:domain/auto-configure/start",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generates a signed redirect URL the customer can follow to apply Novu DNS records at their DNS provider. After the provider completes the flow, it redirects back to `redirectUri`."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Integrations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/integrations",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all the channels integrations created in the organization"
+        },
+        {
+          "info": {
+            "name": "Novu Create an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create an integration for the current environment the user is based on the API key provided. \n    Each provider supports different credentials, check the provider documentation for more details."
+        },
+        {
+          "info": {
+            "name": "Novu List Active Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/integrations/active",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all the active integrations created in the organization"
+        },
+        {
+          "info": {
+            "name": "Novu Update an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.novu.co/v1/integrations/:integrationId",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an integration by its unique key identifier **integrationId**. \n    Each provider supports different credentials, check the provider documentation for more details."
+        },
+        {
+          "info": {
+            "name": "Novu Delete an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/integrations/:integrationId",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an integration by its unique key identifier **integrationId**. \n    This action is irreversible."
+        },
+        {
+          "info": {
+            "name": "Novu Auto-configure an Integration for Inbound Webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/:integrationId/auto-configure",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Auto-configure an integration by its unique key identifier **integrationId** for inbound webhook support. \n    This will automatically generate required webhook signing keys and configure webhook endpoints."
+        },
+        {
+          "info": {
+            "name": "Novu Update Integration as Primary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/:integrationId/set-primary",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an integration as **primary** by its unique key identifier **integrationId**. \n    This API will set the integration as primary for that channel in the current environment. \n    Primary integration is used to deliver notification for sms and email channels in the workflow."
+        },
+        {
+          "info": {
+            "name": "Novu Generate Chat OAuth URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/chat/oauth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Deprecated** — use `POST /integrations/channel-connections/oauth` (connect) or `POST /integrations/channel-endpoints/oauth` (link_user) instead.\n    Generate an OAuth URL for chat integrations like Slack and MS Teams. \n    This URL allows subscribers to authorize the integration, enabling the system to send messages \n    through their chat workspace. The generated URL expires after 5 minutes."
+        },
+        {
+          "info": {
+            "name": "Novu Generate OAuth URL for a Workspace/tenant Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/channel-connections/oauth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generate an OAuth URL that creates a workspace or tenant-level channel connection (Slack workspace install or MS Teams admin consent). \n    The generated URL expires after 5 minutes."
+        },
+        {
+          "info": {
+            "name": "Novu Generate OAuth URL to Link a Subscriber User Identity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/channel-endpoints/oauth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generate an OAuth URL that links a specific subscriber to their chat identity (Slack user ID or MS Teams user OID). \n    The generated URL expires after 5 minutes."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Contexts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Contexts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/contexts",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "id",
+                "value": "tenant-prod-123",
+                "type": "query",
+                "description": "Filter contexts by id"
+              },
+              {
+                "name": "search",
+                "value": "tenant",
+                "type": "query",
+                "description": "Search contexts by type or id (supports partial matching across both fields)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a paginated list of all contexts, optionally filtered by type and key pattern.\n      **type** and **id** are optional fields, if provided, only contexts with the matching type and id will be returned.\n      **search** is an optional field, if provided, only contexts with the matching key pattern will be returned.\n      Checkout all possible parameters in the query section below for more details"
+        },
+        {
+          "info": {
+            "name": "Novu Create a Context",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/contexts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new context with the specified type, id, and data. Returns 409 if context already exists.\n      **type** and **id** are required fields, **data** is optional, if the context already exists, it returns the 409 response"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Context",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/contexts/:type/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Context ID"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Context type"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific context by its type and id.\n      **type** and **id** are required fields, if the context does not exist, it returns the 404 response"
+        },
+        {
+          "info": {
+            "name": "Novu Update a Context",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/contexts/:type/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Context ID"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Context type"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the data of an existing context.\n      **type** and **id** are required fields, **data** is required. Only the data field is updated, the rest of the context is not affected.\n      If the context does not exist, it returns the 404 response"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Context",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/contexts/:type/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Context ID"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Context type"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a context by its type and id.\n      **type** and **id** are required fields, if the context does not exist, it returns the 404 response"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Subscribers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu Bulk Create Subscribers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/subscribers/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "\n      Using this endpoint multiple subscribers can be created at once. The bulk API is limited to 500 subscribers per request.\n    "
+        },
+        {
+          "info": {
+            "name": "Novu Update Provider Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.novu.co/v1/subscribers/:subscriberId/credentials",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update credentials for a provider such as **slack** and **FCM**. \n      **providerId** is required field. This API creates the **deviceTokens** or replaces the existing ones."
+        },
+        {
+          "info": {
+            "name": "Novu Upsert Provider Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v1/subscribers/:subscriberId/credentials",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upsert credentials for a provider such as **slack** and **FCM**. \n      **providerId** is required field. This API creates **deviceTokens** or appends to the existing ones."
+        },
+        {
+          "info": {
+            "name": "Novu Delete Provider Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/subscribers/:subscriberId/credentials/:providerId",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "providerId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete subscriber credentials for a provider such as **slack** and **FCM** by **providerId**. \n    This action is irreversible and will remove the credentials for the provider for particular **subscriberId**."
+        },
+        {
+          "info": {
+            "name": "Novu Update Subscriber Online Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v1/subscribers/:subscriberId/online-status",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the subscriber online status by its unique key identifier **subscriberId**"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Subscriber Notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/subscribers/:subscriberId/notifications/feed",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "0",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query"
+              },
+              {
+                "name": "read",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "seen",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payload",
+                "value": "btoa(JSON.stringify({ foo: 123 })) results in base64 encoded string like eyJmb28iOjEyM30=",
+                "type": "query",
+                "description": "Base64 encoded string of the partial payload JSON object"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve subscriber in-app (inbox) notifications by its unique key identifier **subscriberId**."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Unseen Notifications Count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/subscribers/:subscriberId/notifications/unseen",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "seen",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to count seen notifications."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of notifications to return."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve unseen in-app (inbox) notifications count for a subscriber by its unique key identifier **subscriberId**."
+        },
+        {
+          "info": {
+            "name": "Novu Update Notifications State",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/subscribers/:subscriberId/messages/mark-as",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update subscriber's multiple in-app (inbox) notifications state such as seen, read, unseen or unread by **subscriberId**. \n      **messageId** is of type mongodbId of notifications"
+        },
+        {
+          "info": {
+            "name": "Novu Update All Notifications State",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/subscribers/:subscriberId/messages/mark-all",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update all subscriber in-app (inbox) notifications state such as read, unread, seen or unseen by **subscriberId**."
+        },
+        {
+          "info": {
+            "name": "Novu Update Notification Action Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/subscribers/:subscriberId/messages/:messageId/actions/:type",
+            "params": [
+              {
+                "name": "messageId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update in-app (inbox) notification's action status by its unique key identifier **messageId** and type field **type**. \n      **type** field can be **primary** or **secondary**"
+        },
+        {
+          "info": {
+            "name": "Novu Search Subscribers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/subscribers",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Email address of the subscriber to filter results."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Name of the subscriber to filter results."
+              },
+              {
+                "name": "phone",
+                "value": "",
+                "type": "query",
+                "description": "Phone number of the subscriber to filter results."
+              },
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "query",
+                "description": "Unique identifier of the subscriber to filter results."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Search subscribers by their **email**, **phone**, **subscriberId** and **name**. \n    The search is case sensitive and supports pagination.Checkout all available filters in the query section."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Subscriber",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/subscribers",
+            "params": [
+              {
+                "name": "failIfExists",
+                "value": "",
+                "type": "query",
+                "description": "If true, the request will fail if a subscriber with the same subscriberId already exists"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a subscriber with the subscriber attributes. \n      **subscriberId** is a required field, rest other fields are optional, if the subscriber already exists, it will be updated"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Subscriber",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a subscriber by its unique key identifier **subscriberId**. \n    **subscriberId** field is required."
+        },
+        {
+          "info": {
+            "name": "Novu Update a Subscriber",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a subscriber by its unique key identifier **subscriberId**. \n    **subscriberId** is a required field, rest other fields are optional"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Subscriber",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a subscriber entity from the Novu platform along with associated messages, preferences, and topic subscriptions. \n      **subscriberId** is a required field."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Subscriber Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/preferences",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "criticality",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "contextKeys",
+                "value": "tenant:acme",
+                "type": "query",
+                "description": "Context keys for filtering preferences (e.g., [\"tenant:acme\"])"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve subscriber channel preferences by its unique key identifier **subscriberId**. \n    This API returns all five channels preferences for all workflows and global preferences."
+        },
+        {
+          "info": {
+            "name": "Novu Update Subscriber Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/preferences",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update subscriber preferences by its unique key identifier **subscriberId**. \n    **workflowId** is optional field, if provided, this API will update that workflow preference, \n    otherwise it will update global preferences"
+        },
+        {
+          "info": {
+            "name": "Novu Bulk Update Subscriber Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/preferences/bulk",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Bulk update subscriber preferences by its unique key identifier **subscriberId**. \n    This API allows updating multiple workflow preferences in a single request."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Subscriber Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/subscriptions",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return (max 100)"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "query",
+                "description": "Filter by topic key"
+              },
+              {
+                "name": "contextKeys",
+                "value": "tenant:org-123,region:us-east-1",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve subscriber's topic subscriptions by its unique key identifier **subscriberId**. \n    Checkout all available filters in the query section."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Subscriber Notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "0",
+                "type": "query"
+              },
+              {
+                "name": "read",
+                "value": "",
+                "type": "query",
+                "description": "Filter by read/unread state"
+              },
+              {
+                "name": "archived",
+                "value": "",
+                "type": "query",
+                "description": "Filter by archived state"
+              },
+              {
+                "name": "snoozed",
+                "value": "",
+                "type": "query",
+                "description": "Filter by snoozed state"
+              },
+              {
+                "name": "seen",
+                "value": "",
+                "type": "query",
+                "description": "Filter by seen state"
+              },
+              {
+                "name": "data",
+                "value": "",
+                "type": "query",
+                "description": "Filter by data attributes (JSON string)"
+              },
+              {
+                "name": "severity",
+                "value": "",
+                "type": "query",
+                "description": "Filter by severity levels"
+              },
+              {
+                "name": "createdGte",
+                "value": "1704067200000",
+                "type": "query",
+                "description": "Filter notifications created on or after this timestamp (Unix timestamp in milliseconds)"
+              },
+              {
+                "name": "createdLte",
+                "value": "1735689599999",
+                "type": "query",
+                "description": "Filter notifications created on or before this timestamp (Unix timestamp in milliseconds)"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering notifications in multi-context scenarios"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve in-app (inbox) notifications for a subscriber by its unique key identifier **subscriberId**. \n    Supports filtering by tags, read/archived/snoozed/seen state, data attributes, severity, date range, and context keys."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Subscriber Notifications Count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/count",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "filters",
+                "value": "[{\"read\":false,\"archived\":false},{\"tags\":[\"important\"]},{\"tags\":{\"and\":[{\"or\":[\"a\",\"b\"]},{\"or\":[\"c\"]}]}}]",
+                "type": "query",
+                "description": "Array of filter objects (max 30) to count notifications by different criteria"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve count of in-app (inbox) notifications for a subscriber by its unique key identifier **subscriberId**. \n    Supports multiple filters to count in-app (inbox) notifications by different criteria, including context keys."
+        },
+        {
+          "info": {
+            "name": "Novu Mark a Notification as Read",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/:notificationId/read",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the notification"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Mark a specific in-app (inbox) notification as read by its unique identifier **notificationId**."
+        },
+        {
+          "info": {
+            "name": "Novu Mark a Notification as Unread",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/:notificationId/unread",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the notification"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Mark a specific in-app (inbox) notification as unread by its unique identifier **notificationId**."
+        },
+        {
+          "info": {
+            "name": "Novu Archive a Notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/:notificationId/archive",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the notification"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Archive a specific in-app (inbox) notification by its unique identifier **notificationId**."
+        },
+        {
+          "info": {
+            "name": "Novu Unarchive a Notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/:notificationId/unarchive",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the notification"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unarchive a specific in-app (inbox) notification by its unique identifier **notificationId**."
+        },
+        {
+          "info": {
+            "name": "Novu Snooze a Notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/:notificationId/snooze",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the notification"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Snooze a specific in-app (inbox) notification by its unique identifier **notificationId** until a specified time."
+        },
+        {
+          "info": {
+            "name": "Novu Unsnooze a Notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/:notificationId/unsnooze",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the notification"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Unsnooze a specific in-app (inbox) notification by its unique identifier **notificationId**."
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Notification",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/:notificationId",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the notification"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific in-app (inbox) notification permanently by its unique identifier **notificationId**."
+        },
+        {
+          "info": {
+            "name": "Novu Complete a Notification Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/:notificationId/actions/:actionType/complete",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the notification"
+              },
+              {
+                "name": "actionType",
+                "value": "",
+                "type": "path",
+                "description": "The type of action (primary or secondary)"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Mark a single in-app (inbox) notification's action (primary or secondary) as completed by its unique identifier **notificationId** and action type **actionType**."
+        },
+        {
+          "info": {
+            "name": "Novu Revert a Notification Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/:notificationId/actions/:actionType/revert",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              },
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the notification"
+              },
+              {
+                "name": "actionType",
+                "value": "",
+                "type": "path",
+                "description": "The type of action (primary or secondary)"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Context keys for filtering"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Revert a single in-app (inbox) notification's action (primary or secondary) to pending state by its unique identifier **notificationId** and action type **actionType**."
+        },
+        {
+          "info": {
+            "name": "Novu Mark Notifications as Seen",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/seen",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Mark specific and multiple in-app (inbox) notifications as seen. Supports context-based filtering."
+        },
+        {
+          "info": {
+            "name": "Novu Mark All Notifications as Read",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/read",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Mark all in-app (inbox) notifications matching the specified filters as read. Supports context-based filtering."
+        },
+        {
+          "info": {
+            "name": "Novu Archive All Notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/archive",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Archive all in-app (inbox) notifications matching the specified filters. Supports context-based filtering."
+        },
+        {
+          "info": {
+            "name": "Novu Archive All Read Notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/read-archive",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Archive all read in-app (inbox) notifications matching the specified filters. Supports context-based filtering."
+        },
+        {
+          "info": {
+            "name": "Novu Delete All Notifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/subscribers/:subscriberId/notifications/delete",
+            "params": [
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the subscriber"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Permanently delete all in-app (inbox) notifications matching the specified filters. Supports context-based filtering."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Layouts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Layouts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/layouts",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Number of items to return per page"
+              },
+              {
+                "name": "offset",
+                "value": "0",
+                "type": "query",
+                "description": "Number of items to skip before starting to return results"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort the results by"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Search query to filter layouts"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a list of layouts with optional filtering and pagination"
+        },
+        {
+          "info": {
+            "name": "Novu Create a Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/layouts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new layout in the Novu Cloud environment"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/layouts/:layoutId",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetches details of a specific layout by its unique identifier **layoutId**"
+        },
+        {
+          "info": {
+            "name": "Novu Update a Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.novu.co/v2/layouts/:layoutId",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the details of an existing layout, here **layoutId** is the identifier of the layout"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/layouts/:layoutId",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the layout"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes a specific layout by its unique identifier **layoutId**"
+        },
+        {
+          "info": {
+            "name": "Novu Duplicate a Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/layouts/:layoutId/duplicate",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Duplicates a layout by its unique identifier **layoutId**. This will create a new layout with the content of the original layout."
+        },
+        {
+          "info": {
+            "name": "Novu Generate Layout Preview",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/layouts/:layoutId/preview",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generates a preview for a layout by its unique identifier **layoutId**"
+        },
+        {
+          "info": {
+            "name": "Novu Get Layout Usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/layouts/:layoutId/usage",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves information about workflows that use the specified layout by its unique identifier **layoutId**"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/messages",
+            "params": [
+              {
+                "name": "channel",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "contextKeys",
+                "value": "tenant:org-123,region:us-east-1",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all messages for the current environment. \n    This API supports filtering by **channel**, **subscriberId**, and **transactionId**. \n    This API returns a paginated list of messages."
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/messages/:messageId",
+            "params": [
+              {
+                "name": "messageId",
+                "value": "507f1f77bcf86cd799439011",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a message entity from the Novu platform by **messageId**. \n    This action is irreversible. **messageId** is required and of mongodbId type."
+        },
+        {
+          "info": {
+            "name": "Novu Delete Messages by TransactionId",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/messages/transaction/:transactionId",
+            "params": [
+              {
+                "name": "channel",
+                "value": "",
+                "type": "query",
+                "description": "The channel of the message to be deleted"
+              },
+              {
+                "name": "transactionId",
+                "value": "507f1f77bcf86cd799439011",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete multiple messages from the Novu platform using **transactionId** of triggered event. \n    This API supports filtering by **channel** and delete all messages associated with the **transactionId**."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Topics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu Check Topic Subscriber",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/topics/:topicKey/subscribers/:externalSubscriberId",
+            "params": [
+              {
+                "name": "externalSubscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The external subscriber id"
+              },
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The topic key"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check if a subscriber belongs to a certain topic"
+        },
+        {
+          "info": {
+            "name": "Novu List All Topics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/topics",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return (max 100)"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "query",
+                "description": "Key of the topic to filter results."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Name of the topic to filter results."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This api returns a paginated list of topics.\n    Topics can be filtered by **key**, **name**, or **includeCursor** to paginate through the list. \n    Checkout all available filters in the query section."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/topics",
+            "params": [
+              {
+                "name": "failIfExists",
+                "value": "",
+                "type": "query",
+                "description": "If true, the request will fail if a topic with the same key already exists"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new topic if it does not exist, or updates an existing topic if it already exists. Use ?failIfExists=true to prevent updates."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/topics/:topicKey",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a topic by its unique key identifier **topicKey**"
+        },
+        {
+          "info": {
+            "name": "Novu Update a Topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/topics/:topicKey",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a topic name by its unique key identifier **topicKey**"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/topics/:topicKey",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a topic by its unique key identifier **topicKey**. \n    This action is irreversible and will remove all subscriptions to the topic."
+        },
+        {
+          "info": {
+            "name": "Novu List Topic Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return (max 100)"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by subscriber ID"
+              },
+              {
+                "name": "contextKeys",
+                "value": "tenant:org-123,region:us-east-1",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all subscriptions of subscribers for a topic.\n    Checkout all available filters in the query section."
+        },
+        {
+          "info": {
+            "name": "Novu Create Topic Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This api will create subscription for subscriberIds for a topic. \n      Its like subscribing to a common interest group. if topic does not exist, it will be created."
+        },
+        {
+          "info": {
+            "name": "Novu Delete Topic Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete subscriptions for subscriberIds for a topic."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Topic Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions/:identifier",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              },
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the subscription"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a subscription by its unique identifier for a topic."
+        },
+        {
+          "info": {
+            "name": "Novu Update a Topic Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions/:identifier",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              },
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the subscription"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a subscription by its unique identifier for a topic. You can update the preferences and name associated with the subscription."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Environment Variables",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Variables",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/environment-variables",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Filter variables by key (case-insensitive partial match)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all environment variables for the current organization. Secret values are masked."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/environment-variables",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new environment variable. Keys must be uppercase with underscores only (e.g. BASE_URL). Secret variables are encrypted at rest and masked in API responses."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Variable Usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/environment-variables/:variableKey/usage",
+            "params": [
+              {
+                "name": "variableKey",
+                "value": "BASE_URL",
+                "type": "path",
+                "description": "The unique key of the environment variable (e.g. BASE_URL)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the workflows that reference this environment variable via `{{env.KEY}}` in their step controls. **variableId** is required."
+        },
+        {
+          "info": {
+            "name": "Novu Get Environment Variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/environment-variables/:variableKey",
+            "params": [
+              {
+                "name": "variableKey",
+                "value": "BASE_URL",
+                "type": "path",
+                "description": "The unique key of the environment variable (e.g. BASE_URL)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single environment variable by key. Secret values are masked."
+        },
+        {
+          "info": {
+            "name": "Novu Update a Variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v1/environment-variables/:variableKey",
+            "params": [
+              {
+                "name": "variableKey",
+                "value": "BASE_URL",
+                "type": "path",
+                "description": "The unique key of the environment variable (e.g. BASE_URL)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates an existing environment variable. Providing `values` merges them into the existing per-environment values by `_environmentId`; envs not present in the request keep their stored value. Submitting the masked secret placeholder (the value returned by read endpoints for secret variables) as a real value is rejected."
+        },
+        {
+          "info": {
+            "name": "Novu Delete Environment Variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/environment-variables/:variableKey",
+            "params": [
+              {
+                "name": "variableKey",
+                "value": "BASE_URL",
+                "type": "path",
+                "description": "The unique key of the environment variable (e.g. BASE_URL)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes an environment variable by key."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workflows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Workflows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/workflows",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Number of items to return per page"
+              },
+              {
+                "name": "offset",
+                "value": "0",
+                "type": "query",
+                "description": "Number of items to skip before starting to return results"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort the results by"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Search query to filter workflows"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Filter workflows by tags"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter workflows by status"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a list of workflows with optional filtering and pagination"
+        },
+        {
+          "info": {
+            "name": "Novu Create a Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/workflows",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new workflow in the Novu Cloud environment"
+        },
+        {
+          "info": {
+            "name": "Novu Sync a Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.novu.co/v2/workflows/:workflowId/sync",
+            "params": [
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Synchronizes a workflow to the target environment"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/workflows/:workflowId",
+            "params": [
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "environmentId",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetches details of a specific workflow by its unique identifier **workflowId**"
+        },
+        {
+          "info": {
+            "name": "Novu Update a Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.novu.co/v2/workflows/:workflowId",
+            "params": [
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the details of an existing workflow, here **workflowId** is the identifier of the workflow"
+        },
+        {
+          "info": {
+            "name": "Novu Update a Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/workflows/:workflowId",
+            "params": [
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Partially updates a workflow by its unique identifier **workflowId**"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/workflows/:workflowId",
+            "params": [
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes a specific workflow by its unique identifier **workflowId**"
+        },
+        {
+          "info": {
+            "name": "Novu Generate a Step Preview",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/workflows/:workflowId/step/:stepId/preview",
+            "params": [
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "stepId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generates a preview for a specific workflow step by its unique identifier **stepId**"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Workflow Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/workflows/:workflowId/steps/:stepId",
+            "params": [
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "stepId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves data for a specific step in a workflow"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Channel Connections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Channel Connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/channel-connections",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return (max 100)"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "subscriberId",
+                "value": "subscriber-123",
+                "type": "query",
+                "description": "The subscriber ID to filter results by"
+              },
+              {
+                "name": "channel",
+                "value": "chat",
+                "type": "query",
+                "description": "Filter by channel type (email, sms, push, chat, etc.)."
+              },
+              {
+                "name": "providerId",
+                "value": "slack",
+                "type": "query",
+                "description": "Filter by provider identifier (e.g., sendgrid, twilio, slack, etc.)."
+              },
+              {
+                "name": "integrationIdentifier",
+                "value": "slack-prod",
+                "type": "query",
+                "description": "Filter by integration identifier."
+              },
+              {
+                "name": "contextKeys",
+                "value": "tenant:org-123,region:us-east-1",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all channel connections for a resource."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Channel Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/channel-connections",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new channel connection for a resource for given integration. Only one channel connection is allowed per resource and integration."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Channel Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/channel-connections/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the channel connection"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific channel connection by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Novu Update a Channel Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v1/channel-connections/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the channel connection"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing channel connection by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Channel Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/channel-connections/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the channel connection"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific channel connection by its unique identifier."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Channel Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Channel Endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/channel-endpoints",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return (max 100)"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "subscriberId",
+                "value": "subscriber-123",
+                "type": "query",
+                "description": "The subscriber ID to filter results by"
+              },
+              {
+                "name": "contextKeys",
+                "value": "tenant:org-123,region:us-east-1",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              },
+              {
+                "name": "channel",
+                "value": "",
+                "type": "query",
+                "description": "Channel type to filter results."
+              },
+              {
+                "name": "providerId",
+                "value": "slack",
+                "type": "query",
+                "description": "Filter by provider identifier (e.g., sendgrid, twilio, slack, etc.)."
+              },
+              {
+                "name": "integrationIdentifier",
+                "value": "slack-prod",
+                "type": "query",
+                "description": "Integration identifier to filter results."
+              },
+              {
+                "name": "connectionIdentifier",
+                "value": "slack-connection-abc123",
+                "type": "query",
+                "description": "Connection identifier to filter results."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all channel endpoints for a resource based on query filters."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Channel Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/channel-endpoints",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new channel endpoint for a resource."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Channel Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/channel-endpoints/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the channel endpoint"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific channel endpoint by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Novu Update a Channel Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v1/channel-endpoints/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the channel endpoint"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing channel endpoint by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Channel Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/channel-endpoints/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the channel endpoint"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific channel endpoint by its unique identifier."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Translations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu Upload Translation Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/translations/upload",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "resourceId",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "resourceType",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "files",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload one or more JSON translation files for a specific workflow. Files name must match the locale, e.g. en_US.json. Supports both \"files\" and \"files[]\" field names for backwards compatibility."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/translations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a translation for a specific workflow and locale, if the translation already exists, it will be updated"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Master Translations JSON",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/translations/master-json",
+            "params": [
+              {
+                "name": "locale",
+                "value": "en_US",
+                "type": "query",
+                "description": "Locale to export. If not provided, exports organization default locale"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all translations for a locale in master JSON format organized by resourceId (workflowId)"
+        },
+        {
+          "info": {
+            "name": "Novu Import Master Translations JSON",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/translations/master-json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Import translations for multiple workflows from master JSON format for a specific locale"
+        },
+        {
+          "info": {
+            "name": "Novu Upload Master Translations JSON File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/translations/master-json/upload",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload a master JSON file containing translations for multiple workflows. Locale is automatically detected from filename (e.g., en_US.json)"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Translation Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/translations/group/:resourceType/:resourceId",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "workflow",
+                "type": "path",
+                "description": "Resource type"
+              },
+              {
+                "name": "resourceId",
+                "value": "welcome-email",
+                "type": "path",
+                "description": "Resource ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a single translation group by resource type (workflow, layout) and resource ID (workflowId, layoutId)"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/translations/:resourceType/:resourceId/:locale",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource type"
+              },
+              {
+                "name": "resourceId",
+                "value": "welcome-email",
+                "type": "path",
+                "description": "Resource ID"
+              },
+              {
+                "name": "locale",
+                "value": "en_US",
+                "type": "path",
+                "description": "Locale code"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific translation by resource type, resource ID and locale"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/translations/:resourceType/:resourceId/:locale",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource type"
+              },
+              {
+                "name": "resourceId",
+                "value": "",
+                "type": "path",
+                "description": "Resource ID"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Locale code"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific translation by resource type, resource ID and locale"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Translation Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/translations/:resourceType/:resourceId",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "workflow",
+                "type": "path",
+                "description": "Resource type"
+              },
+              {
+                "name": "resourceId",
+                "value": "welcome-email",
+                "type": "path",
+                "description": "Resource ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an entire translation group and all its translations"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Activity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu Track Provider Activity and Engagement Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/inbound-webhooks/delivery-providers/:environmentId/:integrationId",
+            "params": [
+              {
+                "name": "environmentId",
+                "value": "",
+                "type": "path",
+                "description": "The environment identifier"
+              },
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path",
+                "description": "The integration identifier for the delivery provider"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Track activity and engagement events for a specific delivery provider"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

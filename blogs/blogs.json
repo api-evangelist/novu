@@ -1,0 +1,14 @@
+{
+  "repo": "novu",
+  "feeds": [
+    {
+      "source": "https://novu.co/blog",
+      "feed_url": "https://novu.co/blog/rss.xml",
+      "title": "Novu Blog",
+      "saved": 0,
+      "method": "feed"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-06-07T00:00:00Z"
+}
