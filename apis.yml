@@ -74,39 +74,39 @@ apis:
         url: https://docs.novu.co/api-reference/overview#authentication
       - type: RateLimits
         url: rate-limits/novu-rate-limits.yml
-      - type: Quickstart
+      - type: GettingStarted
         url: https://docs.novu.co/platform/quickstart/nextjs
-      - type: SDK
+      - type: SDKs
         url: https://www.npmjs.com/package/@novu/api
         title: TypeScript / Node.js SDK
-      - type: SDK
+      - type: SDKs
         url: https://pypi.org/project/novu-py/
         title: Python SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/novuhq/novu-go
         title: Go SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/novuhq/php-novu
         title: PHP SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/novuhq/novu-csharp
         title: C# SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/novuhq/novu-java
         title: Java SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/novuhq/novu-elixir
         title: Elixir SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/novuhq/novu-kotlin
         title: Kotlin SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/novuhq/novu-ruby
         title: Ruby SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/novuhq/novu-rust
         title: Rust SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/novuhq/novu-dotnet
         title: .NET SDK
       - type: CodeExamples
@@ -163,29 +163,29 @@ apis:
         url: json-structure/novu-topic-response-dto-structure.json
       - type: JSONStructure
         url: json-structure/novu-integration-response-dto-structure.json
-      - type: Example
+      - type: Examples
         url: examples/novu-trigger-event-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-trigger-event-bulk-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-broadcast-event-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-create-subscriber-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-bulk-create-subscribers-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-create-topic-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-add-subscribers-to-topic-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-create-environment-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-create-integration-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-workflow-response-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-list-messages-example.json
-      - type: Example
+      - type: Examples
         url: examples/novu-error-response-example.json
   - aid: novu:rest-api-eu
     name: Novu REST API (EU Region)
@@ -230,18 +230,18 @@ apis:
       - type: AsyncAPI
         url: asyncapi/novu-asyncapi.yml
         title: Notification Center WebSocket (Socket.IO) — AsyncAPI 2.6
-      - type: Quickstart
+      - type: GettingStarted
         url: https://docs.novu.co/platform/quickstart/react
-      - type: SDK
+      - type: SDKs
         url: https://www.npmjs.com/package/@novu/react
         title: React Inbox SDK
-      - type: SDK
+      - type: SDKs
         url: https://www.npmjs.com/package/@novu/react-native
         title: React Native Inbox SDK
-      - type: SDK
+      - type: SDKs
         url: https://www.npmjs.com/package/@novu/js
         title: Headless JS Inbox SDK
-      - type: SDK
+      - type: SDKs
         url: https://www.npmjs.com/package/@novu/nextjs
         title: Next.js Inbox helpers
       - type: CodeExamples
@@ -272,9 +272,9 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.novu.co/framework/overview
-      - type: Quickstart
+      - type: GettingStarted
         url: https://docs.novu.co/framework/quickstart/nextjs
-      - type: SDK
+      - type: SDKs
         url: https://www.npmjs.com/package/@novu/framework
         title: '@novu/framework'
       - type: CLI
@@ -317,54 +317,49 @@ apis:
 common:
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/novu/overview
-  - type: ArazzoWorkflows
-    url: arazzo/
-    workflows:
-      - url: arazzo/novu-bulk-onboard-and-broadcast-workflow.yml
-        name: Novu Bulk Onboard Subscribers and Broadcast an Announcement
-        summary: Create many subscribers in one call, then broadcast a single announcement to all subscribers.
-      - url: arazzo/novu-create-workflow-and-trigger-workflow.yml
-        name: Novu Create a Workflow and Trigger It
-        summary: Define a new in-app notification workflow, then immediately trigger it to a subscriber.
-      - url: arazzo/novu-offboard-subscriber-workflow.yml
-        name: Novu Offboard a Subscriber
-        summary: Confirm a subscriber, audit their topic subscriptions, then delete the subscriber and all associated data.
-      - url: arazzo/novu-onboard-subscriber-and-notify-workflow.yml
-        name: Novu Onboard a Subscriber and Send Their First Notification
-        summary: Create a subscriber, trigger a workflow to them, and read back the resulting event.
-      - url: arazzo/novu-provision-integration-and-set-primary-workflow.yml
-        name: Novu Provision a Delivery Integration and Make It Primary
-        summary: Create a channel integration, promote it to primary for its channel, and confirm it is active.
-      - url: arazzo/novu-set-preferences-then-notify-workflow.yml
-        name: Novu Set Subscriber Preferences Then Notify
-        summary: Confirm a subscriber exists, set their workflow channel preferences, then trigger a respectful notification.
-      - url: arazzo/novu-subscribe-existing-to-topic-workflow.yml
-        name: Novu Subscribe an Existing Subscriber to a Topic
-        summary: Find a subscriber by search, subscribe them to a topic, and confirm the subscription.
-      - url: arazzo/novu-subscriber-inbox-triage-workflow.yml
-        name: Novu Subscriber Inbox Triage
-        summary: Confirm a subscriber, read their unread in-app inbox, then mark all notifications as read.
-      - url: arazzo/novu-topic-broadcast-campaign-workflow.yml
-        name: Novu Topic Broadcast Campaign
-        summary: Create a topic, subscribe an audience to it, and trigger a single notification to the whole topic.
-      - url: arazzo/novu-trigger-and-verify-delivery-workflow.yml
-        name: Novu Trigger a Notification and Verify Delivery
-        summary: Trigger a workflow to a subscriber, then inspect the event and the per-channel messages it produced.
-      - url: arazzo/novu-trigger-then-cancel-workflow.yml
-        name: Novu Trigger a Deferred Notification and Cancel It
-        summary: >-
-          Trigger a workflow with a caller-supplied transactionId, then cancel any pending delay or digest using that
-          id.
-      - url: arazzo/novu-unsubscribe-from-topic-workflow.yml
-        name: Novu Unsubscribe Subscribers From a Topic
-        summary: Remove a set of subscribers from a topic, then list the remaining subscriptions to confirm.
+  - type: Arazzo
+    url: arazzo/novu-bulk-onboard-and-broadcast-workflow.yml
+    name: Novu Bulk Onboard Subscribers and Broadcast an Announcement
+  - type: Arazzo
+    url: arazzo/novu-create-workflow-and-trigger-workflow.yml
+    name: Novu Create a Workflow and Trigger It
+  - type: Arazzo
+    url: arazzo/novu-offboard-subscriber-workflow.yml
+    name: Novu Offboard a Subscriber
+  - type: Arazzo
+    url: arazzo/novu-onboard-subscriber-and-notify-workflow.yml
+    name: Novu Onboard a Subscriber and Send Their First Notification
+  - type: Arazzo
+    url: arazzo/novu-provision-integration-and-set-primary-workflow.yml
+    name: Novu Provision a Delivery Integration and Make It Primary
+  - type: Arazzo
+    url: arazzo/novu-set-preferences-then-notify-workflow.yml
+    name: Novu Set Subscriber Preferences Then Notify
+  - type: Arazzo
+    url: arazzo/novu-subscribe-existing-to-topic-workflow.yml
+    name: Novu Subscribe an Existing Subscriber to a Topic
+  - type: Arazzo
+    url: arazzo/novu-subscriber-inbox-triage-workflow.yml
+    name: Novu Subscriber Inbox Triage
+  - type: Arazzo
+    url: arazzo/novu-topic-broadcast-campaign-workflow.yml
+    name: Novu Topic Broadcast Campaign
+  - type: Arazzo
+    url: arazzo/novu-trigger-and-verify-delivery-workflow.yml
+    name: Novu Trigger a Notification and Verify Delivery
+  - type: Arazzo
+    url: arazzo/novu-trigger-then-cancel-workflow.yml
+    name: Novu Trigger a Deferred Notification and Cancel It
+  - type: Arazzo
+    url: arazzo/novu-unsubscribe-from-topic-workflow.yml
+    name: Novu Unsubscribe Subscribers From a Topic
   - type: Website
     url: https://novu.co
   - type: Portal
     url: https://docs.novu.co
   - type: Documentation
     url: https://docs.novu.co
-  - type: SignUp
+  - type: Signup
     url: https://web.novu.co/auth/signup
   - type: Login
     url: https://web.novu.co
@@ -390,7 +385,7 @@ common:
   - type: License
     url: https://github.com/novuhq/novu/blob/next/LICENSE
     title: MIT License
-  - type: SDK
+  - type: SDKs
     url: https://docs.novu.co/sdks/introduction
   - type: CLI
     url: https://docs.novu.co/community/run-in-local-machine
@@ -420,13 +415,13 @@ common:
     url: https://stackoverflow.com/questions/tagged/novu
   - type: YouTube
     url: https://www.youtube.com/@novuhq
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://docs.novu.co/llms.txt
   - type: SpectralRules
     url: rules/novu-spectral-rules.yml
   - type: Vocabulary
     url: vocabulary/novu-vocabulary.yml
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/novu-context.jsonld
   - type: Tools
     url: https://github.com/novuhq/novu-mcp-server
