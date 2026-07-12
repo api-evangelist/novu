@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/novu-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: secretKey
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: 'API key authentication. Allowed headers-- "Authorization: ApiKey <novu_secret_key>".'
+  sources:
+  - openapi/novu-openapi.yml

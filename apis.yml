@@ -315,6 +315,10 @@ apis:
       - type: SourceCode
         url: https://github.com/novuhq/novu-mcp-server
 common:
+  - type: DomainSecurity
+    url: security/novu-domain-security.yml
+  - type: Authentication
+    url: authentication/novu-authentication.yml
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/novu/overview
   - type: Arazzo
