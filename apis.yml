@@ -315,6 +315,8 @@ apis:
       - type: SourceCode
         url: https://github.com/novuhq/novu-mcp-server
 common:
+  - type: AgenticAccess
+    url: agentic-access/novu-agentic-access.yml
   - type: DomainSecurity
     url: security/novu-domain-security.yml
   - type: Authentication
