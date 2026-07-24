@@ -1,0 +1,2903 @@
+openapi: 3.1.0
+info:
+  title: Novu Activity Channel Endpoints API
+  description: Novu REST API. Please see https://docs.novu.co/api-reference for more details.
+  version: 3.15.0
+  contact:
+    name: Novu Support
+    url: https://discord.gg/novu
+    email: support@novu.co
+  termsOfService: https://novu.co/terms
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+servers:
+- url: https://api.novu.co
+- url: https://eu.api.novu.co
+security:
+- secretKey: []
+tags:
+- name: Channel Endpoints
+paths:
+  /v1/channel-endpoints:
+    get:
+      operationId: ChannelEndpointsController_listChannelEndpoints
+      x-speakeasy-name-override: list
+      summary: Novu List All Channel Endpoints
+      description: List all channel endpoints for a resource based on query filters.
+      parameters:
+      - name: after
+        required: false
+        in: query
+        description: Cursor for pagination indicating the starting point after which to fetch results.
+        schema:
+          type: string
+      - name: before
+        required: false
+        in: query
+        description: Cursor for pagination indicating the ending point before which to fetch results.
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Limit the number of items to return (max 100)
+        example: 10
+        schema:
+          maximum: 100
+          type: number
+      - name: orderDirection
+        required: false
+        in: query
+        description: Direction of sorting
+        schema:
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: orderBy
+        required: false
+        in: query
+        description: Field to order by
+        schema:
+          type: string
+      - name: includeCursor
+        required: false
+        in: query
+        description: Include cursor item in response
+        schema:
+          type: boolean
+      - name: subscriberId
+        required: false
+        in: query
+        description: The subscriber ID to filter results by
+        example: subscriber-123
+        schema:
+          type: string
+      - name: contextKeys
+        required: false
+        in: query
+        description: 'Filter by exact context keys, order insensitive (format: "type:id")'
+        example:
+        - tenant:org-123
+        - region:us-east-1
+        schema:
+          type: array
+          items:
+            type: string
+      - name: channel
+        required: false
+        in: query
+        description: Channel type to filter results.
+        schema:
+          enum:
+          - in_app
+          - email
+          - sms
+          - chat
+          - push
+          type: string
+      - name: providerId
+        required: false
+        in: query
+        description: Filter by provider identifier (e.g., sendgrid, twilio, slack, etc.).
+        example: slack
+        schema:
+          $ref: '#/components/schemas/ProvidersIdEnum'
+      - name: integrationIdentifier
+        required: false
+        in: query
+        description: Integration identifier to filter results.
+        example: slack-prod
+        schema:
+          type: string
+      - name: connectionIdentifier
+        required: false
+        in: query
+        description: Connection identifier to filter results.
+        example: slack-connection-abc123
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ListChannelEndpointsResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Channel Endpoints
+      security:
+      - secretKey: []
+      - secretKey: []
+    post:
+      operationId: ChannelEndpointsController_createChannelEndpoint
+      x-speakeasy-name-override: create
+      summary: Novu Create a Channel Endpoint
+      description: Create a new channel endpoint for a resource.
+      parameters: []
+      requestBody:
+        required: true
+        description: Channel endpoint creation request. The structure varies based on the type field.
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/CreateSlackChannelEndpointDto'
+              - $ref: '#/components/schemas/CreateSlackUserEndpointDto'
+              - $ref: '#/components/schemas/CreateWebhookEndpointDto'
+              - $ref: '#/components/schemas/CreatePhoneEndpointDto'
+              - $ref: '#/components/schemas/CreateMsTeamsChannelEndpointDto'
+              - $ref: '#/components/schemas/CreateMsTeamsUserEndpointDto'
+              - $ref: '#/components/schemas/CreateTelegramChatEndpointDto'
+              discriminator:
+                propertyName: type
+                mapping:
+                  slack_channel: '#/components/schemas/CreateSlackChannelEndpointDto'
+                  slack_user: '#/components/schemas/CreateSlackUserEndpointDto'
+                  webhook: '#/components/schemas/CreateWebhookEndpointDto'
+                  phone: '#/components/schemas/CreatePhoneEndpointDto'
+                  ms_teams_channel: '#/components/schemas/CreateMsTeamsChannelEndpointDto'
+                  ms_teams_user: '#/components/schemas/CreateMsTeamsUserEndpointDto'
+                  telegram_chat: '#/components/schemas/CreateTelegramChatEndpointDto'
+      responses:
+        '201':
+          description: Created
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GetChannelEndpointResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Channel Endpoints
+      security:
+      - secretKey: []
+      - secretKey: []
+  /v1/channel-endpoints/{identifier}:
+    get:
+      operationId: ChannelEndpointsController_getChannelEndpoint
+      x-speakeasy-name-override: retrieve
+      summary: Novu Retrieve a Channel Endpoint
+      description: Retrieve a specific channel endpoint by its unique identifier.
+      parameters:
+      - name: identifier
+        required: true
+        in: path
+        description: The unique identifier of the channel endpoint
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GetChannelEndpointResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Channel Endpoints
+      security:
+      - secretKey: []
+      - secretKey: []
+    patch:
+      operationId: ChannelEndpointsController_updateChannelEndpoint
+      x-speakeasy-name-override: update
+      summary: Novu Update a Channel Endpoint
+      description: Update an existing channel endpoint by its unique identifier.
+      parameters:
+      - name: identifier
+        required: true
+        in: path
+        description: The unique identifier of the channel endpoint
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateChannelEndpointRequestDto'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GetChannelEndpointResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Channel Endpoints
+      security:
+      - secretKey: []
+      - secretKey: []
+    delete:
+      operationId: ChannelEndpointsController_deleteChannelEndpoint
+      x-speakeasy-name-override: delete
+      summary: Novu Delete a Channel Endpoint
+      description: Delete a specific channel endpoint by its unique identifier.
+      parameters:
+      - name: identifier
+        required: true
+        in: path
+        description: The unique identifier of the channel endpoint
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Channel Endpoints
+      security:
+      - secretKey: []
+      - secretKey: []
+components:
+  schemas:
+    GetChannelEndpointResponseDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier of the channel endpoint.
+        channel:
+          enum:
+          - in_app
+          - email
+          - sms
+          - chat
+          - push
+          type:
+          - string
+          - 'null'
+          description: The channel type (email, sms, push, chat, etc.).
+        providerId:
+          type:
+          - string
+          - 'null'
+          description: The provider identifier (e.g., sendgrid, twilio, slack, etc.).
+          enum:
+          - emailjs
+          - mailgun
+          - mailjet
+          - mandrill
+          - nodemailer
+          - postmark
+          - sendgrid
+          - sendinblue
+          - ses
+          - netcore
+          - infobip-email
+          - resend
+          - plunk
+          - mailersend
+          - mailtrap
+          - clickatell
+          - outlook365
+          - novu-email
+          - sparkpost
+          - email-webhook
+          - braze
+          - novu-email-agent
+          - nexmo
+          - plivo
+          - sms77
+          - sms-central
+          - sns
+          - telnyx
+          - twilio
+          - gupshup
+          - firetext
+          - infobip-sms
+          - burst-sms
+          - bulk-sms
+          - isend-sms
+          - forty-six-elks
+          - kannel
+          - maqsam
+          - termii
+          - africas-talking
+          - novu-sms
+          - sendchamp
+          - generic-sms
+          - clicksend
+          - bandwidth
+          - messagebird
+          - simpletexting
+          - azure-sms
+          - ring-central
+          - brevo-sms
+          - eazy-sms
+          - mobishastra
+          - afro-message
+          - unifonic
+          - smsmode
+          - imedia
+          - sinch
+          - isendpro-sms
+          - cm-telecom
+          - fcm
+          - apns
+          - expo
+          - one-signal
+          - pushpad
+          - push-webhook
+          - pusher-beams
+          - appio
+          - novu
+          - slack
+          - discord
+          - msteams
+          - mattermost
+          - ryver
+          - zulip
+          - grafana-on-call
+          - getstream
+          - rocket-chat
+          - whatsapp-business
+          - chat-webhook
+          - novu-slack
+          - telegram
+          - anthropic
+          example: slack
+        integrationIdentifier:
+          type:
+          - string
+          - 'null'
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type:
+          - string
+          - 'null'
+          description: The identifier of the channel connection used for this endpoint.
+          example: slack-connection-abc123
+        subscriberId:
+          type:
+          - string
+          - 'null'
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        contextKeys:
+          description: The context of the channel connection
+          example:
+          - tenant:org-123
+          - region:us-east-1
+          type: array
+          items:
+            type: string
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - slack_channel
+          - slack_user
+          - webhook
+          - phone
+          - ms_teams_channel
+          - ms_teams_user
+          - telegram_chat
+          example: slack_channel
+        endpoint:
+          description: Endpoint data specific to the channel type
+          oneOf:
+          - $ref: '#/components/schemas/SlackChannelEndpointDto'
+          - $ref: '#/components/schemas/SlackUserEndpointDto'
+          - $ref: '#/components/schemas/WebhookEndpointDto'
+          - $ref: '#/components/schemas/PhoneEndpointDto'
+          - $ref: '#/components/schemas/MsTeamsChannelEndpointDto'
+          - $ref: '#/components/schemas/MsTeamsUserEndpointDto'
+          - $ref: '#/components/schemas/TelegramChatEndpointDto'
+        createdAt:
+          type: string
+          description: The timestamp indicating when the channel endpoint was created, in ISO 8601 format.
+        updatedAt:
+          type: string
+          description: The timestamp indicating when the channel endpoint was last updated, in ISO 8601 format.
+      required:
+      - identifier
+      - channel
+      - providerId
+      - integrationIdentifier
+      - connectionIdentifier
+      - subscriberId
+      - contextKeys
+      - type
+      - endpoint
+      - createdAt
+      - updatedAt
+    CreateTelegramChatEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - telegram_chat
+          example: telegram_chat
+        endpoint:
+          description: Telegram chat endpoint data
+          allOf:
+          - $ref: '#/components/schemas/TelegramChatEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
+    ListChannelEndpointsResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned Channel Endpoints
+          type: array
+          items:
+            $ref: '#/components/schemas/GetChannelEndpointResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
+    CreateWebhookEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - webhook
+          example: webhook
+        endpoint:
+          description: Webhook endpoint data
+          allOf:
+          - $ref: '#/components/schemas/WebhookEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
+    CreatePhoneEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - phone
+          example: phone
+        endpoint:
+          description: Phone endpoint data
+          allOf:
+          - $ref: '#/components/schemas/PhoneEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
+    SlackUserEndpointDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Slack user ID
+          example: U123456789
+      required:
+      - userId
+    ProvidersIdEnum:
+      type: string
+      description: Provider ID of the job
+      enum:
+      - emailjs
+      - mailgun
+      - mailjet
+      - mandrill
+      - nodemailer
+      - postmark
+      - sendgrid
+      - sendinblue
+      - ses
+      - netcore
+      - infobip-email
+      - resend
+      - plunk
+      - mailersend
+      - mailtrap
+      - clickatell
+      - outlook365
+      - novu-email
+      - sparkpost
+      - email-webhook
+      - braze
+      - novu-email-agent
+      - nexmo
+      - plivo
+      - sms77
+      - sms-central
+      - sns
+      - telnyx
+      - twilio
+      - gupshup
+      - firetext
+      - infobip-sms
+      - burst-sms
+      - bulk-sms
+      - isend-sms
+      - forty-six-elks
+      - kannel
+      - maqsam
+      - termii
+      - africas-talking
+      - novu-sms
+      - sendchamp
+      - generic-sms
+      - clicksend
+      - bandwidth
+      - messagebird
+      - simpletexting
+      - azure-sms
+      - ring-central
+      - brevo-sms
+      - eazy-sms
+      - mobishastra
+      - afro-message
+      - unifonic
+      - smsmode
+      - imedia
+      - sinch
+      - isendpro-sms
+      - cm-telecom
+      - fcm
+      - apns
+      - expo
+      - one-signal
+      - pushpad
+      - push-webhook
+      - pusher-beams
+      - appio
+      - novu
+      - slack
+      - discord
+      - msteams
+      - mattermost
+      - ryver
+      - zulip
+      - grafana-on-call
+      - getstream
+      - rocket-chat
+      - whatsapp-business
+      - chat-webhook
+      - novu-slack
+      - telegram
+      - anthropic
+    CreateMsTeamsChannelEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - ms_teams_channel
+          example: ms_teams_channel
+        endpoint:
+          description: MS Teams channel endpoint data
+          allOf:
+          - $ref: '#/components/schemas/MsTeamsChannelEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    MsTeamsChannelEndpointDto:
+      type: object
+      properties:
+        teamId:
+          type: string
+          description: MS Teams team ID
+          example: 19:abc123...@thread.tacv2
+        channelId:
+          type: string
+          description: MS Teams channel ID
+          example: 19:def456...@thread.tacv2
+      required:
+      - teamId
+      - channelId
+    CreateMsTeamsUserEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - ms_teams_user
+          example: ms_teams_user
+        endpoint:
+          description: MS Teams user endpoint data
+          allOf:
+          - $ref: '#/components/schemas/MsTeamsUserEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
+    ValidationErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        errors:
+          type: object
+          description: A record of validation errors keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/ConstraintValidation'
+          example:
+            fieldName1:
+              messages:
+              - Field is required
+              - Must be a valid email address
+              value: invalidEmail
+            fieldName2:
+              messages:
+              - Must be at least 18 years old
+              value: 17
+            fieldName3:
+              messages:
+              - Must be a boolean value
+              value: true
+            fieldName4:
+              messages:
+              - Must be a valid object
+              value:
+                key: value
+            fieldName5:
+              messages:
+              - Field is missing
+              value: null
+            fieldName6:
+              messages:
+              - Undefined value
+      required:
+      - statusCode
+      - timestamp
+      - path
+      - errors
+    ErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+      required:
+      - statusCode
+      - timestamp
+      - path
+    WebhookEndpointDto:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Webhook URL
+          example: https://example.com/webhook
+        channel:
+          type: string
+          description: Optional channel identifier
+      required:
+      - url
+    UpdateChannelEndpointRequestDto:
+      type: object
+      properties:
+        endpoint:
+          description: Updated endpoint data. The structure must match the existing channel endpoint type.
+          oneOf:
+          - $ref: '#/components/schemas/SlackChannelEndpointDto'
+          - $ref: '#/components/schemas/SlackUserEndpointDto'
+          - $ref: '#/components/schemas/WebhookEndpointDto'
+          - $ref: '#/components/schemas/PhoneEndpointDto'
+      required:
+      - endpoint
+    TelegramChatEndpointDto:
+      type: object
+      properties:
+        chatId:
+          type: string
+          description: Telegram chat ID
+          example: '123456789'
+      required:
+      - chatId
+    SlackChannelEndpointDto:
+      type: object
+      properties:
+        channelId:
+          type: string
+          description: Slack channel ID
+          example: C123456789
+      required:
+      - channelId
+    CreateSlackUserEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - slack_user
+          example: slack_user
+        endpoint:
+          description: Slack user endpoint data
+          allOf:
+          - $ref: '#/components/schemas/SlackUserEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
+    PhoneEndpointDto:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          description: Phone number in E.164 format
+          example: '+1234567890'
+      required:
+      - phoneNumber
+    MsTeamsUserEndpointDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: MS Teams user ID
+          example: 29:1234567890abcdef
+      required:
+      - userId
+    CreateSlackChannelEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - slack_channel
+          example: slack_channel
+        endpoint:
+          description: Slack channel endpoint data
+          allOf:
+          - $ref: '#/components/schemas/SlackChannelEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
+  headers:
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+  securitySchemes:
+    secretKey:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: 'API key authentication. Allowed headers-- "Authorization: ApiKey <novu_secret_key>".'
+      x-speakeasy-example: YOUR_SECRET_KEY_HERE
+externalDocs:
+  description: Novu Documentation
+  url: https://docs.novu.co
+x-webhooks:
+  message.sent:
+    post:
+      summary: 'Event: message.sent'
+      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.sent` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.failed:
+    post:
+      summary: 'Event: message.failed'
+      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.failed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.delivered:
+    post:
+      summary: 'Event: message.delivered'
+      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.delivered` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.seen:
+    post:
+      summary: 'Event: message.seen'
+      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.seen` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.read:
+    post:
+      summary: 'Event: message.read'
+      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.read` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unread:
+    post:
+      summary: 'Event: message.unread'
+      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unread` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.archived:
+    post:
+      summary: 'Event: message.archived'
+      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.archived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unarchived:
+    post:
+      summary: 'Event: message.unarchived'
+      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unarchived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.snoozed:
+    post:
+      summary: 'Event: message.snoozed'
+      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.snoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unsnoozed:
+    post:
+      summary: 'Event: message.unsnoozed'
+      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unsnoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.deleted:
+    post:
+      summary: 'Event: message.deleted'
+      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.created:
+    post:
+      summary: 'Event: workflow.created'
+      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.created` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.updated:
+    post:
+      summary: 'Event: workflow.updated'
+      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.deleted:
+    post:
+      summary: 'Event: workflow.deleted'
+      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.published:
+    post:
+      summary: 'Event: workflow.published'
+      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.published` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  preference.updated:
+    post:
+      summary: 'Event: preference.updated'
+      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `preference.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  email.received:
+    post:
+      summary: 'Event: email.received'
+      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `email.received` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks

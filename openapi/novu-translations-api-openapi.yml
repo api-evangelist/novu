@@ -1,0 +1,842 @@
+openapi: 3.1.0
+info:
+  title: Novu Activity Translations API
+  description: Novu REST API. Please see https://docs.novu.co/api-reference for more details.
+  version: 3.15.0
+  contact:
+    name: Novu Support
+    url: https://discord.gg/novu
+    email: support@novu.co
+  termsOfService: https://novu.co/terms
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+servers:
+- url: https://api.novu.co
+- url: https://eu.api.novu.co
+security:
+- secretKey: []
+tags:
+- name: Translations
+  description: Used to localize your notifications to different languages.
+  externalDocs:
+    url: https://docs.novu.co/platform/workflow/advanced-features/translations
+paths:
+  /v2/translations/upload:
+    post:
+      operationId: TranslationController_uploadTranslationFiles
+      x-speakeasy-name-override: upload
+      summary: Novu Upload Translation Files
+      description: Upload one or more JSON translation files for a specific workflow. Files name must match the locale, e.g. en_US.json. Supports both "files" and "files[]" field names for backwards compatibility.
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                resourceId:
+                  type: string
+                  description: The resource ID to associate localizations with. Accepts identifier or slug format
+                  example: welcome-email
+                resourceType:
+                  type: string
+                  enum:
+                  - workflow
+                  - layout
+                  description: The resource type to associate localizations with
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: One or more JSON translation files. Filenames must match locale format (e.g., en_US.json, fr_FR.json). Field name can be "files" or "files[]".
+              required:
+              - resourceId
+              - resourceType
+              - files
+      responses:
+        '200':
+          description: Upload results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadTranslationsResponseDto'
+      tags:
+      - Translations
+      security:
+      - secretKey: []
+      - secretKey: []
+  /v2/translations:
+    post:
+      operationId: TranslationController_createTranslationEndpoint
+      x-speakeasy-name-override: create
+      summary: Novu Create a Translation
+      description: Create a translation for a specific workflow and locale, if the translation already exists, it will be updated
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTranslationRequestDto'
+      responses:
+        '200':
+          description: Translation created or updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslationResponseDto'
+      tags:
+      - Translations
+      security:
+      - secretKey: []
+      - secretKey: []
+  /v2/translations/master-json:
+    get:
+      operationId: TranslationController_getMasterJsonEndpoint
+      x-speakeasy-name-override: retrieve
+      x-speakeasy-group: Translations.master
+      summary: Novu Retrieve Master Translations JSON
+      description: Retrieve all translations for a locale in master JSON format organized by resourceId (workflowId)
+      parameters:
+      - name: locale
+        required: false
+        in: query
+        description: Locale to export. If not provided, exports organization default locale
+        example: en_US
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Master translations JSON retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMasterJsonResponseDto'
+      tags:
+      - Translations
+      security:
+      - secretKey: []
+      - secretKey: []
+    post:
+      operationId: TranslationController_importMasterJsonEndpoint
+      x-speakeasy-name-override: import
+      x-speakeasy-group: Translations.Master
+      summary: Novu Import Master Translations JSON
+      description: Import translations for multiple workflows from master JSON format for a specific locale
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportMasterJsonRequestDto'
+      responses:
+        '200':
+          description: Master translations imported successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportMasterJsonResponseDto'
+      tags:
+      - Translations
+      security:
+      - secretKey: []
+      - secretKey: []
+  /v2/translations/master-json/upload:
+    post:
+      operationId: TranslationController_uploadMasterJsonEndpoint
+      x-speakeasy-name-override: upload
+      x-speakeasy-group: Translations.Master
+      summary: Novu Upload Master Translations JSON File
+      description: Upload a master JSON file containing translations for multiple workflows. Locale is automatically detected from filename (e.g., en_US.json)
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Master JSON file with locale as filename (e.g., en_US.json)
+              required:
+              - file
+      responses:
+        '200':
+          description: Master translations uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportMasterJsonResponseDto'
+      tags:
+      - Translations
+      security:
+      - secretKey: []
+      - secretKey: []
+  /v2/translations/group/{resourceType}/{resourceId}:
+    get:
+      operationId: TranslationController_getTranslationGroupEndpoint
+      x-speakeasy-name-override: retrieve
+      x-speakeasy-group: Translations.Groups
+      summary: Novu Retrieve a Translation Group
+      description: Retrieves a single translation group by resource type (workflow, layout) and resource ID (workflowId, layoutId)
+      parameters:
+      - name: resourceType
+        required: true
+        in: path
+        description: Resource type
+        example: workflow
+        schema:
+          enum:
+          - workflow
+          - layout
+          type: string
+      - name: resourceId
+        required: true
+        in: path
+        description: Resource ID
+        example: welcome-email
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Translation group details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslationGroupDto'
+        '404':
+          description: Translation group not found
+      tags:
+      - Translations
+      security:
+      - secretKey: []
+      - secretKey: []
+  /v2/translations/{resourceType}/{resourceId}/{locale}:
+    get:
+      operationId: TranslationController_getSingleTranslation
+      x-speakeasy-name-override: retrieve
+      summary: Novu Retrieve a Translation
+      description: Retrieve a specific translation by resource type, resource ID and locale
+      parameters:
+      - name: resourceType
+        required: true
+        in: path
+        description: Resource type
+        schema:
+          enum:
+          - workflow
+          - layout
+          type: string
+      - name: resourceId
+        required: true
+        in: path
+        description: Resource ID
+        example: welcome-email
+        schema:
+          type: string
+      - name: locale
+        required: true
+        in: path
+        description: Locale code
+        example: en_US
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Translation found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslationResponseDto'
+        '404':
+          description: Translation not found
+      tags:
+      - Translations
+      security:
+      - secretKey: []
+      - secretKey: []
+    delete:
+      operationId: TranslationController_deleteTranslationEndpoint
+      x-speakeasy-name-override: delete
+      summary: Novu Delete a Translation
+      description: Delete a specific translation by resource type, resource ID and locale
+      parameters:
+      - name: resourceType
+        required: true
+        in: path
+        description: Resource type
+        schema:
+          enum:
+          - workflow
+          - layout
+          type: string
+      - name: resourceId
+        required: true
+        in: path
+        description: Resource ID
+        schema:
+          type: string
+      - name: locale
+        required: true
+        in: path
+        description: Locale code
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Translation deleted successfully
+        '404':
+          description: Translation not found
+      tags:
+      - Translations
+      security:
+      - secretKey: []
+      - secretKey: []
+  /v2/translations/{resourceType}/{resourceId}:
+    delete:
+      operationId: TranslationController_deleteTranslationGroupEndpoint
+      x-speakeasy-name-override: delete
+      x-speakeasy-group: Translations.Groups
+      summary: Novu Delete a Translation Group
+      description: Delete an entire translation group and all its translations
+      parameters:
+      - name: resourceType
+        required: true
+        in: path
+        description: Resource type
+        example: workflow
+        schema:
+          enum:
+          - workflow
+          - layout
+          type: string
+      - name: resourceId
+        required: true
+        in: path
+        description: Resource ID
+        example: welcome-email
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Translation group deleted successfully
+        '404':
+          description: Translation group not found
+      tags:
+      - Translations
+      security:
+      - secretKey: []
+      - secretKey: []
+components:
+  schemas:
+    ImportMasterJsonResponseDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Overall success status of the import operation
+          example: true
+        message:
+          type: string
+          description: Human-readable message describing the import result
+          example: 'Successfully imported translations for 2 resources: welcome-email, password-reset'
+        successful:
+          description: List of resource IDs that were successfully imported
+          example:
+          - welcome-email
+          - password-reset
+          type: array
+          items:
+            type: string
+        failed:
+          description: List of resource IDs that failed to import
+          example:
+          - missing-workflow
+          type: array
+          items:
+            type: string
+      required:
+      - success
+      - message
+    GetMasterJsonResponseDto:
+      type: object
+      properties:
+        workflows:
+          type: object
+          description: All translations for given locale organized by workflow identifier
+          example:
+            welcome-email:
+              welcome.title: Welcome to our platform
+              welcome.message: Hello there!
+            password-reset:
+              reset.title: Reset your password
+              reset.message: Click the link to reset
+          additionalProperties: true
+        layouts:
+          type: object
+          description: All translations for given locale organized by layout identifier
+          example:
+            default-layout:
+              layout.title: Default layout
+              layout.message: Hello there!
+          additionalProperties: true
+      required:
+      - workflows
+      - layouts
+    UploadTranslationsResponseDto:
+      type: object
+      properties:
+        totalFiles:
+          type: number
+          description: Total number of files processed
+          example: 3
+        successfulUploads:
+          type: number
+          description: Number of files successfully uploaded
+          example: 2
+        failedUploads:
+          type: number
+          description: Number of files that failed to upload
+          example: 1
+        errors:
+          description: List of error messages for failed uploads
+          example:
+          - 'Invalid JSON in file: es-ES.json'
+          type: array
+          items:
+            type: string
+      required:
+      - totalFiles
+      - successfulUploads
+      - failedUploads
+      - errors
+    TranslationGroupDto:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: Resource identifier (slugified ID)
+          example: welcome-email
+        resourceType:
+          type: string
+          description: Resource type
+          example: workflow
+          enum:
+          - workflow
+          - layout
+        resourceName:
+          type: string
+          description: Resource name (e.g., workflow name)
+          example: Welcome Email Workflow
+        locales:
+          description: Array of available locales for this resource
+          example:
+          - en_US
+          - es_ES
+          - fr_FR
+          type: array
+          items:
+            type: string
+        outdatedLocales:
+          description: Locales that are outdated compared to the default locale (only present when there are outdated locales)
+          example:
+          - es_ES
+          - fr_FR
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          description: Creation timestamp
+          example: '2024-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          example: '2024-01-01T00:00:00.000Z'
+      required:
+      - resourceId
+      - resourceType
+      - resourceName
+      - locales
+      - createdAt
+      - updatedAt
+    ImportMasterJsonRequestDto:
+      type: object
+      properties:
+        locale:
+          type: string
+          description: The locale for which translations are being imported
+          example: en_US
+        masterJson:
+          type: object
+          description: Master JSON object containing all translations organized by workflow identifier
+          example:
+            workflows:
+              welcome-email:
+                welcome.title: Welcome to our platform
+                welcome.message: Hello there!
+              password-reset:
+                reset.title: Reset your password
+                reset.message: Click the link to reset
+          additionalProperties: true
+      required:
+      - locale
+      - masterJson
+    CreateTranslationRequestDto:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: The resource ID to associate translation with. Accepts identifier or slug format
+          example: welcome-email
+        resourceType:
+          type: string
+          description: The resource type to associate translation with
+          enum:
+          - workflow
+          - layout
+        locale:
+          type: string
+          description: Locale code (e.g., en_US, es_ES)
+          example: en_US
+        content:
+          type: object
+          description: Translation content as JSON object
+          example:
+            welcome.title: Welcome
+            welcome.message: Hello there!
+          additionalProperties: true
+      required:
+      - resourceId
+      - resourceType
+      - locale
+      - content
+    TranslationResponseDto:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: Resource identifier
+          example: welcome-email
+        resourceType:
+          type: string
+          description: Resource type
+          example: workflow
+          enum:
+          - workflow
+          - layout
+        locale:
+          type: string
+          description: Locale code
+          example: en_US
+        content:
+          type: object
+          description: Translation content as JSON object
+          example:
+            welcome.title: Welcome
+            welcome.message: Hello there!
+          additionalProperties: true
+        createdAt:
+          type: string
+          description: Creation timestamp
+          example: '2024-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          example: '2024-01-01T00:00:00.000Z'
+      required:
+      - resourceId
+      - resourceType
+      - locale
+      - content
+      - createdAt
+      - updatedAt
+  securitySchemes:
+    secretKey:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: 'API key authentication. Allowed headers-- "Authorization: ApiKey <novu_secret_key>".'
+      x-speakeasy-example: YOUR_SECRET_KEY_HERE
+externalDocs:
+  description: Novu Documentation
+  url: https://docs.novu.co
+x-webhooks:
+  message.sent:
+    post:
+      summary: 'Event: message.sent'
+      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.sent` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.failed:
+    post:
+      summary: 'Event: message.failed'
+      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.failed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.delivered:
+    post:
+      summary: 'Event: message.delivered'
+      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.delivered` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.seen:
+    post:
+      summary: 'Event: message.seen'
+      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.seen` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.read:
+    post:
+      summary: 'Event: message.read'
+      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.read` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unread:
+    post:
+      summary: 'Event: message.unread'
+      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unread` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.archived:
+    post:
+      summary: 'Event: message.archived'
+      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.archived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unarchived:
+    post:
+      summary: 'Event: message.unarchived'
+      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unarchived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.snoozed:
+    post:
+      summary: 'Event: message.snoozed'
+      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.snoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unsnoozed:
+    post:
+      summary: 'Event: message.unsnoozed'
+      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unsnoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.deleted:
+    post:
+      summary: 'Event: message.deleted'
+      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.created:
+    post:
+      summary: 'Event: workflow.created'
+      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.created` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.updated:
+    post:
+      summary: 'Event: workflow.updated'
+      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.deleted:
+    post:
+      summary: 'Event: workflow.deleted'
+      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.published:
+    post:
+      summary: 'Event: workflow.published'
+      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.published` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  preference.updated:
+    post:
+      summary: 'Event: preference.updated'
+      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `preference.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  email.received:
+    post:
+      summary: 'Event: email.received'
+      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `email.received` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks

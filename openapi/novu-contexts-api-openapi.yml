@@ -1,0 +1,2190 @@
+openapi: 3.1.0
+info:
+  title: Novu Activity Contexts API
+  description: Novu REST API. Please see https://docs.novu.co/api-reference for more details.
+  version: 3.15.0
+  contact:
+    name: Novu Support
+    url: https://discord.gg/novu
+    email: support@novu.co
+  termsOfService: https://novu.co/terms
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+servers:
+- url: https://api.novu.co
+- url: https://eu.api.novu.co
+security:
+- secretKey: []
+tags:
+- name: Contexts
+paths:
+  /v2/contexts:
+    post:
+      operationId: ContextsController_createContext
+      summary: Novu Create a Context
+      description: "Create a new context with the specified type, id, and data. Returns 409 if context already exists.\n      **type** and **id** are required fields, **data** is optional, if the context already exists, it returns the 409 response"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContextRequestDto'
+      responses:
+        '201':
+          description: Created
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GetContextResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Contexts
+      security:
+      - secretKey: []
+    get:
+      operationId: ContextsController_listContexts
+      summary: Novu List All Contexts
+      description: "Retrieve a paginated list of all contexts, optionally filtered by type and key pattern.\n      **type** and **id** are optional fields, if provided, only contexts with the matching type and id will be returned.\n      **search** is an optional field, if provided, only contexts with the matching key pattern will be returned.\n      Checkout all possible parameters in the query section below for more details"
+      parameters:
+      - name: after
+        required: false
+        in: query
+        description: Cursor for pagination indicating the starting point after which to fetch results.
+        schema:
+          type: string
+      - name: before
+        required: false
+        in: query
+        description: Cursor for pagination indicating the ending point before which to fetch results.
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Limit the number of items to return
+        example: 10
+        schema:
+          type: number
+      - name: orderDirection
+        required: false
+        in: query
+        description: Direction of sorting
+        schema:
+          enum:
+          - ASC
+          - DESC
+          type: string
+      - name: orderBy
+        required: false
+        in: query
+        description: Field to order by
+        schema:
+          type: string
+      - name: includeCursor
+        required: false
+        in: query
+        description: Include cursor item in response
+        schema:
+          type: boolean
+      - name: id
+        required: false
+        in: query
+        description: Filter contexts by id
+        example: tenant-prod-123
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: Search contexts by type or id (supports partial matching across both fields)
+        example: tenant
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ListContextsResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Contexts
+      security:
+      - secretKey: []
+  /v2/contexts/{type}/{id}:
+    patch:
+      operationId: ContextsController_updateContext
+      summary: Novu Update a Context
+      description: "Update the data of an existing context.\n      **type** and **id** are required fields, **data** is required. Only the data field is updated, the rest of the context is not affected.\n      If the context does not exist, it returns the 404 response"
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Context ID
+        schema:
+          type: string
+      - name: type
+        required: true
+        in: path
+        description: Context type
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContextRequestDto'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GetContextResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Contexts
+      security:
+      - secretKey: []
+    get:
+      operationId: ContextsController_getContext
+      summary: Novu Retrieve a Context
+      description: "Retrieve a specific context by its type and id.\n      **type** and **id** are required fields, if the context does not exist, it returns the 404 response"
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Context ID
+        schema:
+          type: string
+      - name: type
+        required: true
+        in: path
+        description: Context type
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GetContextResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Contexts
+      security:
+      - secretKey: []
+    delete:
+      operationId: ContextsController_deleteContext
+      summary: Novu Delete a Context
+      description: "Delete a context by its type and id.\n      **type** and **id** are required fields, if the context does not exist, it returns the 404 response"
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Context ID
+        schema:
+          type: string
+      - name: type
+        required: true
+        in: path
+        description: Context type
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Contexts
+      security:
+      - secretKey: []
+components:
+  schemas:
+    GetContextResponseDto:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Context type (e.g., tenant, app, workspace)
+        id:
+          type: string
+          description: Unique identifier for this context
+        data:
+          type: object
+          description: Custom data associated with this context
+          additionalProperties: true
+        createdAt:
+          type: string
+          description: Creation timestamp
+        updatedAt:
+          type: string
+          description: Last update timestamp
+      required:
+      - type
+      - id
+      - data
+      - createdAt
+      - updatedAt
+    ValidationErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        errors:
+          type: object
+          description: A record of validation errors keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/ConstraintValidation'
+          example:
+            fieldName1:
+              messages:
+              - Field is required
+              - Must be a valid email address
+              value: invalidEmail
+            fieldName2:
+              messages:
+              - Must be at least 18 years old
+              value: 17
+            fieldName3:
+              messages:
+              - Must be a boolean value
+              value: true
+            fieldName4:
+              messages:
+              - Must be a valid object
+              value:
+                key: value
+            fieldName5:
+              messages:
+              - Field is missing
+              value: null
+            fieldName6:
+              messages:
+              - Undefined value
+      required:
+      - statusCode
+      - timestamp
+      - path
+      - errors
+    ErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+      required:
+      - statusCode
+      - timestamp
+      - path
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    CreateContextRequestDto:
+      type: object
+      properties:
+        type:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[a-zA-Z0-9_-]+$
+          description: Context type (e.g., tenant, app, workspace). Must be lowercase alphanumeric with optional separators.
+          example: tenant
+        id:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[a-zA-Z0-9_-]+$
+          description: Unique identifier for this context. Must be lowercase alphanumeric with optional separators.
+          example: org-acme
+        data:
+          type: object
+          description: Optional custom data to associate with this context.
+          example:
+            tenantName: Acme Corp
+            region: us-east-1
+            settings:
+              theme: dark
+          additionalProperties: true
+      required:
+      - type
+      - id
+    ListContextsResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned Contexts
+          type: array
+          items:
+            $ref: '#/components/schemas/GetContextResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
+    UpdateContextRequestDto:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Custom data to associate with this context. Replaces existing data.
+          example:
+            tenantName: Acme Corp
+            region: us-east-1
+            settings:
+              theme: dark
+          additionalProperties: true
+      required:
+      - data
+  headers:
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+  securitySchemes:
+    secretKey:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: 'API key authentication. Allowed headers-- "Authorization: ApiKey <novu_secret_key>".'
+      x-speakeasy-example: YOUR_SECRET_KEY_HERE
+externalDocs:
+  description: Novu Documentation
+  url: https://docs.novu.co
+x-webhooks:
+  message.sent:
+    post:
+      summary: 'Event: message.sent'
+      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.sent` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.failed:
+    post:
+      summary: 'Event: message.failed'
+      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.failed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.delivered:
+    post:
+      summary: 'Event: message.delivered'
+      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.delivered` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.seen:
+    post:
+      summary: 'Event: message.seen'
+      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.seen` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.read:
+    post:
+      summary: 'Event: message.read'
+      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.read` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unread:
+    post:
+      summary: 'Event: message.unread'
+      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unread` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.archived:
+    post:
+      summary: 'Event: message.archived'
+      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.archived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unarchived:
+    post:
+      summary: 'Event: message.unarchived'
+      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unarchived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.snoozed:
+    post:
+      summary: 'Event: message.snoozed'
+      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.snoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unsnoozed:
+    post:
+      summary: 'Event: message.unsnoozed'
+      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unsnoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.deleted:
+    post:
+      summary: 'Event: message.deleted'
+      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.created:
+    post:
+      summary: 'Event: workflow.created'
+      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.created` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.updated:
+    post:
+      summary: 'Event: workflow.updated'
+      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.deleted:
+    post:
+      summary: 'Event: workflow.deleted'
+      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.published:
+    post:
+      summary: 'Event: workflow.published'
+      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.published` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  preference.updated:
+    post:
+      summary: 'Event: preference.updated'
+      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `preference.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  email.received:
+    post:
+      summary: 'Event: email.received'
+      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `email.received` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks

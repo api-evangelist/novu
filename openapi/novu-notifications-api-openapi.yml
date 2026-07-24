@@ -1,0 +1,1907 @@
+openapi: 3.1.0
+info:
+  title: Novu Activity Notifications API
+  description: Novu REST API. Please see https://docs.novu.co/api-reference for more details.
+  version: 3.15.0
+  contact:
+    name: Novu Support
+    url: https://discord.gg/novu
+    email: support@novu.co
+  termsOfService: https://novu.co/terms
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+servers:
+- url: https://api.novu.co
+- url: https://eu.api.novu.co
+security:
+- secretKey: []
+tags:
+- name: Notifications
+paths:
+  /v1/notifications:
+    get:
+      operationId: NotificationsController_listNotifications
+      summary: Novu List All Events
+      description: "List all notification events (triggered events) for the current environment. \n    This API supports filtering by **channels**, **templates**, **emails**, **subscriberIds**, **transactionId**, **topicKey**, **severity**, **contextKeys**. \n    Checkout all available filters in the query section.\n    This API returns event triggers, to list each channel notifications, check messages APIs."
+      parameters:
+      - name: channels
+        required: false
+        in: query
+        description: Array of channel types
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelTypeEnum'
+      - name: templates
+        required: false
+        in: query
+        description: Array of template IDs or a single template ID
+        schema:
+          type: array
+          items:
+            type: string
+      - name: emails
+        required: false
+        in: query
+        description: Array of email addresses or a single email address
+        schema:
+          type: array
+          items:
+            type: string
+      - name: search
+        required: false
+        in: query
+        deprecated: true
+        description: Search term (deprecated)
+        schema:
+          type: string
+      - name: subscriberIds
+        required: false
+        in: query
+        description: Array of subscriber IDs or a single subscriber ID
+        schema:
+          type: array
+          items:
+            type: string
+      - name: severity
+        required: false
+        in: query
+        description: Array of severity levels or a single severity level
+        schema:
+          type: array
+          items:
+            type: string
+      - name: page
+        required: false
+        in: query
+        description: Page number for pagination
+        schema:
+          minimum: 0
+          default: 0
+          type: number
+      - name: limit
+        required: false
+        in: query
+        description: Limit for pagination
+        schema:
+          minimum: 1
+          maximum: 50
+          default: 10
+          type: number
+      - name: transactionId
+        required: false
+        in: query
+        description: The transaction ID to filter by
+        schema:
+          type: string
+      - name: topicKey
+        required: false
+        in: query
+        description: Topic Key for filtering notifications by topic
+        schema:
+          type: string
+      - name: subscriptionId
+        required: false
+        in: query
+        description: Subscription ID for filtering notifications by subscription
+        schema:
+          type: string
+      - name: contextKeys
+        required: false
+        in: query
+        description: 'Filter by exact context keys, order insensitive (format: "type:id")'
+        schema:
+          type: array
+          items:
+            type: string
+      - name: after
+        required: false
+        in: query
+        description: Date filter for records after this timestamp. Defaults to earliest date allowed by subscription plan
+        schema:
+          type: string
+      - name: before
+        required: false
+        in: query
+        description: Date filter for records before this timestamp. Defaults to current time of request (now)
+        schema:
+          type: string
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivitiesResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Notifications
+      security:
+      - secretKey: []
+  /v1/notifications/{notificationId}:
+    get:
+      operationId: NotificationsController_getNotification
+      summary: Novu Retrieve an Event
+      description: "Retrieve an event by its unique key identifier **notificationId**. \n    Here **notificationId** is of mongodbId type. \n    This API returns the event details - execution logs, status, actual notification (message) generated by each workflow step."
+      parameters:
+      - name: notificationId
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ActivityNotificationResponseDto'
+        '400':
+          description: Bad Request
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '403':
+          description: Forbidden
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '405':
+          description: Method Not Allowed
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '409':
+          description: Conflict
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '413':
+          description: Payload Too Large
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '414':
+          description: URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorDto'
+        '429':
+          description: 'The client has sent too many requests in a given amount of time. '
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: API rate limit exceeded
+        '500':
+          description: Internal Server Error
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '503':
+          description: The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+          headers:
+            Content-Type:
+              $ref: '#/components/headers/Content-Type'
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+            RateLimit-Policy:
+              $ref: '#/components/headers/RateLimit-Policy'
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+            Idempotency-Replay:
+              $ref: '#/components/headers/Idempotency-Replay'
+            Retry-After:
+              $ref: '#/components/headers/Retry-After'
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Please wait some time, then try again.
+      tags:
+      - Notifications
+      security:
+      - secretKey: []
+components:
+  schemas:
+    DigestTypeEnum:
+      type: string
+      description: The Digest Type
+      enum:
+      - regular
+      - backoff
+      - timed
+    DigestMetadataDto:
+      type: object
+      properties:
+        digestKey:
+          type: string
+          description: Optional key for the digest
+        amount:
+          type: number
+          description: Amount for the digest
+        unit:
+          enum:
+          - seconds
+          - minutes
+          - hours
+          - days
+          - weeks
+          - months
+          type: string
+          description: Unit of the digest
+        type:
+          $ref: '#/components/schemas/DigestTypeEnum'
+        events:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+          description: Optional array of events associated with the digest, represented as key-value pairs
+        backoff:
+          type: boolean
+          description: 'Regular digest: Indicates if backoff is enabled for the regular digest'
+        backoffAmount:
+          type: number
+          description: 'Regular digest: Amount for backoff'
+        backoffUnit:
+          $ref: '#/components/schemas/DigestUnitEnum'
+        updateMode:
+          type: boolean
+          description: 'Regular digest: Indicates if the digest should update'
+        timed:
+          description: Configuration for timed digest
+          allOf:
+          - $ref: '#/components/schemas/DigestTimedConfigDto'
+      required:
+      - type
+    OrdinalValueEnum:
+      type: string
+      description: Value of the ordinal
+      enum:
+      - day
+      - weekday
+      - weekend
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+    NotificationTriggerVariable:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the variable
+      required:
+      - name
+    SeverityLevelEnum:
+      type: string
+      description: Severity of the workflow
+      enum:
+      - high
+      - medium
+      - low
+      - none
+    MessageTemplateDto:
+      type: object
+      properties: {}
+    ProvidersIdEnum:
+      type: string
+      description: Provider ID of the job
+      enum:
+      - emailjs
+      - mailgun
+      - mailjet
+      - mandrill
+      - nodemailer
+      - postmark
+      - sendgrid
+      - sendinblue
+      - ses
+      - netcore
+      - infobip-email
+      - resend
+      - plunk
+      - mailersend
+      - mailtrap
+      - clickatell
+      - outlook365
+      - novu-email
+      - sparkpost
+      - email-webhook
+      - braze
+      - novu-email-agent
+      - nexmo
+      - plivo
+      - sms77
+      - sms-central
+      - sns
+      - telnyx
+      - twilio
+      - gupshup
+      - firetext
+      - infobip-sms
+      - burst-sms
+      - bulk-sms
+      - isend-sms
+      - forty-six-elks
+      - kannel
+      - maqsam
+      - termii
+      - africas-talking
+      - novu-sms
+      - sendchamp
+      - generic-sms
+      - clicksend
+      - bandwidth
+      - messagebird
+      - simpletexting
+      - azure-sms
+      - ring-central
+      - brevo-sms
+      - eazy-sms
+      - mobishastra
+      - afro-message
+      - unifonic
+      - smsmode
+      - imedia
+      - sinch
+      - isendpro-sms
+      - cm-telecom
+      - fcm
+      - apns
+      - expo
+      - one-signal
+      - pushpad
+      - push-webhook
+      - pusher-beams
+      - appio
+      - novu
+      - slack
+      - discord
+      - msteams
+      - mattermost
+      - ryver
+      - zulip
+      - grafana-on-call
+      - getstream
+      - rocket-chat
+      - whatsapp-business
+      - chat-webhook
+      - novu-slack
+      - telegram
+      - anthropic
+    ActivityNotificationJobResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the job
+        type:
+          enum:
+          - in_app
+          - email
+          - sms
+          - chat
+          - push
+          - digest
+          - trigger
+          - delay
+          - throttle
+          - custom
+          - http_request
+          type: string
+          description: Type of the job
+        digest:
+          description: Optional digest for the job, including metadata and events
+          allOf:
+          - $ref: '#/components/schemas/DigestMetadataDto'
+        executionDetails:
+          description: Execution details of the job
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityNotificationExecutionDetailResponseDto'
+        step:
+          description: Step details of the job
+          allOf:
+          - $ref: '#/components/schemas/ActivityNotificationStepResponseDto'
+        overrides:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        payload:
+          type: object
+          description: Optional payload for the job
+        providerId:
+          $ref: '#/components/schemas/ProvidersIdEnum'
+        status:
+          type: string
+          description: Status of the job
+        updatedAt:
+          type: string
+          description: Updated time of the notification
+        scheduleExtensionsCount:
+          type: number
+          description: The number of times the digest/delay job has been extended to align with the subscribers schedule
+      required:
+      - _id
+      - type
+      - executionDetails
+      - step
+      - providerId
+      - status
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    ActivityNotificationTemplateResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the template
+        name:
+          type: string
+          description: Name of the template
+        origin:
+          $ref: '#/components/schemas/ResourceOriginEnum'
+        triggers:
+          description: Triggers of the template
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTriggerDto'
+      required:
+      - name
+      - triggers
+    ActivityTopicDto:
+      type: object
+      properties:
+        _topicId:
+          type: string
+          description: Internal Topic ID of the notification
+        topicKey:
+          type: string
+          description: Topic Key of the notification
+      required:
+      - _topicId
+      - topicKey
+    FieldFilterPartDto:
+      type: object
+      properties:
+        field:
+          type: string
+        value:
+          type: string
+        operator:
+          type: string
+          enum:
+          - LARGER
+          - SMALLER
+          - LARGER_EQUAL
+          - SMALLER_EQUAL
+          - EQUAL
+          - NOT_EQUAL
+          - ALL_IN
+          - ANY_IN
+          - NOT_IN
+          - BETWEEN
+          - NOT_BETWEEN
+          - LIKE
+          - NOT_LIKE
+          - IN
+        'on':
+          type: string
+          enum:
+          - subscriber
+          - payload
+      required:
+      - field
+      - value
+      - operator
+      - 'on'
+    ResourceOriginEnum:
+      type: string
+      description: Origin of the layout
+      enum:
+      - novu-cloud
+      - novu-cloud-v1
+      - external
+    ValidationErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        errors:
+          type: object
+          description: A record of validation errors keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/ConstraintValidation'
+          example:
+            fieldName1:
+              messages:
+              - Field is required
+              - Must be a valid email address
+              value: invalidEmail
+            fieldName2:
+              messages:
+              - Must be at least 18 years old
+              value: 17
+            fieldName3:
+              messages:
+              - Must be a boolean value
+              value: true
+            fieldName4:
+              messages:
+              - Must be a valid object
+              value:
+                key: value
+            fieldName5:
+              messages:
+              - Field is missing
+              value: null
+            fieldName6:
+              messages:
+              - Undefined value
+      required:
+      - statusCode
+      - timestamp
+      - path
+      - errors
+    MonthlyTypeEnum:
+      type: string
+      description: Type of monthly schedule
+      enum:
+      - each
+      - 'on'
+    ErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+      required:
+      - statusCode
+      - timestamp
+      - path
+    ActivityNotificationResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the notification
+        _environmentId:
+          type: string
+          description: Environment ID of the notification
+        _organizationId:
+          type: string
+          description: Organization ID of the notification
+        _subscriberId:
+          type: string
+          description: Subscriber ID of the notification
+        transactionId:
+          type: string
+          description: Transaction ID of the notification
+        _templateId:
+          type: string
+          description: Template ID of the notification
+        _digestedNotificationId:
+          type: string
+          description: Digested Notification ID
+        createdAt:
+          type: string
+          description: Creation time of the notification
+        updatedAt:
+          type: string
+          description: Last updated time of the notification
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/StepTypeEnum'
+        subscriber:
+          description: Subscriber of the notification
+          allOf:
+          - $ref: '#/components/schemas/ActivityNotificationSubscriberResponseDto'
+        template:
+          description: Template of the notification
+          allOf:
+          - $ref: '#/components/schemas/ActivityNotificationTemplateResponseDto'
+        jobs:
+          description: Jobs of the notification
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityNotificationJobResponseDto'
+        payload:
+          type: object
+          description: Payload of the notification
+          additionalProperties: true
+        tags:
+          description: Tags associated with the notification
+          type: array
+          items:
+            type: string
+        controls:
+          type: object
+          description: Controls associated with the notification
+          additionalProperties: true
+        to:
+          type: object
+          description: To field for subscriber definition
+          additionalProperties: true
+        topics:
+          description: Topics of the notification
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityTopicDto'
+        severity:
+          $ref: '#/components/schemas/SeverityLevelEnum'
+        critical:
+          type: boolean
+          description: Criticality of the notification
+        contextKeys:
+          description: Context (single or multi) in which the notification was sent
+          type: array
+          items:
+            type: string
+      required:
+      - _environmentId
+      - _organizationId
+      - _subscriberId
+      - transactionId
+    ActivitiesResponseDto:
+      type: object
+      properties:
+        hasMore:
+          type: boolean
+          description: Indicates if there are more activities in the result set
+        data:
+          description: Array of activity notifications
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityNotificationResponseDto'
+        pageSize:
+          type: number
+          description: Page size of the activities
+        page:
+          type: number
+          description: Current page of the activities
+      required:
+      - hasMore
+      - data
+      - pageSize
+      - page
+    ActivityNotificationStepResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the step
+        active:
+          type: boolean
+          description: Whether the step is active or not
+        replyCallback:
+          type: object
+          description: Reply callback settings
+        controlVariables:
+          type: object
+          description: Control variables
+        metadata:
+          type: object
+          description: Metadata for the workflow step
+        issues:
+          type: object
+          description: Step issues
+        filters:
+          description: Filter criteria for the step
+          type: array
+          items:
+            $ref: '#/components/schemas/StepFilterDto'
+        template:
+          description: Optional template for the step
+          allOf:
+          - $ref: '#/components/schemas/MessageTemplateDto'
+        variants:
+          description: Variants of the step
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityNotificationStepResponseDto'
+        _templateId:
+          type: string
+          description: The identifier for the template associated with this step
+        name:
+          type: string
+          description: The name of the step
+        _parentId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier for the parent step
+      required:
+      - _id
+      - active
+      - filters
+      - _templateId
+    NotificationTriggerDto:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - event
+          description: Type of the trigger
+        identifier:
+          type: string
+          description: Identifier of the trigger
+        variables:
+          description: Variables of the trigger
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTriggerVariable'
+        subscriberVariables:
+          description: Subscriber variables of the trigger
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTriggerVariable'
+      required:
+      - type
+      - identifier
+      - variables
+    StepFilterDto:
+      type: object
+      properties:
+        isNegated:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/BuilderFieldTypeEnum'
+        value:
+          type: string
+          enum:
+          - AND
+          - OR
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldFilterPartDto'
+      required:
+      - isNegated
+      - type
+      - value
+      - children
+    ChannelTypeEnum:
+      type: string
+      description: Channel type through which the message is sent
+      enum:
+      - in_app
+      - email
+      - sms
+      - chat
+      - push
+    DigestTimedConfigDto:
+      type: object
+      properties:
+        atTime:
+          type: string
+          description: Time at which the digest is triggered
+        weekDays:
+          type: array
+          items:
+            type: string
+            enum:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+            - sunday
+          description: Days of the week for the digest
+        monthDays:
+          description: Specific days of the month for the digest
+          type: array
+          items:
+            type: number
+        ordinal:
+          $ref: '#/components/schemas/OrdinalEnum'
+        ordinalValue:
+          $ref: '#/components/schemas/OrdinalValueEnum'
+        monthlyType:
+          $ref: '#/components/schemas/MonthlyTypeEnum'
+        cronExpression:
+          type: string
+          description: Cron expression for scheduling
+        untilDate:
+          type: string
+          description: Until date for scheduling
+    StepTypeEnum:
+      type: string
+      description: Type of the step
+      enum:
+      - in_app
+      - email
+      - sms
+      - chat
+      - push
+      - digest
+      - trigger
+      - delay
+      - throttle
+      - custom
+      - http_request
+    ActivityNotificationExecutionDetailResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the execution detail
+        createdAt:
+          type: string
+          description: Creation time of the execution detail
+        status:
+          $ref: '#/components/schemas/ExecutionDetailsStatusEnum'
+        detail:
+          type: string
+          description: Detailed information about the execution
+        isRetry:
+          type: boolean
+          description: Whether the execution is a retry or not
+        isTest:
+          type: boolean
+          description: Whether the execution is a test or not
+        providerId:
+          $ref: '#/components/schemas/ProvidersIdEnum'
+        raw:
+          type:
+          - string
+          - 'null'
+          description: Raw data of the execution
+        source:
+          $ref: '#/components/schemas/ExecutionDetailsSourceEnum'
+      required:
+      - _id
+      - status
+      - detail
+      - isRetry
+      - isTest
+      - source
+    BuilderFieldTypeEnum:
+      type: string
+      enum:
+      - BOOLEAN
+      - TEXT
+      - DATE
+      - NUMBER
+      - STATEMENT
+      - LIST
+      - MULTI_LIST
+      - GROUP
+    DigestUnitEnum:
+      type: string
+      description: 'Regular digest: Unit for backoff'
+      enum:
+      - seconds
+      - minutes
+      - hours
+      - days
+      - weeks
+      - months
+    OrdinalEnum:
+      type: string
+      description: Ordinal position for the digest
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - last
+    ActivityNotificationSubscriberResponseDto:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: First name of the subscriber
+        subscriberId:
+          type: string
+          description: External unique identifier of the subscriber
+        _id:
+          type: string
+          description: Internal to Novu unique identifier of the subscriber
+        lastName:
+          type: string
+          description: Last name of the subscriber
+        email:
+          type: string
+          description: Email address of the subscriber
+        phone:
+          type: string
+          description: Phone number of the subscriber
+      required:
+      - subscriberId
+      - _id
+    ExecutionDetailsStatusEnum:
+      type: string
+      description: Status of the execution detail
+      enum:
+      - Success
+      - Warning
+      - Failed
+      - Pending
+      - Queued
+      - ReadConfirmation
+    ExecutionDetailsSourceEnum:
+      type: string
+      description: Source of the execution detail
+      enum:
+      - Credentials
+      - Internal
+      - Payload
+      - Webhook
+  headers:
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+  securitySchemes:
+    secretKey:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: 'API key authentication. Allowed headers-- "Authorization: ApiKey <novu_secret_key>".'
+      x-speakeasy-example: YOUR_SECRET_KEY_HERE
+externalDocs:
+  description: Novu Documentation
+  url: https://docs.novu.co
+x-webhooks:
+  message.sent:
+    post:
+      summary: 'Event: message.sent'
+      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.sent` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.failed:
+    post:
+      summary: 'Event: message.failed'
+      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.failed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.delivered:
+    post:
+      summary: 'Event: message.delivered'
+      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.delivered` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.seen:
+    post:
+      summary: 'Event: message.seen'
+      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.seen` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.read:
+    post:
+      summary: 'Event: message.read'
+      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.read` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unread:
+    post:
+      summary: 'Event: message.unread'
+      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unread` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.archived:
+    post:
+      summary: 'Event: message.archived'
+      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.archived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unarchived:
+    post:
+      summary: 'Event: message.unarchived'
+      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unarchived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.snoozed:
+    post:
+      summary: 'Event: message.snoozed'
+      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.snoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.unsnoozed:
+    post:
+      summary: 'Event: message.unsnoozed'
+      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unsnoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  message.deleted:
+    post:
+      summary: 'Event: message.deleted'
+      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.created:
+    post:
+      summary: 'Event: workflow.created'
+      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.created` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.updated:
+    post:
+      summary: 'Event: workflow.updated'
+      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.deleted:
+    post:
+      summary: 'Event: workflow.deleted'
+      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  workflow.published:
+    post:
+      summary: 'Event: workflow.published'
+      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.published` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  preference.updated:
+    post:
+      summary: 'Event: preference.updated'
+      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `preference.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+  email.received:
+    post:
+      summary: 'Event: email.received'
+      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `email.received` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
