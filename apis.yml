@@ -8,7 +8,20 @@ description: >-
   ecosystems, a Postman collection, an MCP server, GitHub Action sync, the Maily block-based email editor, framework
   starters for Next.js / Remix / Nuxt / SvelteKit, and webhook bridges for Stripe / Clerk / Segment.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novu.png
 url: https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml
 created: '2026-05-23'
 modified: '2026-05-29'
@@ -33,287 +46,2116 @@ tags:
   - Framework
   - React
 apis:
-  - aid: novu:rest-api
-    name: Novu REST API
-    description: >-
-      Server-side REST API exposing 135 operations across Events, Subscribers, Workflows, Topics, Integrations, Layouts,
-      Messages, Notifications, Environments, Environment Variables, Domains, Channel Connections, Channel Endpoints,
-      Translations, Activity, and Contexts. Authenticated with an ApiKey scheme delivered in the Authorization header.
-      Honors IETF RateLimit-* headers, Idempotency-Key, and a published OpenAPI 3 document available at /openapi.json on
-      every region.
-    humanURL: https://docs.novu.co/api-reference/overview
-    baseURL: https://api.novu.co
-    tags:
-      - REST
-      - Events
-      - Subscribers
-      - Workflows
-      - Topics
-      - Integrations
-      - Messages
-      - Notifications
-      - Environments
-      - Domains
-      - Idempotency
-      - Rate Limits
-    properties:
-      - type: Documentation
-        url: https://docs.novu.co/api-reference/overview
-      - type: APIReference
-        url: https://docs.novu.co/api-reference/overview
-      - type: OpenAPI
-        url: openapi/novu-openapi.yml
-      - type: OpenAPI
-        url: https://api.novu.co/openapi.json
-        title: Live OpenAPI 3 spec
-      - type: Swagger
-        url: https://api.novu.co/api
-      - type: Postman
-        url: https://github.com/novuhq/novu-postman
-      - type: Authentication
-        url: https://docs.novu.co/api-reference/overview#authentication
-      - type: RateLimits
-        url: rate-limits/novu-rate-limits.yml
-      - type: GettingStarted
-        url: https://docs.novu.co/platform/quickstart/nextjs
-      - type: SDKs
-        url: https://www.npmjs.com/package/@novu/api
-        title: TypeScript / Node.js SDK
-      - type: SDKs
-        url: https://pypi.org/project/novu-py/
-        title: Python SDK
-      - type: SDKs
-        url: https://github.com/novuhq/novu-go
-        title: Go SDK
-      - type: SDKs
-        url: https://github.com/novuhq/php-novu
-        title: PHP SDK
-      - type: SDKs
-        url: https://github.com/novuhq/novu-csharp
-        title: C# SDK
-      - type: SDKs
-        url: https://github.com/novuhq/novu-java
-        title: Java SDK
-      - type: SDKs
-        url: https://github.com/novuhq/novu-elixir
-        title: Elixir SDK
-      - type: SDKs
-        url: https://github.com/novuhq/novu-kotlin
-        title: Kotlin SDK
-      - type: SDKs
-        url: https://github.com/novuhq/novu-ruby
-        title: Ruby SDK
-      - type: SDKs
-        url: https://github.com/novuhq/novu-rust
-        title: Rust SDK
-      - type: SDKs
-        url: https://github.com/novuhq/novu-dotnet
-        title: .NET SDK
-      - type: CodeExamples
-        url: https://github.com/novuhq/examples
-      - type: JSONSchema
-        url: json-schema/novu-trigger-event-request-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-trigger-event-response-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-bulk-trigger-event-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-subscriber-response-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-create-subscriber-request-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-bulk-subscriber-create-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-create-environment-request-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-update-environment-request-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-environment-response-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-topic-response-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-create-integration-request-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-update-integration-request-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-integration-response-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-message-response-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-create-workflow-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-update-workflow-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-workflow-response-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-layout-response-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-subscriber-payload-dto-schema.json
-      - type: JSONSchema
-        url: json-schema/novu-error-dto-schema.json
-      - type: JSONStructure
-        url: json-structure/novu-trigger-event-request-dto-structure.json
-      - type: JSONStructure
-        url: json-structure/novu-subscriber-response-dto-structure.json
-      - type: JSONStructure
-        url: json-structure/novu-workflow-response-dto-structure.json
-      - type: JSONStructure
-        url: json-structure/novu-message-response-dto-structure.json
-      - type: JSONStructure
-        url: json-structure/novu-topic-response-dto-structure.json
-      - type: JSONStructure
-        url: json-structure/novu-integration-response-dto-structure.json
-      - type: Examples
-        url: examples/novu-trigger-event-example.json
-      - type: Examples
-        url: examples/novu-trigger-event-bulk-example.json
-      - type: Examples
-        url: examples/novu-broadcast-event-example.json
-      - type: Examples
-        url: examples/novu-create-subscriber-example.json
-      - type: Examples
-        url: examples/novu-bulk-create-subscribers-example.json
-      - type: Examples
-        url: examples/novu-create-topic-example.json
-      - type: Examples
-        url: examples/novu-add-subscribers-to-topic-example.json
-      - type: Examples
-        url: examples/novu-create-environment-example.json
-      - type: Examples
-        url: examples/novu-create-integration-example.json
-      - type: Examples
-        url: examples/novu-workflow-response-example.json
-      - type: Examples
-        url: examples/novu-list-messages-example.json
-      - type: Examples
-        url: examples/novu-error-response-example.json
-  - aid: novu:rest-api-eu
-    name: Novu REST API (EU Region)
-    description: >-
-      EU-hosted instance of the Novu REST API for customers requiring data residency in the European Union. Exposes the
-      same 135 operations, schemas, security, and rate-limit policy as the global instance. Enterprise data residency
-      can extend to UK, Singapore, Australia, Japan, and South Korea.
-    humanURL: https://docs.novu.co/api-reference/overview
-    baseURL: https://eu.api.novu.co
-    tags:
-      - REST
-      - EU
-      - Data Residency
-    properties:
-      - type: Documentation
-        url: https://docs.novu.co/api-reference/overview
-      - type: OpenAPI
-        url: openapi/novu-openapi.yml
-      - type: Authentication
-        url: https://docs.novu.co/api-reference/overview#authentication
-      - type: RateLimits
-        url: rate-limits/novu-rate-limits.yml
-  - aid: novu:inbox-api
-    name: Novu Inbox / In-App API
-    description: >-
-      Client-side API and React Inbox component for rendering an embedded in-app notification center, marking
-      notifications as read / archived / snoozed, and managing per-user notification preferences directly in the
-      browser. Ships with @novu/react, @novu/react-native, and @novu/js (vanilla) packages, plus pre-built Notion /
-      Linear / Novu themes and full headless API access.
-    humanURL: https://docs.novu.co/platform/inbox/overview
-    baseURL: https://api.novu.co
-    tags:
-      - In App
-      - Inbox
-      - React
-      - React Native
-      - Client SDK
-      - Headless
-    properties:
-      - type: Documentation
-        url: https://docs.novu.co/platform/inbox/overview
-      - type: AsyncAPI
-        url: asyncapi/novu-asyncapi.yml
-        title: Notification Center WebSocket (Socket.IO) — AsyncAPI 2.6
-      - type: GettingStarted
-        url: https://docs.novu.co/platform/quickstart/react
-      - type: SDKs
-        url: https://www.npmjs.com/package/@novu/react
-        title: React Inbox SDK
-      - type: SDKs
-        url: https://www.npmjs.com/package/@novu/react-native
-        title: React Native Inbox SDK
-      - type: SDKs
-        url: https://www.npmjs.com/package/@novu/js
-        title: Headless JS Inbox SDK
-      - type: SDKs
-        url: https://www.npmjs.com/package/@novu/nextjs
-        title: Next.js Inbox helpers
-      - type: CodeExamples
-        url: https://github.com/novuhq/inbox-playground
-        title: Inbox Playground
-  - aid: novu:framework
-    name: Novu Framework (Code-First Workflows)
-    description: >-
-      Code-first workflow framework that lets developers define notification workflows in TypeScript / JavaScript using
-      `@novu/framework`, then sync them to Novu Cloud (or a self-hosted instance) via the `npx novu-sync` CLI or the
-      `novuhq/actions-novu-sync` GitHub Action. Supports Express, Next.js, NestJS, Remix, SvelteKit, Nuxt, H3, AWS
-      Lambda, and any node-runtime HTTP handler. The framework owns the workflow source-of-truth — the Dashboard editor
-      stays in sync via a deterministic bridge URL.
-    humanURL: https://docs.novu.co/framework/overview
-    baseURL: https://docs.novu.co/framework
-    tags:
-      - Framework
-      - Code First
-      - Workflows
-      - TypeScript
-      - Next.js
-      - Express
-      - NestJS
-      - Remix
-      - SvelteKit
-      - Nuxt
-      - AWS Lambda
-    properties:
-      - type: Documentation
-        url: https://docs.novu.co/framework/overview
-      - type: GettingStarted
-        url: https://docs.novu.co/framework/quickstart/nextjs
-      - type: SDKs
-        url: https://www.npmjs.com/package/@novu/framework
-        title: '@novu/framework'
-      - type: CLI
-        url: https://www.npmjs.com/package/novu
-        title: npx novu-sync
-      - type: CodeExamples
-        url: https://github.com/novuhq/novu-framework-nextjs-react-email-example
-        title: Next.js + React Email
-      - type: CodeExamples
-        url: https://github.com/novuhq/novu-framework-remix-example
-        title: Remix
-      - type: CodeExamples
-        url: https://github.com/novuhq/novu-framework-nuxt-example
-        title: Nuxt
-      - type: CodeExamples
-        url: https://github.com/novuhq/novu-framework-nuxt-vue-email-example
-        title: Nuxt + VueEmail
-      - type: CodeExamples
-        url: https://github.com/novuhq/novu-framework-newsletter-app-example
-        title: Newsletter App
-  - aid: novu:mcp-server
-    name: Novu MCP Server
-    description: >-
-      Official Model Context Protocol server exposing the Novu REST API surface as MCP tools so AI agents (Claude
-      Desktop, Cursor, agent frameworks) can trigger workflows, manage subscribers, list workflows, and inspect activity
-      without bespoke wrapping. Distributed as a stdio server runnable via `npx @novu/mcp-server`.
-    humanURL: https://github.com/novuhq/novu-mcp-server
-    baseURL: https://github.com/novuhq/novu-mcp-server
-    tags:
-      - MCP
-      - AI Agents
-      - LLM
-      - Tools
-      - Notifications
-    properties:
-      - type: Documentation
-        url: https://github.com/novuhq/novu-mcp-server
-      - type: SourceCode
-        url: https://github.com/novuhq/novu-mcp-server
+- aid: novu:inbox-api
+  name: Novu Inbox / In-App API
+  description: >-
+    Client-side API and React Inbox component for rendering an embedded in-app notification center, marking
+    notifications as read / archived / snoozed, and managing per-user notification preferences directly
+    in the browser. Ships with @novu/react, @novu/react-native, and @novu/js (vanilla) packages, plus
+    pre-built Notion / Linear / Novu themes and full headless API access.
+  humanURL: https://docs.novu.co/platform/inbox/overview
+  baseURL: https://api.novu.co
+  tags:
+  - In App
+  - Inbox
+  - React
+  - React Native
+  - Client SDK
+  - Headless
+  properties:
+  - type: Documentation
+    url: https://docs.novu.co/platform/inbox/overview
+  - type: AsyncAPI
+    url: asyncapi/novu-asyncapi.yml
+    title: Notification Center WebSocket (Socket.IO) — AsyncAPI 2.6
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/react
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/react
+    title: React Inbox SDK
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/react-native
+    title: React Native Inbox SDK
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/js
+    title: Headless JS Inbox SDK
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/nextjs
+    title: Next.js Inbox helpers
+  - type: CodeExamples
+    url: https://github.com/novuhq/inbox-playground
+    title: Inbox Playground
+- aid: novu:framework
+  name: Novu Framework (Code-First Workflows)
+  description: >-
+    Code-first workflow framework that lets developers define notification workflows in TypeScript / JavaScript
+    using `@novu/framework`, then sync them to Novu Cloud (or a self-hosted instance) via the `npx novu-sync`
+    CLI or the `novuhq/actions-novu-sync` GitHub Action. Supports Express, Next.js, NestJS, Remix, SvelteKit,
+    Nuxt, H3, AWS Lambda, and any node-runtime HTTP handler. The framework owns the workflow source-of-truth
+    — the Dashboard editor stays in sync via a deterministic bridge URL.
+  humanURL: https://docs.novu.co/framework/overview
+  baseURL: https://docs.novu.co/framework
+  tags:
+  - Framework
+  - Code First
+  - Workflows
+  - TypeScript
+  - Next.js
+  - Express
+  - NestJS
+  - Remix
+  - SvelteKit
+  - Nuxt
+  - AWS Lambda
+  properties:
+  - type: Documentation
+    url: https://docs.novu.co/framework/overview
+  - type: GettingStarted
+    url: https://docs.novu.co/framework/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/framework
+    title: '@novu/framework'
+  - type: CLI
+    url: https://www.npmjs.com/package/novu
+    title: npx novu-sync
+  - type: CodeExamples
+    url: https://github.com/novuhq/novu-framework-nextjs-react-email-example
+    title: Next.js + React Email
+  - type: CodeExamples
+    url: https://github.com/novuhq/novu-framework-remix-example
+    title: Remix
+  - type: CodeExamples
+    url: https://github.com/novuhq/novu-framework-nuxt-example
+    title: Nuxt
+  - type: CodeExamples
+    url: https://github.com/novuhq/novu-framework-nuxt-vue-email-example
+    title: Nuxt + VueEmail
+  - type: CodeExamples
+    url: https://github.com/novuhq/novu-framework-newsletter-app-example
+    title: Newsletter App
+- aid: novu:mcp-server
+  name: Novu MCP Server
+  description: >-
+    Official Model Context Protocol server exposing the Novu REST API surface as MCP tools so AI agents
+    (Claude Desktop, Cursor, agent frameworks) can trigger workflows, manage subscribers, list workflows,
+    and inspect activity without bespoke wrapping. Distributed as a stdio server runnable via `npx @novu/mcp-server`.
+  humanURL: https://github.com/novuhq/novu-mcp-server
+  baseURL: https://github.com/novuhq/novu-mcp-server
+  tags:
+  - MCP
+  - AI Agents
+  - LLM
+  - Tools
+  - Notifications
+  properties:
+  - type: Documentation
+    url: https://github.com/novuhq/novu-mcp-server
+  - type: SourceCode
+    url: https://github.com/novuhq/novu-mcp-server
+- aid: novu:novu-activity-api
+  name: Novu Activity API
+  description: The Activity API from Novu — 1 operation(s) for activity.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Activity
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-activity-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-channel-connections-api
+  name: Novu Channel Connections API
+  description: The Channel Connections API from Novu — 2 operation(s) for channel connections.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Channel Connections
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-channel-connections-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-channel-endpoints-api
+  name: Novu Channel Endpoints API
+  description: The Channel Endpoints API from Novu — 2 operation(s) for channel endpoints.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Channel Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-channel-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-contexts-api
+  name: Novu Contexts API
+  description: The Contexts API from Novu — 2 operation(s) for contexts.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Contexts
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-contexts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-domains-api
+  name: Novu Domains API
+  description: Used to manage your inbound email domains.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Domains
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-domains-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-environment-variables-api
+  name: Novu Environment Variables API
+  description: The Environment Variables API from Novu — 3 operation(s) for environment variables.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Environment Variables
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-environment-variables-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-environments-api
+  name: Novu Environments API
+  description: >-
+    Environments allow you to manage different stages of your application development lifecycle. Each
+    environment has its own set of API keys and configurations, enabling you to separate development,
+    staging, and production workflows.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Environments
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-environments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-events-api
+  name: Novu Events API
+  description: >-
+    Events represent a change in state of a subscriber. They are used to trigger workflows, and enable
+    you to send notifications to subscribers based on their actions.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-events-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-integrations-api
+  name: Novu Integrations API
+  description: >-
+    With the help of the Integration Store, you can easily integrate your favorite delivery provider.
+    During the runtime of the API, the Integrations Store is responsible for storing the configurations
+    of all the providers.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-integrations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-layouts-api
+  name: Novu Layouts API
+  description: Layouts are reusable wrappers for your email notifications.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Layouts
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-layouts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-messages-api
+  name: Novu Messages API
+  description: >-
+    A message in Novu represents a notification delivered to a recipient on a particular channel. Messages
+    contain information about the request that triggered its delivery, a view of the data sent to the
+    recipient, and a timeline of its lifecycle events. Learn more about messages.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Messages
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-messages-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-notifications-api
+  name: Novu Notifications API
+  description: The Notifications API from Novu — 2 operation(s) for notifications.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-subscribers-api
+  name: Novu Subscribers API
+  description: >-
+    A subscriber in Novu represents someone who should receive a message. A subscriber's profile information
+    contains important attributes about the subscriber that will be used in messages (name, email). The
+    subscriber object can contain other key-value pairs that can be used to further personalize your messages.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Subscribers
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-subscribers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-topics-api
+  name: Novu Topics API
+  description: >-
+    Topics are a way to group subscribers together so that they can be notified of events at once. A topic
+    is identified by a custom key. This can be helpful for things like sending out marketing emails or
+    notifying users of new features. Topics can also be used to send notifications to the subscribers
+    who have been grouped together based on their interests, location, activities and much more.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Topics
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-topics-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-translations-api
+  name: Novu Translations API
+  description: Used to localize your notifications to different languages.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Translations
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-translations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
+- aid: novu:novu-workflows-api
+  name: Novu Workflows API
+  description: >-
+    All notifications are sent via a workflow. Each workflow acts as a container for the logic and blueprint
+    that are associated with a type of notification in your system.
+  humanURL: https://docs.novu.co/api-reference/overview
+  baseURL: https://api.novu.co
+  tags:
+  - Workflows
+  properties:
+  - type: OpenAPI
+    url: openapi/novu-workflows-api-openapi.yml
+  - type: Documentation
+    url: https://docs.novu.co/api-reference/overview
+  - type: APIReference
+    url: https://docs.novu.co/api-reference/overview
+  - type: Swagger
+    url: https://api.novu.co/api
+  - type: Postman
+    url: https://github.com/novuhq/novu-postman
+  - type: Authentication
+    url: https://docs.novu.co/api-reference/overview#authentication
+  - type: RateLimits
+    url: rate-limits/novu-rate-limits.yml
+  - type: GettingStarted
+    url: https://docs.novu.co/platform/quickstart/nextjs
+  - type: SDKs
+    url: https://www.npmjs.com/package/@novu/api
+  - type: SDKs
+    url: https://pypi.org/project/novu-py/
+  - type: SDKs
+    url: https://github.com/novuhq/novu-go
+  - type: SDKs
+    url: https://github.com/novuhq/php-novu
+  - type: SDKs
+    url: https://github.com/novuhq/novu-csharp
+  - type: SDKs
+    url: https://github.com/novuhq/novu-java
+  - type: SDKs
+    url: https://github.com/novuhq/novu-elixir
+  - type: SDKs
+    url: https://github.com/novuhq/novu-kotlin
+  - type: SDKs
+    url: https://github.com/novuhq/novu-ruby
+  - type: SDKs
+    url: https://github.com/novuhq/novu-rust
+  - type: SDKs
+    url: https://github.com/novuhq/novu-dotnet
+  - type: CodeExamples
+    url: https://github.com/novuhq/examples
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-trigger-event-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-trigger-event-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-subscriber-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-bulk-subscriber-create-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-environment-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-environment-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-topic-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-integration-request-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-integration-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-message-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-create-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-update-workflow-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-workflow-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-layout-response-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-subscriber-payload-dto-schema.json
+  - type: JSONSchema
+    url: json-schema/novu-error-dto-schema.json
+  - type: JSONStructure
+    url: json-structure/novu-trigger-event-request-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-subscriber-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-workflow-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-message-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-topic-response-dto-structure.json
+  - type: JSONStructure
+    url: json-structure/novu-integration-response-dto-structure.json
+  - type: Examples
+    url: examples/novu-trigger-event-example.json
+  - type: Examples
+    url: examples/novu-trigger-event-bulk-example.json
+  - type: Examples
+    url: examples/novu-broadcast-event-example.json
+  - type: Examples
+    url: examples/novu-create-subscriber-example.json
+  - type: Examples
+    url: examples/novu-bulk-create-subscribers-example.json
+  - type: Examples
+    url: examples/novu-create-topic-example.json
+  - type: Examples
+    url: examples/novu-add-subscribers-to-topic-example.json
+  - type: Examples
+    url: examples/novu-create-environment-example.json
+  - type: Examples
+    url: examples/novu-create-integration-example.json
+  - type: Examples
+    url: examples/novu-workflow-response-example.json
+  - type: Examples
+    url: examples/novu-list-messages-example.json
+  - type: Examples
+    url: examples/novu-error-response-example.json
 common:
   - type: AgenticAccess
     url: agentic-access/novu-agentic-access.yml
