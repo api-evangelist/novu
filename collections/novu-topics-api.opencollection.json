@@ -1,0 +1,429 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Novu Activity Topics API",
+    "version": "3.15.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Topics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu Check Topic Subscriber",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/topics/:topicKey/subscribers/:externalSubscriberId",
+            "params": [
+              {
+                "name": "externalSubscriberId",
+                "value": "",
+                "type": "path",
+                "description": "The external subscriber id"
+              },
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The topic key"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check if a subscriber belongs to a certain topic"
+        },
+        {
+          "info": {
+            "name": "Novu List All Topics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/topics",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return (max 100)"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "query",
+                "description": "Key of the topic to filter results."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Name of the topic to filter results."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This api returns a paginated list of topics.\n    Topics can be filtered by **key**, **name**, or **includeCursor** to paginate through the list. \n    Checkout all available filters in the query section."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/topics",
+            "params": [
+              {
+                "name": "failIfExists",
+                "value": "",
+                "type": "query",
+                "description": "If true, the request will fail if a topic with the same key already exists"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new topic if it does not exist, or updates an existing topic if it already exists. Use ?failIfExists=true to prevent updates."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/topics/:topicKey",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a topic by its unique key identifier **topicKey**"
+        },
+        {
+          "info": {
+            "name": "Novu Update a Topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/topics/:topicKey",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a topic name by its unique key identifier **topicKey**"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/topics/:topicKey",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a topic by its unique key identifier **topicKey**. \n    This action is irreversible and will remove all subscriptions to the topic."
+        },
+        {
+          "info": {
+            "name": "Novu List Topic Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return (max 100)"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by subscriber ID"
+              },
+              {
+                "name": "contextKeys",
+                "value": "tenant:org-123,region:us-east-1",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all subscriptions of subscribers for a topic.\n    Checkout all available filters in the query section."
+        },
+        {
+          "info": {
+            "name": "Novu Create Topic Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This api will create subscription for subscriberIds for a topic. \n      Its like subscribing to a common interest group. if topic does not exist, it will be created."
+        },
+        {
+          "info": {
+            "name": "Novu Delete Topic Subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete subscriptions for subscriberIds for a topic."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Topic Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions/:identifier",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              },
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the subscription"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a subscription by its unique identifier for a topic."
+        },
+        {
+          "info": {
+            "name": "Novu Update a Topic Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/topics/:topicKey/subscriptions/:identifier",
+            "params": [
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifier of the topic"
+              },
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the subscription"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a subscription by its unique identifier for a topic. You can update the preferences and name associated with the subscription."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

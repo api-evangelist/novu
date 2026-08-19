@@ -1,0 +1,201 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Novu Activity Environments API",
+    "version": "3.15.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Environments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Environments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/environments",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API returns a list of environments for the current organization. \n    Each environment contains its configuration, API keys (if user has access), and metadata."
+        },
+        {
+          "info": {
+            "name": "Novu Create an Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/environments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new environment within the current organization. \n    Environments allow you to manage different stages of your application development lifecycle.\n    Each environment has its own set of API keys and configurations."
+        },
+        {
+          "info": {
+            "name": "Novu Update an Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.novu.co/v1/environments/:environmentId",
+            "params": [
+              {
+                "name": "environmentId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the environment"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an environment by its unique identifier **environmentId**. \n    You can modify the environment name, identifier, color, and other configuration settings."
+        },
+        {
+          "info": {
+            "name": "Novu Delete an Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/environments/:environmentId",
+            "params": [
+              {
+                "name": "environmentId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the environment"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an environment by its unique identifier **environmentId**. \n    This action is irreversible and will remove the environment and all its associated data."
+        },
+        {
+          "info": {
+            "name": "Novu List Environment Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/environments/:environmentId/tags",
+            "params": [
+              {
+                "name": "environmentId",
+                "value": "6615943e7ace93b0540ae377",
+                "type": "path",
+                "description": "Environment internal ID (MongoDB ObjectId) or identifier"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all unique tags used in workflows within the specified environment. These tags can be used for filtering workflows."
+        },
+        {
+          "info": {
+            "name": "Novu Publish Resources to Target Environment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/environments/:targetEnvironmentId/publish",
+            "params": [
+              {
+                "name": "targetEnvironmentId",
+                "value": "6615943e7ace93b0540ae377",
+                "type": "path",
+                "description": "Target environment ID (MongoDB ObjectId) to publish resources to"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Publishes all workflows and resources from the source environment to the target environment. Optionally specify specific resources to publish or use dryRun mode to preview changes."
+        },
+        {
+          "info": {
+            "name": "Novu Compare Resources Between Environments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/environments/:targetEnvironmentId/diff",
+            "params": [
+              {
+                "name": "targetEnvironmentId",
+                "value": "6615943e7ace93b0540ae377",
+                "type": "path",
+                "description": "Target environment ID (MongoDB ObjectId) to compare against"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Compares workflows and other resources between the source and target environments, returning detailed diff information including additions, modifications, and deletions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

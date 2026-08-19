@@ -1,0 +1,293 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Novu Activity Translations API",
+    "version": "3.15.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Translations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu Upload Translation Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/translations/upload",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "resourceId",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "resourceType",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "files",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload one or more JSON translation files for a specific workflow. Files name must match the locale, e.g. en_US.json. Supports both \"files\" and \"files[]\" field names for backwards compatibility."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/translations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a translation for a specific workflow and locale, if the translation already exists, it will be updated"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve Master Translations JSON",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/translations/master-json",
+            "params": [
+              {
+                "name": "locale",
+                "value": "en_US",
+                "type": "query",
+                "description": "Locale to export. If not provided, exports organization default locale"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all translations for a locale in master JSON format organized by resourceId (workflowId)"
+        },
+        {
+          "info": {
+            "name": "Novu Import Master Translations JSON",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/translations/master-json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Import translations for multiple workflows from master JSON format for a specific locale"
+        },
+        {
+          "info": {
+            "name": "Novu Upload Master Translations JSON File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/translations/master-json/upload",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload a master JSON file containing translations for multiple workflows. Locale is automatically detected from filename (e.g., en_US.json)"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Translation Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/translations/group/:resourceType/:resourceId",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "workflow",
+                "type": "path",
+                "description": "Resource type"
+              },
+              {
+                "name": "resourceId",
+                "value": "welcome-email",
+                "type": "path",
+                "description": "Resource ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a single translation group by resource type (workflow, layout) and resource ID (workflowId, layoutId)"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/translations/:resourceType/:resourceId/:locale",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource type"
+              },
+              {
+                "name": "resourceId",
+                "value": "welcome-email",
+                "type": "path",
+                "description": "Resource ID"
+              },
+              {
+                "name": "locale",
+                "value": "en_US",
+                "type": "path",
+                "description": "Locale code"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific translation by resource type, resource ID and locale"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/translations/:resourceType/:resourceId/:locale",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource type"
+              },
+              {
+                "name": "resourceId",
+                "value": "",
+                "type": "path",
+                "description": "Resource ID"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Locale code"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific translation by resource type, resource ID and locale"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Translation Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/translations/:resourceType/:resourceId",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "workflow",
+                "type": "path",
+                "description": "Resource type"
+              },
+              {
+                "name": "resourceId",
+                "value": "welcome-email",
+                "type": "path",
+                "description": "Resource ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an entire translation group and all its translations"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

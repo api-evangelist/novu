@@ -1,0 +1,3734 @@
+{
+  "item": [
+    {
+      "id": "cda0a42e-aeb7-4694-8c5a-8118cebf711e",
+      "name": "Notifications",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "56873777-0fa9-4417-9a1e-2856e62dbded",
+          "name": "Novu List All Events",
+          "request": {
+            "name": "Novu List All Events",
+            "description": {
+              "content": "List all notification events (triggered events) for the current environment. \n    This API supports filtering by **channels**, **templates**, **emails**, **subscriberIds**, **transactionId**, **topicKey**, **severity**, **contextKeys**. \n    Checkout all available filters in the query section.\n    This API returns event triggers, to list each channel notifications, check messages APIs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "notifications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "channels",
+                  "value": "<string>",
+                  "description": "Array of channel types"
+                },
+                {
+                  "disabled": false,
+                  "key": "channels",
+                  "value": "<string>",
+                  "description": "Array of channel types"
+                },
+                {
+                  "disabled": false,
+                  "key": "templates",
+                  "value": "<string>",
+                  "description": "Array of template IDs or a single template ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "templates",
+                  "value": "<string>",
+                  "description": "Array of template IDs or a single template ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "emails",
+                  "value": "<string>",
+                  "description": "Array of email addresses or a single email address"
+                },
+                {
+                  "disabled": false,
+                  "key": "emails",
+                  "value": "<string>",
+                  "description": "Array of email addresses or a single email address"
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search term (deprecated)"
+                },
+                {
+                  "disabled": false,
+                  "key": "subscriberIds",
+                  "value": "<string>",
+                  "description": "Array of subscriber IDs or a single subscriber ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "subscriberIds",
+                  "value": "<string>",
+                  "description": "Array of subscriber IDs or a single subscriber ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "severity",
+                  "value": "<string>",
+                  "description": "Array of severity levels or a single severity level"
+                },
+                {
+                  "disabled": false,
+                  "key": "severity",
+                  "value": "<string>",
+                  "description": "Array of severity levels or a single severity level"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Limit for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "transactionId",
+                  "value": "<string>",
+                  "description": "The transaction ID to filter by"
+                },
+                {
+                  "disabled": false,
+                  "key": "topicKey",
+                  "value": "<string>",
+                  "description": "Topic Key for filtering notifications by topic"
+                },
+                {
+                  "disabled": false,
+                  "key": "subscriptionId",
+                  "value": "<string>",
+                  "description": "Subscription ID for filtering notifications by subscription"
+                },
+                {
+                  "disabled": false,
+                  "key": "contextKeys",
+                  "value": "<string>",
+                  "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+                },
+                {
+                  "disabled": false,
+                  "key": "contextKeys",
+                  "value": "<string>",
+                  "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Date filter for records after this timestamp. Defaults to earliest date allowed by subscription plan"
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": "<string>",
+                  "description": "Date filter for records before this timestamp. Defaults to current time of request (now)"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "be0f4df9-6316-490a-bfc1-19ecbd1aa864",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"hasMore\": false,\n  \"data\": [\n    {\n      \"_environmentId\": \"string\",\n      \"_organizationId\": \"string\",\n      \"_subscriberId\": \"string\",\n      \"transactionId\": \"string\",\n      \"_id\": \"string\",\n      \"_templateId\": \"string\",\n      \"_digestedNotificationId\": \"string\",\n      \"createdAt\": \"string\",\n      \"updatedAt\": \"string\",\n      \"channels\": [\n        \"in_app\",\n        \"trigger\"\n      ],\n      \"subscriber\": {\n        \"subscriberId\": \"string\",\n        \"_id\": \"string\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\",\n        \"email\": \"string\",\n        \"phone\": \"string\"\n      },\n      \"template\": {\n        \"name\": \"string\",\n        \"triggers\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"identifier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"variables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"subscriberVariables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"identifier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"variables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"subscriberVariables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"_id\": \"string\",\n        \"origin\": \"external\"\n      },\n      \"jobs\": [\n        {\n          \"_id\": \"string\",\n          \"type\": \"sms\",\n          \"executionDetails\": [\n            {\n              \"_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"detail\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isRetry\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isTest\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"createdAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"providerId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"raw\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"detail\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isRetry\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isTest\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"createdAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"providerId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"raw\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"step\": {\n            \"_id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"active\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"filters\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"_templateId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"replyCallback\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"controlVariables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"metadata\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"issues\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"template\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"variants\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"_parentId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"providerId\": \"whatsapp-business\",\n          \"status\": \"string\",\n          \"digest\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"digestKey\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"unit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"events\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoff\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoffAmount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoffUnit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"updateMode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"timed\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"overrides\": {\n            \"workflowId\": \"some_wf_id\",\n            \"stepId\": \"some_wf_id\"\n          },\n          \"payload\": {},\n          \"updatedAt\": \"string\",\n          \"scheduleExtensionsCount\": 8409.028512660301\n        },\n        {\n          \"_id\": \"string\",\n          \"type\": \"digest\",\n          \"executionDetails\": [\n            {\n              \"_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"detail\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isRetry\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isTest\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"createdAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"providerId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"raw\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"detail\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isRetry\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isTest\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"createdAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"providerId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"raw\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"step\": {\n            \"_id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"active\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"filters\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"_templateId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"replyCallback\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"controlVariables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"metadata\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"issues\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"template\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"variants\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"_parentId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"providerId\": \"emailjs\",\n          \"status\": \"string\",\n          \"digest\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"digestKey\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"unit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"events\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoff\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoffAmount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoffUnit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"updateMode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"timed\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"overrides\": {\n            \"workflowId\": \"some_wf_id\",\n            \"stepId\": \"some_wf_id\"\n          },\n          \"payload\": {},\n          \"updatedAt\": \"string\",\n          \"scheduleExtensionsCount\": 541.9482040570556\n        }\n      ],\n      \"payload\": {\n        \"key_0\": 471.9604519374754,\n        \"key_1\": 9313.064132345471\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"controls\": {\n        \"key_0\": false\n      },\n      \"to\": {\n        \"key_0\": \"string\",\n        \"key_1\": 61\n      },\n      \"topics\": [\n        {\n          \"_topicId\": \"string\",\n          \"topicKey\": \"string\"\n        },\n        {\n          \"_topicId\": \"string\",\n          \"topicKey\": \"string\"\n        }\n      ],\n      \"severity\": \"medium\",\n      \"critical\": true,\n      \"contextKeys\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    {\n      \"_environmentId\": \"string\",\n      \"_organizationId\": \"string\",\n      \"_subscriberId\": \"string\",\n      \"transactionId\": \"string\",\n      \"_id\": \"string\",\n      \"_templateId\": \"string\",\n      \"_digestedNotificationId\": \"string\",\n      \"createdAt\": \"string\",\n      \"updatedAt\": \"string\",\n      \"channels\": [\n        \"digest\",\n        \"http_request\"\n      ],\n      \"subscriber\": {\n        \"subscriberId\": \"string\",\n        \"_id\": \"string\",\n        \"firstName\": \"string\",\n        \"lastName\": \"string\",\n        \"email\": \"string\",\n        \"phone\": \"string\"\n      },\n      \"template\": {\n        \"name\": \"string\",\n        \"triggers\": [\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"identifier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"variables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"subscriberVariables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"identifier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"variables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"subscriberVariables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"_id\": \"string\",\n        \"origin\": \"external\"\n      },\n      \"jobs\": [\n        {\n          \"_id\": \"string\",\n          \"type\": \"trigger\",\n          \"executionDetails\": [\n            {\n              \"_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"detail\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isRetry\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isTest\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"createdAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"providerId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"raw\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"detail\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isRetry\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isTest\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"createdAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"providerId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"raw\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"step\": {\n            \"_id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"active\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"filters\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"_templateId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"replyCallback\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"controlVariables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"metadata\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"issues\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"template\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"variants\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"_parentId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"providerId\": \"brevo-sms\",\n          \"status\": \"string\",\n          \"digest\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"digestKey\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"unit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"events\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoff\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoffAmount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoffUnit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"updateMode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"timed\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"overrides\": {\n            \"workflowId\": \"some_wf_id\",\n            \"stepId\": \"some_wf_id\"\n          },\n          \"payload\": {},\n          \"updatedAt\": \"string\",\n          \"scheduleExtensionsCount\": 6221.845622168054\n        },\n        {\n          \"_id\": \"string\",\n          \"type\": \"email\",\n          \"executionDetails\": [\n            {\n              \"_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"detail\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isRetry\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isTest\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"createdAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"providerId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"raw\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"status\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"detail\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isRetry\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"isTest\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"source\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"createdAt\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"providerId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"raw\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"step\": {\n            \"_id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"active\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"filters\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"_templateId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"replyCallback\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"controlVariables\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"metadata\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"issues\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"template\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"variants\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"name\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"_parentId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"providerId\": \"simpletexting\",\n          \"status\": \"string\",\n          \"digest\": {\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"digestKey\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"amount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"unit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"events\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoff\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoffAmount\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"backoffUnit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"updateMode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"timed\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"overrides\": {\n            \"workflowId\": \"some_wf_id\",\n            \"stepId\": \"some_wf_id\"\n          },\n          \"payload\": {},\n          \"updatedAt\": \"string\",\n          \"scheduleExtensionsCount\": 9619.197865249123\n        }\n      ],\n      \"payload\": {\n        \"key_0\": true\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"controls\": {\n        \"key_0\": 3801.7906792230438,\n        \"key_1\": \"string\"\n      },\n      \"to\": {\n        \"key_0\": 6212,\n        \"key_1\": true\n      },\n      \"topics\": [\n        {\n          \"_topicId\": \"string\",\n          \"topicKey\": \"string\"\n        },\n        {\n          \"_topicId\": \"string\",\n          \"topicKey\": \"string\"\n        }\n      ],\n      \"severity\": \"none\",\n      \"critical\": true,\n      \"contextKeys\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  ],\n  \"pageSize\": 5410.83931427759,\n  \"page\": 3295.9542559134393\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d6adc5c-865c-47cd-be01-82db1403bf2e",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23830856-f4f3-47c6-a787-4ae8b80e7417",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "143a3183-1056-47d5-9f65-09aacdb91190",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8c69d02-83fc-4ff7-a831-447cd6b81a2f",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b99272e2-eb72-4f09-95e6-922bebd19b71",
+              "name": "Method Not Allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93f51375-c1b9-4b09-a20c-0d25b28601f5",
+              "name": "Conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aea2555f-2018-441e-9a96-ef25a7920dd7",
+              "name": "Payload Too Large",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1cbfb7e-a7b2-497a-9cae-f10d3fc212ab",
+              "name": "URI Too Long",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Request-URI Too Long",
+              "code": 414,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1d80a1f-139a-4d90-acf8-c1d597aea871",
+              "name": "Unsupported Media Type",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cee9adc3-b09d-49aa-bb00-3999b7852a15",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"errors\": {\n    \"key_0\": {\n      \"messages\": [\n        \"Field is required\",\n        \"Invalid format\"\n      ],\n      \"value\": null\n    },\n    \"key_1\": {\n      \"messages\": [\n        \"Field is required\",\n        \"Invalid format\"\n      ],\n      \"value\": \"string\"\n    },\n    \"key_2\": {\n      \"messages\": [\n        \"Field is required\",\n        \"Invalid format\"\n      ],\n      \"value\": null\n    }\n  },\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23daa6a5-e1a2-4db9-a8ba-9275a9fd1381",
+              "name": "The client has sent too many requests in a given amount of time. ",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of seconds after which the client may retry the request that was previously rejected.",
+                  "key": "Retry-After",
+                  "value": "8"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"API rate limit exceeded\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "327390ad-f9c3-4b3a-892c-1b2eb6083233",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0038f58c-7891-4972-b657-90a277cddfff",
+              "name": "The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "channels",
+                      "value": "in_app"
+                    },
+                    {
+                      "key": "channels",
+                      "value": "push"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "templates",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emails",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriberIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "transactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "topicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "subscriptionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contextKeys",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of seconds after which the client may retry the request that was previously rejected.",
+                  "key": "Retry-After",
+                  "value": "8"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Please wait some time, then try again.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3fb71185-e0d3-454d-aafd-afcc360d4f8d",
+          "name": "Novu Retrieve an Event",
+          "request": {
+            "name": "Novu Retrieve an Event",
+            "description": {
+              "content": "Retrieve an event by its unique key identifier **notificationId**. \n    Here **notificationId** is of mongodbId type. \n    This API returns the event details - execution logs, status, actual notification (message) generated by each workflow step.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "notifications",
+                ":notificationId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "notificationId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f69374e2-e07d-43ac-8243-ea244340b946",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"_environmentId\": \"string\",\n    \"_organizationId\": \"string\",\n    \"_subscriberId\": \"string\",\n    \"transactionId\": \"string\",\n    \"_id\": \"string\",\n    \"_templateId\": \"string\",\n    \"_digestedNotificationId\": \"string\",\n    \"createdAt\": \"string\",\n    \"updatedAt\": \"string\",\n    \"channels\": [\n      \"throttle\",\n      \"push\"\n    ],\n    \"subscriber\": {\n      \"subscriberId\": \"string\",\n      \"_id\": \"string\",\n      \"firstName\": \"string\",\n      \"lastName\": \"string\",\n      \"email\": \"string\",\n      \"phone\": \"string\"\n    },\n    \"template\": {\n      \"name\": \"string\",\n      \"triggers\": [\n        {\n          \"type\": \"event\",\n          \"identifier\": \"string\",\n          \"variables\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"subscriberVariables\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        {\n          \"type\": \"event\",\n          \"identifier\": \"string\",\n          \"variables\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"subscriberVariables\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      ],\n      \"_id\": \"string\",\n      \"origin\": \"novu-cloud-v1\"\n    },\n    \"jobs\": [\n      {\n        \"_id\": \"string\",\n        \"type\": \"http_request\",\n        \"executionDetails\": [\n          {\n            \"_id\": \"string\",\n            \"status\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"detail\": \"string\",\n            \"isRetry\": false,\n            \"isTest\": true,\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"createdAt\": \"string\",\n            \"providerId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"raw\": \"string\"\n          },\n          {\n            \"_id\": \"string\",\n            \"status\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"detail\": \"string\",\n            \"isRetry\": false,\n            \"isTest\": true,\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"createdAt\": \"string\",\n            \"providerId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"raw\": \"string\"\n          }\n        ],\n        \"step\": {\n          \"_id\": \"string\",\n          \"active\": false,\n          \"filters\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"_templateId\": \"string\",\n          \"replyCallback\": {},\n          \"controlVariables\": {},\n          \"metadata\": {},\n          \"issues\": {},\n          \"template\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"variants\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"name\": \"string\",\n          \"_parentId\": \"string\"\n        },\n        \"providerId\": \"novu-email\",\n        \"status\": \"string\",\n        \"digest\": {\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"digestKey\": \"string\",\n          \"amount\": 4914.71693078714,\n          \"unit\": \"seconds\",\n          \"events\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"backoff\": false,\n          \"backoffAmount\": 9344.379353508175,\n          \"backoffUnit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"updateMode\": false,\n          \"timed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"overrides\": {\n          \"workflowId\": \"some_wf_id\",\n          \"stepId\": \"some_wf_id\"\n        },\n        \"payload\": {},\n        \"updatedAt\": \"string\",\n        \"scheduleExtensionsCount\": 2576.474905957318\n      },\n      {\n        \"_id\": \"string\",\n        \"type\": \"throttle\",\n        \"executionDetails\": [\n          {\n            \"_id\": \"string\",\n            \"status\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"detail\": \"string\",\n            \"isRetry\": false,\n            \"isTest\": true,\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"createdAt\": \"string\",\n            \"providerId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"raw\": \"string\"\n          },\n          {\n            \"_id\": \"string\",\n            \"status\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"detail\": \"string\",\n            \"isRetry\": true,\n            \"isTest\": false,\n            \"source\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"createdAt\": \"string\",\n            \"providerId\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"raw\": \"string\"\n          }\n        ],\n        \"step\": {\n          \"_id\": \"string\",\n          \"active\": true,\n          \"filters\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"_templateId\": \"string\",\n          \"replyCallback\": {},\n          \"controlVariables\": {},\n          \"metadata\": {},\n          \"issues\": {},\n          \"template\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"variants\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"name\": \"string\",\n          \"_parentId\": \"string\"\n        },\n        \"providerId\": \"clickatell\",\n        \"status\": \"string\",\n        \"digest\": {\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"digestKey\": \"string\",\n          \"amount\": 823.8119214213358,\n          \"unit\": \"weeks\",\n          \"events\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"backoff\": false,\n          \"backoffAmount\": 2419.2626534069727,\n          \"backoffUnit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"updateMode\": true,\n          \"timed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"overrides\": {\n          \"workflowId\": \"some_wf_id\",\n          \"stepId\": \"some_wf_id\"\n        },\n        \"payload\": {},\n        \"updatedAt\": \"string\",\n        \"scheduleExtensionsCount\": 1858.0122237841201\n      }\n    ],\n    \"payload\": {\n      \"key_0\": 9320.487283206827,\n      \"key_1\": 7580,\n      \"key_2\": 6763.622776756123\n    },\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"controls\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"to\": {\n      \"key_0\": 8398.408256381848,\n      \"key_1\": false,\n      \"key_2\": 6002,\n      \"key_3\": \"string\",\n      \"key_4\": true\n    },\n    \"topics\": [\n      {\n        \"_topicId\": \"string\",\n        \"topicKey\": \"string\"\n      },\n      {\n        \"_topicId\": \"string\",\n        \"topicKey\": \"string\"\n      }\n    ],\n    \"severity\": \"low\",\n    \"critical\": false,\n    \"contextKeys\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79f9161f-bb08-4ac7-b648-c231e6d732bb",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34471d27-0136-420b-9613-eb7d4c44b753",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62986bad-be83-4706-b271-366a45022bd3",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b115d60-f9fb-4148-9c15-669c6f04a87d",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8506c062-2fa5-41a1-b580-a8933176cca1",
+              "name": "Method Not Allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2cf92c1-d925-477d-ae46-8b0a5024acd1",
+              "name": "Conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "208affc5-2173-44a3-9986-f13a98827129",
+              "name": "Payload Too Large",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b736b04-507b-4ac3-8cd8-74ee8323a110",
+              "name": "URI Too Long",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Request-URI Too Long",
+              "code": 414,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e07eb4c-f1af-4a54-aa0e-24d2d790103d",
+              "name": "Unsupported Media Type",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "912b2106-4511-4097-bf1b-b15fb52fbe28",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"errors\": {\n    \"key_0\": {\n      \"messages\": [\n        \"Field is required\",\n        \"Invalid format\"\n      ],\n      \"value\": null\n    },\n    \"key_1\": {\n      \"messages\": [\n        \"Field is required\",\n        \"Invalid format\"\n      ],\n      \"value\": \"string\"\n    },\n    \"key_2\": {\n      \"messages\": [\n        \"Field is required\",\n        \"Invalid format\"\n      ],\n      \"value\": null\n    }\n  },\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5227bb3-58a2-4801-827d-1bcdc35aedc5",
+              "name": "The client has sent too many requests in a given amount of time. ",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of seconds after which the client may retry the request that was previously rejected.",
+                  "key": "Retry-After",
+                  "value": "8"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"API rate limit exceeded\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c2ebc8fc-6759-464f-9e7f-4700e61fc8b8",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 404,\n  \"timestamp\": \"2024-12-12T13:00:00Z\",\n  \"path\": \"/api/v1/resource\",\n  \"message\": \"string\",\n  \"ctx\": {\n    \"workflowId\": \"some_wf_id\",\n    \"stepId\": \"some_wf_id\"\n  },\n  \"errorId\": \"abc123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6418c9e4-3a46-4d9e-b36f-d1feb12f060c",
+              "name": "The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "notifications",
+                    ":notificationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "notificationId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.",
+                  "key": "RateLimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests remaining until the next window.",
+                  "key": "RateLimit-Remaining",
+                  "value": "93"
+                },
+                {
+                  "disabled": false,
+                  "description": "The remaining seconds until a request of the same cost will be refreshed.",
+                  "key": "RateLimit-Reset",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "The rate limit policy that was used to evaluate the request.",
+                  "key": "RateLimit-Policy",
+                  "value": "100;w=1;burst=110;comment=\"token bucket\";category=\"trigger\";cost=\"single\""
+                },
+                {
+                  "disabled": false,
+                  "description": "The idempotency key used to evaluate the request.",
+                  "key": "Idempotency-Key",
+                  "value": "8"
+                },
+                {
+                  "disabled": false,
+                  "description": "Whether the request was a replay of a previous request.",
+                  "key": "Idempotency-Replay",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of seconds after which the client may retry the request that was previously rejected.",
+                  "key": "Retry-After",
+                  "value": "8"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Please wait some time, then try again.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.novu.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1bdbc815-7202-4924-8e8c-563b27a19cea",
+    "name": "Novu Activity Notifications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Novu REST API. Please see https://docs.novu.co/api-reference for more details.\n\nContact Support:\n Name: Novu Support\n Email: support@novu.co",
+      "type": "text/plain"
+    }
+  }
+}

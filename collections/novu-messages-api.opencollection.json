@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Novu Activity Messages API",
+    "version": "3.15.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/messages",
+            "params": [
+              {
+                "name": "channel",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "subscriberId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "contextKeys",
+                "value": "tenant:org-123,region:us-east-1",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all messages for the current environment. \n    This API supports filtering by **channel**, **subscriberId**, and **transactionId**. \n    This API returns a paginated list of messages."
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/messages/:messageId",
+            "params": [
+              {
+                "name": "messageId",
+                "value": "507f1f77bcf86cd799439011",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a message entity from the Novu platform by **messageId**. \n    This action is irreversible. **messageId** is required and of mongodbId type."
+        },
+        {
+          "info": {
+            "name": "Novu Delete Messages by TransactionId",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/messages/transaction/:transactionId",
+            "params": [
+              {
+                "name": "channel",
+                "value": "",
+                "type": "query",
+                "description": "The channel of the message to be deleted"
+              },
+              {
+                "name": "transactionId",
+                "value": "507f1f77bcf86cd799439011",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete multiple messages from the Novu platform using **transactionId** of triggered event. \n    This API supports filtering by **channel** and delete all messages associated with the **transactionId**."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

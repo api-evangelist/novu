@@ -1,0 +1,244 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Novu Activity Integrations API",
+    "version": "3.15.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Integrations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/integrations",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all the channels integrations created in the organization"
+        },
+        {
+          "info": {
+            "name": "Novu Create an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create an integration for the current environment the user is based on the API key provided. \n    Each provider supports different credentials, check the provider documentation for more details."
+        },
+        {
+          "info": {
+            "name": "Novu List Active Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/integrations/active",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all the active integrations created in the organization"
+        },
+        {
+          "info": {
+            "name": "Novu Update an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.novu.co/v1/integrations/:integrationId",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an integration by its unique key identifier **integrationId**. \n    Each provider supports different credentials, check the provider documentation for more details."
+        },
+        {
+          "info": {
+            "name": "Novu Delete an Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/integrations/:integrationId",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an integration by its unique key identifier **integrationId**. \n    This action is irreversible."
+        },
+        {
+          "info": {
+            "name": "Novu Auto-configure an Integration for Inbound Webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/:integrationId/auto-configure",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Auto-configure an integration by its unique key identifier **integrationId** for inbound webhook support. \n    This will automatically generate required webhook signing keys and configure webhook endpoints."
+        },
+        {
+          "info": {
+            "name": "Novu Update Integration as Primary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/:integrationId/set-primary",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an integration as **primary** by its unique key identifier **integrationId**. \n    This API will set the integration as primary for that channel in the current environment. \n    Primary integration is used to deliver notification for sms and email channels in the workflow."
+        },
+        {
+          "info": {
+            "name": "Novu Generate Chat OAuth URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/chat/oauth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Deprecated** — use `POST /integrations/channel-connections/oauth` (connect) or `POST /integrations/channel-endpoints/oauth` (link_user) instead.\n    Generate an OAuth URL for chat integrations like Slack and MS Teams. \n    This URL allows subscribers to authorize the integration, enabling the system to send messages \n    through their chat workspace. The generated URL expires after 5 minutes."
+        },
+        {
+          "info": {
+            "name": "Novu Generate OAuth URL for a Workspace/tenant Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/channel-connections/oauth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generate an OAuth URL that creates a workspace or tenant-level channel connection (Slack workspace install or MS Teams admin consent). \n    The generated URL expires after 5 minutes."
+        },
+        {
+          "info": {
+            "name": "Novu Generate OAuth URL to Link a Subscriber User Identity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/integrations/channel-endpoints/oauth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generate an OAuth URL that links a specific subscriber to their chat identity (Slack user ID or MS Teams user OID). \n    The generated URL expires after 5 minutes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,153 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Novu Activity Notifications API",
+    "version": "3.15.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Notifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/notifications",
+            "params": [
+              {
+                "name": "channels",
+                "value": "",
+                "type": "query",
+                "description": "Array of channel types"
+              },
+              {
+                "name": "templates",
+                "value": "",
+                "type": "query",
+                "description": "Array of template IDs or a single template ID"
+              },
+              {
+                "name": "emails",
+                "value": "",
+                "type": "query",
+                "description": "Array of email addresses or a single email address"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search term (deprecated)"
+              },
+              {
+                "name": "subscriberIds",
+                "value": "",
+                "type": "query",
+                "description": "Array of subscriber IDs or a single subscriber ID"
+              },
+              {
+                "name": "severity",
+                "value": "",
+                "type": "query",
+                "description": "Array of severity levels or a single severity level"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit for pagination"
+              },
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "query",
+                "description": "The transaction ID to filter by"
+              },
+              {
+                "name": "topicKey",
+                "value": "",
+                "type": "query",
+                "description": "Topic Key for filtering notifications by topic"
+              },
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "query",
+                "description": "Subscription ID for filtering notifications by subscription"
+              },
+              {
+                "name": "contextKeys",
+                "value": "",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Date filter for records after this timestamp. Defaults to earliest date allowed by subscription plan"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Date filter for records before this timestamp. Defaults to current time of request (now)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all notification events (triggered events) for the current environment. \n    This API supports filtering by **channels**, **templates**, **emails**, **subscriberIds**, **transactionId**, **topicKey**, **severity**, **contextKeys**. \n    Checkout all available filters in the query section.\n    This API returns event triggers, to list each channel notifications, check messages APIs."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve an Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/notifications/:notificationId",
+            "params": [
+              {
+                "name": "notificationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve an event by its unique key identifier **notificationId**. \n    Here **notificationId** is of mongodbId type. \n    This API returns the event details - execution logs, status, actual notification (message) generated by each workflow step."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

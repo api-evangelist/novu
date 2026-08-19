@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Novu Activity Contexts API",
+    "version": "3.15.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contexts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Contexts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/contexts",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "id",
+                "value": "tenant-prod-123",
+                "type": "query",
+                "description": "Filter contexts by id"
+              },
+              {
+                "name": "search",
+                "value": "tenant",
+                "type": "query",
+                "description": "Search contexts by type or id (supports partial matching across both fields)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a paginated list of all contexts, optionally filtered by type and key pattern.\n      **type** and **id** are optional fields, if provided, only contexts with the matching type and id will be returned.\n      **search** is an optional field, if provided, only contexts with the matching key pattern will be returned.\n      Checkout all possible parameters in the query section below for more details"
+        },
+        {
+          "info": {
+            "name": "Novu Create a Context",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v2/contexts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new context with the specified type, id, and data. Returns 409 if context already exists.\n      **type** and **id** are required fields, **data** is optional, if the context already exists, it returns the 409 response"
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Context",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v2/contexts/:type/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Context ID"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Context type"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific context by its type and id.\n      **type** and **id** are required fields, if the context does not exist, it returns the 404 response"
+        },
+        {
+          "info": {
+            "name": "Novu Update a Context",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v2/contexts/:type/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Context ID"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Context type"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the data of an existing context.\n      **type** and **id** are required fields, **data** is required. Only the data field is updated, the rest of the context is not affected.\n      If the context does not exist, it returns the 404 response"
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Context",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v2/contexts/:type/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Context ID"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Context type"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a context by its type and id.\n      **type** and **id** are required fields, if the context does not exist, it returns the 404 response"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

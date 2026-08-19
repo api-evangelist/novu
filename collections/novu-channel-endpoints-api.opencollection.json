@@ -1,0 +1,217 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Novu Activity Channel Endpoints API",
+    "version": "3.15.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Channel Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Novu List All Channel Endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/channel-endpoints",
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the starting point after which to fetch results."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination indicating the ending point before which to fetch results."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of items to return (max 100)"
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction of sorting"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to order by"
+              },
+              {
+                "name": "includeCursor",
+                "value": "",
+                "type": "query",
+                "description": "Include cursor item in response"
+              },
+              {
+                "name": "subscriberId",
+                "value": "subscriber-123",
+                "type": "query",
+                "description": "The subscriber ID to filter results by"
+              },
+              {
+                "name": "contextKeys",
+                "value": "tenant:org-123,region:us-east-1",
+                "type": "query",
+                "description": "Filter by exact context keys, order insensitive (format: \"type:id\")"
+              },
+              {
+                "name": "channel",
+                "value": "",
+                "type": "query",
+                "description": "Channel type to filter results."
+              },
+              {
+                "name": "providerId",
+                "value": "slack",
+                "type": "query",
+                "description": "Filter by provider identifier (e.g., sendgrid, twilio, slack, etc.)."
+              },
+              {
+                "name": "integrationIdentifier",
+                "value": "slack-prod",
+                "type": "query",
+                "description": "Integration identifier to filter results."
+              },
+              {
+                "name": "connectionIdentifier",
+                "value": "slack-connection-abc123",
+                "type": "query",
+                "description": "Connection identifier to filter results."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all channel endpoints for a resource based on query filters."
+        },
+        {
+          "info": {
+            "name": "Novu Create a Channel Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.novu.co/v1/channel-endpoints",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new channel endpoint for a resource."
+        },
+        {
+          "info": {
+            "name": "Novu Retrieve a Channel Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.novu.co/v1/channel-endpoints/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the channel endpoint"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a specific channel endpoint by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Novu Update a Channel Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.novu.co/v1/channel-endpoints/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the channel endpoint"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing channel endpoint by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Novu Delete a Channel Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.novu.co/v1/channel-endpoints/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the channel endpoint"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific channel endpoint by its unique identifier."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

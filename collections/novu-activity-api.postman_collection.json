@@ -1,0 +1,186 @@
+{
+  "item": [
+    {
+      "id": "6e9a3a02-3e35-43b0-a2f6-c7b20cf9e611",
+      "name": "Activity",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b6975b24-6e2c-478e-bc46-363f69db9061",
+          "name": "Novu Track Provider Activity and Engagement Events",
+          "request": {
+            "name": "Novu Track Provider Activity and Engagement Events",
+            "description": {
+              "content": "Track activity and engagement events for a specific delivery provider",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "inbound-webhooks",
+                "delivery-providers",
+                ":environmentId",
+                ":integrationId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environmentId",
+                  "description": "(Required) The environment identifier"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "integrationId",
+                  "description": "(Required) The integration identifier for the delivery provider"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_0\": 5438,\n  \"key_1\": 2175,\n  \"key_2\": 4955.840332068039\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6a23086d-e7db-46cf-92e4-23c9f34a9ce3",
+              "name": "Successfully processed webhook events",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "inbound-webhooks",
+                    "delivery-providers",
+                    ":environmentId",
+                    ":integrationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environmentId",
+                      "description": "(Required) The environment identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integrationId",
+                      "description": "(Required) The integration identifier for the delivery provider"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"event\": {\n      \"status\": \"sent\",\n      \"date\": \"string\",\n      \"externalId\": \"string\",\n      \"attempts\": 4880.667955929472,\n      \"response\": \"string\",\n      \"row\": \"string\"\n    }\n  },\n  {\n    \"id\": \"string\",\n    \"event\": {\n      \"status\": \"bounced\",\n      \"date\": \"string\",\n      \"externalId\": \"string\",\n      \"attempts\": 2561.706212790229,\n      \"response\": \"string\",\n      \"row\": \"string\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.novu.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4d08392f-9e7e-468f-8b0d-71f115fe4c7b",
+    "name": "Novu Activity API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Novu REST API. Please see https://docs.novu.co/api-reference for more details.\n\nContact Support:\n Name: Novu Support\n Email: support@novu.co",
+      "type": "text/plain"
+    }
+  }
+}
