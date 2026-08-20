@@ -27,6 +27,25 @@ created: '2026-05-23'
 modified: '2026-05-29'
 specificationVersion: '0.23'
 tags:
+  - Notification
+  - Messaging
+  - In-App
+  - Email
+  - SMS
+  - Push
+  - Chat
+  - Workflows
+  - Open-Source
+  - Subscribers
+  - Topics
+  - Inbox
+  - Workflow Orchestration
+  - Multi-Channel
+  - Digest
+  - MCP
+  - Framework
+  - React
+tags_raw:
   - Notifications
   - Messaging
   - In App
@@ -56,6 +75,13 @@ apis:
   humanURL: https://docs.novu.co/platform/inbox/overview
   baseURL: https://api.novu.co
   tags:
+  - In-App
+  - Inbox
+  - React
+  - React Native
+  - Client SDK
+  - Headless
+  tags_raw:
   - In App
   - Inbox
   - React
@@ -96,6 +122,18 @@ apis:
   humanURL: https://docs.novu.co/framework/overview
   baseURL: https://docs.novu.co/framework
   tags:
+  - Framework
+  - Code-First
+  - Workflows
+  - TypeScript
+  - Next.js
+  - Express
+  - NestJS
+  - Remix
+  - SvelteKit
+  - Nuxt
+  - AWS Lambda
+  tags_raw:
   - Framework
   - Code First
   - Workflows
@@ -142,6 +180,12 @@ apis:
   humanURL: https://github.com/novuhq/novu-mcp-server
   baseURL: https://github.com/novuhq/novu-mcp-server
   tags:
+  - MCP
+  - AI Agents
+  - LLM
+  - Tools
+  - Notification
+  tags_raw:
   - MCP
   - AI Agents
   - LLM
@@ -530,6 +574,8 @@ apis:
   humanURL: https://docs.novu.co/api-reference/overview
   baseURL: https://api.novu.co
   tags:
+  - Context
+  tags_raw:
   - Contexts
   properties:
   - type: OpenAPI
@@ -1031,6 +1077,8 @@ apis:
   humanURL: https://docs.novu.co/api-reference/overview
   baseURL: https://api.novu.co
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -1158,6 +1206,8 @@ apis:
   humanURL: https://docs.novu.co/api-reference/overview
   baseURL: https://api.novu.co
   tags:
+  - Integration
+  tags_raw:
   - Integrations
   properties:
   - type: OpenAPI
@@ -1409,6 +1459,8 @@ apis:
   humanURL: https://docs.novu.co/api-reference/overview
   baseURL: https://api.novu.co
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
@@ -1533,6 +1585,8 @@ apis:
   humanURL: https://docs.novu.co/api-reference/overview
   baseURL: https://api.novu.co
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
