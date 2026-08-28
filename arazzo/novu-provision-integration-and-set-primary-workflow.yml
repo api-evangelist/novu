@@ -12,8 +12,8 @@ info:
     OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: novuApi
-  url: ../openapi/novu-openapi.yml
+- name: integrationsApi
+  url: ../openapi/novu-integrations-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: provision-integration-and-set-primary

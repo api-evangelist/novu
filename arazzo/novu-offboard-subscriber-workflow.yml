@@ -11,8 +11,8 @@ info:
     opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: novuApi
-  url: ../openapi/novu-openapi.yml
+- name: subscribersApi
+  url: ../openapi/novu-subscribers-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: offboard-subscriber

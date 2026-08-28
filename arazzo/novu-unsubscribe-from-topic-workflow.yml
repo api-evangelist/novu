@@ -11,8 +11,8 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: novuApi
-  url: ../openapi/novu-openapi.yml
+- name: topicsApi
+  url: ../openapi/novu-topics-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: unsubscribe-from-topic

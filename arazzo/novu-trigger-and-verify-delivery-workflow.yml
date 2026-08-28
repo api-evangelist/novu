@@ -12,8 +12,14 @@ info:
     the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: novuApi
-  url: ../openapi/novu-openapi.yml
+- name: eventsApi
+  url: ../openapi/novu-events-api-openapi.yml
+  type: openapi
+- name: messagesApi
+  url: ../openapi/novu-messages-api-openapi.yml
+  type: openapi
+- name: notificationsApi
+  url: ../openapi/novu-notifications-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: trigger-and-verify-delivery
