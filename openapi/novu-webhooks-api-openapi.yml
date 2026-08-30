@@ -1,0 +1,373 @@
+openapi: 3.2.0
+info:
+  title: Novu Webhooks API
+  version: 3.15.0
+  contact:
+    name: Novu Support
+    url: https://discord.gg/novu
+    email: support@novu.co
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+  termsOfService: https://novu.co/terms
+  description: 'Operations tagged Webhooks across 16 of this provider''s published API definitions: novu-activity-api-openapi.yml, novu-channel-connections-api-openapi.yml, novu-channel-endpoints-api-openapi.yml, novu-contexts-api-openapi.yml, novu-domains-api-openapi.yml, novu-environment-variables-api-openapi.yml, novu-environments-api-openapi.yml, novu-events-api-openapi.yml, novu-integrations-api-openapi.yml, novu-layouts-api-openapi.yml, novu-messages-api-openapi.yml, novu-notifications-api-openapi.yml, novu-subscribers-api-openapi.yml, novu-topics-api-openapi.yml, novu-translations-api-openapi.yml, novu-workflows-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.novu.co
+- url: https://eu.api.novu.co
+security:
+- secretKey: []
+tags:
+- name: Webhooks
+paths: {}
+webhooks:
+  message.sent:
+    post:
+      summary: 'Event: message.sent'
+      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.sent` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.failed:
+    post:
+      summary: 'Event: message.failed'
+      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.failed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.delivered:
+    post:
+      summary: 'Event: message.delivered'
+      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.delivered` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.seen:
+    post:
+      summary: 'Event: message.seen'
+      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.seen` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.read:
+    post:
+      summary: 'Event: message.read'
+      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.read` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.unread:
+    post:
+      summary: 'Event: message.unread'
+      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unread` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.archived:
+    post:
+      summary: 'Event: message.archived'
+      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.archived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.unarchived:
+    post:
+      summary: 'Event: message.unarchived'
+      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unarchived` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.snoozed:
+    post:
+      summary: 'Event: message.snoozed'
+      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.snoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.unsnoozed:
+    post:
+      summary: 'Event: message.unsnoozed'
+      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.unsnoozed` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  message.deleted:
+    post:
+      summary: 'Event: message.deleted'
+      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `message.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  workflow.created:
+    post:
+      summary: 'Event: workflow.created'
+      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.created` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  workflow.updated:
+    post:
+      summary: 'Event: workflow.updated'
+      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  workflow.deleted:
+    post:
+      summary: 'Event: workflow.deleted'
+      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.deleted` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  workflow.published:
+    post:
+      summary: 'Event: workflow.published'
+      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `workflow.published` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  preference.updated:
+    post:
+      summary: 'Event: preference.updated'
+      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `preference.updated` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+  email.received:
+    post:
+      summary: 'Event: email.received'
+      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
+      requestBody:
+        description: Webhook payload for the `email.received` event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
+      responses:
+        '200':
+          description: Acknowledges successful receipt of the webhook. No response body is expected.
+      tags:
+      - Webhooks
+    servers:
+    - url: https://api.novu.co
+    - url: https://eu.api.novu.co
+components:
+  securitySchemes:
+    secretKey:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: 'API key authentication. Allowed headers-- "Authorization: ApiKey <novu_secret_key>".'
+      x-speakeasy-example: YOUR_SECRET_KEY_HERE
+externalDocs:
+  description: Novu Documentation
+  url: https://docs.novu.co
+x-refined-from:
+- novu-activity-api-openapi.yml
+- novu-channel-connections-api-openapi.yml
+- novu-channel-endpoints-api-openapi.yml
+- novu-contexts-api-openapi.yml
+- novu-domains-api-openapi.yml
+- novu-environment-variables-api-openapi.yml
+- novu-environments-api-openapi.yml
+- novu-events-api-openapi.yml
+- novu-integrations-api-openapi.yml
+- novu-layouts-api-openapi.yml
+- novu-messages-api-openapi.yml
+- novu-notifications-api-openapi.yml
+- novu-subscribers-api-openapi.yml
+- novu-topics-api-openapi.yml
+- novu-translations-api-openapi.yml
+- novu-workflows-api-openapi.yml
