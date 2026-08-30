@@ -42,7 +42,7 @@ specificationVersion: '0.23'
 tags:
   - Notification
   - Messaging
-  - In-App
+  - In App
   - Email
   - SMS
   - Push
@@ -53,7 +53,7 @@ tags:
   - Topics
   - Inbox
   - Workflow Orchestration
-  - Multi-Channel
+  - Multi Channel
   - Digest
   - MCP
   - Framework
@@ -88,7 +88,7 @@ apis:
   humanURL: https://docs.novu.co/platform/inbox/overview
   baseURL: https://api.novu.co
   tags:
-  - In-App
+  - In App
   - Inbox
   - React
   - React Native
@@ -136,7 +136,7 @@ apis:
   baseURL: https://docs.novu.co/framework
   tags:
   - Framework
-  - Code-First
+  - Code First
   - Workflows
   - TypeScript
   - Next.js
@@ -587,7 +587,7 @@ apis:
   humanURL: https://docs.novu.co/api-reference/overview
   baseURL: https://api.novu.co
   tags:
-  - Context
+  - Contexts
   tags_raw:
   - Contexts
   properties:
@@ -2229,6 +2229,8 @@ apis:
   humanURL: https://docs.novu.co/platform/inbox/overview
   baseURL: https://api.novu.co
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
