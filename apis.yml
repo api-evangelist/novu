@@ -51,7 +51,7 @@ tags:
   - Workflows
   - Open-Source
   - Subscribers
-  - Topics
+  - Topic
   - Inbox
   - Workflow Orchestration
   - Multi-Channel
@@ -965,6 +965,8 @@ apis:
   humanURL: https://docs.novu.co/api-reference/overview
   baseURL: https://api.novu.co
   tags:
+  - Environment
+  tags_raw:
   - Environments
   properties:
   - type: OpenAPI
@@ -1856,6 +1858,8 @@ apis:
   humanURL: https://docs.novu.co/api-reference/overview
   baseURL: https://api.novu.co
   tags:
+  - Topic
+  tags_raw:
   - Topics
   properties:
   - type: OpenAPI
@@ -1980,6 +1984,8 @@ apis:
   humanURL: https://docs.novu.co/api-reference/overview
   baseURL: https://api.novu.co
   tags:
+  - Translation
+  tags_raw:
   - Translations
   properties:
   - type: OpenAPI
