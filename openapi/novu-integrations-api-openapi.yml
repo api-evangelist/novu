@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Novu Activity Integrations API
+  title: Novu Integrations API
   description: Novu REST API. Please see https://docs.novu.co/api-reference for more details.
   version: 3.15.0
   contact:
@@ -323,7 +323,9 @@ paths:
     post:
       operationId: IntegrationsController_createIntegration
       summary: Novu Create an Integration
-      description: "Create an integration for the current environment the user is based on the API key provided. \n    Each provider supports different credentials, check the provider documentation for more details."
+      description: 'Create an integration for the current environment the user is based on the API key provided.
+
+        Each provider supports different credentials, check the provider documentation for more details.'
       parameters: []
       requestBody:
         required: true
@@ -926,7 +928,9 @@ paths:
     put:
       operationId: IntegrationsController_updateIntegrationById
       summary: Novu Update an Integration
-      description: "Update an integration by its unique key identifier **integrationId**. \n    Each provider supports different credentials, check the provider documentation for more details."
+      description: 'Update an integration by its unique key identifier **integrationId**.
+
+        Each provider supports different credentials, check the provider documentation for more details.'
       parameters:
       - name: integrationId
         required: true
@@ -1230,7 +1234,9 @@ paths:
     delete:
       operationId: IntegrationsController_removeIntegration
       summary: Novu Delete an Integration
-      description: "Delete an integration by its unique key identifier **integrationId**. \n    This action is irreversible."
+      description: 'Delete an integration by its unique key identifier **integrationId**.
+
+        This action is irreversible.'
       parameters:
       - name: integrationId
         required: true
@@ -1535,7 +1541,9 @@ paths:
     post:
       operationId: IntegrationsController_autoConfigureIntegration
       summary: Novu Auto-configure an Integration for Inbound Webhooks
-      description: "Auto-configure an integration by its unique key identifier **integrationId** for inbound webhook support. \n    This will automatically generate required webhook signing keys and configure webhook endpoints."
+      description: 'Auto-configure an integration by its unique key identifier **integrationId** for inbound webhook support.
+
+        This will automatically generate required webhook signing keys and configure webhook endpoints.'
       parameters:
       - name: integrationId
         required: true
@@ -1835,7 +1843,11 @@ paths:
       operationId: IntegrationsController_setIntegrationAsPrimary
       x-speakeasy-name-override: setAsPrimary
       summary: Novu Update Integration as Primary
-      description: "Update an integration as **primary** by its unique key identifier **integrationId**. \n    This API will set the integration as primary for that channel in the current environment. \n    Primary integration is used to deliver notification for sms and email channels in the workflow."
+      description: 'Update an integration as **primary** by its unique key identifier **integrationId**.
+
+        This API will set the integration as primary for that channel in the current environment.
+
+        Primary integration is used to deliver notification for sms and email channels in the workflow.'
       parameters:
       - name: integrationId
         required: true
@@ -2135,7 +2147,13 @@ paths:
       operationId: IntegrationsController_getChatOAuthUrl
       x-speakeasy-name-override: generateChatOAuthUrl
       summary: Novu Generate Chat OAuth URL
-      description: "**Deprecated** — use `POST /integrations/channel-connections/oauth` (connect) or `POST /integrations/channel-endpoints/oauth` (link_user) instead.\n    Generate an OAuth URL for chat integrations like Slack and MS Teams. \n    This URL allows subscribers to authorize the integration, enabling the system to send messages \n    through their chat workspace. The generated URL expires after 5 minutes."
+      description: '**Deprecated** — use `POST /integrations/channel-connections/oauth` (connect) or `POST /integrations/channel-endpoints/oauth` (link_user) instead.
+
+        Generate an OAuth URL for chat integrations like Slack and MS Teams.
+
+        This URL allows subscribers to authorize the integration, enabling the system to send messages
+
+        through their chat workspace. The generated URL expires after 5 minutes.'
       deprecated: true
       parameters: []
       requestBody:
@@ -2441,7 +2459,9 @@ paths:
       operationId: IntegrationsController_generateConnectOAuthUrl
       x-speakeasy-name-override: generateConnectOAuthUrl
       summary: Novu Generate OAuth URL for a Workspace/tenant Connection
-      description: "Generate an OAuth URL that creates a workspace or tenant-level channel connection (Slack workspace install or MS Teams admin consent). \n    The generated URL expires after 5 minutes."
+      description: 'Generate an OAuth URL that creates a workspace or tenant-level channel connection (Slack workspace install or MS Teams admin consent).
+
+        The generated URL expires after 5 minutes.'
       parameters: []
       requestBody:
         required: true
@@ -2746,7 +2766,9 @@ paths:
       operationId: IntegrationsController_generateLinkUserOAuthUrl
       x-speakeasy-name-override: generateLinkUserOAuthUrl
       summary: Novu Generate OAuth URL to Link a Subscriber User Identity
-      description: "Generate an OAuth URL that links a specific subscriber to their chat identity (Slack user ID or MS Teams user OID). \n    The generated URL expires after 5 minutes."
+      description: 'Generate an OAuth URL that links a specific subscriber to their chat identity (Slack user ID or MS Teams user OID).
+
+        The generated URL expires after 5 minutes.'
       parameters: []
       requestBody:
         required: true
@@ -3047,113 +3069,147 @@ paths:
       security:
       - secretKey: []
 components:
+  headers:
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
   schemas:
-    IntegrationResponseDto:
+    FieldFilterPartDto:
       type: object
       properties:
-        _id:
+        field:
           type: string
-          description: The unique identifier of the integration record in the database. This is automatically generated.
-        _environmentId:
+        value:
           type: string
-          description: The unique identifier for the environment associated with this integration. This links to the Environment collection.
-        _organizationId:
+        operator:
           type: string
-          description: The unique identifier for the organization that owns this integration. This links to the Organization collection.
-        name:
-          type: string
-          description: The name of the integration, which is used to identify it in the user interface.
-        identifier:
-          type: string
-          description: A unique string identifier for the integration, often used for API calls or internal references.
-        providerId:
-          type: string
-          description: The identifier for the provider of the integration (e.g., "mailgun", "twilio").
-        channel:
-          type: string
-          description: The channel type for the integration, which defines how it communicates (e.g., email, SMS). Not set for agent-kind integrations.
           enum:
-          - in_app
-          - email
-          - sms
-          - chat
-          - push
-        kind:
+          - LARGER
+          - SMALLER
+          - LARGER_EQUAL
+          - SMALLER_EQUAL
+          - EQUAL
+          - NOT_EQUAL
+          - ALL_IN
+          - ANY_IN
+          - NOT_IN
+          - BETWEEN
+          - NOT_BETWEEN
+          - LIKE
+          - NOT_LIKE
+          - IN
+        'on':
           type: string
-          description: Distinguishes delivery integrations from agent-runtime integrations. Defaults to "delivery". Agent integrations do not have a channel.
           enum:
-          - delivery
-          - agent
-        credentials:
-          description: The decrypted credentials required for the integration to function (e.g. provider API keys, signing secrets). Only returned to dashboard/session-token callers; API-key authenticated callers receive the integration metadata without this field to avoid amplifying API-key leaks into provider-credential leaks.
-          allOf:
-          - $ref: '#/components/schemas/CredentialsDto'
-        configurations:
-          description: The configurations required for enabling the additional configurations of the integration.
-          allOf:
-          - $ref: '#/components/schemas/ConfigurationsDto'
-        active:
-          type: boolean
-          description: Indicates whether the integration is currently active. An active integration will process events and messages.
-        deleted:
-          type: boolean
-          description: Indicates whether the integration has been marked as deleted (soft delete).
-        deletedAt:
-          type: string
-          description: The timestamp indicating when the integration was deleted. This is set when the integration is soft deleted.
-        deletedBy:
-          type: string
-          description: The identifier of the user who performed the deletion of this integration. Useful for audit trails.
-        primary:
-          type: boolean
-          description: Indicates whether this integration is marked as primary. A primary integration is often the default choice for processing.
-        conditions:
-          description: An array of conditions associated with the integration that may influence its behavior or processing logic.
-          type: array
-          items:
-            $ref: '#/components/schemas/StepFilterDto'
+          - subscriber
+          - payload
       required:
-      - _environmentId
-      - _organizationId
-      - name
-      - identifier
-      - providerId
-      - active
-      - deleted
-      - primary
-    ConstraintValidation:
+      - field
+      - value
+      - operator
+      - 'on'
+    BuilderFieldTypeEnum:
+      type: string
+      enum:
+      - BOOLEAN
+      - TEXT
+      - DATE
+      - NUMBER
+      - STATEMENT
+      - LIST
+      - MULTI_LIST
+      - GROUP
+    GenerateLinkUserOauthUrlRequestDto:
       type: object
       properties:
-        messages:
+        subscriberId:
+          type: string
+          description: The subscriber ID to link to their chat identity. Required — this operation always binds a specific subscriber to a user identity in the chat provider.
+          example: subscriber-123
+        integrationIdentifier:
+          type: string
+          description: Integration identifier
+        connectionIdentifier:
+          type: string
+          description: Identifier of the existing channel connection to associate this user endpoint with. Generated automatically if not provided.
+          example: slack-connection-abc123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        userScope:
+          description: '**Slack only**: User-level OAuth scopes for "Sign in with Slack". Defaults to: identity.basic. **MS Teams**: ignored — uses delegated OpenID scopes (openid, profile, User.Read).'
+          example:
+          - identity.basic
           type: array
           items:
             type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
       required:
-      - messages
+      - subscriberId
+      - integrationIdentifier
     GenerateChatOauthUrlRequestDto:
       type: object
       properties:
@@ -3230,40 +3286,272 @@ components:
           example: true
       required:
       - integrationIdentifier
-    FieldFilterPartDto:
+    GenerateConnectOauthUrlRequestDto:
       type: object
       properties:
-        field:
+        subscriberId:
           type: string
-        value:
+          description: 'The subscriber ID to associate with the channel connection. For Slack: optional for workspace connections (required only for incoming-webhook scope). For MS Teams: optional. Admin consent is tenant-wide.'
+          example: subscriber-123
+        integrationIdentifier:
           type: string
-        operator:
+          description: Integration identifier
+        connectionIdentifier:
           type: string
-          enum:
-          - LARGER
-          - SMALLER
-          - LARGER_EQUAL
-          - SMALLER_EQUAL
-          - EQUAL
-          - NOT_EQUAL
-          - ALL_IN
-          - ANY_IN
-          - NOT_IN
-          - BETWEEN
-          - NOT_BETWEEN
-          - LIKE
-          - NOT_LIKE
-          - IN
-        'on':
+          description: Identifier of the channel connection that will be created. Generated automatically if not provided.
+          example: slack-connection-abc123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        scope:
+          description: '**Slack only**: OAuth scopes to request during authorization. If not specified, default scopes will be used: chat:write, chat:write.public, channels:read, groups:read, users:read, users:read.email. **MS Teams**: ignored — uses admin consent with pre-configured Azure AD permissions.'
+          example:
+          - chat:write
+          - chat:write.public
+          - channels:read
+          type: array
+          items:
+            type: string
+        connectionMode:
           type: string
+          description: Connection mode that determines how the channel connection is scoped. "subscriber" (default) associates the connection with a specific subscriber. "shared" associates the connection with a context instead of a subscriber.
           enum:
           - subscriber
-          - payload
+          - shared
+          example: shared
+        autoLinkUser:
+          type: boolean
+          description: When true (default when connectionMode is "subscriber"), after the workspace/tenant connection is created the OAuth flow also links the subscriber who clicked "Connect" as a personal endpoint. For Slack, uses the authed_user.id returned by oauth.v2.access — no extra redirect. For MS Teams, triggers a second OAuth redirect for delegated user-identity consent. Set to false to only create the workspace connection without linking the individual user.
+          example: true
       required:
-      - field
-      - value
-      - operator
-      - 'on'
+      - integrationIdentifier
+    ValidationErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        errors:
+          type: object
+          description: A record of validation errors keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/ConstraintValidation'
+          example:
+            fieldName1:
+              messages:
+              - Field is required
+              - Must be a valid email address
+              value: invalidEmail
+            fieldName2:
+              messages:
+              - Must be at least 18 years old
+              value: 17
+            fieldName3:
+              messages:
+              - Must be a boolean value
+              value: true
+            fieldName4:
+              messages:
+              - Must be a valid object
+              value:
+                key: value
+            fieldName5:
+              messages:
+              - Field is missing
+              value: null
+            fieldName6:
+              messages:
+              - Undefined value
+      required:
+      - statusCode
+      - timestamp
+      - path
+      - errors
+    ErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+      required:
+      - statusCode
+      - timestamp
+      - path
+    UpdateIntegrationRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+        identifier:
+          type: string
+        _environmentId:
+          type: string
+        active:
+          type: boolean
+          description: If the integration is active the validation on the credentials field will run
+        credentials:
+          $ref: '#/components/schemas/CredentialsDto'
+        check:
+          type: boolean
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/StepFilterDto'
+        configurations:
+          type: object
+          description: Configurations for the integration
+    CreateIntegrationRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the integration
+        identifier:
+          type: string
+          description: The unique identifier for the integration
+        _environmentId:
+          type: string
+          description: The ID of the associated environment
+          format: uuid
+        providerId:
+          type: string
+          description: The provider ID for the integration
+        channel:
+          enum:
+          - in_app
+          - email
+          - sms
+          - chat
+          - push
+          type: string
+          description: The channel type for the integration. Not required for agent-kind integrations.
+        kind:
+          enum:
+          - delivery
+          - agent
+          type: string
+          description: Distinguishes delivery integrations from agent-runtime integrations. Defaults to "delivery". Agent integrations do not require a channel.
+        credentials:
+          description: The credentials for the integration
+          allOf:
+          - $ref: '#/components/schemas/CredentialsDto'
+        active:
+          type: boolean
+          description: If the integration is active, the validation on the credentials field will run
+        check:
+          type: boolean
+          description: Flag to check the integration status
+        conditions:
+          description: Conditions for the integration
+          type: array
+          items:
+            $ref: '#/components/schemas/StepFilterDto'
+        configurations:
+          type: object
+          description: Configurations for the integration
     CredentialsDto:
       type: object
       properties:
@@ -3376,148 +3664,6 @@ components:
         externalWorkspaceId:
           type: string
           description: 'Claude Managed Agents: id of the Anthropic workspace used in console deep links. Defaults to `''default''` (the Default Workspace). Set this when the API key is scoped to a custom workspace (e.g. `wrkspc_…`).'
-    ValidationErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-        errors:
-          type: object
-          description: A record of validation errors keyed by field name
-          additionalProperties:
-            $ref: '#/components/schemas/ConstraintValidation'
-          example:
-            fieldName1:
-              messages:
-              - Field is required
-              - Must be a valid email address
-              value: invalidEmail
-            fieldName2:
-              messages:
-              - Must be at least 18 years old
-              value: 17
-            fieldName3:
-              messages:
-              - Must be a boolean value
-              value: true
-            fieldName4:
-              messages:
-              - Must be a valid object
-              value:
-                key: value
-            fieldName5:
-              messages:
-              - Field is missing
-              value: null
-            fieldName6:
-              messages:
-              - Undefined value
-      required:
-      - statusCode
-      - timestamp
-      - path
-      - errors
-    GenerateConnectOauthUrlRequestDto:
-      type: object
-      properties:
-        subscriberId:
-          type: string
-          description: 'The subscriber ID to associate with the channel connection. For Slack: optional for workspace connections (required only for incoming-webhook scope). For MS Teams: optional. Admin consent is tenant-wide.'
-          example: subscriber-123
-        integrationIdentifier:
-          type: string
-          description: Integration identifier
-        connectionIdentifier:
-          type: string
-          description: Identifier of the channel connection that will be created. Generated automatically if not provided.
-          example: slack-connection-abc123
-        context:
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: string
-              description: Simple context id
-              example: org-acme
-            - type: object
-              description: Rich context object with id and optional data
-              properties:
-                id:
-                  type: string
-                  example: org-acme
-                data:
-                  type: object
-                  description: Optional additional context data
-                  additionalProperties: true
-                  example:
-                    name: Acme Corp
-                    region: us-east-1
-              required:
-              - id
-        scope:
-          description: '**Slack only**: OAuth scopes to request during authorization. If not specified, default scopes will be used: chat:write, chat:write.public, channels:read, groups:read, users:read, users:read.email. **MS Teams**: ignored — uses admin consent with pre-configured Azure AD permissions.'
-          example:
-          - chat:write
-          - chat:write.public
-          - channels:read
-          type: array
-          items:
-            type: string
-        connectionMode:
-          type: string
-          description: Connection mode that determines how the channel connection is scoped. "subscriber" (default) associates the connection with a specific subscriber. "shared" associates the connection with a context instead of a subscriber.
-          enum:
-          - subscriber
-          - shared
-          example: shared
-        autoLinkUser:
-          type: boolean
-          description: When true (default when connectionMode is "subscriber"), after the workspace/tenant connection is created the OAuth flow also links the subscriber who clicked "Connect" as a personal endpoint. For Slack, uses the authed_user.id returned by oauth.v2.access — no extra redirect. For MS Teams, triggers a second OAuth redirect for delegated user-identity consent. Set to false to only create the workspace connection without linking the individual user.
-          example: true
-      required:
-      - integrationIdentifier
     GenerateChatOAuthUrlResponseDto:
       type: object
       properties:
@@ -3527,22 +3673,32 @@ components:
           example: https://slack.com/oauth/v2/authorize?state=...
       required:
       - url
-    ErrorDto:
+    AutoConfigureIntegrationResponseDto:
       type: object
       properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
+        success:
+          type: boolean
+          description: Indicates whether the auto-configuration was successful
         message:
+          type: string
+          description: Optional message describing the result or any errors that occurred
+        integration:
+          type: object
+          description: The updated configurations after auto-configuration
+      required:
+      - success
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
           description: Value that failed validation
           oneOf:
           - type:
@@ -3550,9 +3706,7 @@ components:
             - 'null'
           - type: number
           - type: boolean
-          - type:
-            - object
-            - 'null'
+          - type: object
           - type: array
             items:
               anyOf:
@@ -3564,21 +3718,81 @@ components:
               - type: object
                 additionalProperties: true
           example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
       required:
-      - statusCode
-      - timestamp
-      - path
+      - messages
+    IntegrationResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the integration record in the database. This is automatically generated.
+        _environmentId:
+          type: string
+          description: The unique identifier for the environment associated with this integration. This links to the Environment collection.
+        _organizationId:
+          type: string
+          description: The unique identifier for the organization that owns this integration. This links to the Organization collection.
+        name:
+          type: string
+          description: The name of the integration, which is used to identify it in the user interface.
+        identifier:
+          type: string
+          description: A unique string identifier for the integration, often used for API calls or internal references.
+        providerId:
+          type: string
+          description: The identifier for the provider of the integration (e.g., "mailgun", "twilio").
+        channel:
+          type: string
+          description: The channel type for the integration, which defines how it communicates (e.g., email, SMS). Not set for agent-kind integrations.
+          enum:
+          - in_app
+          - email
+          - sms
+          - chat
+          - push
+        kind:
+          type: string
+          description: Distinguishes delivery integrations from agent-runtime integrations. Defaults to "delivery". Agent integrations do not have a channel.
+          enum:
+          - delivery
+          - agent
+        credentials:
+          description: The decrypted credentials required for the integration to function (e.g. provider API keys, signing secrets). Only returned to dashboard/session-token callers; API-key authenticated callers receive the integration metadata without this field to avoid amplifying API-key leaks into provider-credential leaks.
+          allOf:
+          - $ref: '#/components/schemas/CredentialsDto'
+        configurations:
+          description: The configurations required for enabling the additional configurations of the integration.
+          allOf:
+          - $ref: '#/components/schemas/ConfigurationsDto'
+        active:
+          type: boolean
+          description: Indicates whether the integration is currently active. An active integration will process events and messages.
+        deleted:
+          type: boolean
+          description: Indicates whether the integration has been marked as deleted (soft delete).
+        deletedAt:
+          type: string
+          description: The timestamp indicating when the integration was deleted. This is set when the integration is soft deleted.
+        deletedBy:
+          type: string
+          description: The identifier of the user who performed the deletion of this integration. Useful for audit trails.
+        primary:
+          type: boolean
+          description: Indicates whether this integration is marked as primary. A primary integration is often the default choice for processing.
+        conditions:
+          description: An array of conditions associated with the integration that may influence its behavior or processing logic.
+          type: array
+          items:
+            $ref: '#/components/schemas/StepFilterDto'
+      required:
+      - _environmentId
+      - _organizationId
+      - name
+      - identifier
+      - providerId
+      - active
+      - deleted
+      - primary
     ConfigurationsDto:
       type: object
       properties:
@@ -3607,198 +3821,6 @@ components:
       - type
       - value
       - children
-    GenerateLinkUserOauthUrlRequestDto:
-      type: object
-      properties:
-        subscriberId:
-          type: string
-          description: The subscriber ID to link to their chat identity. Required — this operation always binds a specific subscriber to a user identity in the chat provider.
-          example: subscriber-123
-        integrationIdentifier:
-          type: string
-          description: Integration identifier
-        connectionIdentifier:
-          type: string
-          description: Identifier of the existing channel connection to associate this user endpoint with. Generated automatically if not provided.
-          example: slack-connection-abc123
-        context:
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: string
-              description: Simple context id
-              example: org-acme
-            - type: object
-              description: Rich context object with id and optional data
-              properties:
-                id:
-                  type: string
-                  example: org-acme
-                data:
-                  type: object
-                  description: Optional additional context data
-                  additionalProperties: true
-                  example:
-                    name: Acme Corp
-                    region: us-east-1
-              required:
-              - id
-        userScope:
-          description: '**Slack only**: User-level OAuth scopes for "Sign in with Slack". Defaults to: identity.basic. **MS Teams**: ignored — uses delegated OpenID scopes (openid, profile, User.Read).'
-          example:
-          - identity.basic
-          type: array
-          items:
-            type: string
-      required:
-      - subscriberId
-      - integrationIdentifier
-    AutoConfigureIntegrationResponseDto:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates whether the auto-configuration was successful
-        message:
-          type: string
-          description: Optional message describing the result or any errors that occurred
-        integration:
-          type: object
-          description: The updated configurations after auto-configuration
-      required:
-      - success
-    BuilderFieldTypeEnum:
-      type: string
-      enum:
-      - BOOLEAN
-      - TEXT
-      - DATE
-      - NUMBER
-      - STATEMENT
-      - LIST
-      - MULTI_LIST
-      - GROUP
-    UpdateIntegrationRequestDto:
-      type: object
-      properties:
-        name:
-          type: string
-        identifier:
-          type: string
-        _environmentId:
-          type: string
-        active:
-          type: boolean
-          description: If the integration is active the validation on the credentials field will run
-        credentials:
-          $ref: '#/components/schemas/CredentialsDto'
-        check:
-          type: boolean
-        conditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/StepFilterDto'
-        configurations:
-          type: object
-          description: Configurations for the integration
-    CreateIntegrationRequestDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the integration
-        identifier:
-          type: string
-          description: The unique identifier for the integration
-        _environmentId:
-          type: string
-          description: The ID of the associated environment
-          format: uuid
-        providerId:
-          type: string
-          description: The provider ID for the integration
-        channel:
-          enum:
-          - in_app
-          - email
-          - sms
-          - chat
-          - push
-          type: string
-          description: The channel type for the integration. Not required for agent-kind integrations.
-        kind:
-          enum:
-          - delivery
-          - agent
-          type: string
-          description: Distinguishes delivery integrations from agent-runtime integrations. Defaults to "delivery". Agent integrations do not require a channel.
-        credentials:
-          description: The credentials for the integration
-          allOf:
-          - $ref: '#/components/schemas/CredentialsDto'
-        active:
-          type: boolean
-          description: If the integration is active, the validation on the credentials field will run
-        check:
-          type: boolean
-          description: Flag to check the integration status
-        conditions:
-          description: Conditions for the integration
-          type: array
-          items:
-            $ref: '#/components/schemas/StepFilterDto'
-        configurations:
-          type: object
-          description: Configurations for the integration
-  headers:
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
   securitySchemes:
     secretKey:
       type: apiKey
@@ -3809,276 +3831,3 @@ components:
 externalDocs:
   description: Novu Documentation
   url: https://docs.novu.co
-x-webhooks:
-  message.sent:
-    post:
-      summary: 'Event: message.sent'
-      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.sent` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.failed:
-    post:
-      summary: 'Event: message.failed'
-      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.failed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.delivered:
-    post:
-      summary: 'Event: message.delivered'
-      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.delivered` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.seen:
-    post:
-      summary: 'Event: message.seen'
-      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.seen` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.read:
-    post:
-      summary: 'Event: message.read'
-      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.read` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unread:
-    post:
-      summary: 'Event: message.unread'
-      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unread` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.archived:
-    post:
-      summary: 'Event: message.archived'
-      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.archived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unarchived:
-    post:
-      summary: 'Event: message.unarchived'
-      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unarchived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.snoozed:
-    post:
-      summary: 'Event: message.snoozed'
-      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.snoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unsnoozed:
-    post:
-      summary: 'Event: message.unsnoozed'
-      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unsnoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.deleted:
-    post:
-      summary: 'Event: message.deleted'
-      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.created:
-    post:
-      summary: 'Event: workflow.created'
-      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.created` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.updated:
-    post:
-      summary: 'Event: workflow.updated'
-      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.deleted:
-    post:
-      summary: 'Event: workflow.deleted'
-      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.published:
-    post:
-      summary: 'Event: workflow.published'
-      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.published` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  preference.updated:
-    post:
-      summary: 'Event: preference.updated'
-      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `preference.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  email.received:
-    post:
-      summary: 'Event: email.received'
-      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `email.received` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks

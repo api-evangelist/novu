@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Novu Activity Environments API
+  title: Novu Environments API
   description: Novu REST API. Please see https://docs.novu.co/api-reference for more details.
   version: 3.15.0
   contact:
@@ -28,7 +28,11 @@ paths:
       x-speakeasy-name-override: create
       x-speakeasy-group: Environments
       summary: Novu Create an Environment
-      description: "Creates a new environment within the current organization. \n    Environments allow you to manage different stages of your application development lifecycle.\n    Each environment has its own set of API keys and configurations."
+      description: 'Creates a new environment within the current organization.
+
+        Environments allow you to manage different stages of your application development lifecycle.
+
+        Each environment has its own set of API keys and configurations.'
       parameters: []
       requestBody:
         required: true
@@ -339,7 +343,9 @@ paths:
       x-speakeasy-name-override: list
       x-speakeasy-group: Environments
       summary: Novu List All Environments
-      description: "This API returns a list of environments for the current organization. \n    Each environment contains its configuration, API keys (if user has access), and metadata."
+      description: 'This API returns a list of environments for the current organization.
+
+        Each environment contains its configuration, API keys (if user has access), and metadata.'
       parameters: []
       responses:
         '200':
@@ -641,7 +647,9 @@ paths:
       x-speakeasy-name-override: update
       x-speakeasy-group: Environments
       summary: Novu Update an Environment
-      description: "Update an environment by its unique identifier **environmentId**. \n    You can modify the environment name, identifier, color, and other configuration settings."
+      description: 'Update an environment by its unique identifier **environmentId**.
+
+        You can modify the environment name, identifier, color, and other configuration settings.'
       parameters:
       - name: environmentId
         required: true
@@ -952,7 +960,9 @@ paths:
       x-speakeasy-name-override: delete
       x-speakeasy-group: Environments
       summary: Novu Delete an Environment
-      description: "Delete an environment by its unique identifier **environmentId**. \n    This action is irreversible and will remove the environment and all its associated data."
+      description: 'Delete an environment by its unique identifier **environmentId**.
+
+        This action is irreversible and will remove the environment and all its associated data.'
       parameters:
       - name: environmentId
         required: true
@@ -2166,34 +2176,61 @@ paths:
       security:
       - secretKey: []
 components:
+  headers:
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
   schemas:
-    SyncActionEnum:
-      type: string
-      description: Sync action performed
-      enum:
-      - created
-      - updated
-      - skipped
-      - deleted
-    ResourceToPublishDto:
+    BridgeConfigurationDto:
       type: object
       properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        resourceId:
+        url:
           type: string
-          description: Unique identifier of the resource to publish
-          example: workflow-id-1
-      required:
-      - resourceType
-      - resourceId
-    ResourceTypeEnum:
-      type: string
-      description: Type of the layout
-      enum:
-      - REGULAR
-      - ECHO
-      - BRIDGE
     ApiKeyDto:
       type: object
       properties:
@@ -2212,180 +2249,7 @@ components:
       required:
       - key
       - _userId
-    DiffEnvironmentRequestDto:
-      type: object
-      properties:
-        sourceEnvironmentId:
-          type: string
-          description: Source environment ID to compare from. Defaults to the Development environment if not provided.
-          example: 507f1f77bcf86cd799439011
-    CreateEnvironmentRequestDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the environment to be created
-          example: Production Environment
-        parentId:
-          type: string
-          description: MongoDB ObjectId of the parent environment (optional)
-          example: 60d5ecb8b3b3a30015f3e1a1
-        color:
-          type: string
-          description: Hex color code for the environment
-          example: '#3498db'
-      required:
-      - name
-      - color
-    UserInfoDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: User ID
-        firstName:
-          type: string
-          description: User first name
-        lastName:
-          type:
-          - string
-          - 'null'
-          description: User last name
-        externalId:
-          type: string
-          description: User external ID
-      required:
-      - _id
-      - firstName
-    EnvironmentDiffSummaryDto:
-      type: object
-      properties:
-        totalEntities:
-          type: number
-          description: Total number of entities compared
-        totalChanges:
-          type: number
-          description: Total number of changes detected
-        hasChanges:
-          type: boolean
-          description: Whether any changes were detected
-      required:
-      - totalEntities
-      - totalChanges
-      - hasChanges
-    ResourceDiffDto:
-      type: object
-      properties:
-        sourceResource:
-          description: Source resource information
-          allOf:
-          - $ref: '#/components/schemas/ResourceInfoDto'
-        targetResource:
-          description: Target resource information
-          allOf:
-          - $ref: '#/components/schemas/ResourceInfoDto'
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        action:
-          $ref: '#/components/schemas/DiffActionEnum'
-        diffs:
-          type: object
-          description: Detailed changes (only for modified resources)
-          properties:
-            previous:
-              type:
-              - object
-              - 'null'
-              description: Previous state of the resource (null for added resources)
-              additionalProperties: true
-            new:
-              type:
-              - object
-              - 'null'
-              description: New state of the resource (null for deleted resources)
-              additionalProperties: true
-        stepType:
-          type: string
-          description: Step type (only for step resources)
-        previousIndex:
-          type: number
-          description: Previous index in steps array (for moved/deleted steps)
-        newIndex:
-          type: number
-          description: New index in steps array (for moved/added steps)
-      required:
-      - resourceType
-      - action
-    BridgeConfigurationDto:
-      type: object
-      properties:
-        url:
-          type: string
-    ResourceDiffResultDto:
-      type: object
-      properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        sourceResource:
-          description: Source resource information
-          allOf:
-          - $ref: '#/components/schemas/ResourceInfoDto'
-        targetResource:
-          description: Target resource information
-          allOf:
-          - $ref: '#/components/schemas/ResourceInfoDto'
-        changes:
-          description: List of specific changes for this resource
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceDiffDto'
-        summary:
-          description: Summary of changes for this resource
-          allOf:
-          - $ref: '#/components/schemas/DiffSummaryDto'
-        dependencies:
-          description: Dependencies that affect this resource
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceDependencyDto'
-      required:
-      - resourceType
-      - changes
-      - summary
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
-    SyncedWorkflowDto:
+    SkippedWorkflowDto:
       type: object
       properties:
         resourceType:
@@ -2396,13 +2260,66 @@ components:
         resourceName:
           type: string
           description: Resource name
-        action:
-          $ref: '#/components/schemas/SyncActionEnum'
+        reason:
+          type: string
+          description: Reason for skipping
       required:
       - resourceType
       - resourceId
       - resourceName
-      - action
+      - reason
+    DiffSummaryDto:
+      type: object
+      properties:
+        added:
+          type: number
+          description: Number of added resources (workflows and steps)
+        modified:
+          type: number
+          description: Number of modified resources (workflows and steps)
+        deleted:
+          type: number
+          description: Number of deleted resources (workflows and steps)
+        unchanged:
+          type: number
+          description: Number of unchanged resources (workflows and steps)
+      required:
+      - added
+      - modified
+      - deleted
+      - unchanged
+    ResourceToPublishDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        resourceId:
+          type: string
+          description: Unique identifier of the resource to publish
+          example: workflow-id-1
+      required:
+      - resourceType
+      - resourceId
+    PublishSummaryDto:
+      type: object
+      properties:
+        resources:
+          type: number
+          description: Number of resources processed
+        successful:
+          type: number
+          description: Number of successful syncs
+        failed:
+          type: number
+          description: Number of failed syncs
+        skipped:
+          type: number
+          description: Number of skipped resources
+      required:
+      - resources
+      - successful
+      - failed
+      - skipped
     ResourceDependencyDto:
       type: object
       properties:
@@ -2447,59 +2364,45 @@ components:
       - resourceId
       - resourceName
       - error
-    SyncResultDto:
+    EnvironmentDiffSummaryDto:
       type: object
       properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        successful:
-          description: Successfully synced resources
-          type: array
-          items:
-            $ref: '#/components/schemas/SyncedWorkflowDto'
-        failed:
-          description: Failed resource syncs
-          type: array
-          items:
-            $ref: '#/components/schemas/FailedWorkflowDto'
-        skipped:
-          description: Skipped resources
-          type: array
-          items:
-            $ref: '#/components/schemas/SkippedWorkflowDto'
-        totalProcessed:
+        totalEntities:
           type: number
-          description: Total number of resources processed
+          description: Total number of entities compared
+        totalChanges:
+          type: number
+          description: Total number of changes detected
+        hasChanges:
+          type: boolean
+          description: Whether any changes were detected
       required:
-      - resourceType
-      - successful
-      - failed
-      - skipped
-      - totalProcessed
-    ResourceInfoDto:
+      - totalEntities
+      - totalChanges
+      - hasChanges
+    DiffEnvironmentResponseDto:
       type: object
       properties:
-        id:
-          type:
-          - string
-          - 'null'
-          description: Resource ID (workflow ID or step ID)
-        name:
-          type:
-          - string
-          - 'null'
-          description: Resource name (workflow name or step name)
-        updatedBy:
-          description: User who last updated the resource
+        sourceEnvironmentId:
+          type: string
+          description: Source environment ID
+        targetEnvironmentId:
+          type: string
+          description: Target environment ID
+        resources:
+          description: Diff resources by resource type
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceDiffResultDto'
+        summary:
+          description: Overall summary
           allOf:
-          - $ref: '#/components/schemas/UserInfoDto'
-        updatedAt:
-          type:
-          - string
-          - 'null'
-          description: When the resource was last updated
-          format: date-time
-          example: '2024-01-15T10:30:00.000Z'
+          - $ref: '#/components/schemas/EnvironmentDiffSummaryDto'
+      required:
+      - sourceEnvironmentId
+      - targetEnvironmentId
+      - resources
+      - summary
     ValidationErrorDto:
       type: object
       properties:
@@ -2584,6 +2487,37 @@ components:
       - timestamp
       - path
       - errors
+    ResourceDiffResultDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        sourceResource:
+          description: Source resource information
+          allOf:
+          - $ref: '#/components/schemas/ResourceInfoDto'
+        targetResource:
+          description: Target resource information
+          allOf:
+          - $ref: '#/components/schemas/ResourceInfoDto'
+        changes:
+          description: List of specific changes for this resource
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceDiffDto'
+        summary:
+          description: Summary of changes for this resource
+          allOf:
+          - $ref: '#/components/schemas/DiffSummaryDto'
+        dependencies:
+          description: Dependencies that affect this resource
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceDependencyDto'
+      required:
+      - resourceType
+      - changes
+      - summary
     ErrorDto:
       type: object
       properties:
@@ -2636,86 +2570,35 @@ components:
       - statusCode
       - timestamp
       - path
-    PublishSummaryDto:
-      type: object
-      properties:
-        resources:
-          type: number
-          description: Number of resources processed
-        successful:
-          type: number
-          description: Number of successful syncs
-        failed:
-          type: number
-          description: Number of failed syncs
-        skipped:
-          type: number
-          description: Number of skipped resources
-      required:
-      - resources
-      - successful
-      - failed
-      - skipped
-    DependencyReasonEnum:
+    DiffActionEnum:
       type: string
-      description: Reason for the dependency
+      description: Type of change
       enum:
-      - LAYOUT_REQUIRED_FOR_WORKFLOW
-      - LAYOUT_EXISTS_IN_TARGET
-    UpdateEnvironmentRequestDto:
-      type: object
-      properties:
-        name:
-          type: string
-        identifier:
-          type: string
-        parentId:
-          type: string
-        color:
-          type: string
-        dns:
-          $ref: '#/components/schemas/InBoundParseDomainDto'
-        bridge:
-          $ref: '#/components/schemas/BridgeConfigurationDto'
-    DiffSummaryDto:
-      type: object
-      properties:
-        added:
-          type: number
-          description: Number of added resources (workflows and steps)
-        modified:
-          type: number
-          description: Number of modified resources (workflows and steps)
-        deleted:
-          type: number
-          description: Number of deleted resources (workflows and steps)
-        unchanged:
-          type: number
-          description: Number of unchanged resources (workflows and steps)
-      required:
       - added
       - modified
       - deleted
       - unchanged
-    SkippedWorkflowDto:
+      - moved
+    SyncActionEnum:
+      type: string
+      description: Sync action performed
+      enum:
+      - created
+      - updated
+      - skipped
+      - deleted
+    GetEnvironmentTagsDto:
       type: object
       properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        resourceId:
+        name:
           type: string
-          description: Resource ID
-        resourceName:
-          type: string
-          description: Resource name
-        reason:
-          type: string
-          description: Reason for skipping
       required:
-      - resourceType
-      - resourceId
-      - resourceName
-      - reason
+      - name
+    InBoundParseDomainDto:
+      type: object
+      properties:
+        inboundParseDomain:
+          type: string
     EnvironmentResponseDto:
       type: object
       properties:
@@ -2762,6 +2645,63 @@ components:
       - name
       - _organizationId
       - identifier
+    DependencyReasonEnum:
+      type: string
+      description: Reason for the dependency
+      enum:
+      - LAYOUT_REQUIRED_FOR_WORKFLOW
+      - LAYOUT_EXISTS_IN_TARGET
+    SyncedWorkflowDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        resourceId:
+          type: string
+          description: Resource ID
+        resourceName:
+          type: string
+          description: Resource name
+        action:
+          $ref: '#/components/schemas/SyncActionEnum'
+      required:
+      - resourceType
+      - resourceId
+      - resourceName
+      - action
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
     PublishEnvironmentRequestDto:
       type: object
       properties:
@@ -2778,50 +2718,162 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ResourceToPublishDto'
-    InBoundParseDomainDto:
-      type: object
-      properties:
-        inboundParseDomain:
-          type: string
-    GetEnvironmentTagsDto:
+    CreateEnvironmentRequestDto:
       type: object
       properties:
         name:
           type: string
+          description: Name of the environment to be created
+          example: Production Environment
+        parentId:
+          type: string
+          description: MongoDB ObjectId of the parent environment (optional)
+          example: 60d5ecb8b3b3a30015f3e1a1
+        color:
+          type: string
+          description: Hex color code for the environment
+          example: '#3498db'
       required:
       - name
-    DiffActionEnum:
+      - color
+    ResourceTypeEnum:
       type: string
-      description: Type of change
+      description: Type of the layout
       enum:
-      - added
-      - modified
-      - deleted
-      - unchanged
-      - moved
-    DiffEnvironmentResponseDto:
+      - REGULAR
+      - ECHO
+      - BRIDGE
+    UpdateEnvironmentRequestDto:
       type: object
       properties:
-        sourceEnvironmentId:
+        name:
           type: string
-          description: Source environment ID
-        targetEnvironmentId:
+        identifier:
           type: string
-          description: Target environment ID
-        resources:
-          description: Diff resources by resource type
+        parentId:
+          type: string
+        color:
+          type: string
+        dns:
+          $ref: '#/components/schemas/InBoundParseDomainDto'
+        bridge:
+          $ref: '#/components/schemas/BridgeConfigurationDto'
+    SyncResultDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        successful:
+          description: Successfully synced resources
           type: array
           items:
-            $ref: '#/components/schemas/ResourceDiffResultDto'
-        summary:
-          description: Overall summary
-          allOf:
-          - $ref: '#/components/schemas/EnvironmentDiffSummaryDto'
+            $ref: '#/components/schemas/SyncedWorkflowDto'
+        failed:
+          description: Failed resource syncs
+          type: array
+          items:
+            $ref: '#/components/schemas/FailedWorkflowDto'
+        skipped:
+          description: Skipped resources
+          type: array
+          items:
+            $ref: '#/components/schemas/SkippedWorkflowDto'
+        totalProcessed:
+          type: number
+          description: Total number of resources processed
       required:
-      - sourceEnvironmentId
-      - targetEnvironmentId
-      - resources
-      - summary
+      - resourceType
+      - successful
+      - failed
+      - skipped
+      - totalProcessed
+    ResourceInfoDto:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Resource ID (workflow ID or step ID)
+        name:
+          type:
+          - string
+          - 'null'
+          description: Resource name (workflow name or step name)
+        updatedBy:
+          description: User who last updated the resource
+          allOf:
+          - $ref: '#/components/schemas/UserInfoDto'
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          description: When the resource was last updated
+          format: date-time
+          example: '2024-01-15T10:30:00.000Z'
+    UserInfoDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: User ID
+        firstName:
+          type: string
+          description: User first name
+        lastName:
+          type:
+          - string
+          - 'null'
+          description: User last name
+        externalId:
+          type: string
+          description: User external ID
+      required:
+      - _id
+      - firstName
+    ResourceDiffDto:
+      type: object
+      properties:
+        sourceResource:
+          description: Source resource information
+          allOf:
+          - $ref: '#/components/schemas/ResourceInfoDto'
+        targetResource:
+          description: Target resource information
+          allOf:
+          - $ref: '#/components/schemas/ResourceInfoDto'
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        action:
+          $ref: '#/components/schemas/DiffActionEnum'
+        diffs:
+          type: object
+          description: Detailed changes (only for modified resources)
+          properties:
+            previous:
+              type:
+              - object
+              - 'null'
+              description: Previous state of the resource (null for added resources)
+              additionalProperties: true
+            new:
+              type:
+              - object
+              - 'null'
+              description: New state of the resource (null for deleted resources)
+              additionalProperties: true
+        stepType:
+          type: string
+          description: Step type (only for step resources)
+        previousIndex:
+          type: number
+          description: Previous index in steps array (for moved/deleted steps)
+        newIndex:
+          type: number
+          description: New index in steps array (for moved/added steps)
+      required:
+      - resourceType
+      - action
     PublishEnvironmentResponseDto:
       type: object
       properties:
@@ -2837,55 +2889,13 @@ components:
       required:
       - results
       - summary
-  headers:
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
+    DiffEnvironmentRequestDto:
+      type: object
+      properties:
+        sourceEnvironmentId:
+          type: string
+          description: Source environment ID to compare from. Defaults to the Development environment if not provided.
+          example: 507f1f77bcf86cd799439011
   securitySchemes:
     secretKey:
       type: apiKey
@@ -2896,276 +2906,3 @@ components:
 externalDocs:
   description: Novu Documentation
   url: https://docs.novu.co
-x-webhooks:
-  message.sent:
-    post:
-      summary: 'Event: message.sent'
-      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.sent` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.failed:
-    post:
-      summary: 'Event: message.failed'
-      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.failed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.delivered:
-    post:
-      summary: 'Event: message.delivered'
-      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.delivered` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.seen:
-    post:
-      summary: 'Event: message.seen'
-      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.seen` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.read:
-    post:
-      summary: 'Event: message.read'
-      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.read` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unread:
-    post:
-      summary: 'Event: message.unread'
-      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unread` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.archived:
-    post:
-      summary: 'Event: message.archived'
-      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.archived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unarchived:
-    post:
-      summary: 'Event: message.unarchived'
-      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unarchived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.snoozed:
-    post:
-      summary: 'Event: message.snoozed'
-      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.snoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unsnoozed:
-    post:
-      summary: 'Event: message.unsnoozed'
-      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unsnoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.deleted:
-    post:
-      summary: 'Event: message.deleted'
-      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.created:
-    post:
-      summary: 'Event: workflow.created'
-      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.created` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.updated:
-    post:
-      summary: 'Event: workflow.updated'
-      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.deleted:
-    post:
-      summary: 'Event: workflow.deleted'
-      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.published:
-    post:
-      summary: 'Event: workflow.published'
-      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.published` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  preference.updated:
-    post:
-      summary: 'Event: preference.updated'
-      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `preference.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  email.received:
-    post:
-      summary: 'Event: email.received'
-      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `email.received` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks

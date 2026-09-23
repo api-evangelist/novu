@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Novu Activity Domains API
+  title: Novu Domains API
   description: Novu REST API. Please see https://docs.novu.co/api-reference for more details.
   version: 3.15.0
   contact:
@@ -2545,7 +2545,7 @@ paths:
       x-speakeasy-name-override: create
       x-speakeasy-group: Domains.Routes
       summary: Novu Create a Route
-      description: Creates a route on the domain that forwards inbound mail addressed to `<address>@<domain>` to either a webhook or an agent. Each address on a domain may only have a single route.
+      description: Creates a route on the domain that forwards inbound mail addressed to `@` to either a webhook or an agent. Each address on a domain may only have a single route.
       parameters:
       - name: domain
         required: true
@@ -2856,7 +2856,7 @@ paths:
       x-speakeasy-name-override: retrieve
       x-speakeasy-group: Domains.Routes
       summary: Novu Retrieve a Route by Address
-      description: Returns the route bound to `<address>@<domain>`. Use `*` as the address to retrieve the wildcard route for the domain.
+      description: Returns the route bound to `@`. Use `*` as the address to retrieve the wildcard route for the domain.
       parameters:
       - name: domain
         required: true
@@ -3166,7 +3166,7 @@ paths:
       x-speakeasy-name-override: update
       x-speakeasy-group: Domains.Routes
       summary: Novu Update a Route
-      description: Updates the destination of the route bound to `<address>@<domain>`. The address itself is the resource identity and cannot be changed; delete and recreate the route to rename it.
+      description: Updates the destination of the route bound to `@`. The address itself is the resource identity and cannot be changed; delete and recreate the route to rename it.
       parameters:
       - name: domain
         required: true
@@ -3481,7 +3481,7 @@ paths:
       x-speakeasy-name-override: delete
       x-speakeasy-group: Domains.Routes
       summary: Novu Delete a Route
-      description: Removes the route bound to `<address>@<domain>`. Inbound mail for that address will no longer be processed.
+      description: Removes the route bound to `@`. Inbound mail for that address will no longer be processed.
       parameters:
       - name: domain
         required: true
@@ -4713,59 +4713,110 @@ paths:
       security:
       - secretKey: []
 components:
+  headers:
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
   schemas:
-    TestDomainRouteAgentResultDto:
+    DomainConnectStatusResponseDto:
       type: object
       properties:
-        agentId:
+        available:
+          type: boolean
+        providerName:
           type: string
-        httpStatus:
-          type: number
-        agentReply:
-          type: object
-          description: Parsed JSON body from the agent webhook response when JSON.
-        latencyMs:
-          type: number
-      required:
-      - agentId
-      - httpStatus
-      - latencyMs
-    CreateDomainConnectApplyUrlDto:
-      type: object
-      properties:
-        redirectUri:
+        providerId:
           type: string
-          description: Dashboard URL to return to after the DNS provider consent flow completes.
-    ListDomainsResponseDto:
-      type: object
-      properties:
-        data:
-          description: List of returned domains
+        reason:
+          type: string
+        reasonCode:
+          enum:
+          - disabled
+          - discovery_not_configured
+          - unsupported_provider
+          - incomplete_configuration
+          - provider_settings_unavailable
+          - untrusted_provider_flow
+          - template_not_onboarded
+          type: string
+        manualRecords:
           type: array
           items:
-            $ref: '#/components/schemas/DomainResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
-          type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
+            $ref: '#/components/schemas/ExpectedDnsRecordDto'
       required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
+      - available
+      - manualRecords
+    DomainDiagnosticIssueDto:
+      type: object
+      properties:
+        code:
+          enum:
+          - mx_missing
+          - mx_wrong_target
+          - mx_low_priority
+          - apex_cname_collision
+          - dnsbl_listed
+          type: string
+        severity:
+          enum:
+          - warn
+          - error
+          type: string
+        message:
+          type: string
+        fix:
+          type: string
+          description: Plain-language remediation guidance
+      required:
+      - code
+      - severity
+      - message
+      - fix
     DomainConnectApplyUrlResponseDto:
       type: object
       properties:
@@ -4801,102 +4852,6 @@ components:
       - runAt
       - checks
       - issues
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
-    TestDomainRouteResponseDto:
-      type: object
-      properties:
-        matched:
-          type: boolean
-        dryRun:
-          type: boolean
-        domainStatus:
-          enum:
-          - pending
-          - verified
-          type: string
-        mxRecordConfigured:
-          type: boolean
-        type:
-          enum:
-          - agent
-          - webhook
-          type: string
-        wouldDeliverTo:
-          type: string
-          description: Human-readable delivery target summary in dry-run mode.
-        payload:
-          type: object
-          description: The outbound payload (dry-run only).
-          additionalProperties: true
-        webhook:
-          $ref: '#/components/schemas/TestDomainRouteWebhookResultDto'
-        agent:
-          $ref: '#/components/schemas/TestDomainRouteAgentResultDto'
-      required:
-      - matched
-      - dryRun
-    ListDomainRoutesResponseDto:
-      type: object
-      properties:
-        data:
-          description: List of returned domain routes
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainRouteResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
-          type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
-      required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
     UpdateDomainDto:
       type: object
       properties:
@@ -4989,6 +4944,19 @@ components:
       - timestamp
       - path
       - errors
+    CreateDomainDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The domain name (e.g. "recent.dev")
+        data:
+          type: object
+          description: Optional string key-value metadata (max 10 keys, 500 characters total for keys+values).
+          additionalProperties:
+            type: string
+      required:
+      - name
     ErrorDto:
       type: object
       properties:
@@ -5041,6 +5009,39 @@ components:
       - statusCode
       - timestamp
       - path
+    TestDomainRouteResponseDto:
+      type: object
+      properties:
+        matched:
+          type: boolean
+        dryRun:
+          type: boolean
+        domainStatus:
+          enum:
+          - pending
+          - verified
+          type: string
+        mxRecordConfigured:
+          type: boolean
+        type:
+          enum:
+          - agent
+          - webhook
+          type: string
+        wouldDeliverTo:
+          type: string
+          description: Human-readable delivery target summary in dry-run mode.
+        payload:
+          type: object
+          description: The outbound payload (dry-run only).
+          additionalProperties: true
+        webhook:
+          $ref: '#/components/schemas/TestDomainRouteWebhookResultDto'
+        agent:
+          $ref: '#/components/schemas/TestDomainRouteAgentResultDto'
+      required:
+      - matched
+      - dryRun
     TestDomainRouteDto:
       type: object
       properties:
@@ -5058,6 +5059,94 @@ components:
       required:
       - from
       - subject
+    ListDomainRoutesResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned domain routes
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainRouteResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
+    DomainResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        status:
+          enum:
+          - pending
+          - verified
+          type: string
+        mxRecordConfigured:
+          type: boolean
+        dnsProvider:
+          type: string
+        _environmentId:
+          type: string
+        _organizationId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        expectedDnsRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpectedDnsRecordDto'
+        data:
+          type: object
+          description: String key-value metadata (max 10 keys, 500 characters total when set via API).
+          additionalProperties:
+            type: string
+      required:
+      - _id
+      - name
+      - status
+      - mxRecordConfigured
+      - _environmentId
+      - _organizationId
+      - createdAt
+      - updatedAt
+    UpdateDomainRouteDto:
+      type: object
+      properties:
+        agentId:
+          type: string
+          description: Agent identifier; required when type is agent, ignored when type is webhook.
+        type:
+          enum:
+          - agent
+          - webhook
+          type: string
+        data:
+          type: object
+          description: Replaces route metadata when provided (max 10 keys, 500 characters total for keys+values).
+          additionalProperties:
+            type: string
     DomainRouteDto:
       type: object
       properties:
@@ -5080,30 +5169,6 @@ components:
       required:
       - address
       - type
-    DomainDiagnosticCheckDto:
-      type: object
-      properties:
-        code:
-          enum:
-          - mx_missing
-          - mx_wrong_target
-          - mx_low_priority
-          - apex_cname_collision
-          - dnsbl_listed
-          type: string
-        status:
-          enum:
-          - pass
-          - fail
-          - skipped
-          type: string
-        latencyMs:
-          type: number
-          description: Round-trip time for this check in milliseconds
-      required:
-      - code
-      - status
-      - latencyMs
     TestDomainRouteWebhookResultDto:
       type: object
       properties:
@@ -5162,7 +5227,92 @@ components:
           type: string
       required:
       - address
-    DomainDiagnosticIssueDto:
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    TestDomainRouteAgentResultDto:
+      type: object
+      properties:
+        agentId:
+          type: string
+        httpStatus:
+          type: number
+        agentReply:
+          type: object
+          description: Parsed JSON body from the agent webhook response when JSON.
+        latencyMs:
+          type: number
+      required:
+      - agentId
+      - httpStatus
+      - latencyMs
+    CreateDomainConnectApplyUrlDto:
+      type: object
+      properties:
+        redirectUri:
+          type: string
+          description: Dashboard URL to return to after the DNS provider consent flow completes.
+    ListDomainsResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned domains
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
+    DomainDiagnosticCheckDto:
       type: object
       properties:
         code:
@@ -5173,78 +5323,19 @@ components:
           - apex_cname_collision
           - dnsbl_listed
           type: string
-        severity:
+        status:
           enum:
-          - warn
-          - error
+          - pass
+          - fail
+          - skipped
           type: string
-        message:
-          type: string
-        fix:
-          type: string
-          description: Plain-language remediation guidance
+        latencyMs:
+          type: number
+          description: Round-trip time for this check in milliseconds
       required:
       - code
-      - severity
-      - message
-      - fix
-    CreateDomainDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The domain name (e.g. "recent.dev")
-        data:
-          type: object
-          description: Optional string key-value metadata (max 10 keys, 500 characters total for keys+values).
-          additionalProperties:
-            type: string
-      required:
-      - name
-    UpdateDomainRouteDto:
-      type: object
-      properties:
-        agentId:
-          type: string
-          description: Agent identifier; required when type is agent, ignored when type is webhook.
-        type:
-          enum:
-          - agent
-          - webhook
-          type: string
-        data:
-          type: object
-          description: Replaces route metadata when provided (max 10 keys, 500 characters total for keys+values).
-          additionalProperties:
-            type: string
-    DomainConnectStatusResponseDto:
-      type: object
-      properties:
-        available:
-          type: boolean
-        providerName:
-          type: string
-        providerId:
-          type: string
-        reason:
-          type: string
-        reasonCode:
-          enum:
-          - disabled
-          - discovery_not_configured
-          - unsupported_provider
-          - incomplete_configuration
-          - provider_settings_unavailable
-          - untrusted_provider_flow
-          - template_not_onboarded
-          type: string
-        manualRecords:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpectedDnsRecordDto'
-      required:
-      - available
-      - manualRecords
+      - status
+      - latencyMs
     ExpectedDnsRecordDto:
       type: object
       properties:
@@ -5268,97 +5359,6 @@ components:
       - name
       - content
       - ttl
-    DomainResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        status:
-          enum:
-          - pending
-          - verified
-          type: string
-        mxRecordConfigured:
-          type: boolean
-        dnsProvider:
-          type: string
-        _environmentId:
-          type: string
-        _organizationId:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-        expectedDnsRecords:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpectedDnsRecordDto'
-        data:
-          type: object
-          description: String key-value metadata (max 10 keys, 500 characters total when set via API).
-          additionalProperties:
-            type: string
-      required:
-      - _id
-      - name
-      - status
-      - mxRecordConfigured
-      - _environmentId
-      - _organizationId
-      - createdAt
-      - updatedAt
-  headers:
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
   securitySchemes:
     secretKey:
       type: apiKey
@@ -5369,276 +5369,3 @@ components:
 externalDocs:
   description: Novu Documentation
   url: https://docs.novu.co
-x-webhooks:
-  message.sent:
-    post:
-      summary: 'Event: message.sent'
-      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.sent` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.failed:
-    post:
-      summary: 'Event: message.failed'
-      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.failed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.delivered:
-    post:
-      summary: 'Event: message.delivered'
-      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.delivered` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.seen:
-    post:
-      summary: 'Event: message.seen'
-      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.seen` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.read:
-    post:
-      summary: 'Event: message.read'
-      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.read` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unread:
-    post:
-      summary: 'Event: message.unread'
-      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unread` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.archived:
-    post:
-      summary: 'Event: message.archived'
-      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.archived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unarchived:
-    post:
-      summary: 'Event: message.unarchived'
-      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unarchived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.snoozed:
-    post:
-      summary: 'Event: message.snoozed'
-      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.snoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unsnoozed:
-    post:
-      summary: 'Event: message.unsnoozed'
-      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unsnoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.deleted:
-    post:
-      summary: 'Event: message.deleted'
-      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.created:
-    post:
-      summary: 'Event: workflow.created'
-      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.created` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.updated:
-    post:
-      summary: 'Event: workflow.updated'
-      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.deleted:
-    post:
-      summary: 'Event: workflow.deleted'
-      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.published:
-    post:
-      summary: 'Event: workflow.published'
-      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.published` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  preference.updated:
-    post:
-      summary: 'Event: preference.updated'
-      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `preference.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  email.received:
-    post:
-      summary: 'Event: email.received'
-      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `email.received` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks

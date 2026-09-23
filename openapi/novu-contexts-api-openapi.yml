@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Novu Activity Contexts API
+  title: Novu Contexts API
   description: Novu REST API. Please see https://docs.novu.co/api-reference for more details.
   version: 3.15.0
   contact:
@@ -23,7 +23,9 @@ paths:
     post:
       operationId: ContextsController_createContext
       summary: Novu Create a Context
-      description: "Create a new context with the specified type, id, and data. Returns 409 if context already exists.\n      **type** and **id** are required fields, **data** is optional, if the context already exists, it returns the 409 response"
+      description: 'Create a new context with the specified type, id, and data. Returns 409 if context already exists.
+
+        **type** and **id** are required fields, **data** is optional, if the context already exists, it returns the 409 response'
       parameters: []
       requestBody:
         required: true
@@ -326,7 +328,13 @@ paths:
     get:
       operationId: ContextsController_listContexts
       summary: Novu List All Contexts
-      description: "Retrieve a paginated list of all contexts, optionally filtered by type and key pattern.\n      **type** and **id** are optional fields, if provided, only contexts with the matching type and id will be returned.\n      **search** is an optional field, if provided, only contexts with the matching key pattern will be returned.\n      Checkout all possible parameters in the query section below for more details"
+      description: 'Retrieve a paginated list of all contexts, optionally filtered by type and key pattern.
+
+        **type** and **id** are optional fields, if provided, only contexts with the matching type and id will be returned.
+
+        **search** is an optional field, if provided, only contexts with the matching key pattern will be returned.
+
+        Checkout all possible parameters in the query section below for more details'
       parameters:
       - name: after
         required: false
@@ -678,7 +686,11 @@ paths:
     patch:
       operationId: ContextsController_updateContext
       summary: Novu Update a Context
-      description: "Update the data of an existing context.\n      **type** and **id** are required fields, **data** is required. Only the data field is updated, the rest of the context is not affected.\n      If the context does not exist, it returns the 404 response"
+      description: 'Update the data of an existing context.
+
+        **type** and **id** are required fields, **data** is required. Only the data field is updated, the rest of the context is not affected.
+
+        If the context does not exist, it returns the 404 response'
       parameters:
       - name: id
         required: true
@@ -993,7 +1005,9 @@ paths:
     get:
       operationId: ContextsController_getContext
       summary: Novu Retrieve a Context
-      description: "Retrieve a specific context by its type and id.\n      **type** and **id** are required fields, if the context does not exist, it returns the 404 response"
+      description: 'Retrieve a specific context by its type and id.
+
+        **type** and **id** are required fields, if the context does not exist, it returns the 404 response'
       parameters:
       - name: id
         required: true
@@ -1302,7 +1316,9 @@ paths:
     delete:
       operationId: ContextsController_deleteContext
       summary: Novu Delete a Context
-      description: "Delete a context by its type and id.\n      **type** and **id** are required fields, if the context does not exist, it returns the 404 response"
+      description: 'Delete a context by its type and id.
+
+        **type** and **id** are required fields, if the context does not exist, it returns the 404 response'
       parameters:
       - name: id
         required: true
@@ -1589,31 +1605,39 @@ paths:
       - secretKey: []
 components:
   schemas:
-    GetContextResponseDto:
+    ConstraintValidation:
       type: object
       properties:
-        type:
-          type: string
-          description: Context type (e.g., tenant, app, workspace)
-        id:
-          type: string
-          description: Unique identifier for this context
-        data:
-          type: object
-          description: Custom data associated with this context
-          additionalProperties: true
-        createdAt:
-          type: string
-          description: Creation timestamp
-        updatedAt:
-          type: string
-          description: Last update timestamp
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
       required:
-      - type
-      - id
-      - data
-      - createdAt
-      - updatedAt
+      - messages
     ValidationErrorDto:
       type: object
       properties:
@@ -1698,6 +1722,45 @@ components:
       - timestamp
       - path
       - errors
+    GetContextResponseDto:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Context type (e.g., tenant, app, workspace)
+        id:
+          type: string
+          description: Unique identifier for this context
+        data:
+          type: object
+          description: Custom data associated with this context
+          additionalProperties: true
+        createdAt:
+          type: string
+          description: Creation timestamp
+        updatedAt:
+          type: string
+          description: Last update timestamp
+      required:
+      - type
+      - id
+      - data
+      - createdAt
+      - updatedAt
+    UpdateContextRequestDto:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Custom data to associate with this context. Replaces existing data.
+          example:
+            tenantName: Acme Corp
+            region: us-east-1
+            settings:
+              theme: dark
+          additionalProperties: true
+      required:
+      - data
     ErrorDto:
       type: object
       properties:
@@ -1750,68 +1813,6 @@ components:
       - statusCode
       - timestamp
       - path
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
-    CreateContextRequestDto:
-      type: object
-      properties:
-        type:
-          type: string
-          minLength: 1
-          maxLength: 100
-          pattern: ^[a-zA-Z0-9_-]+$
-          description: Context type (e.g., tenant, app, workspace). Must be lowercase alphanumeric with optional separators.
-          example: tenant
-        id:
-          type: string
-          minLength: 1
-          maxLength: 100
-          pattern: ^[a-zA-Z0-9_-]+$
-          description: Unique identifier for this context. Must be lowercase alphanumeric with optional separators.
-          example: org-acme
-        data:
-          type: object
-          description: Optional custom data to associate with this context.
-          example:
-            tenantName: Acme Corp
-            region: us-east-1
-            settings:
-              theme: dark
-          additionalProperties: true
-      required:
-      - type
-      - id
     ListContextsResponseDto:
       type: object
       properties:
@@ -1842,12 +1843,26 @@ components:
       - previous
       - totalCount
       - totalCountCapped
-    UpdateContextRequestDto:
+    CreateContextRequestDto:
       type: object
       properties:
+        type:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[a-zA-Z0-9_-]+$
+          description: Context type (e.g., tenant, app, workspace). Must be lowercase alphanumeric with optional separators.
+          example: tenant
+        id:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[a-zA-Z0-9_-]+$
+          description: Unique identifier for this context. Must be lowercase alphanumeric with optional separators.
+          example: org-acme
         data:
           type: object
-          description: Custom data to associate with this context. Replaces existing data.
+          description: Optional custom data to associate with this context.
           example:
             tenantName: Acme Corp
             region: us-east-1
@@ -1855,8 +1870,15 @@ components:
               theme: dark
           additionalProperties: true
       required:
-      - data
+      - type
+      - id
   headers:
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
     RateLimit-Remaining:
       required: false
       description: The number of requests remaining until the next window.
@@ -1869,42 +1891,36 @@ components:
       schema:
         type: string
       example: '8'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
     Idempotency-Key:
       required: false
       description: The idempotency key used to evaluate the request.
       schema:
         type: string
       example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
     RateLimit-Reset:
       required: false
       description: The remaining seconds until a request of the same cost will be refreshed.
       schema:
         type: string
       example: '8'
-    Idempotency-Replay:
+    RateLimit-Limit:
       required: false
-      description: Whether the request was a replay of a previous request.
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
       schema:
         type: string
-      example: 'true'
+      example: '100'
     Content-Type:
       required: true
       description: The MIME type of the response body.
       schema:
         type: string
       example: application/json
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
   securitySchemes:
     secretKey:
       type: apiKey
@@ -1915,276 +1931,3 @@ components:
 externalDocs:
   description: Novu Documentation
   url: https://docs.novu.co
-x-webhooks:
-  message.sent:
-    post:
-      summary: 'Event: message.sent'
-      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.sent` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.failed:
-    post:
-      summary: 'Event: message.failed'
-      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.failed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.delivered:
-    post:
-      summary: 'Event: message.delivered'
-      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.delivered` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.seen:
-    post:
-      summary: 'Event: message.seen'
-      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.seen` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.read:
-    post:
-      summary: 'Event: message.read'
-      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.read` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unread:
-    post:
-      summary: 'Event: message.unread'
-      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unread` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.archived:
-    post:
-      summary: 'Event: message.archived'
-      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.archived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unarchived:
-    post:
-      summary: 'Event: message.unarchived'
-      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unarchived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.snoozed:
-    post:
-      summary: 'Event: message.snoozed'
-      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.snoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unsnoozed:
-    post:
-      summary: 'Event: message.unsnoozed'
-      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unsnoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.deleted:
-    post:
-      summary: 'Event: message.deleted'
-      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.created:
-    post:
-      summary: 'Event: workflow.created'
-      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.created` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.updated:
-    post:
-      summary: 'Event: workflow.updated'
-      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.deleted:
-    post:
-      summary: 'Event: workflow.deleted'
-      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.published:
-    post:
-      summary: 'Event: workflow.published'
-      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.published` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  preference.updated:
-    post:
-      summary: 'Event: preference.updated'
-      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `preference.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  email.received:
-    post:
-      summary: 'Event: email.received'
-      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `email.received` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks

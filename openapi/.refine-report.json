@@ -1,22 +1,8 @@
 {
   "provider": "novu",
   "sources": [
-    "novu-activity-api-openapi.yml",
-    "novu-channel-connections-api-openapi.yml",
-    "novu-channel-endpoints-api-openapi.yml",
-    "novu-contexts-api-openapi.yml",
-    "novu-domains-api-openapi.yml",
-    "novu-environment-variables-api-openapi.yml",
-    "novu-environments-api-openapi.yml",
-    "novu-events-api-openapi.yml",
-    "novu-integrations-api-openapi.yml",
-    "novu-layouts-api-openapi.yml",
-    "novu-messages-api-openapi.yml",
-    "novu-notifications-api-openapi.yml",
-    "novu-subscribers-api-openapi.yml",
-    "novu-topics-api-openapi.yml",
-    "novu-translations-api-openapi.yml",
-    "novu-workflows-api-openapi.yml"
+    "_original/novu-openapi.yml",
+    "novu-webhooks-api-openapi.yml"
   ],
   "outputs": [
     "novu-activity-api-openapi.yml",
@@ -34,11 +20,43 @@
     "novu-subscribers-api-openapi.yml",
     "novu-topics-api-openapi.yml",
     "novu-translations-api-openapi.yml",
+    "novu-webhooks-api-openapi.yml",
     "novu-workflows-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
-  "warnings": [],
-  "notes": [],
-  "skipped": []
+  "warnings": [
+    "novu-webhooks-api-openapi.yml: previously refined output kept for 17 operation(s) no archived document covers (e.g. webhook:email.received post, webhook:message.archived post, webhook:message.deleted post); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "novu-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0; promoted x-webhooks (17) to the standard `webhooks` key",
+    "novu-openapi.yml: declared missing tag: Activity",
+    "novu-openapi.yml: declared missing tag: Channel Connections",
+    "novu-openapi.yml: declared missing tag: Channel Endpoints",
+    "novu-openapi.yml: declared missing tag: Contexts",
+    "novu-openapi.yml: declared missing tag: Environment Variables",
+    "novu-openapi.yml: declared missing tag: Notifications",
+    "novu-openapi.yml: declared missing tag: Webhooks",
+    "tag 'Webhooks' spans 2 source specs (novu-openapi.yml, novu-webhooks-api-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "novu-activity-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-channel-connections-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-channel-endpoints-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-contexts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-domains-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-environment-variables-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-environments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-integrations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-layouts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-messages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-subscribers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-topics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-translations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "novu-workflows-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

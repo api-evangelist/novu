@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Novu Activity Messages API
+  title: Novu Messages API
   description: Novu REST API. Please see https://docs.novu.co/api-reference for more details.
   version: 3.15.0
   contact:
@@ -26,7 +26,11 @@ paths:
     get:
       operationId: MessagesController_getMessages
       summary: Novu List All Messages
-      description: "List all messages for the current environment. \n    This API supports filtering by **channel**, **subscriberId**, and **transactionId**. \n    This API returns a paginated list of messages."
+      description: 'List all messages for the current environment.
+
+        This API supports filtering by **channel**, **subscriberId**, and **transactionId**.
+
+        This API returns a paginated list of messages.'
       parameters:
       - name: channel
         required: false
@@ -362,7 +366,9 @@ paths:
     delete:
       operationId: MessagesController_deleteMessage
       summary: Novu Delete a Message
-      description: "Delete a message entity from the Novu platform by **messageId**. \n    This action is irreversible. **messageId** is required and of mongodbId type."
+      description: 'Delete a message entity from the Novu platform by **messageId**.
+
+        This action is irreversible. **messageId** is required and of mongodbId type.'
       parameters:
       - name: messageId
         required: true
@@ -667,7 +673,9 @@ paths:
       operationId: MessagesController_deleteMessagesByTransactionId
       x-speakeasy-name-override: deleteByTransactionId
       summary: Novu Delete Messages by TransactionId
-      description: "Delete multiple messages from the Novu platform using **transactionId** of triggered event. \n    This API supports filtering by **channel** and delete all messages associated with the **transactionId**."
+      description: 'Delete multiple messages from the Novu platform using **transactionId** of triggered event.
+
+        This API supports filtering by **channel** and delete all messages associated with the **transactionId**.'
       parameters:
       - name: channel
         required: false
@@ -974,384 +982,56 @@ paths:
       security:
       - secretKey: []
 components:
+  headers:
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
   schemas:
-    MessageActionResult:
-      type: object
-      properties:
-        payload:
-          type: object
-          description: Payload of the action result
-          additionalProperties: true
-        type:
-          $ref: '#/components/schemas/ButtonTypeEnum'
-    NotificationTriggerVariable:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the variable
-      required:
-      - name
-    MessageAction:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/MessageActionStatusEnum'
-        buttons:
-          description: List of buttons associated with the message action
-          type: array
-          items:
-            $ref: '#/components/schemas/MessageButton'
-        result:
-          description: Result of the message action
-          allOf:
-          - $ref: '#/components/schemas/MessageActionResult'
-    EmailBlockTypeEnum:
-      type: string
-      description: Type of the email block
-      enum:
-      - button
-      - text
-    DelayScheduledMetadata:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - scheduled
-        delayPath:
-          type: string
-      required:
-      - type
-      - delayPath
-    ChannelSettingsDto:
-      type: object
-      properties:
-        providerId:
-          $ref: '#/components/schemas/ChatOrPushProviderEnum'
-        integrationIdentifier:
-          type: string
-          description: The integration identifier
-        credentials:
-          description: Credentials payload for the specified provider
-          allOf:
-          - $ref: '#/components/schemas/ChannelCredentials'
-        _integrationId:
-          type: string
-          description: The unique identifier of the integration associated with this channel.
-      required:
-      - providerId
-      - credentials
-      - _integrationId
-    MessageCTA:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ChannelCTATypeEnum'
-        data:
-          description: Data associated with the call to action
-          allOf:
-          - $ref: '#/components/schemas/MessageCTAData'
-        action:
-          description: Action associated with the call to action
-          allOf:
-          - $ref: '#/components/schemas/MessageAction'
-    SubscriberResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The internal ID generated by Novu for your subscriber. This ID does not match the `subscriberId` used in your queries. Refer to `subscriberId` for that identifier.
-        firstName:
-          type:
-          - string
-          - 'null'
-          description: The first name of the subscriber.
-        lastName:
-          type:
-          - string
-          - 'null'
-          description: The last name of the subscriber.
-        email:
-          type:
-          - string
-          - 'null'
-          description: The email address of the subscriber.
-        phone:
-          type:
-          - string
-          - 'null'
-          description: The phone number of the subscriber.
-        avatar:
-          type:
-          - string
-          - 'null'
-          description: The URL of the subscriber's avatar image.
-        locale:
-          type:
-          - string
-          - 'null'
-          description: The locale setting of the subscriber, indicating their preferred language or region.
-        channels:
-          description: An array of channel settings associated with the subscriber.
-          type: array
-          items:
-            $ref: '#/components/schemas/ChannelSettingsDto'
-        topics:
-          description: An array of topics that the subscriber is subscribed to.
-          deprecated: true
-          type: array
-          items:
-            type: string
-        isOnline:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether the subscriber is currently online.
-        lastOnlineAt:
-          type:
-          - string
-          - 'null'
-          description: The timestamp indicating when the subscriber was last online, in ISO 8601 format.
-        __v:
-          type: number
-          description: The version of the subscriber document.
-        data:
-          type:
-          - object
-          - 'null'
-          description: Additional custom data for the subscriber
-          additionalProperties: true
-        timezone:
-          type:
-          - string
-          - 'null'
-          description: Timezone of the subscriber
-        subscriberId:
-          type: string
-          description: The identifier used to create this subscriber, which typically corresponds to the user ID in your system.
-        _organizationId:
-          type: string
-          description: The unique identifier of the organization to which the subscriber belongs.
-        _environmentId:
-          type: string
-          description: The unique identifier of the environment associated with this subscriber.
-        deleted:
-          type: boolean
-          description: Indicates whether the subscriber has been deleted.
-        createdAt:
-          type: string
-          description: The timestamp indicating when the subscriber was created, in ISO 8601 format.
-        updatedAt:
-          type: string
-          description: The timestamp indicating when the subscriber was last updated, in ISO 8601 format.
-      required:
-      - subscriberId
-      - _organizationId
-      - _environmentId
-      - deleted
-      - createdAt
-      - updatedAt
-    DeleteMessageResponseDto:
-      type: object
-      properties:
-        acknowledged:
-          type: boolean
-          description: A boolean stating the success of the action
-        status:
-          type: string
-          description: The status enum for the performed action
-          enum:
-          - deleted
-      required:
-      - acknowledged
-      - status
-    ReplyCallback:
-      type: object
-      properties:
-        active:
-          type: boolean
-          description: Indicates whether the reply callback is active.
-        url:
-          type: string
-          description: The URL to which replies should be sent.
-    EmailBlock:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/EmailBlockTypeEnum'
-        content:
-          type: string
-          description: Content of the email block
-        url:
-          type: string
-          description: URL associated with the email block, if any
-        styles:
-          description: Styles applied to the email block
-          allOf:
-          - $ref: '#/components/schemas/EmailBlockStyles'
-      required:
-      - type
-      - content
-    ButtonTypeEnum:
-      type: string
-      description: Type of button for the action result
-      enum:
-      - primary
-      - secondary
-    MessagesResponseDto:
-      type: object
-      properties:
-        totalCount:
-          type: number
-          description: Total number of messages available
-        hasMore:
-          type: boolean
-          description: Indicates if there are more messages available
-        data:
-          description: List of messages
-          type: array
-          items:
-            $ref: '#/components/schemas/MessageResponseDto'
-        pageSize:
-          type: number
-          description: Number of messages per page
-        page:
-          type: number
-          description: Current page number
-      required:
-      - hasMore
-      - data
-      - pageSize
-      - page
-    MessageActionStatusEnum:
-      type: string
-      description: Status of the message action
-      enum:
-      - pending
-      - done
-    MessageStatusEnum:
-      type: string
-      description: Status of the message
-      enum:
-      - sent
-      - error
-      - warning
-    MessageButton:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ButtonTypeEnum'
-        content:
-          type: string
-          description: Content of the button
-        resultContent:
-          type: string
-          description: Content of the result when the button is clicked
-      required:
-      - type
-      - content
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
-    WorkflowResponse:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        active:
-          type: boolean
-        draft:
-          type: boolean
-        preferenceSettings:
-          $ref: '#/components/schemas/SubscriberPreferenceChannels'
-        critical:
-          type: boolean
-        tags:
-          type: array
-          items:
-            type: string
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationStepDto'
-        _organizationId:
-          type: string
-        _creatorId:
-          type: string
-        _environmentId:
-          type: string
-        triggers:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationTrigger'
-        _notificationGroupId:
-          type: string
-        _parentId:
-          type: string
-        deleted:
-          type: boolean
-        deletedAt:
-          type: string
-        deletedBy:
-          type: string
-        notificationGroup:
-          $ref: '#/components/schemas/NotificationGroup'
-        data:
-          type: object
-        workflowIntegrationStatus:
-          type: object
-      required:
-      - name
-      - description
-      - active
-      - draft
-      - preferenceSettings
-      - critical
-      - tags
-      - steps
-      - _organizationId
-      - _creatorId
-      - _environmentId
-      - triggers
-      - _notificationGroupId
-      - deleted
-      - deletedAt
-      - deletedBy
     FieldFilterPartDto:
       type: object
       properties:
@@ -1386,262 +1066,117 @@ components:
       - value
       - operator
       - 'on'
-    NotificationStepDto:
+    ChannelSettingsDto:
       type: object
       properties:
-        _id:
+        providerId:
+          $ref: '#/components/schemas/ChatOrPushProviderEnum'
+        integrationIdentifier:
           type: string
-          description: Unique identifier for the notification step.
-        uuid:
-          type: string
-          description: Universally unique identifier for the notification step.
-        name:
-          type: string
-          description: Name of the notification step.
-        _templateId:
-          type: string
-          description: ID of the template associated with this notification step.
-        active:
-          type: boolean
-          description: Indicates whether the notification step is active.
-        shouldStopOnFail:
-          type: boolean
-          description: Determines if the process should stop on failure.
-        template:
-          description: Message template used in this notification step.
+          description: The integration identifier
+        credentials:
+          description: Credentials payload for the specified provider
           allOf:
-          - $ref: '#/components/schemas/MessageTemplate'
-        filters:
-          description: Filters applied to this notification step.
-          type: array
-          items:
-            $ref: '#/components/schemas/StepFilterDto'
-        _parentId:
+          - $ref: '#/components/schemas/ChannelCredentials'
+        _integrationId:
           type: string
-          description: ID of the parent notification step, if applicable.
-        metadata:
-          description: Metadata associated with the workflow step. Can vary based on the type of step.
-          oneOf:
-          - $ref: '#/components/schemas/DigestRegularMetadata'
-          - $ref: '#/components/schemas/DigestTimedMetadata'
-          - $ref: '#/components/schemas/DelayRegularMetadata'
-          - $ref: '#/components/schemas/DelayScheduledMetadata'
-        replyCallback:
-          description: Callback information for replies, including whether it is active and the callback URL.
-          allOf:
-          - $ref: '#/components/schemas/ReplyCallback'
-        variants:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationStepData'
-    ValidationErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-        errors:
-          type: object
-          description: A record of validation errors keyed by field name
-          additionalProperties:
-            $ref: '#/components/schemas/ConstraintValidation'
-          example:
-            fieldName1:
-              messages:
-              - Field is required
-              - Must be a valid email address
-              value: invalidEmail
-            fieldName2:
-              messages:
-              - Must be at least 18 years old
-              value: 17
-            fieldName3:
-              messages:
-              - Must be a boolean value
-              value: true
-            fieldName4:
-              messages:
-              - Must be a valid object
-              value:
-                key: value
-            fieldName5:
-              messages:
-              - Field is missing
-              value: null
-            fieldName6:
-              messages:
-              - Undefined value
+          description: The unique identifier of the integration associated with this channel.
       required:
-      - statusCode
-      - timestamp
-      - path
-      - errors
-    ErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-      required:
-      - statusCode
-      - timestamp
-      - path
-    DigestRegularMetadata:
-      type: object
-      properties:
-        amount:
-          type: number
-        unit:
-          type: string
-          enum:
-          - seconds
-          - minutes
-          - hours
-          - days
-          - weeks
-          - months
-        digestKey:
-          type: string
-        type:
-          type: string
-          enum:
-          - regular
-          - backoff
-        backoff:
-          type: boolean
-        backoffAmount:
-          type: number
-        backoffUnit:
-          type: string
-          enum:
-          - seconds
-          - minutes
-          - hours
-          - days
-          - weeks
-          - months
-        updateMode:
-          type: boolean
-      required:
-      - type
-    SubscriberPreferenceChannels:
-      type: object
-      properties:
-        email:
-          type: boolean
-          description: Email channel preference
-          example: true
-        sms:
-          type: boolean
-          description: SMS channel preference
-          example: false
-        in_app:
-          type: boolean
-          description: In-app channel preference
-          example: true
-        chat:
-          type: boolean
-          description: Chat channel preference
-          example: false
-        push:
-          type: boolean
-          description: Push notification channel preference
-          example: true
-    MessageCTAData:
-      type: object
-      properties:
-        url:
-          type: string
-          description: URL for the call to action
+      - providerId
+      - credentials
+      - _integrationId
     ChannelCTATypeEnum:
       type: string
       description: Type of call to action
       enum:
       - redirect
+    MessageStatusEnum:
+      type: string
+      description: Status of the message
+      enum:
+      - sent
+      - error
+      - warning
+    TimedConfig:
+      type: object
+      properties:
+        atTime:
+          type: string
+        weekDays:
+          type: array
+          items:
+            type: string
+            enum:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+            - sunday
+        monthDays:
+          type: array
+          items:
+            type: string
+        ordinal:
+          type: string
+          enum:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - last
+        ordinalValue:
+          type: string
+          enum:
+          - day
+          - weekday
+          - weekend
+          - sunday
+          - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+        monthlyType:
+          type: string
+          enum:
+          - each
+          - 'on'
+    BuilderFieldTypeEnum:
+      type: string
+      enum:
+      - BOOLEAN
+      - TEXT
+      - DATE
+      - NUMBER
+      - STATEMENT
+      - LIST
+      - MULTI_LIST
+      - GROUP
+    NotificationTriggerVariable:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the variable
+      required:
+      - name
+    MessageCTA:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ChannelCTATypeEnum'
+        data:
+          description: Data associated with the call to action
+          allOf:
+          - $ref: '#/components/schemas/MessageCTAData'
+        action:
+          description: Action associated with the call to action
+          allOf:
+          - $ref: '#/components/schemas/MessageAction'
     MessageResponseDto:
       type: object
       properties:
@@ -1785,54 +1320,308 @@ components:
       - seen
       - cta
       - status
-    TimedConfig:
+    MessageCTAData:
       type: object
       properties:
-        atTime:
+        url:
           type: string
-        weekDays:
+          description: URL for the call to action
+    MessageButton:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ButtonTypeEnum'
+        content:
+          type: string
+          description: Content of the button
+        resultContent:
+          type: string
+          description: Content of the result when the button is clicked
+      required:
+      - type
+      - content
+    ValidationErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        errors:
+          type: object
+          description: A record of validation errors keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/ConstraintValidation'
+          example:
+            fieldName1:
+              messages:
+              - Field is required
+              - Must be a valid email address
+              value: invalidEmail
+            fieldName2:
+              messages:
+              - Must be at least 18 years old
+              value: 17
+            fieldName3:
+              messages:
+              - Must be a boolean value
+              value: true
+            fieldName4:
+              messages:
+              - Must be a valid object
+              value:
+                key: value
+            fieldName5:
+              messages:
+              - Field is missing
+              value: null
+            fieldName6:
+              messages:
+              - Undefined value
+      required:
+      - statusCode
+      - timestamp
+      - path
+      - errors
+    ChannelCredentials:
+      type: object
+      properties:
+        webhookUrl:
+          type: string
+          description: Webhook URL used by chat app integrations. The webhook should be obtained from the chat app provider.
+          example: https://example.com/webhook
+        channel:
+          type: string
+          description: Channel specification for Mattermost chat notifications.
+          example: general
+        deviceTokens:
+          description: Contains an array of the subscriber device tokens for a given provider. Used on Push integrations.
+          example:
+          - token1
+          - token2
+          - token3
           type: array
           items:
             type: string
-            enum:
-            - monday
-            - tuesday
-            - wednesday
-            - thursday
-            - friday
-            - saturday
-            - sunday
-        monthDays:
+        alertUid:
+          type: string
+          description: Alert UID for Grafana on-call webhook payload.
+          example: 12345-abcde
+        title:
+          type: string
+          description: Title to be used with Grafana on-call webhook.
+          example: Critical Alert
+        imageUrl:
+          type: string
+          description: Image URL property for Grafana on-call webhook.
+          example: https://example.com/image.png
+        state:
+          type: string
+          description: State property for Grafana on-call webhook.
+          example: resolved
+        externalUrl:
+          type: string
+          description: Link to upstream details property for Grafana on-call webhook.
+          example: https://example.com/details
+    ReplyCallback:
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: Indicates whether the reply callback is active.
+        url:
+          type: string
+          description: The URL to which replies should be sent.
+    NotificationStepDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the notification step.
+        uuid:
+          type: string
+          description: Universally unique identifier for the notification step.
+        name:
+          type: string
+          description: Name of the notification step.
+        _templateId:
+          type: string
+          description: ID of the template associated with this notification step.
+        active:
+          type: boolean
+          description: Indicates whether the notification step is active.
+        shouldStopOnFail:
+          type: boolean
+          description: Determines if the process should stop on failure.
+        template:
+          description: Message template used in this notification step.
+          allOf:
+          - $ref: '#/components/schemas/MessageTemplate'
+        filters:
+          description: Filters applied to this notification step.
           type: array
           items:
-            type: string
-        ordinal:
+            $ref: '#/components/schemas/StepFilterDto'
+        _parentId:
           type: string
-          enum:
-          - '1'
-          - '2'
-          - '3'
-          - '4'
-          - '5'
-          - last
-        ordinalValue:
+          description: ID of the parent notification step, if applicable.
+        metadata:
+          description: Metadata associated with the workflow step. Can vary based on the type of step.
+          oneOf:
+          - $ref: '#/components/schemas/DigestRegularMetadata'
+          - $ref: '#/components/schemas/DigestTimedMetadata'
+          - $ref: '#/components/schemas/DelayRegularMetadata'
+          - $ref: '#/components/schemas/DelayScheduledMetadata'
+        replyCallback:
+          description: Callback information for replies, including whether it is active and the callback URL.
+          allOf:
+          - $ref: '#/components/schemas/ReplyCallback'
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationStepData'
+    ErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
           type: string
-          enum:
-          - day
-          - weekday
-          - weekend
-          - sunday
-          - monday
-          - tuesday
-          - wednesday
-          - thursday
-          - friday
-          - saturday
-        monthlyType:
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
           type: string
-          enum:
-          - each
-          - 'on'
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+      required:
+      - statusCode
+      - timestamp
+      - path
+    MessageActionStatusEnum:
+      type: string
+      description: Status of the message action
+      enum:
+      - pending
+      - done
+    EmailBlock:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EmailBlockTypeEnum'
+        content:
+          type: string
+          description: Content of the email block
+        url:
+          type: string
+          description: URL associated with the email block, if any
+        styles:
+          description: Styles applied to the email block
+          allOf:
+          - $ref: '#/components/schemas/EmailBlockStyles'
+      required:
+      - type
+      - content
+    ChatOrPushProviderEnum:
+      type: string
+      description: The provider identifier for the credentials
+      enum:
+      - slack
+      - discord
+      - msteams
+      - mattermost
+      - ryver
+      - zulip
+      - grafana-on-call
+      - getstream
+      - rocket-chat
+      - whatsapp-business
+      - chat-webhook
+      - novu-slack
+      - telegram
+      - fcm
+      - apns
+      - expo
+      - one-signal
+      - pushpad
+      - push-webhook
+      - pusher-beams
+      - appio
     NotificationStepData:
       type: object
       properties:
@@ -1877,7 +1666,103 @@ components:
           description: Callback information for replies, including whether it is active and the callback URL.
           allOf:
           - $ref: '#/components/schemas/ReplyCallback'
-    DelayRegularMetadata:
+    SubscriberResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The internal ID generated by Novu for your subscriber. This ID does not match the `subscriberId` used in your queries. Refer to `subscriberId` for that identifier.
+        firstName:
+          type:
+          - string
+          - 'null'
+          description: The first name of the subscriber.
+        lastName:
+          type:
+          - string
+          - 'null'
+          description: The last name of the subscriber.
+        email:
+          type:
+          - string
+          - 'null'
+          description: The email address of the subscriber.
+        phone:
+          type:
+          - string
+          - 'null'
+          description: The phone number of the subscriber.
+        avatar:
+          type:
+          - string
+          - 'null'
+          description: The URL of the subscriber's avatar image.
+        locale:
+          type:
+          - string
+          - 'null'
+          description: The locale setting of the subscriber, indicating their preferred language or region.
+        channels:
+          description: An array of channel settings associated with the subscriber.
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelSettingsDto'
+        topics:
+          description: An array of topics that the subscriber is subscribed to.
+          deprecated: true
+          type: array
+          items:
+            type: string
+        isOnline:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the subscriber is currently online.
+        lastOnlineAt:
+          type:
+          - string
+          - 'null'
+          description: The timestamp indicating when the subscriber was last online, in ISO 8601 format.
+        __v:
+          type: number
+          description: The version of the subscriber document.
+        data:
+          type:
+          - object
+          - 'null'
+          description: Additional custom data for the subscriber
+          additionalProperties: true
+        timezone:
+          type:
+          - string
+          - 'null'
+          description: Timezone of the subscriber
+        subscriberId:
+          type: string
+          description: The identifier used to create this subscriber, which typically corresponds to the user ID in your system.
+        _organizationId:
+          type: string
+          description: The unique identifier of the organization to which the subscriber belongs.
+        _environmentId:
+          type: string
+          description: The unique identifier of the environment associated with this subscriber.
+        deleted:
+          type: boolean
+          description: Indicates whether the subscriber has been deleted.
+        createdAt:
+          type: string
+          description: The timestamp indicating when the subscriber was created, in ISO 8601 format.
+        updatedAt:
+          type: string
+          description: The timestamp indicating when the subscriber was last updated, in ISO 8601 format.
+      required:
+      - subscriberId
+      - _organizationId
+      - _environmentId
+      - deleted
+      - createdAt
+      - updatedAt
+    DigestRegularMetadata:
       type: object
       properties:
         amount:
@@ -1891,109 +1776,44 @@ components:
           - days
           - weeks
           - months
+        digestKey:
+          type: string
         type:
           type: string
           enum:
           - regular
-      required:
-      - type
-    StepFilterDto:
-      type: object
-      properties:
-        isNegated:
+          - backoff
+        backoff:
           type: boolean
-        type:
-          $ref: '#/components/schemas/BuilderFieldTypeEnum'
-        value:
+        backoffAmount:
+          type: number
+        backoffUnit:
           type: string
           enum:
-          - AND
-          - OR
-        children:
+          - seconds
+          - minutes
+          - hours
+          - days
+          - weeks
+          - months
+        updateMode:
+          type: boolean
+      required:
+      - type
+    MessageAction:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/MessageActionStatusEnum'
+        buttons:
+          description: List of buttons associated with the message action
           type: array
           items:
-            $ref: '#/components/schemas/FieldFilterPartDto'
-      required:
-      - isNegated
-      - type
-      - value
-      - children
-    ChannelTypeEnum:
-      type: string
-      description: Channel type through which the message is sent
-      enum:
-      - in_app
-      - email
-      - sms
-      - chat
-      - push
-    BuilderFieldTypeEnum:
-      type: string
-      enum:
-      - BOOLEAN
-      - TEXT
-      - DATE
-      - NUMBER
-      - STATEMENT
-      - LIST
-      - MULTI_LIST
-      - GROUP
-    NotificationGroup:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        _environmentId:
-          type: string
-        _organizationId:
-          type: string
-        _parentId:
-          type: string
-      required:
-      - name
-      - _environmentId
-      - _organizationId
-    ChatOrPushProviderEnum:
-      type: string
-      description: The provider identifier for the credentials
-      enum:
-      - slack
-      - discord
-      - msteams
-      - mattermost
-      - ryver
-      - zulip
-      - grafana-on-call
-      - getstream
-      - rocket-chat
-      - whatsapp-business
-      - chat-webhook
-      - novu-slack
-      - telegram
-      - fcm
-      - apns
-      - expo
-      - one-signal
-      - pushpad
-      - push-webhook
-      - pusher-beams
-      - appio
-    TextAlignEnum:
-      type: string
-      description: Text alignment for the email block
-      enum:
-      - center
-      - left
-      - right
-    EmailBlockStyles:
-      type: object
-      properties:
-        textAlign:
-          $ref: '#/components/schemas/TextAlignEnum'
-      required:
-      - textAlign
+            $ref: '#/components/schemas/MessageButton'
+        result:
+          description: Result of the message action
+          allOf:
+          - $ref: '#/components/schemas/MessageActionResult'
     NotificationTrigger:
       type: object
       properties:
@@ -2015,6 +1835,81 @@ components:
       - type
       - identifier
       - variables
+    WorkflowResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        active:
+          type: boolean
+        draft:
+          type: boolean
+        preferenceSettings:
+          $ref: '#/components/schemas/SubscriberPreferenceChannels'
+        critical:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationStepDto'
+        _organizationId:
+          type: string
+        _creatorId:
+          type: string
+        _environmentId:
+          type: string
+        triggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTrigger'
+        _notificationGroupId:
+          type: string
+        _parentId:
+          type: string
+        deleted:
+          type: boolean
+        deletedAt:
+          type: string
+        deletedBy:
+          type: string
+        notificationGroup:
+          $ref: '#/components/schemas/NotificationGroup'
+        data:
+          type: object
+        workflowIntegrationStatus:
+          type: object
+      required:
+      - name
+      - description
+      - active
+      - draft
+      - preferenceSettings
+      - critical
+      - tags
+      - steps
+      - _organizationId
+      - _creatorId
+      - _environmentId
+      - triggers
+      - _notificationGroupId
+      - deleted
+      - deletedAt
+      - deletedBy
+    EmailBlockStyles:
+      type: object
+      properties:
+        textAlign:
+          $ref: '#/components/schemas/TextAlignEnum'
+      required:
+      - textAlign
     DigestTimedMetadata:
       type: object
       properties:
@@ -2039,98 +1934,211 @@ components:
           $ref: '#/components/schemas/TimedConfig'
       required:
       - type
+    ChannelTypeEnum:
+      type: string
+      description: Channel type through which the message is sent
+      enum:
+      - in_app
+      - email
+      - sms
+      - chat
+      - push
     MessageTemplate:
       type: object
       properties: {}
-    ChannelCredentials:
+    ConstraintValidation:
       type: object
       properties:
-        webhookUrl:
-          type: string
-          description: Webhook URL used by chat app integrations. The webhook should be obtained from the chat app provider.
-          example: https://example.com/webhook
-        channel:
-          type: string
-          description: Channel specification for Mattermost chat notifications.
-          example: general
-        deviceTokens:
-          description: Contains an array of the subscriber device tokens for a given provider. Used on Push integrations.
-          example:
-          - token1
-          - token2
-          - token3
+        messages:
           type: array
           items:
             type: string
-        alertUid:
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    SubscriberPreferenceChannels:
+      type: object
+      properties:
+        email:
+          type: boolean
+          description: Email channel preference
+          example: true
+        sms:
+          type: boolean
+          description: SMS channel preference
+          example: false
+        in_app:
+          type: boolean
+          description: In-app channel preference
+          example: true
+        chat:
+          type: boolean
+          description: Chat channel preference
+          example: false
+        push:
+          type: boolean
+          description: Push notification channel preference
+          example: true
+    DeleteMessageResponseDto:
+      type: object
+      properties:
+        acknowledged:
+          type: boolean
+          description: A boolean stating the success of the action
+        status:
           type: string
-          description: Alert UID for Grafana on-call webhook payload.
-          example: 12345-abcde
-        title:
+          description: The status enum for the performed action
+          enum:
+          - deleted
+      required:
+      - acknowledged
+      - status
+    DelayScheduledMetadata:
+      type: object
+      properties:
+        type:
           type: string
-          description: Title to be used with Grafana on-call webhook.
-          example: Critical Alert
-        imageUrl:
+          enum:
+          - scheduled
+        delayPath:
           type: string
-          description: Image URL property for Grafana on-call webhook.
-          example: https://example.com/image.png
-        state:
+      required:
+      - type
+      - delayPath
+    MessagesResponseDto:
+      type: object
+      properties:
+        totalCount:
+          type: number
+          description: Total number of messages available
+        hasMore:
+          type: boolean
+          description: Indicates if there are more messages available
+        data:
+          description: List of messages
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageResponseDto'
+        pageSize:
+          type: number
+          description: Number of messages per page
+        page:
+          type: number
+          description: Current page number
+      required:
+      - hasMore
+      - data
+      - pageSize
+      - page
+    StepFilterDto:
+      type: object
+      properties:
+        isNegated:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/BuilderFieldTypeEnum'
+        value:
           type: string
-          description: State property for Grafana on-call webhook.
-          example: resolved
-        externalUrl:
+          enum:
+          - AND
+          - OR
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldFilterPartDto'
+      required:
+      - isNegated
+      - type
+      - value
+      - children
+    EmailBlockTypeEnum:
+      type: string
+      description: Type of the email block
+      enum:
+      - button
+      - text
+    MessageActionResult:
+      type: object
+      properties:
+        payload:
+          type: object
+          description: Payload of the action result
+          additionalProperties: true
+        type:
+          $ref: '#/components/schemas/ButtonTypeEnum'
+    DelayRegularMetadata:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
           type: string
-          description: Link to upstream details property for Grafana on-call webhook.
-          example: https://example.com/details
-  headers:
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+          enum:
+          - seconds
+          - minutes
+          - hours
+          - days
+          - weeks
+          - months
+        type:
+          type: string
+          enum:
+          - regular
+      required:
+      - type
+    ButtonTypeEnum:
+      type: string
+      description: Type of button for the action result
+      enum:
+      - primary
+      - secondary
+    TextAlignEnum:
+      type: string
+      description: Text alignment for the email block
+      enum:
+      - center
+      - left
+      - right
+    NotificationGroup:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        _environmentId:
+          type: string
+        _organizationId:
+          type: string
+        _parentId:
+          type: string
+      required:
+      - name
+      - _environmentId
+      - _organizationId
   securitySchemes:
     secretKey:
       type: apiKey
@@ -2141,276 +2149,3 @@ components:
 externalDocs:
   description: Novu Documentation
   url: https://docs.novu.co
-x-webhooks:
-  message.sent:
-    post:
-      summary: 'Event: message.sent'
-      description: This webhook is triggered when a `message` event (`message.sent`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.sent` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.failed:
-    post:
-      summary: 'Event: message.failed'
-      description: This webhook is triggered when a `message` event (`message.failed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.failed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageFailedDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.delivered:
-    post:
-      summary: 'Event: message.delivered'
-      description: This webhook is triggered when a `message` event (`message.delivered`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.delivered` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.seen:
-    post:
-      summary: 'Event: message.seen'
-      description: This webhook is triggered when a `message` event (`message.seen`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.seen` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.read:
-    post:
-      summary: 'Event: message.read'
-      description: This webhook is triggered when a `message` event (`message.read`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.read` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unread:
-    post:
-      summary: 'Event: message.unread'
-      description: This webhook is triggered when a `message` event (`message.unread`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unread` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.archived:
-    post:
-      summary: 'Event: message.archived'
-      description: This webhook is triggered when a `message` event (`message.archived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.archived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unarchived:
-    post:
-      summary: 'Event: message.unarchived'
-      description: This webhook is triggered when a `message` event (`message.unarchived`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unarchived` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.snoozed:
-    post:
-      summary: 'Event: message.snoozed'
-      description: This webhook is triggered when a `message` event (`message.snoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.snoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.unsnoozed:
-    post:
-      summary: 'Event: message.unsnoozed'
-      description: This webhook is triggered when a `message` event (`message.unsnoozed`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.unsnoozed` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  message.deleted:
-    post:
-      summary: 'Event: message.deleted'
-      description: This webhook is triggered when a `message` event (`message.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `message.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookMessageDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.created:
-    post:
-      summary: 'Event: workflow.created'
-      description: This webhook is triggered when a `workflow` event (`workflow.created`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.created` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookCreatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.updated:
-    post:
-      summary: 'Event: workflow.updated'
-      description: This webhook is triggered when a `workflow` event (`workflow.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.deleted:
-    post:
-      summary: 'Event: workflow.deleted'
-      description: This webhook is triggered when a `workflow` event (`workflow.deleted`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.deleted` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookDeletedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  workflow.published:
-    post:
-      summary: 'Event: workflow.published'
-      description: This webhook is triggered when a `workflow` event (`workflow.published`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `workflow.published` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookUpdatedWorkflowDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  preference.updated:
-    post:
-      summary: 'Event: preference.updated'
-      description: This webhook is triggered when a `preference` event (`preference.updated`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `preference.updated` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookPreferenceDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks
-  email.received:
-    post:
-      summary: 'Event: email.received'
-      description: This webhook is triggered when a `email_inbound` event (`email.received`) occurs. The payload contains the details of the event. Configure your webhook endpoint URL in the Novu dashboard.
-      requestBody:
-        description: Webhook payload for the `email.received` event.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookInboundEmailDtoWebhookPayloadWrapper'
-      responses:
-        '200':
-          description: Acknowledges successful receipt of the webhook. No response body is expected.
-      tags:
-      - Webhooks

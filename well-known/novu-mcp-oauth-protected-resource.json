@@ -1,0 +1,1 @@
+{"authorization_servers":["https://mcp.novu.co"],"bearer_methods_supported":["header"],"resource":"https://mcp.novu.co","scopes_supported":["user:org:read","email","profile","offline_access"]}
