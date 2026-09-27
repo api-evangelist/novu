@@ -345,55 +345,6 @@ webhooks:
     - url: https://eu.api.novu.co
 components:
   schemas:
-    StepIssuesDto:
-      type: object
-      properties:
-        controls:
-          type: object
-          description: Controls-related issues
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/StepContentIssueDto'
-        integration:
-          type: object
-          description: Integration-related issues
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/StepIntegrationIssue'
-    WorkflowPreferencesDto:
-      type: object
-      properties:
-        all:
-          description: A preference for the workflow. The values specified here will be used if no preference is specified for a channel.
-          oneOf:
-          - $ref: '#/components/schemas/WorkflowPreferenceDto'
-          allOf:
-          - $ref: '#/components/schemas/WorkflowPreferenceDto'
-        channels:
-          type: object
-          description: Preferences for different communication channels
-          additionalProperties:
-            $ref: '#/components/schemas/ChannelPreferenceDto'
-          example:
-            email:
-              enabled: true
-            sms:
-              enabled: false
-      required:
-      - all
-      - channels
-    ActionDto:
-      type: object
-      properties:
-        label:
-          type: string
-          description: Label for the action button.
-        redirect:
-          description: Redirect configuration for the action.
-          allOf:
-          - $ref: '#/components/schemas/RedirectDto'
     RedirectDto:
       type: object
       properties:
@@ -411,276 +362,6 @@ components:
           - _unfencedTop
       required:
       - url
-    WebhookCreatedWorkflowDtoWebhookPayloadWrapper:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the webhook event (evt_✱).
-        type:
-          type: string
-          enum:
-          - workflow.created
-          description: The type of the webhook event.
-        data:
-          description: The actual event data payload.
-          allOf:
-          - $ref: '#/components/schemas/WebhookCreatedWorkflowDto'
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO timestamp of when the event occurred.
-        environmentId:
-          type: string
-          description: The ID of the environment associated with the event.
-        object:
-          type: string
-          enum:
-          - workflow
-          description: The type of object the event relates to.
-      required:
-      - type
-      - data
-      - timestamp
-      - environmentId
-      - object
-    DigestStepResponseDto:
-      type: object
-      properties:
-        controls:
-          description: Controls metadata for the digest step
-          allOf:
-          - $ref: '#/components/schemas/DigestControlsMetadataResponseDto'
-        controlValues:
-          description: Control values for the digest step
-          additionalProperties: true
-          allOf:
-          - $ref: '#/components/schemas/DigestControlDto'
-        variables:
-          type: object
-          description: JSON Schema for variables, follows the JSON Schema standard
-          additionalProperties: true
-        stepId:
-          type: string
-          description: Unique identifier of the step
-        _id:
-          type: string
-          description: Database identifier of the step
-        name:
-          type: string
-          description: Name of the step
-        slug:
-          type: string
-          description: Slug of the step
-        type:
-          $ref: '#/components/schemas/StepTypeEnum'
-        origin:
-          $ref: '#/components/schemas/ResourceOriginEnum'
-        workflowId:
-          type: string
-          description: Workflow identifier
-        workflowDatabaseId:
-          type: string
-          description: Workflow database identifier
-        issues:
-          description: Issues associated with the step
-          allOf:
-          - $ref: '#/components/schemas/StepIssuesDto'
-        stepResolverHash:
-          type: string
-          description: Hash identifying the deployed Cloudflare Worker for this step
-      required:
-      - controls
-      - variables
-      - stepId
-      - _id
-      - name
-      - slug
-      - type
-      - origin
-      - workflowId
-      - workflowDatabaseId
-    PushControlDto:
-      type: object
-      properties:
-        skip:
-          type: object
-          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
-          example:
-            and:
-            - ==:
-              - var: payload.tier
-              - pro
-            - ==:
-              - var: subscriber.data.role
-              - admin
-            - '>':
-              - var: payload.amount
-              - '4'
-          additionalProperties: true
-        subject:
-          type: string
-          description: Subject/title of the push notification.
-        body:
-          type: string
-          description: Body content of the push notification.
-    WebhookCreatedWorkflowDto:
-      type: object
-      properties:
-        object:
-          description: Current workflow state
-          allOf:
-          - $ref: '#/components/schemas/WorkflowResponseDto'
-      required:
-      - object
-    ChatControlDto:
-      type: object
-      properties:
-        skip:
-          type: object
-          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
-          example:
-            and:
-            - ==:
-              - var: payload.tier
-              - pro
-            - ==:
-              - var: subscriber.data.role
-              - admin
-            - '>':
-              - var: payload.amount
-              - '4'
-          additionalProperties: true
-        body:
-          type: string
-          description: Content of the chat message.
-    ContentIssueEnum:
-      type: string
-      description: Type of step content issue
-      enum:
-      - ILLEGAL_VARIABLE_IN_CONTROL_VALUE
-      - INVALID_FILTER_ARG_IN_VARIABLE
-      - INVALID_URL
-      - MISSING_VALUE
-      - TIER_LIMIT_EXCEEDED
-    DigestControlDto:
-      type: object
-      properties:
-        skip:
-          type: object
-          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
-          example:
-            and:
-            - ==:
-              - var: payload.tier
-              - pro
-            - ==:
-              - var: subscriber.data.role
-              - admin
-            - '>':
-              - var: payload.amount
-              - '4'
-          additionalProperties: true
-        type:
-          type: string
-          description: The type of digest strategy. Determines which fields are applicable.
-          enum:
-          - regular
-          - timed
-        amount:
-          type: number
-          description: The amount of time for the digest interval (for REGULAR type). Min 1.
-          minimum: 1
-        unit:
-          type: string
-          description: The unit of time for the digest interval (for REGULAR type).
-          enum:
-          - seconds
-          - minutes
-          - hours
-          - days
-          - weeks
-          - months
-        lookBackWindow:
-          description: Configuration for look-back window (for REGULAR type).
-          allOf:
-          - $ref: '#/components/schemas/LookBackWindowDto'
-        cron:
-          type: string
-          description: Cron expression for TIMED digest. Min length 1.
-        digestKey:
-          type: string
-          description: Specify a custom key for digesting events instead of the default event key.
-    StepIntegrationIssue:
-      type: object
-      properties:
-        issueType:
-          $ref: '#/components/schemas/IntegrationIssueEnum'
-        variableName:
-          type: string
-          description: Name of the variable related to the issue
-        message:
-          type: string
-          description: Detailed message describing the issue
-      required:
-      - issueType
-      - message
-    EmailStepResponseDto:
-      type: object
-      properties:
-        controls:
-          description: Controls metadata for the email step
-          allOf:
-          - $ref: '#/components/schemas/EmailControlsMetadataResponseDto'
-        controlValues:
-          description: Control values for the email step
-          additionalProperties: true
-          allOf:
-          - $ref: '#/components/schemas/EmailControlDto'
-        variables:
-          type: object
-          description: JSON Schema for variables, follows the JSON Schema standard
-          additionalProperties: true
-        stepId:
-          type: string
-          description: Unique identifier of the step
-        _id:
-          type: string
-          description: Database identifier of the step
-        name:
-          type: string
-          description: Name of the step
-        slug:
-          type: string
-          description: Slug of the step
-        type:
-          $ref: '#/components/schemas/StepTypeEnum'
-        origin:
-          $ref: '#/components/schemas/ResourceOriginEnum'
-        workflowId:
-          type: string
-          description: Workflow identifier
-        workflowDatabaseId:
-          type: string
-          description: Workflow database identifier
-        issues:
-          description: Issues associated with the step
-          allOf:
-          - $ref: '#/components/schemas/StepIssuesDto'
-        stepResolverHash:
-          type: string
-          description: Hash identifying the deployed Cloudflare Worker for this step
-      required:
-      - controls
-      - variables
-      - stepId
-      - _id
-      - name
-      - slug
-      - type
-      - origin
-      - workflowId
-      - workflowDatabaseId
     InAppStepResponseDto:
       type: object
       properties:
@@ -693,6 +374,219 @@ components:
           additionalProperties: true
           allOf:
           - $ref: '#/components/schemas/InAppControlDto'
+        variables:
+          type: object
+          description: JSON Schema for variables, follows the JSON Schema standard
+          additionalProperties: true
+        stepId:
+          type: string
+          description: Unique identifier of the step
+        _id:
+          type: string
+          description: Database identifier of the step
+        name:
+          type: string
+          description: Name of the step
+        slug:
+          type: string
+          description: Slug of the step
+        type:
+          $ref: '#/components/schemas/StepTypeEnum'
+        origin:
+          $ref: '#/components/schemas/ResourceOriginEnum'
+        workflowId:
+          type: string
+          description: Workflow identifier
+        workflowDatabaseId:
+          type: string
+          description: Workflow database identifier
+        issues:
+          description: Issues associated with the step
+          allOf:
+          - $ref: '#/components/schemas/StepIssuesDto'
+        stepResolverHash:
+          type: string
+          description: Hash identifying the deployed Cloudflare Worker for this step
+      required:
+      - controls
+      - variables
+      - stepId
+      - _id
+      - name
+      - slug
+      - type
+      - origin
+      - workflowId
+      - workflowDatabaseId
+    InAppControlDto:
+      type: object
+      properties:
+        skip:
+          type: object
+          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
+          example:
+            and:
+            - ==:
+              - var: payload.tier
+              - pro
+            - ==:
+              - var: subscriber.data.role
+              - admin
+            - '>':
+              - var: payload.amount
+              - '4'
+          additionalProperties: true
+        body:
+          type: string
+          description: Content/body of the in-app message. Required if subject is empty.
+          minLength: 1
+        subject:
+          type: string
+          description: Subject/title of the in-app message. Required if body is empty.
+          minLength: 1
+        avatar:
+          type: string
+          description: URL for an avatar image. Must be a valid URL or start with / or {{ variable }}.
+        primaryAction:
+          description: Primary action button details.
+          allOf:
+          - $ref: '#/components/schemas/ActionDto'
+        secondaryAction:
+          description: Secondary action button details.
+          allOf:
+          - $ref: '#/components/schemas/ActionDto'
+        redirect:
+          description: Redirection URL configuration for the main content click (if no actions defined/clicked)..
+          allOf:
+          - $ref: '#/components/schemas/RedirectDto'
+        disableOutputSanitization:
+          type: boolean
+          description: Disable sanitization of the output.
+          default: false
+        data:
+          type: object
+          description: Additional data payload for the step.
+          additionalProperties: true
+    WorkflowPreferencesResponseDto:
+      type: object
+      properties:
+        user:
+          description: User-specific workflow preferences
+          allOf:
+          - $ref: '#/components/schemas/WorkflowPreferencesDto'
+        default:
+          description: Default workflow preferences
+          allOf:
+          - $ref: '#/components/schemas/WorkflowPreferencesDto'
+      required:
+      - default
+    WorkflowPreferenceDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.
+          default: true
+        readOnly:
+          type: boolean
+          description: A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.
+          default: false
+      required:
+      - enabled
+      - readOnly
+    SeverityLevelEnum:
+      type: string
+      description: Severity of the workflow
+      enum:
+      - high
+      - medium
+      - low
+      - none
+    SmsStepResponseDto:
+      type: object
+      properties:
+        controls:
+          description: Controls metadata for the SMS step
+          allOf:
+          - $ref: '#/components/schemas/SmsControlsMetadataResponseDto'
+        controlValues:
+          description: Control values for the SMS step
+          additionalProperties: true
+          allOf:
+          - $ref: '#/components/schemas/SmsControlDto'
+        variables:
+          type: object
+          description: JSON Schema for variables, follows the JSON Schema standard
+          additionalProperties: true
+        stepId:
+          type: string
+          description: Unique identifier of the step
+        _id:
+          type: string
+          description: Database identifier of the step
+        name:
+          type: string
+          description: Name of the step
+        slug:
+          type: string
+          description: Slug of the step
+        type:
+          $ref: '#/components/schemas/StepTypeEnum'
+        origin:
+          $ref: '#/components/schemas/ResourceOriginEnum'
+        workflowId:
+          type: string
+          description: Workflow identifier
+        workflowDatabaseId:
+          type: string
+          description: Workflow database identifier
+        issues:
+          description: Issues associated with the step
+          allOf:
+          - $ref: '#/components/schemas/StepIssuesDto'
+        stepResolverHash:
+          type: string
+          description: Hash identifying the deployed Cloudflare Worker for this step
+      required:
+      - controls
+      - variables
+      - stepId
+      - _id
+      - name
+      - slug
+      - type
+      - origin
+      - workflowId
+      - workflowDatabaseId
+    ChatControlsMetadataResponseDto:
+      type: object
+      properties:
+        dataSchema:
+          type: object
+          description: JSON Schema for data
+          additionalProperties: true
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Control values specific to Chat
+          allOf:
+          - $ref: '#/components/schemas/ChatControlDto'
+      required:
+      - values
+    PushStepResponseDto:
+      type: object
+      properties:
+        controls:
+          description: Controls metadata for the push step
+          allOf:
+          - $ref: '#/components/schemas/PushControlsMetadataResponseDto'
+        controlValues:
+          description: Control values for the push step
+          additionalProperties: true
+          allOf:
+          - $ref: '#/components/schemas/PushControlDto'
         variables:
           type: object
           description: JSON Schema for variables, follows the JSON Schema standard
@@ -862,249 +756,23 @@ components:
       - preferences
       - status
       - severity
-    HttpMethodEnum:
-      type: string
-      description: HTTP method
-      enum:
-      - GET
-      - POST
-      - PUT
-      - DELETE
-      - PATCH
-    ThrottleControlsMetadataResponseDto:
+    StepIssuesDto:
       type: object
       properties:
-        dataSchema:
+        controls:
           type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
-          allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Control values specific to Throttle
-          allOf:
-          - $ref: '#/components/schemas/ThrottleControlDto'
-      required:
-      - values
-    SeverityLevelEnum:
-      type: string
-      description: Severity of the workflow
-      enum:
-      - high
-      - medium
-      - low
-      - none
-    DelayControlDto:
-      type: object
-      properties:
-        skip:
+          description: Controls-related issues
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/StepContentIssueDto'
+        integration:
           type: object
-          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
-          example:
-            and:
-            - ==:
-              - var: payload.tier
-              - pro
-            - ==:
-              - var: subscriber.data.role
-              - admin
-            - '>':
-              - var: payload.amount
-              - '4'
-          additionalProperties: true
-        type:
-          type: string
-          description: Type of the delay. Currently only 'regular' is supported by the schema.
-          enum:
-          - regular
-          - timed
-          default: regular
-        amount:
-          type: number
-          description: Amount of time to delay.
-          minimum: 1
-        unit:
-          type: string
-          description: Unit of time for the delay amount.
-          enum:
-          - seconds
-          - minutes
-          - hours
-          - days
-          - weeks
-          - months
-        cron:
-          type: string
-          description: Cron expression for the delay. Min length 1.
-      required:
-      - type
-    WebhookPreferenceDto:
-      type: object
-      properties:
-        object:
-          type: object
-          description: Current preference state
-        subscriberId:
-          type: string
-          description: Subscriber ID
-      required:
-      - object
-      - subscriberId
-    WebhookPreferenceDtoWebhookPayloadWrapper:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the webhook event (evt_✱).
-        type:
-          type: string
-          enum:
-          - preference.updated
-          description: The type of the webhook event.
-        data:
-          description: The actual event data payload.
-          allOf:
-          - $ref: '#/components/schemas/WebhookPreferenceDto'
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO timestamp of when the event occurred.
-        environmentId:
-          type: string
-          description: The ID of the environment associated with the event.
-        object:
-          type: string
-          enum:
-          - preference
-          description: The type of object the event relates to.
-      required:
-      - type
-      - data
-      - timestamp
-      - environmentId
-      - object
-    HttpRequestKeyValuePairDto:
-      type: object
-      properties:
-        key:
-          type: string
-          description: Key of the key-value pair
-        value:
-          type: string
-          description: Value of the key-value pair
-      required:
-      - key
-      - value
-    StepContentIssueDto:
-      type: object
-      properties:
-        issueType:
-          $ref: '#/components/schemas/ContentIssueEnum'
-        variableName:
-          type: string
-          description: Name of the variable related to the issue
-        message:
-          type: string
-          description: Detailed message describing the issue
-      required:
-      - issueType
-      - message
-    ChannelPreferenceDto:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: A flag specifying if notification delivery is enabled for the channel. If true, notification delivery is enabled.
-          default: true
-      required:
-      - enabled
-    IntegrationIssueEnum:
-      type: string
-      description: Type of integration issue
-      enum:
-      - MISSING_INTEGRATION
-      - INBOX_NOT_CONNECTED
-    WorkflowPreferencesResponseDto:
-      type: object
-      properties:
-        user:
-          description: User-specific workflow preferences
-          allOf:
-          - $ref: '#/components/schemas/WorkflowPreferencesDto'
-        default:
-          description: Default workflow preferences
-          allOf:
-          - $ref: '#/components/schemas/WorkflowPreferencesDto'
-      required:
-      - default
-    UiSchemaGroupEnum:
-      type: string
-      description: Group of the UI Schema
-      enum:
-      - IN_APP
-      - EMAIL
-      - DIGEST
-      - DELAY
-      - THROTTLE
-      - SMS
-      - CHAT
-      - PUSH
-      - SKIP
-      - LAYOUT
-      - HTTP_REQUEST
-    MessageFailedErrorDto:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        push:
-          description: Push error
-          allOf:
-          - $ref: '#/components/schemas/MessageFailedPushDto'
-      required:
-      - message
-      - push
-    UserResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: User ID
-        firstName:
-          type:
-          - string
-          - 'null'
-          description: User first name
-        lastName:
-          type:
-          - string
-          - 'null'
-          description: User last name
-        externalId:
-          type:
-          - string
-          - 'null'
-          description: User external ID
-      required:
-      - _id
-    WebhookInboundEmailRouteDto:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Route address (local part of the email address)
-      required:
-      - address
-    ResourceOriginEnum:
-      type: string
-      description: Origin of the layout
-      enum:
-      - novu-cloud
-      - novu-cloud-v1
-      - external
+          description: Integration-related issues
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/StepIntegrationIssue'
     HttpRequestStepResponseDto:
       type: object
       properties:
@@ -1178,90 +846,169 @@ components:
           - $ref: '#/components/schemas/InAppControlDto'
       required:
       - values
-    CustomStepResponseDto:
+    WebhookInboundEmailAddressDto:
       type: object
       properties:
-        controls:
-          description: Controls metadata for the custom step
-          allOf:
-          - $ref: '#/components/schemas/CustomControlsMetadataResponseDto'
-        controlValues:
-          description: Control values for the custom step
-          additionalProperties: true
-          allOf:
-          - $ref: '#/components/schemas/CustomControlDto'
-        variables:
-          type: object
-          description: JSON Schema for variables, follows the JSON Schema standard
-          additionalProperties: true
-        stepId:
-          type: string
-          description: Unique identifier of the step
-        _id:
-          type: string
-          description: Database identifier of the step
         name:
           type: string
-          description: Name of the step
-        slug:
+          description: Display name
+        address:
           type: string
-          description: Slug of the step
-        type:
-          $ref: '#/components/schemas/StepTypeEnum'
-        origin:
-          $ref: '#/components/schemas/ResourceOriginEnum'
-        workflowId:
-          type: string
-          description: Workflow identifier
-        workflowDatabaseId:
-          type: string
-          description: Workflow database identifier
-        issues:
-          description: Issues associated with the step
-          allOf:
-          - $ref: '#/components/schemas/StepIssuesDto'
-        stepResolverHash:
-          type: string
-          description: Hash identifying the deployed Cloudflare Worker for this step
+          description: Email address
       required:
-      - controls
-      - variables
-      - stepId
-      - _id
       - name
-      - slug
-      - type
-      - origin
-      - workflowId
-      - workflowDatabaseId
-    UiSchemaProperty:
+      - address
+    UiSchemaGroupEnum:
+      type: string
+      description: Group of the UI Schema
+      enum:
+      - IN_APP
+      - EMAIL
+      - DIGEST
+      - DELAY
+      - THROTTLE
+      - SMS
+      - CHAT
+      - PUSH
+      - SKIP
+      - LAYOUT
+      - HTTP_REQUEST
+    WebhookMessageFailedDtoWebhookPayloadWrapper:
       type: object
       properties:
-        placeholder:
-          description: Placeholder for the UI Schema Property
-          anyOf:
-          - type: string
-          - type: number
-          - type: boolean
-          - type: object
-            additionalProperties: true
-          - type: array
-            items:
-              anyOf:
-              - type: string
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-        component:
-          $ref: '#/components/schemas/UiComponentEnum'
-        properties:
-          type: object
-          description: Properties of the UI Schema
-          additionalProperties:
-            $ref: '#/components/schemas/UiSchemaProperty'
+        id:
+          type: string
+          description: Unique identifier of the webhook event (evt_✱).
+        type:
+          type: string
+          enum:
+          - message.failed
+          description: The type of the webhook event.
+        data:
+          description: The actual event data payload.
+          allOf:
+          - $ref: '#/components/schemas/WebhookMessageFailedDto'
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO timestamp of when the event occurred.
+        environmentId:
+          type: string
+          description: The ID of the environment associated with the event.
+        object:
+          type: string
+          enum:
+          - message
+          description: The type of object the event relates to.
       required:
-      - component
+      - type
+      - data
+      - timestamp
+      - environmentId
+      - object
+    SmsControlsMetadataResponseDto:
+      type: object
+      properties:
+        dataSchema:
+          type: object
+          description: JSON Schema for data
+          additionalProperties: true
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Control values specific to SMS
+          allOf:
+          - $ref: '#/components/schemas/SmsControlDto'
+      required:
+      - values
+    EmailControlsMetadataResponseDto:
+      type: object
+      properties:
+        dataSchema:
+          type: object
+          description: JSON Schema for data
+          additionalProperties: true
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Control values specific to Email
+          allOf:
+          - $ref: '#/components/schemas/EmailControlDto'
+      required:
+      - values
+    PushControlsMetadataResponseDto:
+      type: object
+      properties:
+        dataSchema:
+          type: object
+          description: JSON Schema for data
+          additionalProperties: true
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Control values specific to Push
+          allOf:
+          - $ref: '#/components/schemas/PushControlDto'
+      required:
+      - values
+    HttpRequestKeyValuePairDto:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Key of the key-value pair
+        value:
+          type: string
+          description: Value of the key-value pair
+      required:
+      - key
+      - value
+    PushControlDto:
+      type: object
+      properties:
+        skip:
+          type: object
+          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
+          example:
+            and:
+            - ==:
+              - var: payload.tier
+              - pro
+            - ==:
+              - var: subscriber.data.role
+              - admin
+            - '>':
+              - var: payload.amount
+              - '4'
+          additionalProperties: true
+        subject:
+          type: string
+          description: Subject/title of the push notification.
+        body:
+          type: string
+          description: Body content of the push notification.
+    WebhookDeletedWorkflowDto:
+      type: object
+      properties:
+        object:
+          description: Current workflow state
+          allOf:
+          - $ref: '#/components/schemas/WorkflowResponseDto'
+      required:
+      - object
+    WorkflowStatusEnum:
+      type: string
+      description: Status of the workflow
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - ERROR
     WebhookUpdatedWorkflowDto:
       type: object
       properties:
@@ -1276,177 +1023,7 @@ components:
       required:
       - object
       - previousObject
-    RuntimeIssueDto:
-      type: object
-      properties: {}
-    PushStepResponseDto:
-      type: object
-      properties:
-        controls:
-          description: Controls metadata for the push step
-          allOf:
-          - $ref: '#/components/schemas/PushControlsMetadataResponseDto'
-        controlValues:
-          description: Control values for the push step
-          additionalProperties: true
-          allOf:
-          - $ref: '#/components/schemas/PushControlDto'
-        variables:
-          type: object
-          description: JSON Schema for variables, follows the JSON Schema standard
-          additionalProperties: true
-        stepId:
-          type: string
-          description: Unique identifier of the step
-        _id:
-          type: string
-          description: Database identifier of the step
-        name:
-          type: string
-          description: Name of the step
-        slug:
-          type: string
-          description: Slug of the step
-        type:
-          $ref: '#/components/schemas/StepTypeEnum'
-        origin:
-          $ref: '#/components/schemas/ResourceOriginEnum'
-        workflowId:
-          type: string
-          description: Workflow identifier
-        workflowDatabaseId:
-          type: string
-          description: Workflow database identifier
-        issues:
-          description: Issues associated with the step
-          allOf:
-          - $ref: '#/components/schemas/StepIssuesDto'
-        stepResolverHash:
-          type: string
-          description: Hash identifying the deployed Cloudflare Worker for this step
-      required:
-      - controls
-      - variables
-      - stepId
-      - _id
-      - name
-      - slug
-      - type
-      - origin
-      - workflowId
-      - workflowDatabaseId
-    ChatControlsMetadataResponseDto:
-      type: object
-      properties:
-        dataSchema:
-          type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
-          allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Control values specific to Chat
-          allOf:
-          - $ref: '#/components/schemas/ChatControlDto'
-      required:
-      - values
-    CustomControlsMetadataResponseDto:
-      type: object
-      properties:
-        dataSchema:
-          type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
-          allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Control values specific to Custom step
-          allOf:
-          - $ref: '#/components/schemas/CustomControlDto'
-      required:
-      - values
-    InAppControlDto:
-      type: object
-      properties:
-        skip:
-          type: object
-          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
-          example:
-            and:
-            - ==:
-              - var: payload.tier
-              - pro
-            - ==:
-              - var: subscriber.data.role
-              - admin
-            - '>':
-              - var: payload.amount
-              - '4'
-          additionalProperties: true
-        body:
-          type: string
-          description: Content/body of the in-app message. Required if subject is empty.
-          minLength: 1
-        subject:
-          type: string
-          description: Subject/title of the in-app message. Required if body is empty.
-          minLength: 1
-        avatar:
-          type: string
-          description: URL for an avatar image. Must be a valid URL or start with / or {{ variable }}.
-        primaryAction:
-          description: Primary action button details.
-          allOf:
-          - $ref: '#/components/schemas/ActionDto'
-        secondaryAction:
-          description: Secondary action button details.
-          allOf:
-          - $ref: '#/components/schemas/ActionDto'
-        redirect:
-          description: Redirection URL configuration for the main content click (if no actions defined/clicked)..
-          allOf:
-          - $ref: '#/components/schemas/RedirectDto'
-        disableOutputSanitization:
-          type: boolean
-          description: Disable sanitization of the output.
-          default: false
-        data:
-          type: object
-          description: Additional data payload for the step.
-          additionalProperties: true
-    CustomControlDto:
-      type: object
-      properties:
-        custom:
-          type: object
-          description: Custom control values for the step.
-          additionalProperties: true
-    SmsControlDto:
-      type: object
-      properties:
-        skip:
-          type: object
-          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
-          example:
-            and:
-            - ==:
-              - var: payload.tier
-              - pro
-            - ==:
-              - var: subscriber.data.role
-              - admin
-            - '>':
-              - var: payload.amount
-              - '4'
-          additionalProperties: true
-        body:
-          type: string
-          description: Content of the SMS message.
-    WebhookDeletedWorkflowDto:
+    WebhookCreatedWorkflowDto:
       type: object
       properties:
         object:
@@ -1455,39 +1032,203 @@ components:
           - $ref: '#/components/schemas/WorkflowResponseDto'
       required:
       - object
-    HttpRequestControlDto:
+    ChannelPreferenceDto:
       type: object
       properties:
-        method:
-          $ref: '#/components/schemas/HttpMethodEnum'
-        url:
+        enabled:
+          type: boolean
+          description: A flag specifying if notification delivery is enabled for the channel. If true, notification delivery is enabled.
+          default: true
+      required:
+      - enabled
+    WebhookMessageDto:
+      type: object
+      properties:
+        object:
+          type: object
+          description: Current message state
+      required:
+      - object
+    ActionDto:
+      type: object
+      properties:
+        label:
           type: string
-          description: Target URL for the HTTP request
-        headers:
-          description: Request headers as key-value pairs
+          description: Label for the action button.
+        redirect:
+          description: Redirect configuration for the action.
+          allOf:
+          - $ref: '#/components/schemas/RedirectDto'
+    UiComponentEnum:
+      type: string
+      description: Component type for the UI Schema Property
+      enum:
+      - EMAIL_EDITOR_SELECT
+      - LAYOUT_SELECT
+      - BLOCK_EDITOR
+      - EMAIL_BODY
+      - TEXT_FULL_LINE
+      - TEXT_INLINE_LABEL
+      - IN_APP_BODY
+      - IN_APP_AVATAR
+      - IN_APP_PRIMARY_SUBJECT
+      - IN_APP_BUTTON_DROPDOWN
+      - IN_APP_DISABLE_SANITIZATION_SWITCH
+      - DISABLE_SANITIZATION_SWITCH
+      - URL_TEXT_BOX
+      - DIGEST_AMOUNT
+      - DIGEST_UNIT
+      - DIGEST_TYPE
+      - DIGEST_KEY
+      - DIGEST_CRON
+      - DELAY_AMOUNT
+      - DELAY_UNIT
+      - DELAY_TYPE
+      - DELAY_CRON
+      - DELAY_DYNAMIC_KEY
+      - THROTTLE_TYPE
+      - THROTTLE_WINDOW
+      - THROTTLE_UNIT
+      - THROTTLE_DYNAMIC_KEY
+      - THROTTLE_THRESHOLD
+      - THROTTLE_KEY
+      - EXTEND_TO_SCHEDULE
+      - SMS_BODY
+      - CHAT_BODY
+      - PUSH_BODY
+      - PUSH_SUBJECT
+      - QUERY_EDITOR
+      - DATA
+      - LAYOUT_EMAIL
+      - DESTINATION_METHOD
+      - DESTINATION_URL
+      - DESTINATION_HEADERS
+      - DESTINATION_BODY
+      - DESTINATION_RESPONSE_BODY_SCHEMA
+      - DESTINATION_ENFORCE_SCHEMA_VALIDATION
+      - DESTINATION_CONTINUE_ON_FAILURE
+      - DESTINATION_TIMEOUT
+    LookBackWindowDto:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: Amount of time for the look-back window.
+          minimum: 1
+        unit:
+          type: string
+          description: Unit of time for the look-back window.
+          enum:
+          - seconds
+          - minutes
+          - hours
+          - days
+          - weeks
+          - months
+      required:
+      - amount
+      - unit
+    WebhookInboundEmailDomainDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Domain ID
+        name:
+          type: string
+          description: Domain name
+      required:
+      - id
+      - name
+    WebhookInboundEmailMailDto:
+      type: object
+      properties:
+        from:
+          description: Sender address info
+          allOf:
+          - $ref: '#/components/schemas/WebhookInboundEmailAddressDto'
+        to:
+          description: Recipient address info
           type: array
           items:
-            $ref: '#/components/schemas/HttpRequestKeyValuePairDto'
-        body:
-          description: Request body as a raw JSON string. Key-value arrays are supported for legacy workflows.
-          oneOf:
-          - type: string
-          - type: array
-            items:
-              $ref: '#/components/schemas/HttpRequestKeyValuePairDto'
-        responseBodySchema:
-          type: object
-          description: JSON schema to validate response body against
-          additionalProperties: true
-        enforceSchemaValidation:
-          type: boolean
-          description: Whether to enforce response body schema validation
-        continueOnFailure:
-          type: boolean
-          description: Whether to continue workflow execution on failure
+            $ref: '#/components/schemas/WebhookInboundEmailAddressDto'
+        subject:
+          type: string
+          description: Email subject
+        html:
+          type: string
+          description: HTML body
+        text:
+          type: string
+          description: Plain text body
+        messageId:
+          type: string
+          description: Message ID header
       required:
-      - method
-      - url
+      - from
+      - to
+      - subject
+      - messageId
+    UiSchema:
+      type: object
+      properties:
+        group:
+          $ref: '#/components/schemas/UiSchemaGroupEnum'
+        properties:
+          type: object
+          description: Properties of the UI Schema
+          additionalProperties:
+            $ref: '#/components/schemas/UiSchemaProperty'
+    WebhookUpdatedWorkflowDtoWebhookPayloadWrapper:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the webhook event (evt_✱).
+        type:
+          type: string
+          enum:
+          - workflow.updated
+          description: The type of the webhook event.
+        data:
+          description: The actual event data payload.
+          allOf:
+          - $ref: '#/components/schemas/WebhookUpdatedWorkflowDto'
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO timestamp of when the event occurred.
+        environmentId:
+          type: string
+          description: The ID of the environment associated with the event.
+        object:
+          type: string
+          enum:
+          - workflow
+          description: The type of object the event relates to.
+      required:
+      - type
+      - data
+      - timestamp
+      - environmentId
+      - object
+    HttpRequestControlsMetadataResponseDto:
+      type: object
+      properties:
+        dataSchema:
+          type: object
+          description: JSON Schema for data
+          additionalProperties: true
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Control values specific to HTTP Request step
+          allOf:
+          - $ref: '#/components/schemas/HttpRequestControlDto'
+      required:
+      - values
     DelayStepResponseDto:
       type: object
       properties:
@@ -1544,178 +1285,13 @@ components:
       - origin
       - workflowId
       - workflowDatabaseId
-    WebhookInboundEmailDtoWebhookPayloadWrapper:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the webhook event (evt_✱).
-        type:
-          type: string
-          enum:
-          - email.received
-          description: The type of the webhook event.
-        data:
-          description: The actual event data payload.
-          allOf:
-          - $ref: '#/components/schemas/WebhookInboundEmailDto'
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO timestamp of when the event occurred.
-        environmentId:
-          type: string
-          description: The ID of the environment associated with the event.
-        object:
-          type: string
-          enum:
-          - email_inbound
-          description: The type of object the event relates to.
-      required:
-      - type
-      - data
-      - timestamp
-      - environmentId
-      - object
-    EmailControlsMetadataResponseDto:
-      type: object
-      properties:
-        dataSchema:
-          type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
-          allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Control values specific to Email
-          allOf:
-          - $ref: '#/components/schemas/EmailControlDto'
-      required:
-      - values
-    WebhookMessageFailedDtoWebhookPayloadWrapper:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the webhook event (evt_✱).
-        type:
-          type: string
-          enum:
-          - message.failed
-          description: The type of the webhook event.
-        data:
-          description: The actual event data payload.
-          allOf:
-          - $ref: '#/components/schemas/WebhookMessageFailedDto'
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO timestamp of when the event occurred.
-        environmentId:
-          type: string
-          description: The ID of the environment associated with the event.
-        object:
-          type: string
-          enum:
-          - message
-          description: The type of object the event relates to.
-      required:
-      - type
-      - data
-      - timestamp
-      - environmentId
-      - object
-    WebhookInboundEmailAddressDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Display name
-        address:
-          type: string
-          description: Email address
-      required:
-      - name
-      - address
-    UiSchema:
-      type: object
-      properties:
-        group:
-          $ref: '#/components/schemas/UiSchemaGroupEnum'
-        properties:
-          type: object
-          description: Properties of the UI Schema
-          additionalProperties:
-            $ref: '#/components/schemas/UiSchemaProperty'
-    ThrottleControlDto:
-      type: object
-      properties:
-        skip:
-          type: object
-          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
-          example:
-            and:
-            - ==:
-              - var: payload.tier
-              - pro
-            - ==:
-              - var: subscriber.data.role
-              - admin
-            - '>':
-              - var: payload.amount
-              - '4'
-          additionalProperties: true
-        type:
-          type: string
-          description: The type of throttle window.
-          enum:
-          - fixed
-          - dynamic
-          default: fixed
-        amount:
-          type: number
-          description: The amount of time for the throttle window (required for fixed type).
-          minimum: 1
-        unit:
-          type: string
-          description: The unit of time for the throttle window (required for fixed type).
-          enum:
-          - minutes
-          - hours
-          - days
-        dynamicKey:
-          type: string
-          description: Key path to retrieve dynamic window value (required for dynamic type).
-          example: payload.timestamp
-        threshold:
-          type: number
-          description: The maximum number of executions allowed within the window. Defaults to 1.
-          minimum: 1
-          default: 1
-        throttleKey:
-          type: string
-          description: Optional key for grouping throttle rules. If not provided, defaults to workflow and subscriber combination.
-      required:
-      - type
-    DelayControlsMetadataResponseDto:
-      type: object
-      properties:
-        dataSchema:
-          type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
-          allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Control values specific to Delay
-          allOf:
-          - $ref: '#/components/schemas/DelayControlDto'
-      required:
-      - values
+    ResourceOriginEnum:
+      type: string
+      description: Origin of the layout
+      enum:
+      - novu-cloud
+      - novu-cloud-v1
+      - external
     MessageFailedPushDto:
       type: object
       properties:
@@ -1728,326 +1304,32 @@ components:
       required:
       - isInvalidToken
       - deviceToken
-    SmsStepResponseDto:
+    StepContentIssueDto:
       type: object
       properties:
-        controls:
-          description: Controls metadata for the SMS step
-          allOf:
-          - $ref: '#/components/schemas/SmsControlsMetadataResponseDto'
-        controlValues:
-          description: Control values for the SMS step
-          additionalProperties: true
-          allOf:
-          - $ref: '#/components/schemas/SmsControlDto'
-        variables:
-          type: object
-          description: JSON Schema for variables, follows the JSON Schema standard
-          additionalProperties: true
-        stepId:
+        issueType:
+          $ref: '#/components/schemas/ContentIssueEnum'
+        variableName:
           type: string
-          description: Unique identifier of the step
-        _id:
+          description: Name of the variable related to the issue
+        message:
           type: string
-          description: Database identifier of the step
-        name:
-          type: string
-          description: Name of the step
-        slug:
-          type: string
-          description: Slug of the step
-        type:
-          $ref: '#/components/schemas/StepTypeEnum'
-        origin:
-          $ref: '#/components/schemas/ResourceOriginEnum'
-        workflowId:
-          type: string
-          description: Workflow identifier
-        workflowDatabaseId:
-          type: string
-          description: Workflow database identifier
-        issues:
-          description: Issues associated with the step
-          allOf:
-          - $ref: '#/components/schemas/StepIssuesDto'
-        stepResolverHash:
-          type: string
-          description: Hash identifying the deployed Cloudflare Worker for this step
+          description: Detailed message describing the issue
       required:
-      - controls
-      - variables
-      - stepId
-      - _id
-      - name
-      - slug
-      - type
-      - origin
-      - workflowId
-      - workflowDatabaseId
-    WebhookMessageDto:
+      - issueType
+      - message
+    WebhookPreferenceDto:
       type: object
       properties:
         object:
           type: object
-          description: Current message state
+          description: Current preference state
+        subscriberId:
+          type: string
+          description: Subscriber ID
       required:
       - object
-    WebhookDeletedWorkflowDtoWebhookPayloadWrapper:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the webhook event (evt_✱).
-        type:
-          type: string
-          enum:
-          - workflow.deleted
-          description: The type of the webhook event.
-        data:
-          description: The actual event data payload.
-          allOf:
-          - $ref: '#/components/schemas/WebhookDeletedWorkflowDto'
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO timestamp of when the event occurred.
-        environmentId:
-          type: string
-          description: The ID of the environment associated with the event.
-        object:
-          type: string
-          enum:
-          - workflow
-          description: The type of object the event relates to.
-      required:
-      - type
-      - data
-      - timestamp
-      - environmentId
-      - object
-    HttpRequestControlsMetadataResponseDto:
-      type: object
-      properties:
-        dataSchema:
-          type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
-          allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Control values specific to HTTP Request step
-          allOf:
-          - $ref: '#/components/schemas/HttpRequestControlDto'
-      required:
-      - values
-    DigestControlsMetadataResponseDto:
-      type: object
-      properties:
-        dataSchema:
-          type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
-          allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Control values specific to Digest
-          allOf:
-          - $ref: '#/components/schemas/DigestControlDto'
-      required:
-      - values
-    WebhookInboundEmailMailDto:
-      type: object
-      properties:
-        from:
-          description: Sender address info
-          allOf:
-          - $ref: '#/components/schemas/WebhookInboundEmailAddressDto'
-        to:
-          description: Recipient address info
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookInboundEmailAddressDto'
-        subject:
-          type: string
-          description: Email subject
-        html:
-          type: string
-          description: HTML body
-        text:
-          type: string
-          description: Plain text body
-        messageId:
-          type: string
-          description: Message ID header
-      required:
-      - from
-      - to
-      - subject
-      - messageId
-    WorkflowPreferenceDto:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: A flag specifying if notification delivery is enabled for the workflow. If true, notification delivery is enabled by default for all channels. This setting can be overridden by the channel preferences.
-          default: true
-        readOnly:
-          type: boolean
-          description: A flag specifying if the preference is read-only. If true, the preference cannot be changed by the Subscriber.
-          default: false
-      required:
-      - enabled
-      - readOnly
-    WebhookMessageFailedDto:
-      type: object
-      properties:
-        object:
-          type: object
-          description: Current message state
-        error:
-          description: Error message
-          allOf:
-          - $ref: '#/components/schemas/MessageFailedErrorDto'
-      required:
-      - object
-      - error
-    LookBackWindowDto:
-      type: object
-      properties:
-        amount:
-          type: number
-          description: Amount of time for the look-back window.
-          minimum: 1
-        unit:
-          type: string
-          description: Unit of time for the look-back window.
-          enum:
-          - seconds
-          - minutes
-          - hours
-          - days
-          - weeks
-          - months
-      required:
-      - amount
-      - unit
-    ThrottleStepResponseDto:
-      type: object
-      properties:
-        controls:
-          description: Controls metadata for the throttle step
-          allOf:
-          - $ref: '#/components/schemas/ThrottleControlsMetadataResponseDto'
-        controlValues:
-          description: Control values for the throttle step
-          additionalProperties: true
-          allOf:
-          - $ref: '#/components/schemas/ThrottleControlDto'
-        variables:
-          type: object
-          description: JSON Schema for variables, follows the JSON Schema standard
-          additionalProperties: true
-        stepId:
-          type: string
-          description: Unique identifier of the step
-        _id:
-          type: string
-          description: Database identifier of the step
-        name:
-          type: string
-          description: Name of the step
-        slug:
-          type: string
-          description: Slug of the step
-        type:
-          $ref: '#/components/schemas/StepTypeEnum'
-        origin:
-          $ref: '#/components/schemas/ResourceOriginEnum'
-        workflowId:
-          type: string
-          description: Workflow identifier
-        workflowDatabaseId:
-          type: string
-          description: Workflow database identifier
-        issues:
-          description: Issues associated with the step
-          allOf:
-          - $ref: '#/components/schemas/StepIssuesDto'
-        stepResolverHash:
-          type: string
-          description: Hash identifying the deployed Cloudflare Worker for this step
-      required:
-      - controls
-      - variables
-      - stepId
-      - _id
-      - name
-      - slug
-      - type
-      - origin
-      - workflowId
-      - workflowDatabaseId
-    WorkflowStatusEnum:
-      type: string
-      description: Status of the workflow
-      enum:
-      - ACTIVE
-      - INACTIVE
-      - ERROR
-    PushControlsMetadataResponseDto:
-      type: object
-      properties:
-        dataSchema:
-          type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
-          allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Control values specific to Push
-          allOf:
-          - $ref: '#/components/schemas/PushControlDto'
-      required:
-      - values
-    WebhookUpdatedWorkflowDtoWebhookPayloadWrapper:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the webhook event (evt_✱).
-        type:
-          type: string
-          enum:
-          - workflow.updated
-          description: The type of the webhook event.
-        data:
-          description: The actual event data payload.
-          allOf:
-          - $ref: '#/components/schemas/WebhookUpdatedWorkflowDto'
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO timestamp of when the event occurred.
-        environmentId:
-          type: string
-          description: The ID of the environment associated with the event.
-        object:
-          type: string
-          enum:
-          - workflow
-          description: The type of object the event relates to.
-      required:
-      - type
-      - data
-      - timestamp
-      - environmentId
-      - object
+      - subscriberId
     ChatStepResponseDto:
       type: object
       properties:
@@ -2104,6 +1386,342 @@ components:
       - origin
       - workflowId
       - workflowDatabaseId
+    CustomControlDto:
+      type: object
+      properties:
+        custom:
+          type: object
+          description: Custom control values for the step.
+          additionalProperties: true
+    DigestControlDto:
+      type: object
+      properties:
+        skip:
+          type: object
+          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
+          example:
+            and:
+            - ==:
+              - var: payload.tier
+              - pro
+            - ==:
+              - var: subscriber.data.role
+              - admin
+            - '>':
+              - var: payload.amount
+              - '4'
+          additionalProperties: true
+        type:
+          type: string
+          description: The type of digest strategy. Determines which fields are applicable.
+          enum:
+          - regular
+          - timed
+        amount:
+          type: number
+          description: The amount of time for the digest interval (for REGULAR type). Min 1.
+          minimum: 1
+        unit:
+          type: string
+          description: The unit of time for the digest interval (for REGULAR type).
+          enum:
+          - seconds
+          - minutes
+          - hours
+          - days
+          - weeks
+          - months
+        lookBackWindow:
+          description: Configuration for look-back window (for REGULAR type).
+          allOf:
+          - $ref: '#/components/schemas/LookBackWindowDto'
+        cron:
+          type: string
+          description: Cron expression for TIMED digest. Min length 1.
+        digestKey:
+          type: string
+          description: Specify a custom key for digesting events instead of the default event key.
+    SmsControlDto:
+      type: object
+      properties:
+        skip:
+          type: object
+          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
+          example:
+            and:
+            - ==:
+              - var: payload.tier
+              - pro
+            - ==:
+              - var: subscriber.data.role
+              - admin
+            - '>':
+              - var: payload.amount
+              - '4'
+          additionalProperties: true
+        body:
+          type: string
+          description: Content of the SMS message.
+    EmailStepResponseDto:
+      type: object
+      properties:
+        controls:
+          description: Controls metadata for the email step
+          allOf:
+          - $ref: '#/components/schemas/EmailControlsMetadataResponseDto'
+        controlValues:
+          description: Control values for the email step
+          additionalProperties: true
+          allOf:
+          - $ref: '#/components/schemas/EmailControlDto'
+        variables:
+          type: object
+          description: JSON Schema for variables, follows the JSON Schema standard
+          additionalProperties: true
+        stepId:
+          type: string
+          description: Unique identifier of the step
+        _id:
+          type: string
+          description: Database identifier of the step
+        name:
+          type: string
+          description: Name of the step
+        slug:
+          type: string
+          description: Slug of the step
+        type:
+          $ref: '#/components/schemas/StepTypeEnum'
+        origin:
+          $ref: '#/components/schemas/ResourceOriginEnum'
+        workflowId:
+          type: string
+          description: Workflow identifier
+        workflowDatabaseId:
+          type: string
+          description: Workflow database identifier
+        issues:
+          description: Issues associated with the step
+          allOf:
+          - $ref: '#/components/schemas/StepIssuesDto'
+        stepResolverHash:
+          type: string
+          description: Hash identifying the deployed Cloudflare Worker for this step
+      required:
+      - controls
+      - variables
+      - stepId
+      - _id
+      - name
+      - slug
+      - type
+      - origin
+      - workflowId
+      - workflowDatabaseId
+    UserResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: User ID
+        firstName:
+          type:
+          - string
+          - 'null'
+          description: User first name
+        lastName:
+          type:
+          - string
+          - 'null'
+          description: User last name
+        externalId:
+          type:
+          - string
+          - 'null'
+          description: User external ID
+      required:
+      - _id
+    WebhookInboundEmailDto:
+      type: object
+      properties:
+        domain:
+          description: Domain that received the email
+          allOf:
+          - $ref: '#/components/schemas/WebhookInboundEmailDomainDto'
+        route:
+          description: Matched route info
+          allOf:
+          - $ref: '#/components/schemas/WebhookInboundEmailRouteDto'
+        mail:
+          description: Inbound email details
+          allOf:
+          - $ref: '#/components/schemas/WebhookInboundEmailMailDto'
+      required:
+      - domain
+      - mail
+    WebhookPreferenceDtoWebhookPayloadWrapper:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the webhook event (evt_✱).
+        type:
+          type: string
+          enum:
+          - preference.updated
+          description: The type of the webhook event.
+        data:
+          description: The actual event data payload.
+          allOf:
+          - $ref: '#/components/schemas/WebhookPreferenceDto'
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO timestamp of when the event occurred.
+        environmentId:
+          type: string
+          description: The ID of the environment associated with the event.
+        object:
+          type: string
+          enum:
+          - preference
+          description: The type of object the event relates to.
+      required:
+      - type
+      - data
+      - timestamp
+      - environmentId
+      - object
+    DigestControlsMetadataResponseDto:
+      type: object
+      properties:
+        dataSchema:
+          type: object
+          description: JSON Schema for data
+          additionalProperties: true
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Control values specific to Digest
+          allOf:
+          - $ref: '#/components/schemas/DigestControlDto'
+      required:
+      - values
+    WebhookInboundEmailDtoWebhookPayloadWrapper:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the webhook event (evt_✱).
+        type:
+          type: string
+          enum:
+          - email.received
+          description: The type of the webhook event.
+        data:
+          description: The actual event data payload.
+          allOf:
+          - $ref: '#/components/schemas/WebhookInboundEmailDto'
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO timestamp of when the event occurred.
+        environmentId:
+          type: string
+          description: The ID of the environment associated with the event.
+        object:
+          type: string
+          enum:
+          - email_inbound
+          description: The type of object the event relates to.
+      required:
+      - type
+      - data
+      - timestamp
+      - environmentId
+      - object
+    HttpMethodEnum:
+      type: string
+      description: HTTP method
+      enum:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+    CustomControlsMetadataResponseDto:
+      type: object
+      properties:
+        dataSchema:
+          type: object
+          description: JSON Schema for data
+          additionalProperties: true
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Control values specific to Custom step
+          allOf:
+          - $ref: '#/components/schemas/CustomControlDto'
+      required:
+      - values
+    DelayControlsMetadataResponseDto:
+      type: object
+      properties:
+        dataSchema:
+          type: object
+          description: JSON Schema for data
+          additionalProperties: true
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Control values specific to Delay
+          allOf:
+          - $ref: '#/components/schemas/DelayControlDto'
+      required:
+      - values
+    ContentIssueEnum:
+      type: string
+      description: Type of step content issue
+      enum:
+      - ILLEGAL_VARIABLE_IN_CONTROL_VALUE
+      - INVALID_FILTER_ARG_IN_VARIABLE
+      - INVALID_URL
+      - MISSING_VALUE
+      - TIER_LIMIT_EXCEEDED
+    UiSchemaProperty:
+      type: object
+      properties:
+        placeholder:
+          description: Placeholder for the UI Schema Property
+          anyOf:
+          - type: string
+          - type: number
+          - type: boolean
+          - type: object
+            additionalProperties: true
+          - type: array
+            items:
+              anyOf:
+              - type: string
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+        component:
+          $ref: '#/components/schemas/UiComponentEnum'
+        properties:
+          type: object
+          description: Properties of the UI Schema
+          additionalProperties:
+            $ref: '#/components/schemas/UiSchemaProperty'
+      required:
+      - component
     WebhookMessageDtoWebhookPayloadWrapper:
       type: object
       properties:
@@ -2137,55 +1755,264 @@ components:
       - timestamp
       - environmentId
       - object
-    UiComponentEnum:
-      type: string
-      description: Component type for the UI Schema Property
-      enum:
-      - EMAIL_EDITOR_SELECT
-      - LAYOUT_SELECT
-      - BLOCK_EDITOR
-      - EMAIL_BODY
-      - TEXT_FULL_LINE
-      - TEXT_INLINE_LABEL
-      - IN_APP_BODY
-      - IN_APP_AVATAR
-      - IN_APP_PRIMARY_SUBJECT
-      - IN_APP_BUTTON_DROPDOWN
-      - IN_APP_DISABLE_SANITIZATION_SWITCH
-      - DISABLE_SANITIZATION_SWITCH
-      - URL_TEXT_BOX
-      - DIGEST_AMOUNT
-      - DIGEST_UNIT
-      - DIGEST_TYPE
-      - DIGEST_KEY
-      - DIGEST_CRON
-      - DELAY_AMOUNT
-      - DELAY_UNIT
-      - DELAY_TYPE
-      - DELAY_CRON
-      - DELAY_DYNAMIC_KEY
-      - THROTTLE_TYPE
-      - THROTTLE_WINDOW
-      - THROTTLE_UNIT
-      - THROTTLE_DYNAMIC_KEY
-      - THROTTLE_THRESHOLD
-      - THROTTLE_KEY
-      - EXTEND_TO_SCHEDULE
-      - SMS_BODY
-      - CHAT_BODY
-      - PUSH_BODY
-      - PUSH_SUBJECT
-      - QUERY_EDITOR
-      - DATA
-      - LAYOUT_EMAIL
-      - DESTINATION_METHOD
-      - DESTINATION_URL
-      - DESTINATION_HEADERS
-      - DESTINATION_BODY
-      - DESTINATION_RESPONSE_BODY_SCHEMA
-      - DESTINATION_ENFORCE_SCHEMA_VALIDATION
-      - DESTINATION_CONTINUE_ON_FAILURE
-      - DESTINATION_TIMEOUT
+    WorkflowPreferencesDto:
+      type: object
+      properties:
+        all:
+          description: A preference for the workflow. The values specified here will be used if no preference is specified for a channel.
+          oneOf:
+          - $ref: '#/components/schemas/WorkflowPreferenceDto'
+          allOf:
+          - $ref: '#/components/schemas/WorkflowPreferenceDto'
+        channels:
+          type: object
+          description: Preferences for different communication channels
+          additionalProperties:
+            $ref: '#/components/schemas/ChannelPreferenceDto'
+          example:
+            email:
+              enabled: true
+            sms:
+              enabled: false
+      required:
+      - all
+      - channels
+    MessageFailedErrorDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        push:
+          description: Push error
+          allOf:
+          - $ref: '#/components/schemas/MessageFailedPushDto'
+      required:
+      - message
+      - push
+    HttpRequestControlDto:
+      type: object
+      properties:
+        method:
+          $ref: '#/components/schemas/HttpMethodEnum'
+        url:
+          type: string
+          description: Target URL for the HTTP request
+        headers:
+          description: Request headers as key-value pairs
+          type: array
+          items:
+            $ref: '#/components/schemas/HttpRequestKeyValuePairDto'
+        body:
+          description: Request body as a raw JSON string. Key-value arrays are supported for legacy workflows.
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              $ref: '#/components/schemas/HttpRequestKeyValuePairDto'
+        responseBodySchema:
+          type: object
+          description: JSON schema to validate response body against
+          additionalProperties: true
+        enforceSchemaValidation:
+          type: boolean
+          description: Whether to enforce response body schema validation
+        continueOnFailure:
+          type: boolean
+          description: Whether to continue workflow execution on failure
+      required:
+      - method
+      - url
+    WebhookInboundEmailRouteDto:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Route address (local part of the email address)
+      required:
+      - address
+    DigestStepResponseDto:
+      type: object
+      properties:
+        controls:
+          description: Controls metadata for the digest step
+          allOf:
+          - $ref: '#/components/schemas/DigestControlsMetadataResponseDto'
+        controlValues:
+          description: Control values for the digest step
+          additionalProperties: true
+          allOf:
+          - $ref: '#/components/schemas/DigestControlDto'
+        variables:
+          type: object
+          description: JSON Schema for variables, follows the JSON Schema standard
+          additionalProperties: true
+        stepId:
+          type: string
+          description: Unique identifier of the step
+        _id:
+          type: string
+          description: Database identifier of the step
+        name:
+          type: string
+          description: Name of the step
+        slug:
+          type: string
+          description: Slug of the step
+        type:
+          $ref: '#/components/schemas/StepTypeEnum'
+        origin:
+          $ref: '#/components/schemas/ResourceOriginEnum'
+        workflowId:
+          type: string
+          description: Workflow identifier
+        workflowDatabaseId:
+          type: string
+          description: Workflow database identifier
+        issues:
+          description: Issues associated with the step
+          allOf:
+          - $ref: '#/components/schemas/StepIssuesDto'
+        stepResolverHash:
+          type: string
+          description: Hash identifying the deployed Cloudflare Worker for this step
+      required:
+      - controls
+      - variables
+      - stepId
+      - _id
+      - name
+      - slug
+      - type
+      - origin
+      - workflowId
+      - workflowDatabaseId
+    CustomStepResponseDto:
+      type: object
+      properties:
+        controls:
+          description: Controls metadata for the custom step
+          allOf:
+          - $ref: '#/components/schemas/CustomControlsMetadataResponseDto'
+        controlValues:
+          description: Control values for the custom step
+          additionalProperties: true
+          allOf:
+          - $ref: '#/components/schemas/CustomControlDto'
+        variables:
+          type: object
+          description: JSON Schema for variables, follows the JSON Schema standard
+          additionalProperties: true
+        stepId:
+          type: string
+          description: Unique identifier of the step
+        _id:
+          type: string
+          description: Database identifier of the step
+        name:
+          type: string
+          description: Name of the step
+        slug:
+          type: string
+          description: Slug of the step
+        type:
+          $ref: '#/components/schemas/StepTypeEnum'
+        origin:
+          $ref: '#/components/schemas/ResourceOriginEnum'
+        workflowId:
+          type: string
+          description: Workflow identifier
+        workflowDatabaseId:
+          type: string
+          description: Workflow database identifier
+        issues:
+          description: Issues associated with the step
+          allOf:
+          - $ref: '#/components/schemas/StepIssuesDto'
+        stepResolverHash:
+          type: string
+          description: Hash identifying the deployed Cloudflare Worker for this step
+      required:
+      - controls
+      - variables
+      - stepId
+      - _id
+      - name
+      - slug
+      - type
+      - origin
+      - workflowId
+      - workflowDatabaseId
+    RuntimeIssueDto:
+      type: object
+      properties: {}
+    ThrottleControlDto:
+      type: object
+      properties:
+        skip:
+          type: object
+          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
+          example:
+            and:
+            - ==:
+              - var: payload.tier
+              - pro
+            - ==:
+              - var: subscriber.data.role
+              - admin
+            - '>':
+              - var: payload.amount
+              - '4'
+          additionalProperties: true
+        type:
+          type: string
+          description: The type of throttle window.
+          enum:
+          - fixed
+          - dynamic
+          default: fixed
+        amount:
+          type: number
+          description: The amount of time for the throttle window (required for fixed type).
+          minimum: 1
+        unit:
+          type: string
+          description: The unit of time for the throttle window (required for fixed type).
+          enum:
+          - minutes
+          - hours
+          - days
+        dynamicKey:
+          type: string
+          description: Key path to retrieve dynamic window value (required for dynamic type).
+          example: payload.timestamp
+        threshold:
+          type: number
+          description: The maximum number of executions allowed within the window. Defaults to 1.
+          minimum: 1
+          default: 1
+        throttleKey:
+          type: string
+          description: Optional key for grouping throttle rules. If not provided, defaults to workflow and subscriber combination.
+      required:
+      - type
+    ThrottleControlsMetadataResponseDto:
+      type: object
+      properties:
+        dataSchema:
+          type: object
+          description: JSON Schema for data
+          additionalProperties: true
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Control values specific to Throttle
+          allOf:
+          - $ref: '#/components/schemas/ThrottleControlDto'
+      required:
+      - values
     StepTypeEnum:
       type: string
       description: Type of the step
@@ -2201,24 +2028,106 @@ components:
       - throttle
       - custom
       - http_request
-    WebhookInboundEmailDto:
+    ThrottleStepResponseDto:
       type: object
       properties:
-        domain:
-          description: Domain that received the email
+        controls:
+          description: Controls metadata for the throttle step
           allOf:
-          - $ref: '#/components/schemas/WebhookInboundEmailDomainDto'
-        route:
-          description: Matched route info
+          - $ref: '#/components/schemas/ThrottleControlsMetadataResponseDto'
+        controlValues:
+          description: Control values for the throttle step
+          additionalProperties: true
           allOf:
-          - $ref: '#/components/schemas/WebhookInboundEmailRouteDto'
-        mail:
-          description: Inbound email details
+          - $ref: '#/components/schemas/ThrottleControlDto'
+        variables:
+          type: object
+          description: JSON Schema for variables, follows the JSON Schema standard
+          additionalProperties: true
+        stepId:
+          type: string
+          description: Unique identifier of the step
+        _id:
+          type: string
+          description: Database identifier of the step
+        name:
+          type: string
+          description: Name of the step
+        slug:
+          type: string
+          description: Slug of the step
+        type:
+          $ref: '#/components/schemas/StepTypeEnum'
+        origin:
+          $ref: '#/components/schemas/ResourceOriginEnum'
+        workflowId:
+          type: string
+          description: Workflow identifier
+        workflowDatabaseId:
+          type: string
+          description: Workflow database identifier
+        issues:
+          description: Issues associated with the step
           allOf:
-          - $ref: '#/components/schemas/WebhookInboundEmailMailDto'
+          - $ref: '#/components/schemas/StepIssuesDto'
+        stepResolverHash:
+          type: string
+          description: Hash identifying the deployed Cloudflare Worker for this step
       required:
-      - domain
-      - mail
+      - controls
+      - variables
+      - stepId
+      - _id
+      - name
+      - slug
+      - type
+      - origin
+      - workflowId
+      - workflowDatabaseId
+    DelayControlDto:
+      type: object
+      properties:
+        skip:
+          type: object
+          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
+          example:
+            and:
+            - ==:
+              - var: payload.tier
+              - pro
+            - ==:
+              - var: subscriber.data.role
+              - admin
+            - '>':
+              - var: payload.amount
+              - '4'
+          additionalProperties: true
+        type:
+          type: string
+          description: Type of the delay. Currently only 'regular' is supported by the schema.
+          enum:
+          - regular
+          - timed
+          default: regular
+        amount:
+          type: number
+          description: Amount of time to delay.
+          minimum: 1
+        unit:
+          type: string
+          description: Unit of time for the delay amount.
+          enum:
+          - seconds
+          - minutes
+          - hours
+          - days
+          - weeks
+          - months
+        cron:
+          type: string
+          description: Cron expression for the delay. Min length 1.
+      required:
+      - type
     EmailControlDto:
       type: object
       properties:
@@ -2264,35 +2173,126 @@ components:
       required:
       - subject
       - body
-    SmsControlsMetadataResponseDto:
+    WebhookMessageFailedDto:
       type: object
       properties:
-        dataSchema:
+        object:
           type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
+          description: Current message state
+        error:
+          description: Error message
           allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Control values specific to SMS
-          allOf:
-          - $ref: '#/components/schemas/SmsControlDto'
+          - $ref: '#/components/schemas/MessageFailedErrorDto'
       required:
-      - values
-    WebhookInboundEmailDomainDto:
+      - object
+      - error
+    IntegrationIssueEnum:
+      type: string
+      description: Type of integration issue
+      enum:
+      - MISSING_INTEGRATION
+      - INBOX_NOT_CONNECTED
+    ChatControlDto:
+      type: object
+      properties:
+        skip:
+          type: object
+          description: JSONLogic filter conditions for conditionally skipping the step execution. Supports complex logical operations with AND, OR, and comparison operators. See https://jsonlogic.com/ for full typing reference.
+          example:
+            and:
+            - ==:
+              - var: payload.tier
+              - pro
+            - ==:
+              - var: subscriber.data.role
+              - admin
+            - '>':
+              - var: payload.amount
+              - '4'
+          additionalProperties: true
+        body:
+          type: string
+          description: Content of the chat message.
+    WebhookDeletedWorkflowDtoWebhookPayloadWrapper:
       type: object
       properties:
         id:
           type: string
-          description: Domain ID
-        name:
+          description: Unique identifier of the webhook event (evt_✱).
+        type:
           type: string
-          description: Domain name
+          enum:
+          - workflow.deleted
+          description: The type of the webhook event.
+        data:
+          description: The actual event data payload.
+          allOf:
+          - $ref: '#/components/schemas/WebhookDeletedWorkflowDto'
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO timestamp of when the event occurred.
+        environmentId:
+          type: string
+          description: The ID of the environment associated with the event.
+        object:
+          type: string
+          enum:
+          - workflow
+          description: The type of object the event relates to.
       required:
-      - id
-      - name
+      - type
+      - data
+      - timestamp
+      - environmentId
+      - object
+    WebhookCreatedWorkflowDtoWebhookPayloadWrapper:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the webhook event (evt_✱).
+        type:
+          type: string
+          enum:
+          - workflow.created
+          description: The type of the webhook event.
+        data:
+          description: The actual event data payload.
+          allOf:
+          - $ref: '#/components/schemas/WebhookCreatedWorkflowDto'
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO timestamp of when the event occurred.
+        environmentId:
+          type: string
+          description: The ID of the environment associated with the event.
+        object:
+          type: string
+          enum:
+          - workflow
+          description: The type of object the event relates to.
+      required:
+      - type
+      - data
+      - timestamp
+      - environmentId
+      - object
+    StepIntegrationIssue:
+      type: object
+      properties:
+        issueType:
+          $ref: '#/components/schemas/IntegrationIssueEnum'
+        variableName:
+          type: string
+          description: Name of the variable related to the issue
+        message:
+          type: string
+          description: Detailed message describing the issue
+      required:
+      - issueType
+      - message
   securitySchemes:
     secretKey:
       type: apiKey

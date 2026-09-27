@@ -60,19 +60,6 @@ paths:
       - Activity
 components:
   schemas:
-    WebhookResultDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the webhook result
-        event:
-          description: Event body containing the webhook event data
-          allOf:
-          - $ref: '#/components/schemas/EventBody'
-      required:
-      - id
-      - event
     EventBody:
       type: object
       properties:
@@ -126,6 +113,19 @@ components:
       required:
       - status
       - date
+    WebhookResultDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the webhook result
+        event:
+          description: Event body containing the webhook event data
+          allOf:
+          - $ref: '#/components/schemas/EventBody'
+      required:
+      - id
+      - event
   securitySchemes:
     secretKey:
       type: apiKey

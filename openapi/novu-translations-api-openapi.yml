@@ -364,46 +364,6 @@ components:
       required:
       - success
       - message
-    TranslationResponseDto:
-      type: object
-      properties:
-        resourceId:
-          type: string
-          description: Resource identifier
-          example: welcome-email
-        resourceType:
-          type: string
-          description: Resource type
-          example: workflow
-          enum:
-          - workflow
-          - layout
-        locale:
-          type: string
-          description: Locale code
-          example: en_US
-        content:
-          type: object
-          description: Translation content as JSON object
-          example:
-            welcome.title: Welcome
-            welcome.message: Hello there!
-          additionalProperties: true
-        createdAt:
-          type: string
-          description: Creation timestamp
-          example: '2024-01-01T00:00:00.000Z'
-        updatedAt:
-          type: string
-          description: Last update timestamp
-          example: '2024-01-01T00:00:00.000Z'
-      required:
-      - resourceId
-      - resourceType
-      - locale
-      - content
-      - createdAt
-      - updatedAt
     CreateTranslationRequestDto:
       type: object
       properties:
@@ -433,6 +393,53 @@ components:
       - resourceType
       - locale
       - content
+    GetMasterJsonResponseDto:
+      type: object
+      properties:
+        workflows:
+          type: object
+          description: All translations for given locale organized by workflow identifier
+          example:
+            welcome-email:
+              welcome.title: Welcome to our platform
+              welcome.message: Hello there!
+            password-reset:
+              reset.title: Reset your password
+              reset.message: Click the link to reset
+          additionalProperties: true
+        layouts:
+          type: object
+          description: All translations for given locale organized by layout identifier
+          example:
+            default-layout:
+              layout.title: Default layout
+              layout.message: Hello there!
+          additionalProperties: true
+      required:
+      - workflows
+      - layouts
+    ImportMasterJsonRequestDto:
+      type: object
+      properties:
+        locale:
+          type: string
+          description: The locale for which translations are being imported
+          example: en_US
+        masterJson:
+          type: object
+          description: Master JSON object containing all translations organized by workflow identifier
+          example:
+            workflows:
+              welcome-email:
+                welcome.title: Welcome to our platform
+                welcome.message: Hello there!
+              password-reset:
+                reset.title: Reset your password
+                reset.message: Click the link to reset
+          additionalProperties: true
+      required:
+      - locale
+      - masterJson
     TranslationGroupDto:
       type: object
       properties:
@@ -483,28 +490,6 @@ components:
       - locales
       - createdAt
       - updatedAt
-    ImportMasterJsonRequestDto:
-      type: object
-      properties:
-        locale:
-          type: string
-          description: The locale for which translations are being imported
-          example: en_US
-        masterJson:
-          type: object
-          description: Master JSON object containing all translations organized by workflow identifier
-          example:
-            workflows:
-              welcome-email:
-                welcome.title: Welcome to our platform
-                welcome.message: Hello there!
-              password-reset:
-                reset.title: Reset your password
-                reset.message: Click the link to reset
-          additionalProperties: true
-      required:
-      - locale
-      - masterJson
     UploadTranslationsResponseDto:
       type: object
       properties:
@@ -532,31 +517,46 @@ components:
       - successfulUploads
       - failedUploads
       - errors
-    GetMasterJsonResponseDto:
+    TranslationResponseDto:
       type: object
       properties:
-        workflows:
+        resourceId:
+          type: string
+          description: Resource identifier
+          example: welcome-email
+        resourceType:
+          type: string
+          description: Resource type
+          example: workflow
+          enum:
+          - workflow
+          - layout
+        locale:
+          type: string
+          description: Locale code
+          example: en_US
+        content:
           type: object
-          description: All translations for given locale organized by workflow identifier
+          description: Translation content as JSON object
           example:
-            welcome-email:
-              welcome.title: Welcome to our platform
-              welcome.message: Hello there!
-            password-reset:
-              reset.title: Reset your password
-              reset.message: Click the link to reset
+            welcome.title: Welcome
+            welcome.message: Hello there!
           additionalProperties: true
-        layouts:
-          type: object
-          description: All translations for given locale organized by layout identifier
-          example:
-            default-layout:
-              layout.title: Default layout
-              layout.message: Hello there!
-          additionalProperties: true
+        createdAt:
+          type: string
+          description: Creation timestamp
+          example: '2024-01-01T00:00:00.000Z'
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          example: '2024-01-01T00:00:00.000Z'
       required:
-      - workflows
-      - layouts
+      - resourceId
+      - resourceType
+      - locale
+      - content
+      - createdAt
+      - updatedAt
   securitySchemes:
     secretKey:
       type: apiKey

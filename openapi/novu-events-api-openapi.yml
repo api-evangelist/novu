@@ -1283,94 +1283,27 @@ paths:
       security:
       - secretKey: []
 components:
-  headers:
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
   schemas:
-    SubscriberChannelDto:
+    TenantPayloadDto:
       type: object
       properties:
-        providerId:
+        identifier:
           type: string
-          description: The ID of the chat or push provider.
-          enum:
-          - slack
-          - discord
-          - msteams
-          - mattermost
-          - ryver
-          - zulip
-          - grafana-on-call
-          - getstream
-          - rocket-chat
-          - whatsapp-business
-          - chat-webhook
-          - novu-slack
-          - telegram
-          - fcm
-          - apns
-          - expo
-          - one-signal
-          - pushpad
-          - push-webhook
-          - pusher-beams
-          - appio
-        integrationIdentifier:
+        name:
           type: string
-          description: An optional identifier for the integration.
-        credentials:
-          description: Credentials for the channel.
-          allOf:
-          - $ref: '#/components/schemas/ChannelCredentialsDto'
-      required:
-      - providerId
-      - credentials
+        data:
+          type: object
+    ChannelCredentialsDto:
+      type: object
+      properties:
+        webhookUrl:
+          type: string
+          description: The URL for the webhook associated with the channel.
+        deviceTokens:
+          description: An array of device tokens for push notifications.
+          type: array
+          items:
+            type: string
     TriggerEventToAllRequestDto:
       type: object
       properties:
@@ -1436,33 +1369,6 @@ components:
       required:
       - name
       - payload
-    StepsOverrides:
-      type: object
-      properties:
-        providers:
-          type: object
-          description: Passing the provider id and the provider specific configurations
-          example:
-            sendgrid:
-              templateId: '1234567890'
-          additionalProperties:
-            type: object
-            additionalProperties: true
-        layoutId:
-          type:
-          - string
-          - 'null'
-          description: Override the or remove the layout for this specific step
-          example: welcome-email-layout
-    EmailChannelOverrides:
-      type: object
-      properties:
-        layoutId:
-          type:
-          - string
-          - 'null'
-          description: Override or remove the layout for all email steps in the workflow
-          example: promotional-layout-2024
     SeverityLevelEnum:
       type: string
       description: Severity of the workflow
@@ -1471,6 +1377,51 @@ components:
       - medium
       - low
       - none
+    SubscriberChannelDto:
+      type: object
+      properties:
+        providerId:
+          type: string
+          description: The ID of the chat or push provider.
+          enum:
+          - slack
+          - discord
+          - msteams
+          - mattermost
+          - ryver
+          - zulip
+          - grafana-on-call
+          - getstream
+          - rocket-chat
+          - whatsapp-business
+          - chat-webhook
+          - novu-slack
+          - telegram
+          - fcm
+          - apns
+          - expo
+          - one-signal
+          - pushpad
+          - push-webhook
+          - pusher-beams
+          - appio
+        integrationIdentifier:
+          type: string
+          description: An optional identifier for the integration.
+        credentials:
+          description: Credentials for the channel.
+          allOf:
+          - $ref: '#/components/schemas/ChannelCredentialsDto'
+      required:
+      - providerId
+      - credentials
+    ChannelOverrides:
+      type: object
+      properties:
+        email:
+          description: Email channel specific overrides
+          allOf:
+          - $ref: '#/components/schemas/EmailChannelOverrides'
     TriggerOverrides:
       type: object
       properties:
@@ -1527,6 +1478,298 @@ components:
           deprecated: true
         severity:
           $ref: '#/components/schemas/SeverityLevelEnum'
+    TriggerEventResponseDto:
+      type: object
+      properties:
+        acknowledged:
+          type: boolean
+          description: Indicates whether the trigger was acknowledged or not
+        status:
+          enum:
+          - error
+          - trigger_not_active
+          - no_workflow_active_steps_defined
+          - no_workflow_steps_defined
+          - processed
+          - no_tenant_found
+          - invalid_recipients
+          type: string
+          description: Status of the trigger
+        error:
+          description: In case of an error, this field will contain the error message(s)
+          type: array
+          items:
+            type: string
+        transactionId:
+          type: string
+          description: The returned transaction ID of the trigger
+        activityFeedLink:
+          type: string
+          description: Link to the activity feed for this trigger event
+        jobData:
+          type: object
+      required:
+      - acknowledged
+      - status
+    BulkTriggerEventDto:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/TriggerEventRequestDto'
+      required:
+      - events
+    SubscriberPayloadDto:
+      type: object
+      properties:
+        firstName:
+          type:
+          - string
+          - 'null'
+          description: First name of the subscriber
+          example: John
+        lastName:
+          type:
+          - string
+          - 'null'
+          description: Last name of the subscriber
+          example: Doe
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email address of the subscriber
+          example: john.doe@example.com
+        phone:
+          type:
+          - string
+          - 'null'
+          description: Phone number of the subscriber
+          example: '+1234567890'
+        avatar:
+          type:
+          - string
+          - 'null'
+          description: Avatar URL or identifier
+          example: https://example.com/avatar.jpg
+        locale:
+          type:
+          - string
+          - 'null'
+          description: Locale of the subscriber
+          example: en-US
+        timezone:
+          type:
+          - string
+          - 'null'
+          description: Timezone of the subscriber
+          example: America/New_York
+        data:
+          type:
+          - object
+          - 'null'
+          description: Additional custom data associated with the subscriber
+          additionalProperties: true
+        subscriberId:
+          type: string
+          description: The internal identifier you used to create this subscriber, usually correlates to the id the user in your systems
+          minLength: 1
+        channels:
+          description: An optional array of subscriber channels.
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriberChannelDto'
+      required:
+      - subscriberId
+    PayloadValidationErrorDto:
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field path that failed validation
+          example: user.name
+        message:
+          type: string
+          description: Validation error message
+          example: must have required property 'name'
+        value:
+          description: The actual value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example:
+            age: 25
+        schemaPath:
+          type: string
+          description: JSON Schema path where the validation failed
+          example: '#/required'
+      required:
+      - field
+      - message
+    TriggerRecipientsTypeEnum:
+      type: string
+      enum:
+      - Subscriber
+      - Topic
+    TriggerEventRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The trigger identifier of the workflow you wish to send. This identifier can be found on the workflow page.
+          example: workflow_identifier
+          x-speakeasy-name-override: workflowId
+        payload:
+          type: object
+          description: "The payload object is used to pass additional custom information that could be \n    used to render the workflow, or perform routing rules based on it. \n      This data will also be available when fetching the notifications feed from the API to display certain parts of the UI."
+          additionalProperties: true
+          example:
+            comment_id: string
+            post:
+              text: string
+        overrides:
+          description: This could be used to override provider specific configurations
+          example:
+            fcm:
+              data:
+                key: value
+          allOf:
+          - $ref: '#/components/schemas/TriggerOverrides'
+        to:
+          description: The recipients list of people who will receive the notification. Maximum number of recipients can be 100.
+          oneOf:
+          - type: array
+            items:
+              oneOf:
+              - $ref: '#/components/schemas/SubscriberPayloadDto'
+              - $ref: '#/components/schemas/TopicPayloadDto'
+              - type: string
+                minLength: 1
+                description: Unique identifier of a subscriber in your systems
+                example: SUBSCRIBER_ID
+          - type: string
+            minLength: 1
+            description: Unique identifier of a subscriber in your systems
+            example: SUBSCRIBER_ID
+          - $ref: '#/components/schemas/SubscriberPayloadDto'
+          - $ref: '#/components/schemas/TopicPayloadDto'
+        transactionId:
+          type: string
+          description: "A unique identifier for deduplication. If the same **transactionId** is sent again, \n      the trigger is ignored. Useful to prevent duplicate notifications. The retention period depends on your billing tier."
+        actor:
+          description: "It is used to display the Avatar of the provided actor's subscriber id or actor object.\n    If a new actor object is provided, we will create a new subscriber in our system"
+          oneOf:
+          - type: string
+            description: Unique identifier of a subscriber in your systems
+          - $ref: '#/components/schemas/SubscriberPayloadDto'
+        tenant:
+          description: "It is used to specify a tenant context during trigger event.\n    Existing tenants will be updated with the provided details."
+          oneOf:
+          - type: string
+            description: Unique identifier of a tenant in your system
+          - $ref: '#/components/schemas/TenantPayloadDto'
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+      required:
+      - name
+      - to
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    EmailChannelOverrides:
+      type: object
+      properties:
+        layoutId:
+          type:
+          - string
+          - 'null'
+          description: Override or remove the layout for all email steps in the workflow
+          example: promotional-layout-2024
+    StepsOverrides:
+      type: object
+      properties:
+        providers:
+          type: object
+          description: Passing the provider id and the provider specific configurations
+          example:
+            sendgrid:
+              templateId: '1234567890'
+          additionalProperties:
+            type: object
+            additionalProperties: true
+        layoutId:
+          type:
+          - string
+          - 'null'
+          description: Override the or remove the layout for this specific step
+          example: welcome-email-layout
     ValidationErrorDto:
       type: object
       properties:
@@ -1611,46 +1854,6 @@ components:
       - timestamp
       - path
       - errors
-    TriggerEventResponseDto:
-      type: object
-      properties:
-        acknowledged:
-          type: boolean
-          description: Indicates whether the trigger was acknowledged or not
-        status:
-          enum:
-          - error
-          - trigger_not_active
-          - no_workflow_active_steps_defined
-          - no_workflow_steps_defined
-          - processed
-          - no_tenant_found
-          - invalid_recipients
-          type: string
-          description: Status of the trigger
-        error:
-          description: In case of an error, this field will contain the error message(s)
-          type: array
-          items:
-            type: string
-        transactionId:
-          type: string
-          description: The returned transaction ID of the trigger
-        activityFeedLink:
-          type: string
-          description: Link to the activity feed for this trigger event
-        jobData:
-          type: object
-      required:
-      - acknowledged
-      - status
-    ChannelOverrides:
-      type: object
-      properties:
-        email:
-          description: Email channel specific overrides
-          allOf:
-          - $ref: '#/components/schemas/EmailChannelOverrides'
     ErrorDto:
       type: object
       properties:
@@ -1703,265 +1906,6 @@ components:
       - statusCode
       - timestamp
       - path
-    ChannelCredentialsDto:
-      type: object
-      properties:
-        webhookUrl:
-          type: string
-          description: The URL for the webhook associated with the channel.
-        deviceTokens:
-          description: An array of device tokens for push notifications.
-          type: array
-          items:
-            type: string
-    TriggerRecipientsTypeEnum:
-      type: string
-      enum:
-      - Subscriber
-      - Topic
-    PayloadValidationErrorDto:
-      type: object
-      properties:
-        field:
-          type: string
-          description: Field path that failed validation
-          example: user.name
-        message:
-          type: string
-          description: Validation error message
-          example: must have required property 'name'
-        value:
-          description: The actual value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example:
-            age: 25
-        schemaPath:
-          type: string
-          description: JSON Schema path where the validation failed
-          example: '#/required'
-      required:
-      - field
-      - message
-    TriggerEventRequestDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The trigger identifier of the workflow you wish to send. This identifier can be found on the workflow page.
-          example: workflow_identifier
-          x-speakeasy-name-override: workflowId
-        payload:
-          type: object
-          description: "The payload object is used to pass additional custom information that could be \n    used to render the workflow, or perform routing rules based on it. \n      This data will also be available when fetching the notifications feed from the API to display certain parts of the UI."
-          additionalProperties: true
-          example:
-            comment_id: string
-            post:
-              text: string
-        overrides:
-          description: This could be used to override provider specific configurations
-          example:
-            fcm:
-              data:
-                key: value
-          allOf:
-          - $ref: '#/components/schemas/TriggerOverrides'
-        to:
-          description: The recipients list of people who will receive the notification. Maximum number of recipients can be 100.
-          oneOf:
-          - type: array
-            items:
-              oneOf:
-              - $ref: '#/components/schemas/SubscriberPayloadDto'
-              - $ref: '#/components/schemas/TopicPayloadDto'
-              - type: string
-                minLength: 1
-                description: Unique identifier of a subscriber in your systems
-                example: SUBSCRIBER_ID
-          - type: string
-            minLength: 1
-            description: Unique identifier of a subscriber in your systems
-            example: SUBSCRIBER_ID
-          - $ref: '#/components/schemas/SubscriberPayloadDto'
-          - $ref: '#/components/schemas/TopicPayloadDto'
-        transactionId:
-          type: string
-          description: "A unique identifier for deduplication. If the same **transactionId** is sent again, \n      the trigger is ignored. Useful to prevent duplicate notifications. The retention period depends on your billing tier."
-        actor:
-          description: "It is used to display the Avatar of the provided actor's subscriber id or actor object.\n    If a new actor object is provided, we will create a new subscriber in our system"
-          oneOf:
-          - type: string
-            description: Unique identifier of a subscriber in your systems
-          - $ref: '#/components/schemas/SubscriberPayloadDto'
-        tenant:
-          description: "It is used to specify a tenant context during trigger event.\n    Existing tenants will be updated with the provided details."
-          oneOf:
-          - type: string
-            description: Unique identifier of a tenant in your system
-          - $ref: '#/components/schemas/TenantPayloadDto'
-        context:
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: string
-              description: Simple context id
-              example: org-acme
-            - type: object
-              description: Rich context object with id and optional data
-              properties:
-                id:
-                  type: string
-                  example: org-acme
-                data:
-                  type: object
-                  description: Optional additional context data
-                  additionalProperties: true
-                  example:
-                    name: Acme Corp
-                    region: us-east-1
-              required:
-              - id
-      required:
-      - name
-      - to
-    TopicPayloadDto:
-      type: object
-      properties:
-        topicKey:
-          type: string
-          minLength: 1
-        type:
-          $ref: '#/components/schemas/TriggerRecipientsTypeEnum'
-        exclude:
-          description: Optional array of subscriber IDs to exclude from the topic trigger
-          type: array
-          items:
-            type: string
-      required:
-      - topicKey
-      - type
-    SubscriberPayloadDto:
-      type: object
-      properties:
-        firstName:
-          type:
-          - string
-          - 'null'
-          description: First name of the subscriber
-          example: John
-        lastName:
-          type:
-          - string
-          - 'null'
-          description: Last name of the subscriber
-          example: Doe
-        email:
-          type:
-          - string
-          - 'null'
-          description: Email address of the subscriber
-          example: john.doe@example.com
-        phone:
-          type:
-          - string
-          - 'null'
-          description: Phone number of the subscriber
-          example: '+1234567890'
-        avatar:
-          type:
-          - string
-          - 'null'
-          description: Avatar URL or identifier
-          example: https://example.com/avatar.jpg
-        locale:
-          type:
-          - string
-          - 'null'
-          description: Locale of the subscriber
-          example: en-US
-        timezone:
-          type:
-          - string
-          - 'null'
-          description: Timezone of the subscriber
-          example: America/New_York
-        data:
-          type:
-          - object
-          - 'null'
-          description: Additional custom data associated with the subscriber
-          additionalProperties: true
-        subscriberId:
-          type: string
-          description: The internal identifier you used to create this subscriber, usually correlates to the id the user in your systems
-          minLength: 1
-        channels:
-          description: An optional array of subscriber channels.
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriberChannelDto'
-      required:
-      - subscriberId
-    TenantPayloadDto:
-      type: object
-      properties:
-        identifier:
-          type: string
-        name:
-          type: string
-        data:
-          type: object
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
     PayloadValidationExceptionDto:
       type: object
       properties:
@@ -2043,15 +1987,71 @@ components:
       - path
       - type
       - errors
-    BulkTriggerEventDto:
+    TopicPayloadDto:
       type: object
       properties:
-        events:
+        topicKey:
+          type: string
+          minLength: 1
+        type:
+          $ref: '#/components/schemas/TriggerRecipientsTypeEnum'
+        exclude:
+          description: Optional array of subscriber IDs to exclude from the topic trigger
           type: array
           items:
-            $ref: '#/components/schemas/TriggerEventRequestDto'
+            type: string
       required:
-      - events
+      - topicKey
+      - type
+  headers:
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
   securitySchemes:
     secretKey:
       type: apiKey

@@ -10,6 +10,10 @@ description: >-
 type: Index
 deliveryModel:
   model: unknown
+  license_evidence:
+    repo: novuhq/novu
+    spdx: NOASSERTION
+    stars: 40063
   open_source: unknown
   commercial: true
   callable_host: true
@@ -19,7 +23,7 @@ deliveryModel:
   - openapi
   - pricing
   - repository-unlicensed
-  generated: '2026-08-28'
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
@@ -49,7 +53,7 @@ tags:
   - Push
   - Chat
   - Workflows
-  - Open-Source
+  - Open Source
   - Subscribers
   - Topic
   - Inbox
@@ -59,6 +63,7 @@ tags:
   - MCP
   - Framework
   - React
+  - Real-Time
 tags_raw:
   - Notifications
   - Messaging
@@ -78,6 +83,8 @@ tags_raw:
   - MCP
   - Framework
   - React
+  - Open-Source
+  - Real-Time
 apis:
 - aid: novu:inbox-api
   name: Novu Inbox / In-App API

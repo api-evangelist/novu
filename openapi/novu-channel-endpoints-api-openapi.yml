@@ -1637,15 +1637,45 @@ paths:
       - secretKey: []
 components:
   headers:
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
     Idempotency-Replay:
       required: false
       description: Whether the request was a replay of a previous request.
       schema:
         type: string
       example: 'true'
-    RateLimit-Reset:
+    Retry-After:
       required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
+      description: The number of seconds after which the client may retry the request that was previously rejected.
       schema:
         type: string
       example: '8'
@@ -1655,82 +1685,8 @@ components:
       schema:
         type: string
       example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
   schemas:
-    ListChannelEndpointsResponseDto:
-      type: object
-      properties:
-        data:
-          description: List of returned Channel Endpoints
-          type: array
-          items:
-            $ref: '#/components/schemas/GetChannelEndpointResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
-          type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
-      required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
-    MsTeamsChannelEndpointDto:
-      type: object
-      properties:
-        teamId:
-          type: string
-          description: MS Teams team ID
-          example: 19:abc123...@thread.tacv2
-        channelId:
-          type: string
-          description: MS Teams channel ID
-          example: 19:def456...@thread.tacv2
-      required:
-      - teamId
-      - channelId
-    CreateSlackUserEndpointDto:
+    CreateMsTeamsUserEndpointDto:
       type: object
       properties:
         identifier:
@@ -1775,102 +1731,18 @@ components:
           type: string
           description: Type of channel endpoint
           enum:
-          - slack_user
-          example: slack_user
+          - ms_teams_user
+          example: ms_teams_user
         endpoint:
-          description: Slack user endpoint data
+          description: MS Teams user endpoint data
           allOf:
-          - $ref: '#/components/schemas/SlackUserEndpointDto'
+          - $ref: '#/components/schemas/MsTeamsUserEndpointDto'
       required:
       - subscriberId
       - integrationIdentifier
       - type
       - endpoint
-    ValidationErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-        errors:
-          type: object
-          description: A record of validation errors keyed by field name
-          additionalProperties:
-            $ref: '#/components/schemas/ConstraintValidation'
-          example:
-            fieldName1:
-              messages:
-              - Field is required
-              - Must be a valid email address
-              value: invalidEmail
-            fieldName2:
-              messages:
-              - Must be at least 18 years old
-              value: 17
-            fieldName3:
-              messages:
-              - Must be a boolean value
-              value: true
-            fieldName4:
-              messages:
-              - Must be a valid object
-              value:
-                key: value
-            fieldName5:
-              messages:
-              - Field is missing
-              value: null
-            fieldName6:
-              messages:
-              - Undefined value
-      required:
-      - statusCode
-      - timestamp
-      - path
-      - errors
-    CreateMsTeamsChannelEndpointDto:
+    CreateSlackChannelEndpointDto:
       type: object
       properties:
         identifier:
@@ -1915,12 +1787,68 @@ components:
           type: string
           description: Type of channel endpoint
           enum:
-          - ms_teams_channel
-          example: ms_teams_channel
+          - slack_channel
+          example: slack_channel
         endpoint:
-          description: MS Teams channel endpoint data
+          description: Slack channel endpoint data
           allOf:
-          - $ref: '#/components/schemas/MsTeamsChannelEndpointDto'
+          - $ref: '#/components/schemas/SlackChannelEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
+    CreateWebhookEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - webhook
+          example: webhook
+        endpoint:
+          description: Webhook endpoint data
+          allOf:
+          - $ref: '#/components/schemas/WebhookEndpointDto'
       required:
       - subscriberId
       - integrationIdentifier
@@ -2098,114 +2026,6 @@ components:
       - endpoint
       - createdAt
       - updatedAt
-    ErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-      required:
-      - statusCode
-      - timestamp
-      - path
-    CreateWebhookEndpointDto:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
-          example: slack-channel-user123-abc4
-        subscriberId:
-          type: string
-          description: The subscriber ID to which the channel endpoint is linked
-          example: subscriber-123
-        context:
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: string
-              description: Simple context id
-              example: org-acme
-            - type: object
-              description: Rich context object with id and optional data
-              properties:
-                id:
-                  type: string
-                  example: org-acme
-                data:
-                  type: object
-                  description: Optional additional context data
-                  additionalProperties: true
-                  example:
-                    name: Acme Corp
-                    region: us-east-1
-              required:
-              - id
-        integrationIdentifier:
-          type: string
-          description: The identifier of the integration to use for this channel endpoint.
-          example: slack-prod
-        connectionIdentifier:
-          type: string
-          description: The identifier of the channel connection to use for this channel endpoint.
-          example: slack-connection-abc123
-        type:
-          type: string
-          description: Type of channel endpoint
-          enum:
-          - webhook
-          example: webhook
-        endpoint:
-          description: Webhook endpoint data
-          allOf:
-          - $ref: '#/components/schemas/WebhookEndpointDto'
-      required:
-      - subscriberId
-      - integrationIdentifier
-      - type
-      - endpoint
     CreatePhoneEndpointDto:
       type: object
       properties:
@@ -2262,36 +2082,48 @@ components:
       - integrationIdentifier
       - type
       - endpoint
-    WebhookEndpointDto:
+    TelegramChatEndpointDto:
       type: object
       properties:
-        url:
+        chatId:
           type: string
-          description: Webhook URL
-          example: https://example.com/webhook
-        channel:
-          type: string
-          description: Optional channel identifier
+          description: Telegram chat ID
+          example: '123456789'
       required:
-      - url
-    MsTeamsUserEndpointDto:
+      - chatId
+    ConstraintValidation:
       type: object
       properties:
-        userId:
-          type: string
-          description: MS Teams user ID
-          example: 29:1234567890abcdef
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
       required:
-      - userId
-    SlackUserEndpointDto:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: Slack user ID
-          example: U123456789
-      required:
-      - userId
+      - messages
     ProvidersIdEnum:
       type: string
       description: Provider ID of the job
@@ -2378,181 +2210,6 @@ components:
       - novu-slack
       - telegram
       - anthropic
-    PhoneEndpointDto:
-      type: object
-      properties:
-        phoneNumber:
-          type: string
-          description: Phone number in E.164 format
-          example: '+1234567890'
-      required:
-      - phoneNumber
-    TelegramChatEndpointDto:
-      type: object
-      properties:
-        chatId:
-          type: string
-          description: Telegram chat ID
-          example: '123456789'
-      required:
-      - chatId
-    CreateSlackChannelEndpointDto:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
-          example: slack-channel-user123-abc4
-        subscriberId:
-          type: string
-          description: The subscriber ID to which the channel endpoint is linked
-          example: subscriber-123
-        context:
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: string
-              description: Simple context id
-              example: org-acme
-            - type: object
-              description: Rich context object with id and optional data
-              properties:
-                id:
-                  type: string
-                  example: org-acme
-                data:
-                  type: object
-                  description: Optional additional context data
-                  additionalProperties: true
-                  example:
-                    name: Acme Corp
-                    region: us-east-1
-              required:
-              - id
-        integrationIdentifier:
-          type: string
-          description: The identifier of the integration to use for this channel endpoint.
-          example: slack-prod
-        connectionIdentifier:
-          type: string
-          description: The identifier of the channel connection to use for this channel endpoint.
-          example: slack-connection-abc123
-        type:
-          type: string
-          description: Type of channel endpoint
-          enum:
-          - slack_channel
-          example: slack_channel
-        endpoint:
-          description: Slack channel endpoint data
-          allOf:
-          - $ref: '#/components/schemas/SlackChannelEndpointDto'
-      required:
-      - subscriberId
-      - integrationIdentifier
-      - type
-      - endpoint
-    UpdateChannelEndpointRequestDto:
-      type: object
-      properties:
-        endpoint:
-          description: Updated endpoint data. The structure must match the existing channel endpoint type.
-          oneOf:
-          - $ref: '#/components/schemas/SlackChannelEndpointDto'
-          - $ref: '#/components/schemas/SlackUserEndpointDto'
-          - $ref: '#/components/schemas/WebhookEndpointDto'
-          - $ref: '#/components/schemas/PhoneEndpointDto'
-      required:
-      - endpoint
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
-    CreateMsTeamsUserEndpointDto:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
-          example: slack-channel-user123-abc4
-        subscriberId:
-          type: string
-          description: The subscriber ID to which the channel endpoint is linked
-          example: subscriber-123
-        context:
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: string
-              description: Simple context id
-              example: org-acme
-            - type: object
-              description: Rich context object with id and optional data
-              properties:
-                id:
-                  type: string
-                  example: org-acme
-                data:
-                  type: object
-                  description: Optional additional context data
-                  additionalProperties: true
-                  example:
-                    name: Acme Corp
-                    region: us-east-1
-              required:
-              - id
-        integrationIdentifier:
-          type: string
-          description: The identifier of the integration to use for this channel endpoint.
-          example: slack-prod
-        connectionIdentifier:
-          type: string
-          description: The identifier of the channel connection to use for this channel endpoint.
-          example: slack-connection-abc123
-        type:
-          type: string
-          description: Type of channel endpoint
-          enum:
-          - ms_teams_user
-          example: ms_teams_user
-        endpoint:
-          description: MS Teams user endpoint data
-          allOf:
-          - $ref: '#/components/schemas/MsTeamsUserEndpointDto'
-      required:
-      - subscriberId
-      - integrationIdentifier
-      - type
-      - endpoint
     CreateTelegramChatEndpointDto:
       type: object
       properties:
@@ -2609,6 +2266,223 @@ components:
       - integrationIdentifier
       - type
       - endpoint
+    WebhookEndpointDto:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Webhook URL
+          example: https://example.com/webhook
+        channel:
+          type: string
+          description: Optional channel identifier
+      required:
+      - url
+    SlackUserEndpointDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Slack user ID
+          example: U123456789
+      required:
+      - userId
+    UpdateChannelEndpointRequestDto:
+      type: object
+      properties:
+        endpoint:
+          description: Updated endpoint data. The structure must match the existing channel endpoint type.
+          oneOf:
+          - $ref: '#/components/schemas/SlackChannelEndpointDto'
+          - $ref: '#/components/schemas/SlackUserEndpointDto'
+          - $ref: '#/components/schemas/WebhookEndpointDto'
+          - $ref: '#/components/schemas/PhoneEndpointDto'
+      required:
+      - endpoint
+    ListChannelEndpointsResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned Channel Endpoints
+          type: array
+          items:
+            $ref: '#/components/schemas/GetChannelEndpointResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
+    MsTeamsChannelEndpointDto:
+      type: object
+      properties:
+        teamId:
+          type: string
+          description: MS Teams team ID
+          example: 19:abc123...@thread.tacv2
+        channelId:
+          type: string
+          description: MS Teams channel ID
+          example: 19:def456...@thread.tacv2
+      required:
+      - teamId
+      - channelId
+    ValidationErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        errors:
+          type: object
+          description: A record of validation errors keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/ConstraintValidation'
+          example:
+            fieldName1:
+              messages:
+              - Field is required
+              - Must be a valid email address
+              value: invalidEmail
+            fieldName2:
+              messages:
+              - Must be at least 18 years old
+              value: 17
+            fieldName3:
+              messages:
+              - Must be a boolean value
+              value: true
+            fieldName4:
+              messages:
+              - Must be a valid object
+              value:
+                key: value
+            fieldName5:
+              messages:
+              - Field is missing
+              value: null
+            fieldName6:
+              messages:
+              - Undefined value
+      required:
+      - statusCode
+      - timestamp
+      - path
+      - errors
+    CreateSlackUserEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - slack_user
+          example: slack_user
+        endpoint:
+          description: Slack user endpoint data
+          allOf:
+          - $ref: '#/components/schemas/SlackUserEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
     SlackChannelEndpointDto:
       type: object
       properties:
@@ -2618,6 +2492,132 @@ components:
           example: C123456789
       required:
       - channelId
+    ErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+      required:
+      - statusCode
+      - timestamp
+      - path
+    CreateMsTeamsChannelEndpointDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: The unique identifier for the channel endpoint. If not provided, one will be generated automatically.
+          example: slack-channel-user123-abc4
+        subscriberId:
+          type: string
+          description: The subscriber ID to which the channel endpoint is linked
+          example: subscriber-123
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+        integrationIdentifier:
+          type: string
+          description: The identifier of the integration to use for this channel endpoint.
+          example: slack-prod
+        connectionIdentifier:
+          type: string
+          description: The identifier of the channel connection to use for this channel endpoint.
+          example: slack-connection-abc123
+        type:
+          type: string
+          description: Type of channel endpoint
+          enum:
+          - ms_teams_channel
+          example: ms_teams_channel
+        endpoint:
+          description: MS Teams channel endpoint data
+          allOf:
+          - $ref: '#/components/schemas/MsTeamsChannelEndpointDto'
+      required:
+      - subscriberId
+      - integrationIdentifier
+      - type
+      - endpoint
+    PhoneEndpointDto:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          description: Phone number in E.164 format
+          example: '+1234567890'
+      required:
+      - phoneNumber
+    MsTeamsUserEndpointDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: MS Teams user ID
+          example: 29:1234567890abcdef
+      required:
+      - userId
   securitySchemes:
     secretKey:
       type: apiKey

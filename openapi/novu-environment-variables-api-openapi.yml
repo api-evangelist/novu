@@ -1869,6 +1869,17 @@ components:
           example: 'xx xx xx '
       required:
       - messages
+    EnvironmentVariableValueDto:
+      type: object
+      properties:
+        _environmentId:
+          type: string
+        value:
+          type: string
+          maxLength: 256
+      required:
+      - _environmentId
+      - value
     EnvironmentVariableWorkflowInfoDto:
       type: object
       properties:
@@ -1883,25 +1894,6 @@ components:
       required:
       - name
       - workflowId
-    UpdateEnvironmentVariableRequestDto:
-      type: object
-      properties:
-        key:
-          type: string
-          maxLength: 256
-          pattern: /^[A-Za-z][A-Za-z0-9_]*$/
-          description: Unique key for the variable. Must start with a letter and contain only letters, digits, and underscores.
-        type:
-          type: string
-          enum:
-          - string
-          description: The type of the variable
-        isSecret:
-          type: boolean
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnvironmentVariableValueDto'
     ValidationErrorDto:
       type: object
       properties:
@@ -1986,27 +1978,25 @@ components:
       - timestamp
       - path
       - errors
-    EnvironmentVariableValueDto:
+    UpdateEnvironmentVariableRequestDto:
       type: object
       properties:
-        _environmentId:
-          type: string
-        value:
+        key:
           type: string
           maxLength: 256
-      required:
-      - _environmentId
-      - value
-    GetEnvironmentVariableUsageResponseDto:
-      type: object
-      properties:
-        workflows:
-          description: Array of workflows that reference this environment variable
+          pattern: /^[A-Za-z][A-Za-z0-9_]*$/
+          description: Unique key for the variable. Must start with a letter and contain only letters, digits, and underscores.
+        type:
+          type: string
+          enum:
+          - string
+          description: The type of the variable
+        isSecret:
+          type: boolean
+        values:
           type: array
           items:
-            $ref: '#/components/schemas/EnvironmentVariableWorkflowInfoDto'
-      required:
-      - workflows
+            $ref: '#/components/schemas/EnvironmentVariableValueDto'
     CreateEnvironmentVariableRequestDto:
       type: object
       properties:
@@ -2081,17 +2071,6 @@ components:
       - statusCode
       - timestamp
       - path
-    EnvironmentVariableValueResponseDto:
-      type: object
-      properties:
-        _environmentId:
-          type: string
-        value:
-          type: string
-          description: Value is masked (••••••••) for secret variables
-      required:
-      - _environmentId
-      - value
     EnvironmentVariableResponseDto:
       type: object
       properties:
@@ -2124,55 +2103,76 @@ components:
       - values
       - createdAt
       - updatedAt
+    EnvironmentVariableValueResponseDto:
+      type: object
+      properties:
+        _environmentId:
+          type: string
+        value:
+          type: string
+          description: Value is masked (••••••••) for secret variables
+      required:
+      - _environmentId
+      - value
+    GetEnvironmentVariableUsageResponseDto:
+      type: object
+      properties:
+        workflows:
+          description: Array of workflows that reference this environment variable
+          type: array
+          items:
+            $ref: '#/components/schemas/EnvironmentVariableWorkflowInfoDto'
+      required:
+      - workflows
   headers:
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
     RateLimit-Limit:
       required: false
       description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
       schema:
         type: string
       example: '100'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
       schema:
         type: string
-      example: application/json
+      example: '93'
     RateLimit-Policy:
       required: false
       description: The rate limit policy that was used to evaluate the request.
       schema:
         type: string
       example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
   securitySchemes:
     secretKey:
       type: apiKey

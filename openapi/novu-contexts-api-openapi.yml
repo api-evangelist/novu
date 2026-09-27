@@ -1605,6 +1605,36 @@ paths:
       - secretKey: []
 components:
   schemas:
+    ListContextsResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned Contexts
+          type: array
+          items:
+            $ref: '#/components/schemas/GetContextResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
     ConstraintValidation:
       type: object
       properties:
@@ -1747,20 +1777,6 @@ components:
       - data
       - createdAt
       - updatedAt
-    UpdateContextRequestDto:
-      type: object
-      properties:
-        data:
-          type: object
-          description: Custom data to associate with this context. Replaces existing data.
-          example:
-            tenantName: Acme Corp
-            region: us-east-1
-            settings:
-              theme: dark
-          additionalProperties: true
-      required:
-      - data
     ErrorDto:
       type: object
       properties:
@@ -1813,36 +1829,6 @@ components:
       - statusCode
       - timestamp
       - path
-    ListContextsResponseDto:
-      type: object
-      properties:
-        data:
-          description: List of returned Contexts
-          type: array
-          items:
-            $ref: '#/components/schemas/GetContextResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
-          type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
-      required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
     CreateContextRequestDto:
       type: object
       properties:
@@ -1872,43 +1858,39 @@ components:
       required:
       - type
       - id
+    UpdateContextRequestDto:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Custom data to associate with this context. Replaces existing data.
+          example:
+            tenantName: Acme Corp
+            region: us-east-1
+            settings:
+              theme: dark
+          additionalProperties: true
+      required:
+      - data
   headers:
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
     RateLimit-Limit:
       required: false
       description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
       schema:
         type: string
       example: '100'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
     Content-Type:
       required: true
       description: The MIME type of the response body.
@@ -1921,6 +1903,24 @@ components:
       schema:
         type: string
       example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
   securitySchemes:
     secretKey:
       type: apiKey

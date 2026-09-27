@@ -3070,15 +3070,45 @@ paths:
       - secretKey: []
 components:
   headers:
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
     Idempotency-Replay:
       required: false
       description: Whether the request was a replay of a previous request.
       schema:
         type: string
       example: 'true'
-    RateLimit-Reset:
+    Retry-After:
       required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
+      description: The number of seconds after which the client may retry the request that was previously rejected.
       schema:
         type: string
       example: '8'
@@ -3088,82 +3118,51 @@ components:
       schema:
         type: string
       example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
   schemas:
-    FieldFilterPartDto:
+    GenerateChatOAuthUrlResponseDto:
       type: object
       properties:
-        field:
+        url:
           type: string
+          description: 'The OAuth authorization URL for the chat provider. For Slack: https://slack.com/oauth/v2/authorize?... For MS Teams: https://login.microsoftonline.com/.../adminconsent?... This URL should be presented to the user to authorize the integration. Expires after 5 minutes.'
+          example: https://slack.com/oauth/v2/authorize?state=...
+      required:
+      - url
+    StepFilterDto:
+      type: object
+      properties:
+        isNegated:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/BuilderFieldTypeEnum'
         value:
           type: string
-        operator:
-          type: string
           enum:
-          - LARGER
-          - SMALLER
-          - LARGER_EQUAL
-          - SMALLER_EQUAL
-          - EQUAL
-          - NOT_EQUAL
-          - ALL_IN
-          - ANY_IN
-          - NOT_IN
-          - BETWEEN
-          - NOT_BETWEEN
-          - LIKE
-          - NOT_LIKE
-          - IN
-        'on':
-          type: string
-          enum:
-          - subscriber
-          - payload
+          - AND
+          - OR
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldFilterPartDto'
       required:
-      - field
+      - isNegated
+      - type
       - value
-      - operator
-      - 'on'
-    BuilderFieldTypeEnum:
-      type: string
-      enum:
-      - BOOLEAN
-      - TEXT
-      - DATE
-      - NUMBER
-      - STATEMENT
-      - LIST
-      - MULTI_LIST
-      - GROUP
+      - children
+    AutoConfigureIntegrationResponseDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the auto-configuration was successful
+        message:
+          type: string
+          description: Optional message describing the result or any errors that occurred
+        integration:
+          type: object
+          description: The updated configurations after auto-configuration
+      required:
+      - success
     GenerateLinkUserOauthUrlRequestDto:
       type: object
       properties:
@@ -3210,6 +3209,17 @@ components:
       required:
       - subscriberId
       - integrationIdentifier
+    BuilderFieldTypeEnum:
+      type: string
+      enum:
+      - BOOLEAN
+      - TEXT
+      - DATE
+      - NUMBER
+      - STATEMENT
+      - LIST
+      - MULTI_LIST
+      - GROUP
     GenerateChatOauthUrlRequestDto:
       type: object
       properties:
@@ -3286,6 +3296,145 @@ components:
           example: true
       required:
       - integrationIdentifier
+    UpdateIntegrationRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+        identifier:
+          type: string
+        _environmentId:
+          type: string
+        active:
+          type: boolean
+          description: If the integration is active the validation on the credentials field will run
+        credentials:
+          $ref: '#/components/schemas/CredentialsDto'
+        check:
+          type: boolean
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/StepFilterDto'
+        configurations:
+          type: object
+          description: Configurations for the integration
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    CreateIntegrationRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the integration
+        identifier:
+          type: string
+          description: The unique identifier for the integration
+        _environmentId:
+          type: string
+          description: The ID of the associated environment
+          format: uuid
+        providerId:
+          type: string
+          description: The provider ID for the integration
+        channel:
+          enum:
+          - in_app
+          - email
+          - sms
+          - chat
+          - push
+          type: string
+          description: The channel type for the integration. Not required for agent-kind integrations.
+        kind:
+          enum:
+          - delivery
+          - agent
+          type: string
+          description: Distinguishes delivery integrations from agent-runtime integrations. Defaults to "delivery". Agent integrations do not require a channel.
+        credentials:
+          description: The credentials for the integration
+          allOf:
+          - $ref: '#/components/schemas/CredentialsDto'
+        active:
+          type: boolean
+          description: If the integration is active, the validation on the credentials field will run
+        check:
+          type: boolean
+          description: Flag to check the integration status
+        conditions:
+          description: Conditions for the integration
+          type: array
+          items:
+            $ref: '#/components/schemas/StepFilterDto'
+        configurations:
+          type: object
+          description: Configurations for the integration
+    FieldFilterPartDto:
+      type: object
+      properties:
+        field:
+          type: string
+        value:
+          type: string
+        operator:
+          type: string
+          enum:
+          - LARGER
+          - SMALLER
+          - LARGER_EQUAL
+          - SMALLER_EQUAL
+          - EQUAL
+          - NOT_EQUAL
+          - ALL_IN
+          - ANY_IN
+          - NOT_IN
+          - BETWEEN
+          - NOT_BETWEEN
+          - LIKE
+          - NOT_LIKE
+          - IN
+        'on':
+          type: string
+          enum:
+          - subscriber
+          - payload
+      required:
+      - field
+      - value
+      - operator
+      - 'on'
     GenerateConnectOauthUrlRequestDto:
       type: object
       properties:
@@ -3344,6 +3493,13 @@ components:
           example: true
       required:
       - integrationIdentifier
+    ConfigurationsDto:
+      type: object
+      properties:
+        inboundWebhookEnabled:
+          type: boolean
+        inboundWebhookSigningKey:
+          type: string
     ValidationErrorDto:
       type: object
       properties:
@@ -3480,78 +3636,79 @@ components:
       - statusCode
       - timestamp
       - path
-    UpdateIntegrationRequestDto:
+    IntegrationResponseDto:
       type: object
       properties:
-        name:
+        _id:
           type: string
-        identifier:
-          type: string
+          description: The unique identifier of the integration record in the database. This is automatically generated.
         _environmentId:
           type: string
-        active:
-          type: boolean
-          description: If the integration is active the validation on the credentials field will run
-        credentials:
-          $ref: '#/components/schemas/CredentialsDto'
-        check:
-          type: boolean
-        conditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/StepFilterDto'
-        configurations:
-          type: object
-          description: Configurations for the integration
-    CreateIntegrationRequestDto:
-      type: object
-      properties:
+          description: The unique identifier for the environment associated with this integration. This links to the Environment collection.
+        _organizationId:
+          type: string
+          description: The unique identifier for the organization that owns this integration. This links to the Organization collection.
         name:
           type: string
-          description: The name of the integration
+          description: The name of the integration, which is used to identify it in the user interface.
         identifier:
           type: string
-          description: The unique identifier for the integration
-        _environmentId:
-          type: string
-          description: The ID of the associated environment
-          format: uuid
+          description: A unique string identifier for the integration, often used for API calls or internal references.
         providerId:
           type: string
-          description: The provider ID for the integration
+          description: The identifier for the provider of the integration (e.g., "mailgun", "twilio").
         channel:
+          type: string
+          description: The channel type for the integration, which defines how it communicates (e.g., email, SMS). Not set for agent-kind integrations.
           enum:
           - in_app
           - email
           - sms
           - chat
           - push
-          type: string
-          description: The channel type for the integration. Not required for agent-kind integrations.
         kind:
+          type: string
+          description: Distinguishes delivery integrations from agent-runtime integrations. Defaults to "delivery". Agent integrations do not have a channel.
           enum:
           - delivery
           - agent
-          type: string
-          description: Distinguishes delivery integrations from agent-runtime integrations. Defaults to "delivery". Agent integrations do not require a channel.
         credentials:
-          description: The credentials for the integration
+          description: The decrypted credentials required for the integration to function (e.g. provider API keys, signing secrets). Only returned to dashboard/session-token callers; API-key authenticated callers receive the integration metadata without this field to avoid amplifying API-key leaks into provider-credential leaks.
           allOf:
           - $ref: '#/components/schemas/CredentialsDto'
+        configurations:
+          description: The configurations required for enabling the additional configurations of the integration.
+          allOf:
+          - $ref: '#/components/schemas/ConfigurationsDto'
         active:
           type: boolean
-          description: If the integration is active, the validation on the credentials field will run
-        check:
+          description: Indicates whether the integration is currently active. An active integration will process events and messages.
+        deleted:
           type: boolean
-          description: Flag to check the integration status
+          description: Indicates whether the integration has been marked as deleted (soft delete).
+        deletedAt:
+          type: string
+          description: The timestamp indicating when the integration was deleted. This is set when the integration is soft deleted.
+        deletedBy:
+          type: string
+          description: The identifier of the user who performed the deletion of this integration. Useful for audit trails.
+        primary:
+          type: boolean
+          description: Indicates whether this integration is marked as primary. A primary integration is often the default choice for processing.
         conditions:
-          description: Conditions for the integration
+          description: An array of conditions associated with the integration that may influence its behavior or processing logic.
           type: array
           items:
             $ref: '#/components/schemas/StepFilterDto'
-        configurations:
-          type: object
-          description: Configurations for the integration
+      required:
+      - _environmentId
+      - _organizationId
+      - name
+      - identifier
+      - providerId
+      - active
+      - deleted
+      - primary
     CredentialsDto:
       type: object
       properties:
@@ -3664,163 +3821,6 @@ components:
         externalWorkspaceId:
           type: string
           description: 'Claude Managed Agents: id of the Anthropic workspace used in console deep links. Defaults to `''default''` (the Default Workspace). Set this when the API key is scoped to a custom workspace (e.g. `wrkspc_…`).'
-    GenerateChatOAuthUrlResponseDto:
-      type: object
-      properties:
-        url:
-          type: string
-          description: 'The OAuth authorization URL for the chat provider. For Slack: https://slack.com/oauth/v2/authorize?... For MS Teams: https://login.microsoftonline.com/.../adminconsent?... This URL should be presented to the user to authorize the integration. Expires after 5 minutes.'
-          example: https://slack.com/oauth/v2/authorize?state=...
-      required:
-      - url
-    AutoConfigureIntegrationResponseDto:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates whether the auto-configuration was successful
-        message:
-          type: string
-          description: Optional message describing the result or any errors that occurred
-        integration:
-          type: object
-          description: The updated configurations after auto-configuration
-      required:
-      - success
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
-    IntegrationResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the integration record in the database. This is automatically generated.
-        _environmentId:
-          type: string
-          description: The unique identifier for the environment associated with this integration. This links to the Environment collection.
-        _organizationId:
-          type: string
-          description: The unique identifier for the organization that owns this integration. This links to the Organization collection.
-        name:
-          type: string
-          description: The name of the integration, which is used to identify it in the user interface.
-        identifier:
-          type: string
-          description: A unique string identifier for the integration, often used for API calls or internal references.
-        providerId:
-          type: string
-          description: The identifier for the provider of the integration (e.g., "mailgun", "twilio").
-        channel:
-          type: string
-          description: The channel type for the integration, which defines how it communicates (e.g., email, SMS). Not set for agent-kind integrations.
-          enum:
-          - in_app
-          - email
-          - sms
-          - chat
-          - push
-        kind:
-          type: string
-          description: Distinguishes delivery integrations from agent-runtime integrations. Defaults to "delivery". Agent integrations do not have a channel.
-          enum:
-          - delivery
-          - agent
-        credentials:
-          description: The decrypted credentials required for the integration to function (e.g. provider API keys, signing secrets). Only returned to dashboard/session-token callers; API-key authenticated callers receive the integration metadata without this field to avoid amplifying API-key leaks into provider-credential leaks.
-          allOf:
-          - $ref: '#/components/schemas/CredentialsDto'
-        configurations:
-          description: The configurations required for enabling the additional configurations of the integration.
-          allOf:
-          - $ref: '#/components/schemas/ConfigurationsDto'
-        active:
-          type: boolean
-          description: Indicates whether the integration is currently active. An active integration will process events and messages.
-        deleted:
-          type: boolean
-          description: Indicates whether the integration has been marked as deleted (soft delete).
-        deletedAt:
-          type: string
-          description: The timestamp indicating when the integration was deleted. This is set when the integration is soft deleted.
-        deletedBy:
-          type: string
-          description: The identifier of the user who performed the deletion of this integration. Useful for audit trails.
-        primary:
-          type: boolean
-          description: Indicates whether this integration is marked as primary. A primary integration is often the default choice for processing.
-        conditions:
-          description: An array of conditions associated with the integration that may influence its behavior or processing logic.
-          type: array
-          items:
-            $ref: '#/components/schemas/StepFilterDto'
-      required:
-      - _environmentId
-      - _organizationId
-      - name
-      - identifier
-      - providerId
-      - active
-      - deleted
-      - primary
-    ConfigurationsDto:
-      type: object
-      properties:
-        inboundWebhookEnabled:
-          type: boolean
-        inboundWebhookSigningKey:
-          type: string
-    StepFilterDto:
-      type: object
-      properties:
-        isNegated:
-          type: boolean
-        type:
-          $ref: '#/components/schemas/BuilderFieldTypeEnum'
-        value:
-          type: string
-          enum:
-          - AND
-          - OR
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldFilterPartDto'
-      required:
-      - isNegated
-      - type
-      - value
-      - children
   securitySchemes:
     secretKey:
       type: apiKey

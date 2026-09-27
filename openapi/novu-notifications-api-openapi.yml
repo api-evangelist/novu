@@ -731,56 +731,32 @@ paths:
       security:
       - secretKey: []
 components:
-  headers:
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
   schemas:
+    NotificationTriggerDto:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - event
+          description: Type of the trigger
+        identifier:
+          type: string
+          description: Identifier of the trigger
+        variables:
+          description: Variables of the trigger
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTriggerVariable'
+        subscriberVariables:
+          description: Subscriber variables of the trigger
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTriggerVariable'
+      required:
+      - type
+      - identifier
+      - variables
     ActivityNotificationTemplateResponseDto:
       type: object
       properties:
@@ -800,175 +776,6 @@ components:
       required:
       - name
       - triggers
-    FieldFilterPartDto:
-      type: object
-      properties:
-        field:
-          type: string
-        value:
-          type: string
-        operator:
-          type: string
-          enum:
-          - LARGER
-          - SMALLER
-          - LARGER_EQUAL
-          - SMALLER_EQUAL
-          - EQUAL
-          - NOT_EQUAL
-          - ALL_IN
-          - ANY_IN
-          - NOT_IN
-          - BETWEEN
-          - NOT_BETWEEN
-          - LIKE
-          - NOT_LIKE
-          - IN
-        'on':
-          type: string
-          enum:
-          - subscriber
-          - payload
-      required:
-      - field
-      - value
-      - operator
-      - 'on'
-    ActivityNotificationExecutionDetailResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: Unique identifier of the execution detail
-        createdAt:
-          type: string
-          description: Creation time of the execution detail
-        status:
-          $ref: '#/components/schemas/ExecutionDetailsStatusEnum'
-        detail:
-          type: string
-          description: Detailed information about the execution
-        isRetry:
-          type: boolean
-          description: Whether the execution is a retry or not
-        isTest:
-          type: boolean
-          description: Whether the execution is a test or not
-        providerId:
-          $ref: '#/components/schemas/ProvidersIdEnum'
-        raw:
-          type:
-          - string
-          - 'null'
-          description: Raw data of the execution
-        source:
-          $ref: '#/components/schemas/ExecutionDetailsSourceEnum'
-      required:
-      - _id
-      - status
-      - detail
-      - isRetry
-      - isTest
-      - source
-    DigestMetadataDto:
-      type: object
-      properties:
-        digestKey:
-          type: string
-          description: Optional key for the digest
-        amount:
-          type: number
-          description: Amount for the digest
-        unit:
-          enum:
-          - seconds
-          - minutes
-          - hours
-          - days
-          - weeks
-          - months
-          type: string
-          description: Unit of the digest
-        type:
-          $ref: '#/components/schemas/DigestTypeEnum'
-        events:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-          description: Optional array of events associated with the digest, represented as key-value pairs
-        backoff:
-          type: boolean
-          description: 'Regular digest: Indicates if backoff is enabled for the regular digest'
-        backoffAmount:
-          type: number
-          description: 'Regular digest: Amount for backoff'
-        backoffUnit:
-          $ref: '#/components/schemas/DigestUnitEnum'
-        updateMode:
-          type: boolean
-          description: 'Regular digest: Indicates if the digest should update'
-        timed:
-          description: Configuration for timed digest
-          allOf:
-          - $ref: '#/components/schemas/DigestTimedConfigDto'
-      required:
-      - type
-    BuilderFieldTypeEnum:
-      type: string
-      enum:
-      - BOOLEAN
-      - TEXT
-      - DATE
-      - NUMBER
-      - STATEMENT
-      - LIST
-      - MULTI_LIST
-      - GROUP
-    DigestTimedConfigDto:
-      type: object
-      properties:
-        atTime:
-          type: string
-          description: Time at which the digest is triggered
-        weekDays:
-          type: array
-          items:
-            type: string
-            enum:
-            - monday
-            - tuesday
-            - wednesday
-            - thursday
-            - friday
-            - saturday
-            - sunday
-          description: Days of the week for the digest
-        monthDays:
-          description: Specific days of the month for the digest
-          type: array
-          items:
-            type: number
-        ordinal:
-          $ref: '#/components/schemas/OrdinalEnum'
-        ordinalValue:
-          $ref: '#/components/schemas/OrdinalValueEnum'
-        monthlyType:
-          $ref: '#/components/schemas/MonthlyTypeEnum'
-        cronExpression:
-          type: string
-          description: Cron expression for scheduling
-        untilDate:
-          type: string
-          description: Until date for scheduling
-    NotificationTriggerVariable:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the variable
-      required:
-      - name
     SeverityLevelEnum:
       type: string
       description: Severity of the workflow
@@ -977,6 +784,24 @@ components:
       - medium
       - low
       - none
+    DigestUnitEnum:
+      type: string
+      description: 'Regular digest: Unit for backoff'
+      enum:
+      - seconds
+      - minutes
+      - hours
+      - days
+      - weeks
+      - months
+    ExecutionDetailsSourceEnum:
+      type: string
+      description: Source of the execution detail
+      enum:
+      - Credentials
+      - Internal
+      - Payload
+      - Webhook
     ActivityNotificationJobResponseDto:
       type: object
       properties:
@@ -1039,6 +864,104 @@ components:
       - step
       - providerId
       - status
+    StepFilterDto:
+      type: object
+      properties:
+        isNegated:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/BuilderFieldTypeEnum'
+        value:
+          type: string
+          enum:
+          - AND
+          - OR
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldFilterPartDto'
+      required:
+      - isNegated
+      - type
+      - value
+      - children
+    MessageTemplateDto:
+      type: object
+      properties: {}
+    BuilderFieldTypeEnum:
+      type: string
+      enum:
+      - BOOLEAN
+      - TEXT
+      - DATE
+      - NUMBER
+      - STATEMENT
+      - LIST
+      - MULTI_LIST
+      - GROUP
+    NotificationTriggerVariable:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the variable
+      required:
+      - name
+    ChannelTypeEnum:
+      type: string
+      description: Channel type through which the message is sent
+      enum:
+      - in_app
+      - email
+      - sms
+      - chat
+      - push
+    ActivitiesResponseDto:
+      type: object
+      properties:
+        hasMore:
+          type: boolean
+          description: Indicates if there are more activities in the result set
+        data:
+          description: Array of activity notifications
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityNotificationResponseDto'
+        pageSize:
+          type: number
+          description: Page size of the activities
+        page:
+          type: number
+          description: Current page of the activities
+      required:
+      - hasMore
+      - data
+      - pageSize
+      - page
+    ActivityNotificationSubscriberResponseDto:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: First name of the subscriber
+        subscriberId:
+          type: string
+          description: External unique identifier of the subscriber
+        _id:
+          type: string
+          description: Internal to Novu unique identifier of the subscriber
+        lastName:
+          type: string
+          description: Last name of the subscriber
+        email:
+          type: string
+          description: Email address of the subscriber
+        phone:
+          type: string
+          description: Phone number of the subscriber
+      required:
+      - subscriberId
+      - _id
     ExecutionDetailsStatusEnum:
       type: string
       description: Status of the execution detail
@@ -1049,90 +972,6 @@ components:
       - Pending
       - Queued
       - ReadConfirmation
-    ValidationErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-        errors:
-          type: object
-          description: A record of validation errors keyed by field name
-          additionalProperties:
-            $ref: '#/components/schemas/ConstraintValidation'
-          example:
-            fieldName1:
-              messages:
-              - Field is required
-              - Must be a valid email address
-              value: invalidEmail
-            fieldName2:
-              messages:
-              - Must be at least 18 years old
-              value: 17
-            fieldName3:
-              messages:
-              - Must be a boolean value
-              value: true
-            fieldName4:
-              messages:
-              - Must be a valid object
-              value:
-                key: value
-            fieldName5:
-              messages:
-              - Field is missing
-              value: null
-            fieldName6:
-              messages:
-              - Undefined value
-      required:
-      - statusCode
-      - timestamp
-      - path
-      - errors
     ActivityNotificationStepResponseDto:
       type: object
       properties:
@@ -1184,6 +1023,97 @@ components:
       - active
       - filters
       - _templateId
+    ActivityNotificationResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the notification
+        _environmentId:
+          type: string
+          description: Environment ID of the notification
+        _organizationId:
+          type: string
+          description: Organization ID of the notification
+        _subscriberId:
+          type: string
+          description: Subscriber ID of the notification
+        transactionId:
+          type: string
+          description: Transaction ID of the notification
+        _templateId:
+          type: string
+          description: Template ID of the notification
+        _digestedNotificationId:
+          type: string
+          description: Digested Notification ID
+        createdAt:
+          type: string
+          description: Creation time of the notification
+        updatedAt:
+          type: string
+          description: Last updated time of the notification
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/StepTypeEnum'
+        subscriber:
+          description: Subscriber of the notification
+          allOf:
+          - $ref: '#/components/schemas/ActivityNotificationSubscriberResponseDto'
+        template:
+          description: Template of the notification
+          allOf:
+          - $ref: '#/components/schemas/ActivityNotificationTemplateResponseDto'
+        jobs:
+          description: Jobs of the notification
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityNotificationJobResponseDto'
+        payload:
+          type: object
+          description: Payload of the notification
+          additionalProperties: true
+        tags:
+          description: Tags associated with the notification
+          type: array
+          items:
+            type: string
+        controls:
+          type: object
+          description: Controls associated with the notification
+          additionalProperties: true
+        to:
+          type: object
+          description: To field for subscriber definition
+          additionalProperties: true
+        topics:
+          description: Topics of the notification
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityTopicDto'
+        severity:
+          $ref: '#/components/schemas/SeverityLevelEnum'
+        critical:
+          type: boolean
+          description: Criticality of the notification
+        contextKeys:
+          description: Context (single or multi) in which the notification was sent
+          type: array
+          items:
+            type: string
+      required:
+      - _environmentId
+      - _organizationId
+      - _subscriberId
+      - transactionId
+    DigestTypeEnum:
+      type: string
+      description: The Digest Type
+      enum:
+      - regular
+      - backoff
+      - timed
     ResourceOriginEnum:
       type: string
       description: Origin of the layout
@@ -1191,22 +1121,18 @@ components:
       - novu-cloud
       - novu-cloud-v1
       - external
-    ErrorDto:
+    ConstraintValidation:
       type: object
       properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
           description: Value that failed validation
           oneOf:
           - type:
@@ -1214,9 +1140,7 @@ components:
             - 'null'
           - type: number
           - type: boolean
-          - type:
-            - object
-            - 'null'
+          - type: object
           - type: array
             items:
               anyOf:
@@ -1228,48 +1152,8 @@ components:
               - type: object
                 additionalProperties: true
           example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
       required:
-      - statusCode
-      - timestamp
-      - path
-    OrdinalValueEnum:
-      type: string
-      description: Value of the ordinal
-      enum:
-      - day
-      - weekday
-      - weekend
-      - sunday
-      - monday
-      - tuesday
-      - wednesday
-      - thursday
-      - friday
-      - saturday
-    MessageTemplateDto:
-      type: object
-      properties: {}
-    DigestUnitEnum:
-      type: string
-      description: 'Regular digest: Unit for backoff'
-      enum:
-      - seconds
-      - minutes
-      - hours
-      - days
-      - weeks
-      - months
+      - messages
     ProvidersIdEnum:
       type: string
       description: Provider ID of the job
@@ -1356,14 +1240,88 @@ components:
       - novu-slack
       - telegram
       - anthropic
-    ExecutionDetailsSourceEnum:
-      type: string
-      description: Source of the execution detail
-      enum:
-      - Credentials
-      - Internal
-      - Payload
-      - Webhook
+    ActivityNotificationExecutionDetailResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the execution detail
+        createdAt:
+          type: string
+          description: Creation time of the execution detail
+        status:
+          $ref: '#/components/schemas/ExecutionDetailsStatusEnum'
+        detail:
+          type: string
+          description: Detailed information about the execution
+        isRetry:
+          type: boolean
+          description: Whether the execution is a retry or not
+        isTest:
+          type: boolean
+          description: Whether the execution is a test or not
+        providerId:
+          $ref: '#/components/schemas/ProvidersIdEnum'
+        raw:
+          type:
+          - string
+          - 'null'
+          description: Raw data of the execution
+        source:
+          $ref: '#/components/schemas/ExecutionDetailsSourceEnum'
+      required:
+      - _id
+      - status
+      - detail
+      - isRetry
+      - isTest
+      - source
+    FieldFilterPartDto:
+      type: object
+      properties:
+        field:
+          type: string
+        value:
+          type: string
+        operator:
+          type: string
+          enum:
+          - LARGER
+          - SMALLER
+          - LARGER_EQUAL
+          - SMALLER_EQUAL
+          - EQUAL
+          - NOT_EQUAL
+          - ALL_IN
+          - ANY_IN
+          - NOT_IN
+          - BETWEEN
+          - NOT_BETWEEN
+          - LIKE
+          - NOT_LIKE
+          - IN
+        'on':
+          type: string
+          enum:
+          - subscriber
+          - payload
+      required:
+      - field
+      - value
+      - operator
+      - 'on'
+    ActivityTopicDto:
+      type: object
+      properties:
+        _topicId:
+          type: string
+          description: Internal Topic ID of the notification
+        topicKey:
+          type: string
+          description: Topic Key of the notification
+      required:
+      - _topicId
+      - topicKey
     OrdinalEnum:
       type: string
       description: Ordinal position for the digest
@@ -1374,33 +1332,22 @@ components:
       - '4'
       - '5'
       - last
-    MonthlyTypeEnum:
-      type: string
-      description: Type of monthly schedule
-      enum:
-      - each
-      - 'on'
-    ChannelTypeEnum:
-      type: string
-      description: Channel type through which the message is sent
-      enum:
-      - in_app
-      - email
-      - sms
-      - chat
-      - push
-    ConstraintValidation:
+    ValidationErrorDto:
       type: object
       properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
           description: Value that failed validation
           oneOf:
           - type:
@@ -1408,7 +1355,9 @@ components:
             - 'null'
           - type: number
           - type: boolean
-          - type: object
+          - type:
+            - object
+            - 'null'
           - type: array
             items:
               anyOf:
@@ -1420,191 +1369,59 @@ components:
               - type: object
                 additionalProperties: true
           example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        errors:
+          type: object
+          description: A record of validation errors keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/ConstraintValidation'
+          example:
+            fieldName1:
+              messages:
+              - Field is required
+              - Must be a valid email address
+              value: invalidEmail
+            fieldName2:
+              messages:
+              - Must be at least 18 years old
+              value: 17
+            fieldName3:
+              messages:
+              - Must be a boolean value
+              value: true
+            fieldName4:
+              messages:
+              - Must be a valid object
+              value:
+                key: value
+            fieldName5:
+              messages:
+              - Field is missing
+              value: null
+            fieldName6:
+              messages:
+              - Undefined value
       required:
-      - messages
-    DigestTypeEnum:
+      - statusCode
+      - timestamp
+      - path
+      - errors
+    MonthlyTypeEnum:
       type: string
-      description: The Digest Type
+      description: Type of monthly schedule
       enum:
-      - regular
-      - backoff
-      - timed
-    ActivitiesResponseDto:
-      type: object
-      properties:
-        hasMore:
-          type: boolean
-          description: Indicates if there are more activities in the result set
-        data:
-          description: Array of activity notifications
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityNotificationResponseDto'
-        pageSize:
-          type: number
-          description: Page size of the activities
-        page:
-          type: number
-          description: Current page of the activities
-      required:
-      - hasMore
-      - data
-      - pageSize
-      - page
-    ActivityNotificationSubscriberResponseDto:
-      type: object
-      properties:
-        firstName:
-          type: string
-          description: First name of the subscriber
-        subscriberId:
-          type: string
-          description: External unique identifier of the subscriber
-        _id:
-          type: string
-          description: Internal to Novu unique identifier of the subscriber
-        lastName:
-          type: string
-          description: Last name of the subscriber
-        email:
-          type: string
-          description: Email address of the subscriber
-        phone:
-          type: string
-          description: Phone number of the subscriber
-      required:
-      - subscriberId
-      - _id
-    ActivityNotificationResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: Unique identifier of the notification
-        _environmentId:
-          type: string
-          description: Environment ID of the notification
-        _organizationId:
-          type: string
-          description: Organization ID of the notification
-        _subscriberId:
-          type: string
-          description: Subscriber ID of the notification
-        transactionId:
-          type: string
-          description: Transaction ID of the notification
-        _templateId:
-          type: string
-          description: Template ID of the notification
-        _digestedNotificationId:
-          type: string
-          description: Digested Notification ID
-        createdAt:
-          type: string
-          description: Creation time of the notification
-        updatedAt:
-          type: string
-          description: Last updated time of the notification
-        channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/StepTypeEnum'
-        subscriber:
-          description: Subscriber of the notification
-          allOf:
-          - $ref: '#/components/schemas/ActivityNotificationSubscriberResponseDto'
-        template:
-          description: Template of the notification
-          allOf:
-          - $ref: '#/components/schemas/ActivityNotificationTemplateResponseDto'
-        jobs:
-          description: Jobs of the notification
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityNotificationJobResponseDto'
-        payload:
-          type: object
-          description: Payload of the notification
-          additionalProperties: true
-        tags:
-          description: Tags associated with the notification
-          type: array
-          items:
-            type: string
-        controls:
-          type: object
-          description: Controls associated with the notification
-          additionalProperties: true
-        to:
-          type: object
-          description: To field for subscriber definition
-          additionalProperties: true
-        topics:
-          description: Topics of the notification
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityTopicDto'
-        severity:
-          $ref: '#/components/schemas/SeverityLevelEnum'
-        critical:
-          type: boolean
-          description: Criticality of the notification
-        contextKeys:
-          description: Context (single or multi) in which the notification was sent
-          type: array
-          items:
-            type: string
-      required:
-      - _environmentId
-      - _organizationId
-      - _subscriberId
-      - transactionId
-    StepFilterDto:
-      type: object
-      properties:
-        isNegated:
-          type: boolean
-        type:
-          $ref: '#/components/schemas/BuilderFieldTypeEnum'
-        value:
-          type: string
-          enum:
-          - AND
-          - OR
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldFilterPartDto'
-      required:
-      - isNegated
-      - type
-      - value
-      - children
-    NotificationTriggerDto:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - event
-          description: Type of the trigger
-        identifier:
-          type: string
-          description: Identifier of the trigger
-        variables:
-          description: Variables of the trigger
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationTriggerVariable'
-        subscriberVariables:
-          description: Subscriber variables of the trigger
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationTriggerVariable'
-      required:
-      - type
-      - identifier
-      - variables
+      - each
+      - 'on'
     StepTypeEnum:
       type: string
       description: Type of the step
@@ -1620,18 +1437,201 @@ components:
       - throttle
       - custom
       - http_request
-    ActivityTopicDto:
+    ErrorDto:
       type: object
       properties:
-        _topicId:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
           type: string
-          description: Internal Topic ID of the notification
-        topicKey:
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
           type: string
-          description: Topic Key of the notification
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
       required:
-      - _topicId
-      - topicKey
+      - statusCode
+      - timestamp
+      - path
+    OrdinalValueEnum:
+      type: string
+      description: Value of the ordinal
+      enum:
+      - day
+      - weekday
+      - weekend
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+    DigestMetadataDto:
+      type: object
+      properties:
+        digestKey:
+          type: string
+          description: Optional key for the digest
+        amount:
+          type: number
+          description: Amount for the digest
+        unit:
+          enum:
+          - seconds
+          - minutes
+          - hours
+          - days
+          - weeks
+          - months
+          type: string
+          description: Unit of the digest
+        type:
+          $ref: '#/components/schemas/DigestTypeEnum'
+        events:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+          description: Optional array of events associated with the digest, represented as key-value pairs
+        backoff:
+          type: boolean
+          description: 'Regular digest: Indicates if backoff is enabled for the regular digest'
+        backoffAmount:
+          type: number
+          description: 'Regular digest: Amount for backoff'
+        backoffUnit:
+          $ref: '#/components/schemas/DigestUnitEnum'
+        updateMode:
+          type: boolean
+          description: 'Regular digest: Indicates if the digest should update'
+        timed:
+          description: Configuration for timed digest
+          allOf:
+          - $ref: '#/components/schemas/DigestTimedConfigDto'
+      required:
+      - type
+    DigestTimedConfigDto:
+      type: object
+      properties:
+        atTime:
+          type: string
+          description: Time at which the digest is triggered
+        weekDays:
+          type: array
+          items:
+            type: string
+            enum:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+            - sunday
+          description: Days of the week for the digest
+        monthDays:
+          description: Specific days of the month for the digest
+          type: array
+          items:
+            type: number
+        ordinal:
+          $ref: '#/components/schemas/OrdinalEnum'
+        ordinalValue:
+          $ref: '#/components/schemas/OrdinalValueEnum'
+        monthlyType:
+          $ref: '#/components/schemas/MonthlyTypeEnum'
+        cronExpression:
+          type: string
+          description: Cron expression for scheduling
+        untilDate:
+          type: string
+          description: Until date for scheduling
+  headers:
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
   securitySchemes:
     secretKey:
       type: apiKey
