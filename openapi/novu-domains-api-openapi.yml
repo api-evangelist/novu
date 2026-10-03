@@ -4714,28 +4714,6 @@ paths:
       - secretKey: []
 components:
   schemas:
-    DiagnoseDomainResponseDto:
-      type: object
-      properties:
-        ok:
-          type: boolean
-          description: True when there are no error-severity issues
-        runAt:
-          type: string
-          description: ISO timestamp when the diagnostic run finished
-        checks:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainDiagnosticCheckDto'
-        issues:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainDiagnosticIssueDto'
-      required:
-      - ok
-      - runAt
-      - checks
-      - issues
     CreateDomainDto:
       type: object
       properties:
@@ -4749,142 +4727,14 @@ components:
             type: string
       required:
       - name
-    TestDomainRouteWebhookResultDto:
-      type: object
-      properties:
-        skipped:
-          type: boolean
-          description: True when outbound webhooks are disabled for this environment (nothing was emitted).
-        latencyMs:
-          type: number
-      required:
-      - latencyMs
-    TestDomainRouteAgentResultDto:
-      type: object
-      properties:
-        agentId:
-          type: string
-        httpStatus:
-          type: number
-        agentReply:
-          type: object
-          description: Parsed JSON body from the agent webhook response when JSON.
-        latencyMs:
-          type: number
-      required:
-      - agentId
-      - httpStatus
-      - latencyMs
-    ListDomainRoutesResponseDto:
+    UpdateDomainDto:
       type: object
       properties:
         data:
-          description: List of returned domain routes
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainRouteResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
-          type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
-      required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
-    UpdateDomainRouteDto:
-      type: object
-      properties:
-        agentId:
-          type: string
-          description: Agent identifier; required when type is agent, ignored when type is webhook.
-        type:
-          enum:
-          - agent
-          - webhook
-          type: string
-        data:
           type: object
-          description: Replaces route metadata when provided (max 10 keys, 500 characters total for keys+values).
+          description: Replaces domain metadata when provided (max 10 keys, 500 characters total for keys+values).
           additionalProperties:
             type: string
-    CreateDomainConnectApplyUrlDto:
-      type: object
-      properties:
-        redirectUri:
-          type: string
-          description: Dashboard URL to return to after the DNS provider consent flow completes.
-    ExpectedDnsRecordDto:
-      type: object
-      properties:
-        type:
-          type: string
-          example: MX
-        name:
-          type: string
-          example: inbound
-        content:
-          type: string
-          example: inbound-smtp.us-east-1.amazonaws.com
-        ttl:
-          type: string
-          example: Auto
-        priority:
-          type: number
-          example: 10
-      required:
-      - type
-      - name
-      - content
-      - ttl
-    DomainRouteDto:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Inbox address local part (e.g. "support", "*")
-        agentId:
-          type: string
-          description: Agent identifier; required when type is agent, unused for webhook
-        type:
-          enum:
-          - agent
-          - webhook
-          type: string
-        data:
-          type: object
-          description: Optional string key-value metadata (max 10 keys, 500 characters total for keys+values).
-          additionalProperties:
-            type: string
-      required:
-      - address
-      - type
-    DomainConnectApplyUrlResponseDto:
-      type: object
-      properties:
-        applyUrl:
-          type: string
-        providerName:
-          type: string
-        redirectUri:
-          type: string
-      required:
-      - applyUrl
-      - providerName
-      - redirectUri
     TestDomainRouteResponseDto:
       type: object
       properties:
@@ -4918,65 +4768,19 @@ components:
       required:
       - matched
       - dryRun
-    DomainDiagnosticIssueDto:
+    DomainConnectApplyUrlResponseDto:
       type: object
       properties:
-        code:
-          enum:
-          - mx_missing
-          - mx_wrong_target
-          - mx_low_priority
-          - apex_cname_collision
-          - dnsbl_listed
+        applyUrl:
           type: string
-        severity:
-          enum:
-          - warn
-          - error
+        providerName:
           type: string
-        message:
+        redirectUri:
           type: string
-        fix:
-          type: string
-          description: Plain-language remediation guidance
       required:
-      - code
-      - severity
-      - message
-      - fix
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
+      - applyUrl
+      - providerName
+      - redirectUri
     DomainRouteResponseDto:
       type: object
       properties:
@@ -5016,75 +4820,6 @@ components:
       - _organizationId
       - createdAt
       - updatedAt
-    DomainConnectStatusResponseDto:
-      type: object
-      properties:
-        available:
-          type: boolean
-        providerName:
-          type: string
-        providerId:
-          type: string
-        reason:
-          type: string
-        reasonCode:
-          enum:
-          - disabled
-          - discovery_not_configured
-          - unsupported_provider
-          - incomplete_configuration
-          - provider_settings_unavailable
-          - untrusted_provider_flow
-          - template_not_onboarded
-          type: string
-        manualRecords:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpectedDnsRecordDto'
-      required:
-      - available
-      - manualRecords
-    UpdateDomainDto:
-      type: object
-      properties:
-        data:
-          type: object
-          description: Replaces domain metadata when provided (max 10 keys, 500 characters total for keys+values).
-          additionalProperties:
-            type: string
-    TestDomainRouteFromDto:
-      type: object
-      properties:
-        address:
-          type: string
-        name:
-          type: string
-      required:
-      - address
-    DomainDiagnosticCheckDto:
-      type: object
-      properties:
-        code:
-          enum:
-          - mx_missing
-          - mx_wrong_target
-          - mx_low_priority
-          - apex_cname_collision
-          - dnsbl_listed
-          type: string
-        status:
-          enum:
-          - pass
-          - fail
-          - skipped
-          type: string
-        latencyMs:
-          type: number
-          description: Round-trip time for this check in milliseconds
-      required:
-      - code
-      - status
-      - latencyMs
     ValidationErrorDto:
       type: object
       properties:
@@ -5169,6 +4904,207 @@ components:
       - timestamp
       - path
       - errors
+    DiagnoseDomainResponseDto:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: True when there are no error-severity issues
+        runAt:
+          type: string
+          description: ISO timestamp when the diagnostic run finished
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainDiagnosticCheckDto'
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainDiagnosticIssueDto'
+      required:
+      - ok
+      - runAt
+      - checks
+      - issues
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    ExpectedDnsRecordDto:
+      type: object
+      properties:
+        type:
+          type: string
+          example: MX
+        name:
+          type: string
+          example: inbound
+        content:
+          type: string
+          example: inbound-smtp.us-east-1.amazonaws.com
+        ttl:
+          type: string
+          example: Auto
+        priority:
+          type: number
+          example: 10
+      required:
+      - type
+      - name
+      - content
+      - ttl
+    DomainRouteDto:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Inbox address local part (e.g. "support", "*")
+        agentId:
+          type: string
+          description: Agent identifier; required when type is agent, unused for webhook
+        type:
+          enum:
+          - agent
+          - webhook
+          type: string
+        data:
+          type: object
+          description: Optional string key-value metadata (max 10 keys, 500 characters total for keys+values).
+          additionalProperties:
+            type: string
+      required:
+      - address
+      - type
+    DomainResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        status:
+          enum:
+          - pending
+          - verified
+          type: string
+        mxRecordConfigured:
+          type: boolean
+        dnsProvider:
+          type: string
+        _environmentId:
+          type: string
+        _organizationId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        expectedDnsRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpectedDnsRecordDto'
+        data:
+          type: object
+          description: String key-value metadata (max 10 keys, 500 characters total when set via API).
+          additionalProperties:
+            type: string
+      required:
+      - _id
+      - name
+      - status
+      - mxRecordConfigured
+      - _environmentId
+      - _organizationId
+      - createdAt
+      - updatedAt
+    CreateDomainConnectApplyUrlDto:
+      type: object
+      properties:
+        redirectUri:
+          type: string
+          description: Dashboard URL to return to after the DNS provider consent flow completes.
+    TestDomainRouteFromDto:
+      type: object
+      properties:
+        address:
+          type: string
+        name:
+          type: string
+      required:
+      - address
+    DomainConnectStatusResponseDto:
+      type: object
+      properties:
+        available:
+          type: boolean
+        providerName:
+          type: string
+        providerId:
+          type: string
+        reason:
+          type: string
+        reasonCode:
+          enum:
+          - disabled
+          - discovery_not_configured
+          - unsupported_provider
+          - incomplete_configuration
+          - provider_settings_unavailable
+          - untrusted_provider_flow
+          - template_not_onboarded
+          type: string
+        manualRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpectedDnsRecordDto'
+      required:
+      - available
+      - manualRecords
+    UpdateDomainRouteDto:
+      type: object
+      properties:
+        agentId:
+          type: string
+          description: Agent identifier; required when type is agent, ignored when type is webhook.
+        type:
+          enum:
+          - agent
+          - webhook
+          type: string
+        data:
+          type: object
+          description: Replaces route metadata when provided (max 10 keys, 500 characters total for keys+values).
+          additionalProperties:
+            type: string
     TestDomainRouteDto:
       type: object
       properties:
@@ -5186,36 +5122,40 @@ components:
       required:
       - from
       - subject
-    ListDomainsResponseDto:
+    DomainDiagnosticCheckDto:
       type: object
       properties:
-        data:
-          description: List of returned domains
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
+        code:
+          enum:
+          - mx_missing
+          - mx_wrong_target
+          - mx_low_priority
+          - apex_cname_collision
+          - dnsbl_listed
+          type: string
+        status:
+          enum:
+          - pass
+          - fail
+          - skipped
+          type: string
+        latencyMs:
           type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
+          description: Round-trip time for this check in milliseconds
       required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
+      - code
+      - status
+      - latencyMs
+    TestDomainRouteWebhookResultDto:
+      type: object
+      properties:
+        skipped:
+          type: boolean
+          description: True when outbound webhooks are disabled for this environment (nothing was emitted).
+        latencyMs:
+          type: number
+      required:
+      - latencyMs
     ErrorDto:
       type: object
       properties:
@@ -5268,48 +5208,108 @@ components:
       - statusCode
       - timestamp
       - path
-    DomainResponseDto:
+    TestDomainRouteAgentResultDto:
       type: object
       properties:
-        _id:
+        agentId:
           type: string
-        name:
-          type: string
-        status:
+        httpStatus:
+          type: number
+        agentReply:
+          type: object
+          description: Parsed JSON body from the agent webhook response when JSON.
+        latencyMs:
+          type: number
+      required:
+      - agentId
+      - httpStatus
+      - latencyMs
+    DomainDiagnosticIssueDto:
+      type: object
+      properties:
+        code:
           enum:
-          - pending
-          - verified
+          - mx_missing
+          - mx_wrong_target
+          - mx_low_priority
+          - apex_cname_collision
+          - dnsbl_listed
           type: string
-        mxRecordConfigured:
-          type: boolean
-        dnsProvider:
+        severity:
+          enum:
+          - warn
+          - error
           type: string
-        _environmentId:
+        message:
           type: string
-        _organizationId:
+        fix:
           type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-        expectedDnsRecords:
+          description: Plain-language remediation guidance
+      required:
+      - code
+      - severity
+      - message
+      - fix
+    ListDomainRoutesResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned domain routes
           type: array
           items:
-            $ref: '#/components/schemas/ExpectedDnsRecordDto'
-        data:
-          type: object
-          description: String key-value metadata (max 10 keys, 500 characters total when set via API).
-          additionalProperties:
-            type: string
+            $ref: '#/components/schemas/DomainRouteResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
       required:
-      - _id
-      - name
-      - status
-      - mxRecordConfigured
-      - _environmentId
-      - _organizationId
-      - createdAt
-      - updatedAt
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
+    ListDomainsResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned domains
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
   headers:
     RateLimit-Limit:
       required: false
@@ -5317,18 +5317,36 @@ components:
       schema:
         type: string
       example: '100'
-    Idempotency-Key:
+    Idempotency-Replay:
       required: false
-      description: The idempotency key used to evaluate the request.
+      description: Whether the request was a replay of a previous request.
       schema:
         type: string
-      example: '8'
+      example: 'true'
     RateLimit-Remaining:
       required: false
       description: The number of requests remaining until the next window.
       schema:
         type: string
       example: '93'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
     Content-Type:
       required: true
       description: The MIME type of the response body.
@@ -5341,24 +5359,6 @@ components:
       schema:
         type: string
       example: '8'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
   securitySchemes:
     secretKey:
       type: apiKey

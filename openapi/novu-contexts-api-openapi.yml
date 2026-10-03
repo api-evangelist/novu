@@ -1605,36 +1605,87 @@ paths:
       - secretKey: []
 components:
   schemas:
-    ListContextsResponseDto:
+    ErrorDto:
       type: object
       properties:
-        data:
-          description: List of returned Contexts
-          type: array
-          items:
-            $ref: '#/components/schemas/GetContextResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
+        statusCode:
           type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
       required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
+      - statusCode
+      - timestamp
+      - path
+    CreateContextRequestDto:
+      type: object
+      properties:
+        type:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[a-zA-Z0-9_-]+$
+          description: Context type (e.g., tenant, app, workspace). Must be lowercase alphanumeric with optional separators.
+          example: tenant
+        id:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[a-zA-Z0-9_-]+$
+          description: Unique identifier for this context. Must be lowercase alphanumeric with optional separators.
+          example: org-acme
+        data:
+          type: object
+          description: Optional custom data to associate with this context.
+          example:
+            tenantName: Acme Corp
+            region: us-east-1
+            settings:
+              theme: dark
+          additionalProperties: true
+      required:
+      - type
+      - id
     ConstraintValidation:
       type: object
       properties:
@@ -1668,6 +1719,75 @@ components:
           example: 'xx xx xx '
       required:
       - messages
+    GetContextResponseDto:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Context type (e.g., tenant, app, workspace)
+        id:
+          type: string
+          description: Unique identifier for this context
+        data:
+          type: object
+          description: Custom data associated with this context
+          additionalProperties: true
+        createdAt:
+          type: string
+          description: Creation timestamp
+        updatedAt:
+          type: string
+          description: Last update timestamp
+      required:
+      - type
+      - id
+      - data
+      - createdAt
+      - updatedAt
+    UpdateContextRequestDto:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Custom data to associate with this context. Replaces existing data.
+          example:
+            tenantName: Acme Corp
+            region: us-east-1
+            settings:
+              theme: dark
+          additionalProperties: true
+      required:
+      - data
+    ListContextsResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned Contexts
+          type: array
+          items:
+            $ref: '#/components/schemas/GetContextResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
     ValidationErrorDto:
       type: object
       properties:
@@ -1752,133 +1872,19 @@ components:
       - timestamp
       - path
       - errors
-    GetContextResponseDto:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Context type (e.g., tenant, app, workspace)
-        id:
-          type: string
-          description: Unique identifier for this context
-        data:
-          type: object
-          description: Custom data associated with this context
-          additionalProperties: true
-        createdAt:
-          type: string
-          description: Creation timestamp
-        updatedAt:
-          type: string
-          description: Last update timestamp
-      required:
-      - type
-      - id
-      - data
-      - createdAt
-      - updatedAt
-    ErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-      required:
-      - statusCode
-      - timestamp
-      - path
-    CreateContextRequestDto:
-      type: object
-      properties:
-        type:
-          type: string
-          minLength: 1
-          maxLength: 100
-          pattern: ^[a-zA-Z0-9_-]+$
-          description: Context type (e.g., tenant, app, workspace). Must be lowercase alphanumeric with optional separators.
-          example: tenant
-        id:
-          type: string
-          minLength: 1
-          maxLength: 100
-          pattern: ^[a-zA-Z0-9_-]+$
-          description: Unique identifier for this context. Must be lowercase alphanumeric with optional separators.
-          example: org-acme
-        data:
-          type: object
-          description: Optional custom data to associate with this context.
-          example:
-            tenantName: Acme Corp
-            region: us-east-1
-            settings:
-              theme: dark
-          additionalProperties: true
-      required:
-      - type
-      - id
-    UpdateContextRequestDto:
-      type: object
-      properties:
-        data:
-          type: object
-          description: Custom data to associate with this context. Replaces existing data.
-          example:
-            tenantName: Acme Corp
-            region: us-east-1
-            settings:
-              theme: dark
-          additionalProperties: true
-      required:
-      - data
   headers:
-    RateLimit-Limit:
+    Retry-After:
       required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      description: The number of seconds after which the client may retry the request that was previously rejected.
       schema:
         type: string
-      example: '100'
+      example: '8'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
     Idempotency-Key:
       required: false
       description: The idempotency key used to evaluate the request.
@@ -1891,33 +1897,27 @@ components:
       schema:
         type: string
       example: '93'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
     RateLimit-Policy:
       required: false
       description: The rate limit policy that was used to evaluate the request.
       schema:
         type: string
       example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
     Idempotency-Replay:
       required: false
       description: Whether the request was a replay of a previous request.
       schema:
         type: string
       example: 'true'
-    Retry-After:
+    RateLimit-Limit:
       required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
       schema:
         type: string
       example: '8'

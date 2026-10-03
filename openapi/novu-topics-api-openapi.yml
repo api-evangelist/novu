@@ -3557,73 +3557,7 @@ paths:
       security:
       - secretKey: []
 components:
-  headers:
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
   schemas:
-    SeverityLevelEnum:
-      type: string
-      description: Severity of the workflow
-      enum:
-      - high
-      - medium
-      - low
-      - none
-    UpdateTopicRequestDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The display name for the topic
-          example: Updated Topic Name
-      required:
-      - name
     TopicDto:
       type: object
       properties:
@@ -3642,103 +3576,6 @@ components:
       required:
       - _id
       - key
-    ListTopicsResponseDto:
-      type: object
-      properties:
-        data:
-          description: List of returned Topics
-          type: array
-          items:
-            $ref: '#/components/schemas/TopicResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
-          type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
-      required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
-    CreateUpdateTopicRequestDto:
-      type: object
-      properties:
-        key:
-          type: string
-          minLength: 1
-          maxLength: 100
-          description: The unique key identifier for the topic. The key must contain only alphanumeric characters (a-z, A-Z, 0-9), hyphens (-), underscores (_), colons (:), or be a valid email address.
-          example: task:12345
-        name:
-          type: string
-          minLength: 0
-          maxLength: 100
-          description: The display name for the topic
-          example: Task Title
-      required:
-      - key
-    SubscriptionResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the subscription
-          example: 64f5e95d3d7946d80d0cb679
-        identifier:
-          type: string
-          description: The identifier of the subscription
-          example: tk=product-updates:si=subscriber-123
-        name:
-          type: string
-          description: The name of the subscription
-          example: My Subscription
-        topic:
-          description: The topic information
-          allOf:
-          - $ref: '#/components/schemas/TopicDto'
-        subscriber:
-          description: The subscriber information
-          allOf:
-          - $ref: '#/components/schemas/SubscriberDto'
-        preferences:
-          description: The preferences for workflows in this subscription
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionPreferenceDto'
-        contextKeys:
-          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
-          example:
-          - tenant:org-a
-          - project:proj-123
-          type: array
-          items:
-            type: string
-        createdAt:
-          type: string
-          description: The creation date of the subscription
-          example: '2025-04-24T05:40:21Z'
-        updatedAt:
-          type: string
-          description: The last update date of the subscription
-          example: '2025-04-24T05:40:21Z'
-      required:
-      - _id
-      - topic
-      - subscriber
-      - createdAt
-      - updatedAt
     TopicSubscriberIdentifierDto:
       type: object
       properties:
@@ -3777,6 +3614,75 @@ components:
       required:
       - data
       - meta
+    SeverityLevelEnum:
+      type: string
+      description: Severity of the workflow
+      enum:
+      - high
+      - medium
+      - low
+      - none
+    GroupPreferenceFilterDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the preference is enabled. Used when condition is not provided.
+          example: true
+        condition:
+          type: object
+          description: Optional condition using JSON Logic rules
+          additionalProperties: true
+          example:
+            and:
+            - ===:
+              - var: tier
+              - premium
+        filter:
+          description: Filter criteria for workflow IDs and tags
+          allOf:
+          - $ref: '#/components/schemas/GroupPreferenceFilterDetailsDto'
+      required:
+      - filter
+    UpdateTopicRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The display name for the topic
+          example: Updated Topic Name
+      required:
+      - name
+    SubscriptionDetailsResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the subscription
+          example: 64f5e95d3d7946d80d0cb679
+        identifier:
+          type: string
+          description: The identifier of the subscription
+          example: subscription-identifier
+        name:
+          type: string
+          description: The name of the subscription
+          example: My Subscription
+        preferences:
+          description: The preferences/rules for the subscription
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionPreferenceDto'
+        contextKeys:
+          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
+          example:
+          - tenant:org-a
+          - project:proj-123
+          type: array
+          items:
+            type: string
+      required:
+      - id
     CreateTopicSubscriptionsRequestDto:
       type: object
       properties:
@@ -3841,146 +3747,6 @@ components:
               ===:
               - var: tier
               - premium
-    MetaDto:
-      type: object
-      properties:
-        totalCount:
-          type: number
-          description: The total count of subscriber IDs provided
-          example: 3
-        successful:
-          type: number
-          description: The count of successfully created subscriptions
-          example: 2
-        failed:
-          type: number
-          description: The count of failed subscription attempts
-          example: 1
-      required:
-      - totalCount
-      - successful
-      - failed
-    SubscriptionPreferenceDto:
-      type: object
-      properties:
-        subscriptionId:
-          type: string
-          description: The unique identifier of the subscription
-          example: 64f5e95d3d7946d80d0cb679
-        workflow:
-          description: Workflow information if this is a template-level preference
-          allOf:
-          - $ref: '#/components/schemas/WorkflowDto'
-        enabled:
-          type: boolean
-          description: Whether the preference is enabled
-          example: true
-        condition:
-          type: object
-          description: Optional condition using JSON Logic rules
-          additionalProperties: true
-          example:
-            and:
-            - ===:
-              - var: tier
-              - premium
-      required:
-      - subscriptionId
-      - enabled
-    DeleteTopicSubscriptionsRequestDto:
-      type: object
-      properties:
-        subscriberIds:
-          description: 'List of subscriber identifiers to unsubscribe from the topic (max: 100). @deprecated Use the "subscriptions" property instead.'
-          example:
-          - subscriberId1
-          - subscriberId2
-          deprecated: true
-          type: array
-          items:
-            type: string
-        subscriptions:
-          type: array
-          description: 'List of subscriptions to unsubscribe from the topic (max: 100). Can be either a string array of subscriber IDs or an array of objects with identifier and/or subscriberId. If only subscriberId is provided, all subscriptions for that subscriber within the topic will be deleted.'
-          items:
-            oneOf:
-            - type: string
-            - $ref: '#/components/schemas/DeleteTopicSubscriberIdentifierDto'
-          example:
-          - identifier: subscriber-123-subscription-a
-            subscriberId: subscriber-123
-          - subscriberId: subscriber-456
-          - identifier: subscriber-789-subscription-b
-    TopicSubscriptionResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The identifier of the subscription
-          example: 64da692e9a94fb2e6449ad08
-        identifier:
-          type: string
-          description: The identifier of the subscription
-          example: tk=product-updates:si=subscriber-123
-        createdAt:
-          type: string
-          description: The date and time the subscription was created
-          example: '2021-01-01T00:00:00.000Z'
-        topic:
-          description: Topic information
-          allOf:
-          - $ref: '#/components/schemas/TopicResponseDto'
-        subscriber:
-          description: Subscriber information
-          allOf:
-          - $ref: '#/components/schemas/SubscriberDto'
-        contextKeys:
-          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
-          example:
-          - tenant:org-a
-          - project:proj-123
-          type: array
-          items:
-            type: string
-      required:
-      - _id
-      - identifier
-      - createdAt
-      - topic
-      - subscriber
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
     TopicSubscriberDto:
       type: object
       properties:
@@ -4015,172 +3781,38 @@ components:
       - _topicId
       - topicKey
       - externalSubscriberId
-    WorkflowDto:
+    DeleteTopicSubscriptionsRequestDto:
       type: object
       properties:
-        id:
-          type: string
-          description: Unique identifier of the workflow
-          example: 64a1b2c3d4e5f6g7h8i9j0k1
-        identifier:
-          type: string
-          description: Workflow identifier used for triggering
-          example: welcome-email
-        name:
-          type: string
-          description: Human-readable name of the workflow
-          example: Welcome Email Workflow
-        critical:
-          type: boolean
-          description: Whether this workflow is marked as critical
-          example: false
-        tags:
-          description: Tags associated with the workflow
+        subscriberIds:
+          description: 'List of subscriber identifiers to unsubscribe from the topic (max: 100). @deprecated Use the "subscriptions" property instead.'
           example:
-          - user-onboarding
-          - email
+          - subscriberId1
+          - subscriberId2
+          deprecated: true
           type: array
           items:
             type: string
-        data:
-          type: object
-          description: Custom data associated with the workflow
+        subscriptions:
+          type: array
+          description: 'List of subscriptions to unsubscribe from the topic (max: 100). Can be either a string array of subscriber IDs or an array of objects with identifier and/or subscriberId. If only subscriberId is provided, all subscriptions for that subscriber within the topic will be deleted.'
+          items:
+            oneOf:
+            - type: string
+            - $ref: '#/components/schemas/DeleteTopicSubscriberIdentifierDto'
           example:
-            category: onboarding
-            priority: high
-        severity:
-          $ref: '#/components/schemas/SeverityLevelEnum'
-      required:
-      - id
-      - identifier
-      - name
-      - critical
-      - severity
-    CreateSubscriptionsResponseDto:
+          - identifier: subscriber-123-subscription-a
+            subscriberId: subscriber-123
+          - subscriberId: subscriber-456
+          - identifier: subscriber-789-subscription-b
+    ListTopicsResponseDto:
       type: object
       properties:
         data:
-          description: The list of successfully created subscriptions
+          description: List of returned Topics
           type: array
           items:
-            $ref: '#/components/schemas/SubscriptionResponseDto'
-        meta:
-          description: Metadata about the operation
-          allOf:
-          - $ref: '#/components/schemas/MetaDto'
-        errors:
-          description: The list of errors for failed subscription attempts
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionErrorDto'
-      required:
-      - data
-      - meta
-    SubscriptionDetailsResponseDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the subscription
-          example: 64f5e95d3d7946d80d0cb679
-        identifier:
-          type: string
-          description: The identifier of the subscription
-          example: subscription-identifier
-        name:
-          type: string
-          description: The name of the subscription
-          example: My Subscription
-        preferences:
-          description: The preferences/rules for the subscription
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionPreferenceDto'
-        contextKeys:
-          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
-          example:
-          - tenant:org-a
-          - project:proj-123
-          type: array
-          items:
-            type: string
-      required:
-      - id
-    SubscriptionDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the subscription
-          example: 64f5e95d3d7946d80d0cb679
-        identifier:
-          type: string
-          description: The identifier of the subscription
-          example: tk=product-updates:si=subscriber-123
-        topic:
-          description: The topic information
-          allOf:
-          - $ref: '#/components/schemas/TopicDto'
-        subscriber:
-          description: The subscriber information
-          allOf:
-          - $ref: '#/components/schemas/SubscriberDto'
-        contextKeys:
-          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
-          example:
-          - tenant:org-a
-          - project:proj-123
-          type: array
-          items:
-            type: string
-        createdAt:
-          type: string
-          description: The creation date of the subscription
-          example: '2025-04-24T05:40:21Z'
-        updatedAt:
-          type: string
-          description: The last update date of the subscription
-          example: '2025-04-24T05:40:21Z'
-      required:
-      - _id
-      - topic
-      - subscriber
-      - createdAt
-      - updatedAt
-    TopicResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The identifier of the topic
-          example: 64da692e9a94fb2e6449ad06
-        key:
-          type: string
-          description: The unique key of the topic
-          example: product-updates
-        name:
-          type: string
-          description: The name of the topic
-          example: Product Updates
-        createdAt:
-          type: string
-          description: The date the topic was created
-          example: '2023-08-15T00:00:00.000Z'
-        updatedAt:
-          type: string
-          description: The date the topic was last updated
-          example: '2023-08-15T00:00:00.000Z'
-      required:
-      - _id
-      - key
-    ListTopicSubscriptionsResponseDto:
-      type: object
-      properties:
-        data:
-          description: List of returned Topic Subscriptions
-          type: array
-          items:
-            $ref: '#/components/schemas/TopicSubscriptionResponseDto'
+            $ref: '#/components/schemas/TopicResponseDto'
         next:
           type:
           - string
@@ -4203,50 +3835,6 @@ components:
       - previous
       - totalCount
       - totalCountCapped
-    WorkflowPreferenceRequestDto:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the preference is enabled. Used when condition is not provided.
-          example: true
-        condition:
-          type: object
-          description: Optional condition using JSON Logic rules
-          additionalProperties: true
-          example:
-            and:
-            - ===:
-              - var: tier
-              - premium
-        workflowId:
-          type: string
-          description: The workflow identifier
-          example: workflow-123
-      required:
-      - workflowId
-    GroupPreferenceFilterDto:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether the preference is enabled. Used when condition is not provided.
-          example: true
-        condition:
-          type: object
-          description: Optional condition using JSON Logic rules
-          additionalProperties: true
-          example:
-            and:
-            - ===:
-              - var: tier
-              - premium
-        filter:
-          description: Filter criteria for workflow IDs and tags
-          allOf:
-          - $ref: '#/components/schemas/GroupPreferenceFilterDetailsDto'
-      required:
-      - filter
     ValidationErrorDto:
       type: object
       properties:
@@ -4331,25 +3919,15 @@ components:
       - timestamp
       - path
       - errors
-    SubscriptionErrorDto:
+    DeleteTopicResponseDto:
       type: object
       properties:
-        subscriberId:
-          type: string
-          description: The subscriber ID that failed
-          example: invalid-subscriber-id
-        code:
-          type: string
-          description: The error code
-          example: SUBSCRIBER_NOT_FOUND
-        message:
-          type: string
-          description: The error message
-          example: Subscriber with ID invalid-subscriber-id could not be found
+        acknowledged:
+          type: boolean
+          description: Indicates if the operation was acknowledged
+          example: true
       required:
-      - subscriberId
-      - code
-      - message
+      - acknowledged
     GroupPreferenceFilterDetailsDto:
       type: object
       properties:
@@ -4369,6 +3947,266 @@ components:
           type: array
           items:
             type: string
+    SubscriptionResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the subscription
+          example: 64f5e95d3d7946d80d0cb679
+        identifier:
+          type: string
+          description: The identifier of the subscription
+          example: tk=product-updates:si=subscriber-123
+        name:
+          type: string
+          description: The name of the subscription
+          example: My Subscription
+        topic:
+          description: The topic information
+          allOf:
+          - $ref: '#/components/schemas/TopicDto'
+        subscriber:
+          description: The subscriber information
+          allOf:
+          - $ref: '#/components/schemas/SubscriberDto'
+        preferences:
+          description: The preferences for workflows in this subscription
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionPreferenceDto'
+        contextKeys:
+          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
+          example:
+          - tenant:org-a
+          - project:proj-123
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          description: The creation date of the subscription
+          example: '2025-04-24T05:40:21Z'
+        updatedAt:
+          type: string
+          description: The last update date of the subscription
+          example: '2025-04-24T05:40:21Z'
+      required:
+      - _id
+      - topic
+      - subscriber
+      - createdAt
+      - updatedAt
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    SubscriptionsDeleteErrorDto:
+      type: object
+      properties:
+        subscriberId:
+          type: string
+          description: The subscriber ID that failed
+          example: invalid-subscriber-id
+        code:
+          type: string
+          description: The error code
+          example: SUBSCRIBER_NOT_FOUND
+        message:
+          type: string
+          description: The error message
+          example: Subscriber with ID invalid-subscriber-id could not be found
+      required:
+      - subscriberId
+      - code
+      - message
+    ListTopicSubscriptionsResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned Topic Subscriptions
+          type: array
+          items:
+            $ref: '#/components/schemas/TopicSubscriptionResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
+    UpdateTopicSubscriptionRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the subscription
+          example: My Subscription
+        preferences:
+          type: array
+          description: The preferences of the topic. Can be a simple workflow ID string, workflow preference object, or group filter object
+          items:
+            oneOf:
+            - type: string
+            - $ref: '#/components/schemas/WorkflowPreferenceRequestDto'
+            - $ref: '#/components/schemas/GroupPreferenceFilterDto'
+          example:
+          - workflowId: workflow-123
+            condition:
+              ===:
+              - var: tier
+              - premium
+    MetaDto:
+      type: object
+      properties:
+        totalCount:
+          type: number
+          description: The total count of subscriber IDs provided
+          example: 3
+        successful:
+          type: number
+          description: The count of successfully created subscriptions
+          example: 2
+        failed:
+          type: number
+          description: The count of failed subscription attempts
+          example: 1
+      required:
+      - totalCount
+      - successful
+      - failed
+    SubscriptionPreferenceDto:
+      type: object
+      properties:
+        subscriptionId:
+          type: string
+          description: The unique identifier of the subscription
+          example: 64f5e95d3d7946d80d0cb679
+        workflow:
+          description: Workflow information if this is a template-level preference
+          allOf:
+          - $ref: '#/components/schemas/WorkflowDto'
+        enabled:
+          type: boolean
+          description: Whether the preference is enabled
+          example: true
+        condition:
+          type: object
+          description: Optional condition using JSON Logic rules
+          additionalProperties: true
+          example:
+            and:
+            - ===:
+              - var: tier
+              - premium
+      required:
+      - subscriptionId
+      - enabled
+    WorkflowDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the workflow
+          example: 64a1b2c3d4e5f6g7h8i9j0k1
+        identifier:
+          type: string
+          description: Workflow identifier used for triggering
+          example: welcome-email
+        name:
+          type: string
+          description: Human-readable name of the workflow
+          example: Welcome Email Workflow
+        critical:
+          type: boolean
+          description: Whether this workflow is marked as critical
+          example: false
+        tags:
+          description: Tags associated with the workflow
+          example:
+          - user-onboarding
+          - email
+          type: array
+          items:
+            type: string
+        data:
+          type: object
+          description: Custom data associated with the workflow
+          example:
+            category: onboarding
+            priority: high
+        severity:
+          $ref: '#/components/schemas/SeverityLevelEnum'
+      required:
+      - id
+      - identifier
+      - name
+      - critical
+      - severity
+    CreateSubscriptionsResponseDto:
+      type: object
+      properties:
+        data:
+          description: The list of successfully created subscriptions
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionResponseDto'
+        meta:
+          description: Metadata about the operation
+          allOf:
+          - $ref: '#/components/schemas/MetaDto'
+        errors:
+          description: The list of errors for failed subscription attempts
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionErrorDto'
+      required:
+      - data
+      - meta
     ErrorDto:
       type: object
       properties:
@@ -4421,6 +4259,179 @@ components:
       - statusCode
       - timestamp
       - path
+    SubscriptionErrorDto:
+      type: object
+      properties:
+        subscriberId:
+          type: string
+          description: The subscriber ID that failed
+          example: invalid-subscriber-id
+        code:
+          type: string
+          description: The error code
+          example: SUBSCRIBER_NOT_FOUND
+        message:
+          type: string
+          description: The error message
+          example: Subscriber with ID invalid-subscriber-id could not be found
+      required:
+      - subscriberId
+      - code
+      - message
+    TopicSubscriptionResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The identifier of the subscription
+          example: 64da692e9a94fb2e6449ad08
+        identifier:
+          type: string
+          description: The identifier of the subscription
+          example: tk=product-updates:si=subscriber-123
+        createdAt:
+          type: string
+          description: The date and time the subscription was created
+          example: '2021-01-01T00:00:00.000Z'
+        topic:
+          description: Topic information
+          allOf:
+          - $ref: '#/components/schemas/TopicResponseDto'
+        subscriber:
+          description: Subscriber information
+          allOf:
+          - $ref: '#/components/schemas/SubscriberDto'
+        contextKeys:
+          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
+          example:
+          - tenant:org-a
+          - project:proj-123
+          type: array
+          items:
+            type: string
+      required:
+      - _id
+      - identifier
+      - createdAt
+      - topic
+      - subscriber
+    TopicResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The identifier of the topic
+          example: 64da692e9a94fb2e6449ad06
+        key:
+          type: string
+          description: The unique key of the topic
+          example: product-updates
+        name:
+          type: string
+          description: The name of the topic
+          example: Product Updates
+        createdAt:
+          type: string
+          description: The date the topic was created
+          example: '2023-08-15T00:00:00.000Z'
+        updatedAt:
+          type: string
+          description: The date the topic was last updated
+          example: '2023-08-15T00:00:00.000Z'
+      required:
+      - _id
+      - key
+    DeleteTopicSubscriberIdentifierDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for this subscription. If provided, deletes only this specific subscription.
+          example: subscriber-123-subscription-a
+        subscriberId:
+          type: string
+          description: The subscriber ID. If provided without identifier, deletes all subscriptions for this subscriber within the topic.
+          example: subscriber-123
+    SubscriptionDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the subscription
+          example: 64f5e95d3d7946d80d0cb679
+        identifier:
+          type: string
+          description: The identifier of the subscription
+          example: tk=product-updates:si=subscriber-123
+        topic:
+          description: The topic information
+          allOf:
+          - $ref: '#/components/schemas/TopicDto'
+        subscriber:
+          description: The subscriber information
+          allOf:
+          - $ref: '#/components/schemas/SubscriberDto'
+        contextKeys:
+          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
+          example:
+          - tenant:org-a
+          - project:proj-123
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          description: The creation date of the subscription
+          example: '2025-04-24T05:40:21Z'
+        updatedAt:
+          type: string
+          description: The last update date of the subscription
+          example: '2025-04-24T05:40:21Z'
+      required:
+      - _id
+      - topic
+      - subscriber
+      - createdAt
+      - updatedAt
+    CreateUpdateTopicRequestDto:
+      type: object
+      properties:
+        key:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: The unique key identifier for the topic. The key must contain only alphanumeric characters (a-z, A-Z, 0-9), hyphens (-), underscores (_), colons (:), or be a valid email address.
+          example: task:12345
+        name:
+          type: string
+          minLength: 0
+          maxLength: 100
+          description: The display name for the topic
+          example: Task Title
+      required:
+      - key
+    WorkflowPreferenceRequestDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether the preference is enabled. Used when condition is not provided.
+          example: true
+        condition:
+          type: object
+          description: Optional condition using JSON Logic rules
+          additionalProperties: true
+          example:
+            and:
+            - ===:
+              - var: tier
+              - premium
+        workflowId:
+          type: string
+          description: The workflow identifier
+          example: workflow-123
+      required:
+      - workflowId
     SubscriberDto:
       type: object
       properties:
@@ -4459,66 +4470,55 @@ components:
       required:
       - _id
       - subscriberId
-    DeleteTopicResponseDto:
-      type: object
-      properties:
-        acknowledged:
-          type: boolean
-          description: Indicates if the operation was acknowledged
-          example: true
-      required:
-      - acknowledged
-    DeleteTopicSubscriberIdentifierDto:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Unique identifier for this subscription. If provided, deletes only this specific subscription.
-          example: subscriber-123-subscription-a
-        subscriberId:
-          type: string
-          description: The subscriber ID. If provided without identifier, deletes all subscriptions for this subscriber within the topic.
-          example: subscriber-123
-    SubscriptionsDeleteErrorDto:
-      type: object
-      properties:
-        subscriberId:
-          type: string
-          description: The subscriber ID that failed
-          example: invalid-subscriber-id
-        code:
-          type: string
-          description: The error code
-          example: SUBSCRIBER_NOT_FOUND
-        message:
-          type: string
-          description: The error message
-          example: Subscriber with ID invalid-subscriber-id could not be found
-      required:
-      - subscriberId
-      - code
-      - message
-    UpdateTopicSubscriptionRequestDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the subscription
-          example: My Subscription
-        preferences:
-          type: array
-          description: The preferences of the topic. Can be a simple workflow ID string, workflow preference object, or group filter object
-          items:
-            oneOf:
-            - type: string
-            - $ref: '#/components/schemas/WorkflowPreferenceRequestDto'
-            - $ref: '#/components/schemas/GroupPreferenceFilterDto'
-          example:
-          - workflowId: workflow-123
-            condition:
-              ===:
-              - var: tier
-              - premium
+  headers:
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
   securitySchemes:
     secretKey:
       type: apiKey

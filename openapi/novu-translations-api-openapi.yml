@@ -335,111 +335,6 @@ paths:
       - secretKey: []
 components:
   schemas:
-    ImportMasterJsonResponseDto:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Overall success status of the import operation
-          example: true
-        message:
-          type: string
-          description: Human-readable message describing the import result
-          example: 'Successfully imported translations for 2 resources: welcome-email, password-reset'
-        successful:
-          description: List of resource IDs that were successfully imported
-          example:
-          - welcome-email
-          - password-reset
-          type: array
-          items:
-            type: string
-        failed:
-          description: List of resource IDs that failed to import
-          example:
-          - missing-workflow
-          type: array
-          items:
-            type: string
-      required:
-      - success
-      - message
-    CreateTranslationRequestDto:
-      type: object
-      properties:
-        resourceId:
-          type: string
-          description: The resource ID to associate translation with. Accepts identifier or slug format
-          example: welcome-email
-        resourceType:
-          type: string
-          description: The resource type to associate translation with
-          enum:
-          - workflow
-          - layout
-        locale:
-          type: string
-          description: Locale code (e.g., en_US, es_ES)
-          example: en_US
-        content:
-          type: object
-          description: Translation content as JSON object
-          example:
-            welcome.title: Welcome
-            welcome.message: Hello there!
-          additionalProperties: true
-      required:
-      - resourceId
-      - resourceType
-      - locale
-      - content
-    GetMasterJsonResponseDto:
-      type: object
-      properties:
-        workflows:
-          type: object
-          description: All translations for given locale organized by workflow identifier
-          example:
-            welcome-email:
-              welcome.title: Welcome to our platform
-              welcome.message: Hello there!
-            password-reset:
-              reset.title: Reset your password
-              reset.message: Click the link to reset
-          additionalProperties: true
-        layouts:
-          type: object
-          description: All translations for given locale organized by layout identifier
-          example:
-            default-layout:
-              layout.title: Default layout
-              layout.message: Hello there!
-          additionalProperties: true
-      required:
-      - workflows
-      - layouts
-    ImportMasterJsonRequestDto:
-      type: object
-      properties:
-        locale:
-          type: string
-          description: The locale for which translations are being imported
-          example: en_US
-        masterJson:
-          type: object
-          description: Master JSON object containing all translations organized by workflow identifier
-          example:
-            workflows:
-              welcome-email:
-                welcome.title: Welcome to our platform
-                welcome.message: Hello there!
-              password-reset:
-                reset.title: Reset your password
-                reset.message: Click the link to reset
-          additionalProperties: true
-      required:
-      - locale
-      - masterJson
     TranslationGroupDto:
       type: object
       properties:
@@ -517,6 +412,111 @@ components:
       - successfulUploads
       - failedUploads
       - errors
+    ImportMasterJsonResponseDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Overall success status of the import operation
+          example: true
+        message:
+          type: string
+          description: Human-readable message describing the import result
+          example: 'Successfully imported translations for 2 resources: welcome-email, password-reset'
+        successful:
+          description: List of resource IDs that were successfully imported
+          example:
+          - welcome-email
+          - password-reset
+          type: array
+          items:
+            type: string
+        failed:
+          description: List of resource IDs that failed to import
+          example:
+          - missing-workflow
+          type: array
+          items:
+            type: string
+      required:
+      - success
+      - message
+    GetMasterJsonResponseDto:
+      type: object
+      properties:
+        workflows:
+          type: object
+          description: All translations for given locale organized by workflow identifier
+          example:
+            welcome-email:
+              welcome.title: Welcome to our platform
+              welcome.message: Hello there!
+            password-reset:
+              reset.title: Reset your password
+              reset.message: Click the link to reset
+          additionalProperties: true
+        layouts:
+          type: object
+          description: All translations for given locale organized by layout identifier
+          example:
+            default-layout:
+              layout.title: Default layout
+              layout.message: Hello there!
+          additionalProperties: true
+      required:
+      - workflows
+      - layouts
+    CreateTranslationRequestDto:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: The resource ID to associate translation with. Accepts identifier or slug format
+          example: welcome-email
+        resourceType:
+          type: string
+          description: The resource type to associate translation with
+          enum:
+          - workflow
+          - layout
+        locale:
+          type: string
+          description: Locale code (e.g., en_US, es_ES)
+          example: en_US
+        content:
+          type: object
+          description: Translation content as JSON object
+          example:
+            welcome.title: Welcome
+            welcome.message: Hello there!
+          additionalProperties: true
+      required:
+      - resourceId
+      - resourceType
+      - locale
+      - content
+    ImportMasterJsonRequestDto:
+      type: object
+      properties:
+        locale:
+          type: string
+          description: The locale for which translations are being imported
+          example: en_US
+        masterJson:
+          type: object
+          description: Master JSON object containing all translations organized by workflow identifier
+          example:
+            workflows:
+              welcome-email:
+                welcome.title: Welcome to our platform
+                welcome.message: Hello there!
+              password-reset:
+                reset.title: Reset your password
+                reset.message: Click the link to reset
+          additionalProperties: true
+      required:
+      - locale
+      - masterJson
     TranslationResponseDto:
       type: object
       properties:

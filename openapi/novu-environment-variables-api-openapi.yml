@@ -1836,6 +1836,80 @@ paths:
       - secretKey: []
 components:
   schemas:
+    ErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+      required:
+      - statusCode
+      - timestamp
+      - path
+    CreateEnvironmentVariableRequestDto:
+      type: object
+      properties:
+        key:
+          type: string
+          maxLength: 256
+          pattern: /^[A-Za-z][A-Za-z0-9_]*$/
+          description: Unique key for the variable. Must start with a letter and contain only letters, digits, and underscores.
+        type:
+          type: string
+          enum:
+          - string
+          description: The type of the variable
+        isSecret:
+          type: boolean
+          description: Whether this variable is a secret (encrypted at rest, masked in responses)
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnvironmentVariableValueDto'
+      required:
+      - key
     ConstraintValidation:
       type: object
       properties:
@@ -1869,31 +1943,59 @@ components:
           example: 'xx xx xx '
       required:
       - messages
-    EnvironmentVariableValueDto:
+    EnvironmentVariableValueResponseDto:
       type: object
       properties:
         _environmentId:
           type: string
         value:
           type: string
-          maxLength: 256
+          description: Value is masked (••••••••) for secret variables
       required:
       - _environmentId
       - value
-    EnvironmentVariableWorkflowInfoDto:
+    GetEnvironmentVariableUsageResponseDto:
       type: object
       properties:
-        name:
-          type: string
-          description: The name of the workflow
-          example: Welcome Email
-        workflowId:
-          type: string
-          description: The unique identifier of the workflow
-          example: welcome-email
+        workflows:
+          description: Array of workflows that reference this environment variable
+          type: array
+          items:
+            $ref: '#/components/schemas/EnvironmentVariableWorkflowInfoDto'
       required:
-      - name
-      - workflowId
+      - workflows
+    EnvironmentVariableResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+        _organizationId:
+          type: string
+        key:
+          type: string
+        type:
+          type: string
+          enum:
+          - string
+        isSecret:
+          type: boolean
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnvironmentVariableValueResponseDto'
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+      - _id
+      - _organizationId
+      - key
+      - type
+      - isSecret
+      - values
+      - createdAt
+      - updatedAt
     ValidationErrorDto:
       type: object
       properties:
@@ -1978,6 +2080,31 @@ components:
       - timestamp
       - path
       - errors
+    EnvironmentVariableValueDto:
+      type: object
+      properties:
+        _environmentId:
+          type: string
+        value:
+          type: string
+          maxLength: 256
+      required:
+      - _environmentId
+      - value
+    EnvironmentVariableWorkflowInfoDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the workflow
+          example: Welcome Email
+        workflowId:
+          type: string
+          description: The unique identifier of the workflow
+          example: welcome-email
+      required:
+      - name
+      - workflowId
     UpdateEnvironmentVariableRequestDto:
       type: object
       properties:
@@ -1997,140 +2124,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EnvironmentVariableValueDto'
-    CreateEnvironmentVariableRequestDto:
-      type: object
-      properties:
-        key:
-          type: string
-          maxLength: 256
-          pattern: /^[A-Za-z][A-Za-z0-9_]*$/
-          description: Unique key for the variable. Must start with a letter and contain only letters, digits, and underscores.
-        type:
-          type: string
-          enum:
-          - string
-          description: The type of the variable
-        isSecret:
-          type: boolean
-          description: Whether this variable is a secret (encrypted at rest, masked in responses)
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnvironmentVariableValueDto'
-      required:
-      - key
-    ErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-      required:
-      - statusCode
-      - timestamp
-      - path
-    EnvironmentVariableResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-        _organizationId:
-          type: string
-        key:
-          type: string
-        type:
-          type: string
-          enum:
-          - string
-        isSecret:
-          type: boolean
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnvironmentVariableValueResponseDto'
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-      required:
-      - _id
-      - _organizationId
-      - key
-      - type
-      - isSecret
-      - values
-      - createdAt
-      - updatedAt
-    EnvironmentVariableValueResponseDto:
-      type: object
-      properties:
-        _environmentId:
-          type: string
-        value:
-          type: string
-          description: Value is masked (••••••••) for secret variables
-      required:
-      - _environmentId
-      - value
-    GetEnvironmentVariableUsageResponseDto:
-      type: object
-      properties:
-        workflows:
-          description: Array of workflows that reference this environment variable
-          type: array
-          items:
-            $ref: '#/components/schemas/EnvironmentVariableWorkflowInfoDto'
-      required:
-      - workflows
   headers:
-    RateLimit-Limit:
+    Retry-After:
       required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      description: The number of seconds after which the client may retry the request that was previously rejected.
       schema:
         type: string
-      example: '100'
+      example: '8'
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
     RateLimit-Remaining:
       required: false
       description: The number of requests remaining until the next window.
@@ -2143,33 +2155,21 @@ components:
       schema:
         type: string
       example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    Idempotency-Key:
+    RateLimit-Limit:
       required: false
-      description: The idempotency key used to evaluate the request.
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
       schema:
         type: string
-      example: '8'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
+      example: '100'
     Idempotency-Replay:
       required: false
       description: Whether the request was a replay of a previous request.
       schema:
         type: string
       example: 'true'
-    Retry-After:
+    RateLimit-Reset:
       required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
+      description: The remaining seconds until a request of the same cost will be refreshed.
       schema:
         type: string
       example: '8'
