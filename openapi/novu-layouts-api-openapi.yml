@@ -2477,24 +2477,30 @@ paths:
       - secretKey: []
 components:
   headers:
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
       schema:
         type: string
-      example: '100'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
+      example: application/json
     RateLimit-Remaining:
       required: false
       description: The number of requests remaining until the next window.
       schema:
         type: string
       example: '93'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
     RateLimit-Policy:
       required: false
       description: The rate limit policy that was used to evaluate the request.
@@ -2507,212 +2513,19 @@ components:
       schema:
         type: string
       example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
     Retry-After:
       required: false
       description: The number of seconds after which the client may retry the request that was previously rejected.
       schema:
         type: string
       example: '8'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
   schemas:
-    UiSchemaProperty:
-      type: object
-      properties:
-        placeholder:
-          description: Placeholder for the UI Schema Property
-          anyOf:
-          - type: string
-          - type: number
-          - type: boolean
-          - type: object
-            additionalProperties: true
-          - type: array
-            items:
-              anyOf:
-              - type: string
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-        component:
-          $ref: '#/components/schemas/UiComponentEnum'
-        properties:
-          type: object
-          description: Properties of the UI Schema
-          additionalProperties:
-            $ref: '#/components/schemas/UiSchemaProperty'
-      required:
-      - component
-    ValidationErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-        errors:
-          type: object
-          description: A record of validation errors keyed by field name
-          additionalProperties:
-            $ref: '#/components/schemas/ConstraintValidation'
-          example:
-            fieldName1:
-              messages:
-              - Field is required
-              - Must be a valid email address
-              value: invalidEmail
-            fieldName2:
-              messages:
-              - Must be at least 18 years old
-              value: 17
-            fieldName3:
-              messages:
-              - Must be a boolean value
-              value: true
-            fieldName4:
-              messages:
-              - Must be a valid object
-              value:
-                key: value
-            fieldName5:
-              messages:
-              - Field is missing
-              value: null
-            fieldName6:
-              messages:
-              - Undefined value
-      required:
-      - statusCode
-      - timestamp
-      - path
-      - errors
-    CreateLayoutDto:
-      type: object
-      properties:
-        layoutId:
-          type: string
-          description: Unique identifier for the layout
-        name:
-          type: string
-          description: Name of the layout
-        isTranslationEnabled:
-          type: boolean
-          description: Enable or disable translations for this layout
-          default: false
-        __source:
-          $ref: '#/components/schemas/LayoutCreationSourceEnum'
-      required:
-      - layoutId
-      - name
-    ChannelSettingsDto:
-      type: object
-      properties:
-        providerId:
-          $ref: '#/components/schemas/ChatOrPushProviderEnum'
-        integrationIdentifier:
-          type: string
-          description: The integration identifier
-        credentials:
-          description: Credentials payload for the specified provider
-          allOf:
-          - $ref: '#/components/schemas/ChannelCredentials'
-        _integrationId:
-          type: string
-          description: The unique identifier of the integration associated with this channel.
-      required:
-      - providerId
-      - credentials
-      - _integrationId
-    UiSchemaGroupEnum:
-      type: string
-      description: Group of the UI Schema
-      enum:
-      - IN_APP
-      - EMAIL
-      - DIGEST
-      - DELAY
-      - THROTTLE
-      - SMS
-      - CHAT
-      - PUSH
-      - SKIP
-      - LAYOUT
-      - HTTP_REQUEST
-    EmailLayoutRenderOutput:
-      type: object
-      properties:
-        body:
-          type: string
-          description: Content of the email
-      required:
-      - body
-    DuplicateLayoutDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the layout
-        layoutId:
-          type: string
-          description: Identifier for the duplicated layout. When omitted, it is derived from the name.
-        isTranslationEnabled:
-          type: boolean
-          description: Enable or disable translations for this layout
-          default: false
-      required:
-      - name
     ConstraintValidation:
       type: object
       properties:
@@ -2746,77 +2559,55 @@ components:
           example: 'xx xx xx '
       required:
       - messages
-    SubscriberResponseDtoOptional:
+    LayoutCreationSourceEnum:
+      type: string
+      description: Source of layout creation
+      default: dashboard
+      enum:
+      - dashboard
+    GenerateLayoutPreviewResponseDto:
       type: object
       properties:
-        _id:
-          type: string
-          description: The internal ID generated by Novu for your subscriber. This ID does not match the `subscriberId` used in your queries. Refer to `subscriberId` for that identifier.
-        firstName:
-          type:
-          - string
-          - 'null'
-          description: The first name of the subscriber.
-        lastName:
-          type:
-          - string
-          - 'null'
-          description: The last name of the subscriber.
-        email:
-          type:
-          - string
-          - 'null'
-          description: The email address of the subscriber.
-        phone:
-          type:
-          - string
-          - 'null'
-          description: The phone number of the subscriber.
-        avatar:
-          type:
-          - string
-          - 'null'
-          description: The URL of the subscriber's avatar image.
-        locale:
-          type:
-          - string
-          - 'null'
-          description: The locale setting of the subscriber, indicating their preferred language or region.
-        channels:
-          description: An array of channel settings associated with the subscriber.
-          type: array
-          items:
-            $ref: '#/components/schemas/ChannelSettingsDto'
-        topics:
-          description: An array of topics that the subscriber is subscribed to.
-          deprecated: true
-          type: array
-          items:
-            type: string
-        isOnline:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether the subscriber is currently online.
-        lastOnlineAt:
-          type:
-          - string
-          - 'null'
-          description: The timestamp indicating when the subscriber was last online, in ISO 8601 format.
-        __v:
-          type: number
-          description: The version of the subscriber document.
-        data:
+        previewPayloadExample:
+          description: Preview payload example
+          allOf:
+          - $ref: '#/components/schemas/LayoutPreviewPayloadDto'
+        schema:
           type:
           - object
           - 'null'
-          description: Additional custom data for the subscriber
+          description: The payload schema that was used to generate the preview payload example
           additionalProperties: true
-        timezone:
-          type:
-          - string
-          - 'null'
-          description: Timezone of the subscriber
+        result:
+          description: Preview result
+          oneOf:
+          - properties:
+              type:
+                enum:
+                - email
+              preview:
+                $ref: '#/components/schemas/EmailLayoutRenderOutput'
+      required:
+      - previewPayloadExample
+      - result
+    CreateLayoutDto:
+      type: object
+      properties:
+        layoutId:
+          type: string
+          description: Unique identifier for the layout
+        name:
+          type: string
+          description: Name of the layout
+        isTranslationEnabled:
+          type: boolean
+          description: Enable or disable translations for this layout
+          default: false
+        __source:
+          $ref: '#/components/schemas/LayoutCreationSourceEnum'
+      required:
+      - layoutId
+      - name
     UiSchema:
       type: object
       properties:
@@ -2827,11 +2618,76 @@ components:
           description: Properties of the UI Schema
           additionalProperties:
             $ref: '#/components/schemas/UiSchemaProperty'
-    LayoutResponseDtoSortField:
+    UiComponentEnum:
       type: string
+      description: Component type for the UI Schema Property
       enum:
-      - createdAt
-      - updatedAt
+      - EMAIL_EDITOR_SELECT
+      - LAYOUT_SELECT
+      - BLOCK_EDITOR
+      - EMAIL_BODY
+      - TEXT_FULL_LINE
+      - TEXT_INLINE_LABEL
+      - IN_APP_BODY
+      - IN_APP_AVATAR
+      - IN_APP_PRIMARY_SUBJECT
+      - IN_APP_BUTTON_DROPDOWN
+      - IN_APP_DISABLE_SANITIZATION_SWITCH
+      - DISABLE_SANITIZATION_SWITCH
+      - URL_TEXT_BOX
+      - DIGEST_AMOUNT
+      - DIGEST_UNIT
+      - DIGEST_TYPE
+      - DIGEST_KEY
+      - DIGEST_CRON
+      - DELAY_AMOUNT
+      - DELAY_UNIT
+      - DELAY_TYPE
+      - DELAY_CRON
+      - DELAY_DYNAMIC_KEY
+      - THROTTLE_TYPE
+      - THROTTLE_WINDOW
+      - THROTTLE_UNIT
+      - THROTTLE_DYNAMIC_KEY
+      - THROTTLE_THRESHOLD
+      - THROTTLE_KEY
+      - EXTEND_TO_SCHEDULE
+      - SMS_BODY
+      - CHAT_BODY
+      - PUSH_BODY
+      - PUSH_SUBJECT
+      - QUERY_EDITOR
+      - DATA
+      - LAYOUT_EMAIL
+      - DESTINATION_METHOD
+      - DESTINATION_URL
+      - DESTINATION_HEADERS
+      - DESTINATION_BODY
+      - DESTINATION_RESPONSE_BODY_SCHEMA
+      - DESTINATION_ENFORCE_SCHEMA_VALIDATION
+      - DESTINATION_CONTINUE_ON_FAILURE
+      - DESTINATION_TIMEOUT
+    ResourceOriginEnum:
+      type: string
+      description: Origin of the layout
+      enum:
+      - novu-cloud
+      - novu-cloud-v1
+      - external
+    DuplicateLayoutDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the layout
+        layoutId:
+          type: string
+          description: Identifier for the duplicated layout. When omitted, it is derived from the name.
+        isTranslationEnabled:
+          type: boolean
+          description: Enable or disable translations for this layout
+          default: false
+      required:
       - name
     ChannelCredentials:
       type: object
@@ -2873,6 +2729,84 @@ components:
           type: string
           description: Link to upstream details property for Grafana on-call webhook.
           example: https://example.com/details
+    GetLayoutUsageResponseDto:
+      type: object
+      properties:
+        workflows:
+          description: Array of workflows that use this layout
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowInfoDto'
+      required:
+      - workflows
+    UiSchemaProperty:
+      type: object
+      properties:
+        placeholder:
+          description: Placeholder for the UI Schema Property
+          anyOf:
+          - type: string
+          - type: number
+          - type: boolean
+          - type: object
+            additionalProperties: true
+          - type: array
+            items:
+              anyOf:
+              - type: string
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+        component:
+          $ref: '#/components/schemas/UiComponentEnum'
+        properties:
+          type: object
+          description: Properties of the UI Schema
+          additionalProperties:
+            $ref: '#/components/schemas/UiSchemaProperty'
+      required:
+      - component
+    LayoutResponseDtoSortField:
+      type: string
+      enum:
+      - createdAt
+      - updatedAt
+      - name
+    UiSchemaGroupEnum:
+      type: string
+      description: Group of the UI Schema
+      enum:
+      - IN_APP
+      - EMAIL
+      - DIGEST
+      - DELAY
+      - THROTTLE
+      - SMS
+      - CHAT
+      - PUSH
+      - SKIP
+      - LAYOUT
+      - HTTP_REQUEST
+    ChannelSettingsDto:
+      type: object
+      properties:
+        providerId:
+          $ref: '#/components/schemas/ChatOrPushProviderEnum'
+        integrationIdentifier:
+          type: string
+          description: The integration identifier
+        credentials:
+          description: Credentials payload for the specified provider
+          allOf:
+          - $ref: '#/components/schemas/ChannelCredentials'
+        _integrationId:
+          type: string
+          description: The unique identifier of the integration associated with this channel.
+      required:
+      - providerId
+      - credentials
+      - _integrationId
     LayoutPreviewRequestDto:
       type: object
       properties:
@@ -2884,85 +2818,31 @@ components:
           description: Optional payload for layout preview
           allOf:
           - $ref: '#/components/schemas/LayoutPreviewPayloadDto'
-    LayoutPreviewPayloadDto:
-      type: object
-      properties:
-        subscriber:
-          description: Partial subscriber information
-          allOf:
-          - $ref: '#/components/schemas/SubscriberResponseDtoOptional'
-    ChatOrPushProviderEnum:
-      type: string
-      description: The provider identifier for the credentials
-      enum:
-      - slack
-      - discord
-      - msteams
-      - mattermost
-      - ryver
-      - zulip
-      - grafana-on-call
-      - getstream
-      - rocket-chat
-      - whatsapp-business
-      - chat-webhook
-      - novu-slack
-      - telegram
-      - fcm
-      - apns
-      - expo
-      - one-signal
-      - pushpad
-      - push-webhook
-      - pusher-beams
-      - appio
-    LayoutControlValuesDto:
-      type: object
-      properties:
-        email:
-          description: Email layout controls
-          allOf:
-          - $ref: '#/components/schemas/EmailControlsDto'
-    EmailControlsDto:
+    EmailLayoutRenderOutput:
       type: object
       properties:
         body:
           type: string
-          description: Body of the layout.
-        editorType:
-          type: string
-          description: Editor type of the layout.
-          enum:
-          - html
-          - block
+          description: Content of the email
       required:
       - body
-      - editorType
-    GenerateLayoutPreviewResponseDto:
+    LayoutControlsDto:
       type: object
       properties:
-        previewPayloadExample:
-          description: Preview payload example
-          allOf:
-          - $ref: '#/components/schemas/LayoutPreviewPayloadDto'
-        schema:
-          type:
-          - object
-          - 'null'
-          description: The payload schema that was used to generate the preview payload example
+        dataSchema:
+          type: object
+          description: JSON Schema for data
           additionalProperties: true
-        result:
-          description: Preview result
-          oneOf:
-          - properties:
-              type:
-                enum:
-                - email
-              preview:
-                $ref: '#/components/schemas/EmailLayoutRenderOutput'
+        uiSchema:
+          description: UI Schema for rendering
+          allOf:
+          - $ref: '#/components/schemas/UiSchema'
+        values:
+          description: Email layout controls
+          allOf:
+          - $ref: '#/components/schemas/LayoutControlValuesDto'
       required:
-      - previewPayloadExample
-      - result
+      - values
     UpdateLayoutDto:
       type: object
       properties:
@@ -2979,30 +2859,6 @@ components:
           - $ref: '#/components/schemas/LayoutControlValuesDto'
       required:
       - name
-    ListLayoutResponseDto:
-      type: object
-      properties:
-        layouts:
-          description: List of layouts
-          type: array
-          items:
-            $ref: '#/components/schemas/LayoutResponseDto'
-        totalCount:
-          type: number
-          description: Total number of layouts
-      required:
-      - layouts
-      - totalCount
-    GetLayoutUsageResponseDto:
-      type: object
-      properties:
-        workflows:
-          description: Array of workflows that use this layout
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkflowInfoDto'
-      required:
-      - workflows
     LayoutResponseDto:
       type: object
       properties:
@@ -3119,79 +2975,47 @@ components:
       - REGULAR
       - ECHO
       - BRIDGE
-    UiComponentEnum:
+    DirectionEnum:
       type: string
-      description: Component type for the UI Schema Property
       enum:
-      - EMAIL_EDITOR_SELECT
-      - LAYOUT_SELECT
-      - BLOCK_EDITOR
-      - EMAIL_BODY
-      - TEXT_FULL_LINE
-      - TEXT_INLINE_LABEL
-      - IN_APP_BODY
-      - IN_APP_AVATAR
-      - IN_APP_PRIMARY_SUBJECT
-      - IN_APP_BUTTON_DROPDOWN
-      - IN_APP_DISABLE_SANITIZATION_SWITCH
-      - DISABLE_SANITIZATION_SWITCH
-      - URL_TEXT_BOX
-      - DIGEST_AMOUNT
-      - DIGEST_UNIT
-      - DIGEST_TYPE
-      - DIGEST_KEY
-      - DIGEST_CRON
-      - DELAY_AMOUNT
-      - DELAY_UNIT
-      - DELAY_TYPE
-      - DELAY_CRON
-      - DELAY_DYNAMIC_KEY
-      - THROTTLE_TYPE
-      - THROTTLE_WINDOW
-      - THROTTLE_UNIT
-      - THROTTLE_DYNAMIC_KEY
-      - THROTTLE_THRESHOLD
-      - THROTTLE_KEY
-      - EXTEND_TO_SCHEDULE
-      - SMS_BODY
-      - CHAT_BODY
-      - PUSH_BODY
-      - PUSH_SUBJECT
-      - QUERY_EDITOR
-      - DATA
-      - LAYOUT_EMAIL
-      - DESTINATION_METHOD
-      - DESTINATION_URL
-      - DESTINATION_HEADERS
-      - DESTINATION_BODY
-      - DESTINATION_RESPONSE_BODY_SCHEMA
-      - DESTINATION_ENFORCE_SCHEMA_VALIDATION
-      - DESTINATION_CONTINUE_ON_FAILURE
-      - DESTINATION_TIMEOUT
-    LayoutControlsDto:
+      - ASC
+      - DESC
+    LayoutPreviewPayloadDto:
       type: object
       properties:
-        dataSchema:
-          type: object
-          description: JSON Schema for data
-          additionalProperties: true
-        uiSchema:
-          description: UI Schema for rendering
+        subscriber:
+          description: Partial subscriber information
           allOf:
-          - $ref: '#/components/schemas/UiSchema'
-        values:
-          description: Email layout controls
-          allOf:
-          - $ref: '#/components/schemas/LayoutControlValuesDto'
+          - $ref: '#/components/schemas/SubscriberResponseDtoOptional'
+    ListLayoutResponseDto:
+      type: object
+      properties:
+        layouts:
+          description: List of layouts
+          type: array
+          items:
+            $ref: '#/components/schemas/LayoutResponseDto'
+        totalCount:
+          type: number
+          description: Total number of layouts
       required:
-      - values
-    ResourceOriginEnum:
-      type: string
-      description: Origin of the layout
-      enum:
-      - novu-cloud
-      - novu-cloud-v1
-      - external
+      - layouts
+      - totalCount
+    EmailControlsDto:
+      type: object
+      properties:
+        body:
+          type: string
+          description: Body of the layout.
+        editorType:
+          type: string
+          description: Editor type of the layout.
+          enum:
+          - html
+          - block
+      required:
+      - body
+      - editorType
     WorkflowInfoDto:
       type: object
       properties:
@@ -3206,17 +3030,193 @@ components:
       required:
       - name
       - workflowId
-    LayoutCreationSourceEnum:
+    ValidationErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        errors:
+          type: object
+          description: A record of validation errors keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/ConstraintValidation'
+          example:
+            fieldName1:
+              messages:
+              - Field is required
+              - Must be a valid email address
+              value: invalidEmail
+            fieldName2:
+              messages:
+              - Must be at least 18 years old
+              value: 17
+            fieldName3:
+              messages:
+              - Must be a boolean value
+              value: true
+            fieldName4:
+              messages:
+              - Must be a valid object
+              value:
+                key: value
+            fieldName5:
+              messages:
+              - Field is missing
+              value: null
+            fieldName6:
+              messages:
+              - Undefined value
+      required:
+      - statusCode
+      - timestamp
+      - path
+      - errors
+    LayoutControlValuesDto:
+      type: object
+      properties:
+        email:
+          description: Email layout controls
+          allOf:
+          - $ref: '#/components/schemas/EmailControlsDto'
+    ChatOrPushProviderEnum:
       type: string
-      description: Source of layout creation
-      default: dashboard
+      description: The provider identifier for the credentials
       enum:
-      - dashboard
-    DirectionEnum:
-      type: string
-      enum:
-      - ASC
-      - DESC
+      - slack
+      - discord
+      - msteams
+      - mattermost
+      - ryver
+      - zulip
+      - grafana-on-call
+      - getstream
+      - rocket-chat
+      - whatsapp-business
+      - chat-webhook
+      - novu-slack
+      - telegram
+      - fcm
+      - apns
+      - expo
+      - one-signal
+      - pushpad
+      - push-webhook
+      - pusher-beams
+      - appio
+    SubscriberResponseDtoOptional:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The internal ID generated by Novu for your subscriber. This ID does not match the `subscriberId` used in your queries. Refer to `subscriberId` for that identifier.
+        firstName:
+          type:
+          - string
+          - 'null'
+          description: The first name of the subscriber.
+        lastName:
+          type:
+          - string
+          - 'null'
+          description: The last name of the subscriber.
+        email:
+          type:
+          - string
+          - 'null'
+          description: The email address of the subscriber.
+        phone:
+          type:
+          - string
+          - 'null'
+          description: The phone number of the subscriber.
+        avatar:
+          type:
+          - string
+          - 'null'
+          description: The URL of the subscriber's avatar image.
+        locale:
+          type:
+          - string
+          - 'null'
+          description: The locale setting of the subscriber, indicating their preferred language or region.
+        channels:
+          description: An array of channel settings associated with the subscriber.
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelSettingsDto'
+        topics:
+          description: An array of topics that the subscriber is subscribed to.
+          deprecated: true
+          type: array
+          items:
+            type: string
+        isOnline:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the subscriber is currently online.
+        lastOnlineAt:
+          type:
+          - string
+          - 'null'
+          description: The timestamp indicating when the subscriber was last online, in ISO 8601 format.
+        __v:
+          type: number
+          description: The version of the subscriber document.
+        data:
+          type:
+          - object
+          - 'null'
+          description: Additional custom data for the subscriber
+          additionalProperties: true
+        timezone:
+          type:
+          - string
+          - 'null'
+          description: Timezone of the subscriber
     UserResponseDto:
       type: object
       properties:

@@ -2177,6 +2177,83 @@ paths:
       - secretKey: []
 components:
   schemas:
+    BridgeConfigurationDto:
+      type: object
+      properties:
+        url:
+          type: string
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
+    ResourceToPublishDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        resourceId:
+          type: string
+          description: Unique identifier of the resource to publish
+          example: workflow-id-1
+      required:
+      - resourceType
+      - resourceId
+    ResourceDependencyDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        resourceId:
+          type: string
+          description: ID of the dependent resource
+        resourceName:
+          type: string
+          description: Name of the dependent resource
+        isBlocking:
+          type: boolean
+          description: Whether this dependency blocks the operation
+        reason:
+          $ref: '#/components/schemas/DependencyReasonEnum'
+      required:
+      - resourceType
+      - resourceId
+      - resourceName
+      - isBlocking
+      - reason
+    InBoundParseDomainDto:
+      type: object
+      properties:
+        inboundParseDomain:
+          type: string
     EnvironmentResponseDto:
       type: object
       properties:
@@ -2223,6 +2300,195 @@ components:
       - name
       - _organizationId
       - identifier
+    ResourceDiffResultDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        sourceResource:
+          description: Source resource information
+          allOf:
+          - $ref: '#/components/schemas/ResourceInfoDto'
+        targetResource:
+          description: Target resource information
+          allOf:
+          - $ref: '#/components/schemas/ResourceInfoDto'
+        changes:
+          description: List of specific changes for this resource
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceDiffDto'
+        summary:
+          description: Summary of changes for this resource
+          allOf:
+          - $ref: '#/components/schemas/DiffSummaryDto'
+        dependencies:
+          description: Dependencies that affect this resource
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceDependencyDto'
+      required:
+      - resourceType
+      - changes
+      - summary
+    UserInfoDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: User ID
+        firstName:
+          type: string
+          description: User first name
+        lastName:
+          type:
+          - string
+          - 'null'
+          description: User last name
+        externalId:
+          type: string
+          description: User external ID
+      required:
+      - _id
+      - firstName
+    ApiKeyDto:
+      type: object
+      properties:
+        key:
+          type: string
+          description: API key
+          example: sk_test_1234567890abcdef
+        _userId:
+          type: string
+          description: User ID associated with the API key
+          example: 60d5ecb8b3b3a30015f3e1a4
+        hash:
+          type: string
+          description: Hashed representation of the API key
+          example: hash_value_here
+      required:
+      - key
+      - _userId
+    UpdateEnvironmentRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+        identifier:
+          type: string
+        parentId:
+          type: string
+        color:
+          type: string
+        dns:
+          $ref: '#/components/schemas/InBoundParseDomainDto'
+        bridge:
+          $ref: '#/components/schemas/BridgeConfigurationDto'
+    FailedWorkflowDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        resourceId:
+          type: string
+          description: Resource ID
+        resourceName:
+          type: string
+          description: Resource name
+        error:
+          type: string
+          description: Error message
+        stack:
+          type: string
+          description: Error stack trace
+      required:
+      - resourceType
+      - resourceId
+      - resourceName
+      - error
+    SyncedWorkflowDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        resourceId:
+          type: string
+          description: Resource ID
+        resourceName:
+          type: string
+          description: Resource name
+        action:
+          $ref: '#/components/schemas/SyncActionEnum'
+      required:
+      - resourceType
+      - resourceId
+      - resourceName
+      - action
+    EnvironmentDiffSummaryDto:
+      type: object
+      properties:
+        totalEntities:
+          type: number
+          description: Total number of entities compared
+        totalChanges:
+          type: number
+          description: Total number of changes detected
+        hasChanges:
+          type: boolean
+          description: Whether any changes were detected
+      required:
+      - totalEntities
+      - totalChanges
+      - hasChanges
+    SyncResultDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        successful:
+          description: Successfully synced resources
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncedWorkflowDto'
+        failed:
+          description: Failed resource syncs
+          type: array
+          items:
+            $ref: '#/components/schemas/FailedWorkflowDto'
+        skipped:
+          description: Skipped resources
+          type: array
+          items:
+            $ref: '#/components/schemas/SkippedWorkflowDto'
+        totalProcessed:
+          type: number
+          description: Total number of resources processed
+      required:
+      - resourceType
+      - successful
+      - failed
+      - skipped
+      - totalProcessed
+    DiffSummaryDto:
+      type: object
+      properties:
+        added:
+          type: number
+          description: Number of added resources (workflows and steps)
+        modified:
+          type: number
+          description: Number of modified resources (workflows and steps)
+        deleted:
+          type: number
+          description: Number of deleted resources (workflows and steps)
+        unchanged:
+          type: number
+          description: Number of unchanged resources (workflows and steps)
+      required:
+      - added
+      - modified
+      - deleted
+      - unchanged
     ResourceInfoDto:
       type: object
       properties:
@@ -2247,6 +2513,128 @@ components:
           description: When the resource was last updated
           format: date-time
           example: '2024-01-15T10:30:00.000Z'
+    GetEnvironmentTagsDto:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    SyncActionEnum:
+      type: string
+      description: Sync action performed
+      enum:
+      - created
+      - updated
+      - skipped
+      - deleted
+    DependencyReasonEnum:
+      type: string
+      description: Reason for the dependency
+      enum:
+      - LAYOUT_REQUIRED_FOR_WORKFLOW
+      - LAYOUT_EXISTS_IN_TARGET
+    SkippedWorkflowDto:
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/ResourceTypeEnum'
+        resourceId:
+          type: string
+          description: Resource ID
+        resourceName:
+          type: string
+          description: Resource name
+        reason:
+          type: string
+          description: Reason for skipping
+      required:
+      - resourceType
+      - resourceId
+      - resourceName
+      - reason
+    ErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+      required:
+      - statusCode
+      - timestamp
+      - path
+    DiffEnvironmentResponseDto:
+      type: object
+      properties:
+        sourceEnvironmentId:
+          type: string
+          description: Source environment ID
+        targetEnvironmentId:
+          type: string
+          description: Target environment ID
+        resources:
+          description: Diff resources by resource type
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceDiffResultDto'
+        summary:
+          description: Overall summary
+          allOf:
+          - $ref: '#/components/schemas/EnvironmentDiffSummaryDto'
+      required:
+      - sourceEnvironmentId
+      - targetEnvironmentId
+      - resources
+      - summary
+    ResourceTypeEnum:
+      type: string
+      description: Type of the layout
+      enum:
+      - REGULAR
+      - ECHO
+      - BRIDGE
     DiffActionEnum:
       type: string
       description: Type of change
@@ -2256,23 +2644,76 @@ components:
       - deleted
       - unchanged
       - moved
-    BridgeConfigurationDto:
+    PublishSummaryDto:
       type: object
       properties:
-        url:
-          type: string
-    ResourceToPublishDto:
+        resources:
+          type: number
+          description: Number of resources processed
+        successful:
+          type: number
+          description: Number of successful syncs
+        failed:
+          type: number
+          description: Number of failed syncs
+        skipped:
+          type: number
+          description: Number of skipped resources
+      required:
+      - resources
+      - successful
+      - failed
+      - skipped
+    ResourceDiffDto:
       type: object
       properties:
+        sourceResource:
+          description: Source resource information
+          allOf:
+          - $ref: '#/components/schemas/ResourceInfoDto'
+        targetResource:
+          description: Target resource information
+          allOf:
+          - $ref: '#/components/schemas/ResourceInfoDto'
         resourceType:
           $ref: '#/components/schemas/ResourceTypeEnum'
-        resourceId:
+        action:
+          $ref: '#/components/schemas/DiffActionEnum'
+        diffs:
+          type: object
+          description: Detailed changes (only for modified resources)
+          properties:
+            previous:
+              type:
+              - object
+              - 'null'
+              description: Previous state of the resource (null for added resources)
+              additionalProperties: true
+            new:
+              type:
+              - object
+              - 'null'
+              description: New state of the resource (null for deleted resources)
+              additionalProperties: true
+        stepType:
           type: string
-          description: Unique identifier of the resource to publish
-          example: workflow-id-1
+          description: Step type (only for step resources)
+        previousIndex:
+          type: number
+          description: Previous index in steps array (for moved/deleted steps)
+        newIndex:
+          type: number
+          description: New index in steps array (for moved/added steps)
       required:
       - resourceType
-      - resourceId
+      - action
+    DiffEnvironmentRequestDto:
+      type: object
+      properties:
+        sourceEnvironmentId:
+          type: string
+          description: Source environment ID to compare from. Defaults to the Development environment if not provided.
+          example: 507f1f77bcf86cd799439011
     ValidationErrorDto:
       type: object
       properties:
@@ -2357,44 +2798,22 @@ components:
       - timestamp
       - path
       - errors
-    SyncedWorkflowDto:
+    PublishEnvironmentRequestDto:
       type: object
       properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        resourceId:
+        sourceEnvironmentId:
           type: string
-          description: Resource ID
-        resourceName:
-          type: string
-          description: Resource name
-        action:
-          $ref: '#/components/schemas/SyncActionEnum'
-      required:
-      - resourceType
-      - resourceId
-      - resourceName
-      - action
-    UserInfoDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: User ID
-        firstName:
-          type: string
-          description: User first name
-        lastName:
-          type:
-          - string
-          - 'null'
-          description: User last name
-        externalId:
-          type: string
-          description: User external ID
-      required:
-      - _id
-      - firstName
+          description: Source environment ID to sync from. Defaults to the Development environment if not provided.
+          example: 507f1f77bcf86cd799439011
+        dryRun:
+          type: boolean
+          description: Perform a dry run without making actual changes
+          default: false
+        resources:
+          description: Array of specific resources to publish. If not provided, all resources will be published.
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceToPublishDto'
     CreateEnvironmentRequestDto:
       type: object
       properties:
@@ -2413,402 +2832,6 @@ components:
       required:
       - name
       - color
-    SyncResultDto:
-      type: object
-      properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        successful:
-          description: Successfully synced resources
-          type: array
-          items:
-            $ref: '#/components/schemas/SyncedWorkflowDto'
-        failed:
-          description: Failed resource syncs
-          type: array
-          items:
-            $ref: '#/components/schemas/FailedWorkflowDto'
-        skipped:
-          description: Skipped resources
-          type: array
-          items:
-            $ref: '#/components/schemas/SkippedWorkflowDto'
-        totalProcessed:
-          type: number
-          description: Total number of resources processed
-      required:
-      - resourceType
-      - successful
-      - failed
-      - skipped
-      - totalProcessed
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
-    GetEnvironmentTagsDto:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name
-    SkippedWorkflowDto:
-      type: object
-      properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        resourceId:
-          type: string
-          description: Resource ID
-        resourceName:
-          type: string
-          description: Resource name
-        reason:
-          type: string
-          description: Reason for skipping
-      required:
-      - resourceType
-      - resourceId
-      - resourceName
-      - reason
-    DependencyReasonEnum:
-      type: string
-      description: Reason for the dependency
-      enum:
-      - LAYOUT_REQUIRED_FOR_WORKFLOW
-      - LAYOUT_EXISTS_IN_TARGET
-    FailedWorkflowDto:
-      type: object
-      properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        resourceId:
-          type: string
-          description: Resource ID
-        resourceName:
-          type: string
-          description: Resource name
-        error:
-          type: string
-          description: Error message
-        stack:
-          type: string
-          description: Error stack trace
-      required:
-      - resourceType
-      - resourceId
-      - resourceName
-      - error
-    InBoundParseDomainDto:
-      type: object
-      properties:
-        inboundParseDomain:
-          type: string
-    PublishSummaryDto:
-      type: object
-      properties:
-        resources:
-          type: number
-          description: Number of resources processed
-        successful:
-          type: number
-          description: Number of successful syncs
-        failed:
-          type: number
-          description: Number of failed syncs
-        skipped:
-          type: number
-          description: Number of skipped resources
-      required:
-      - resources
-      - successful
-      - failed
-      - skipped
-    SyncActionEnum:
-      type: string
-      description: Sync action performed
-      enum:
-      - created
-      - updated
-      - skipped
-      - deleted
-    PublishEnvironmentRequestDto:
-      type: object
-      properties:
-        sourceEnvironmentId:
-          type: string
-          description: Source environment ID to sync from. Defaults to the Development environment if not provided.
-          example: 507f1f77bcf86cd799439011
-        dryRun:
-          type: boolean
-          description: Perform a dry run without making actual changes
-          default: false
-        resources:
-          description: Array of specific resources to publish. If not provided, all resources will be published.
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceToPublishDto'
-    DiffEnvironmentRequestDto:
-      type: object
-      properties:
-        sourceEnvironmentId:
-          type: string
-          description: Source environment ID to compare from. Defaults to the Development environment if not provided.
-          example: 507f1f77bcf86cd799439011
-    ResourceDiffResultDto:
-      type: object
-      properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        sourceResource:
-          description: Source resource information
-          allOf:
-          - $ref: '#/components/schemas/ResourceInfoDto'
-        targetResource:
-          description: Target resource information
-          allOf:
-          - $ref: '#/components/schemas/ResourceInfoDto'
-        changes:
-          description: List of specific changes for this resource
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceDiffDto'
-        summary:
-          description: Summary of changes for this resource
-          allOf:
-          - $ref: '#/components/schemas/DiffSummaryDto'
-        dependencies:
-          description: Dependencies that affect this resource
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceDependencyDto'
-      required:
-      - resourceType
-      - changes
-      - summary
-    ResourceDependencyDto:
-      type: object
-      properties:
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        resourceId:
-          type: string
-          description: ID of the dependent resource
-        resourceName:
-          type: string
-          description: Name of the dependent resource
-        isBlocking:
-          type: boolean
-          description: Whether this dependency blocks the operation
-        reason:
-          $ref: '#/components/schemas/DependencyReasonEnum'
-      required:
-      - resourceType
-      - resourceId
-      - resourceName
-      - isBlocking
-      - reason
-    ResourceTypeEnum:
-      type: string
-      description: Type of the layout
-      enum:
-      - REGULAR
-      - ECHO
-      - BRIDGE
-    ErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-      required:
-      - statusCode
-      - timestamp
-      - path
-    ResourceDiffDto:
-      type: object
-      properties:
-        sourceResource:
-          description: Source resource information
-          allOf:
-          - $ref: '#/components/schemas/ResourceInfoDto'
-        targetResource:
-          description: Target resource information
-          allOf:
-          - $ref: '#/components/schemas/ResourceInfoDto'
-        resourceType:
-          $ref: '#/components/schemas/ResourceTypeEnum'
-        action:
-          $ref: '#/components/schemas/DiffActionEnum'
-        diffs:
-          type: object
-          description: Detailed changes (only for modified resources)
-          properties:
-            previous:
-              type:
-              - object
-              - 'null'
-              description: Previous state of the resource (null for added resources)
-              additionalProperties: true
-            new:
-              type:
-              - object
-              - 'null'
-              description: New state of the resource (null for deleted resources)
-              additionalProperties: true
-        stepType:
-          type: string
-          description: Step type (only for step resources)
-        previousIndex:
-          type: number
-          description: Previous index in steps array (for moved/deleted steps)
-        newIndex:
-          type: number
-          description: New index in steps array (for moved/added steps)
-      required:
-      - resourceType
-      - action
-    DiffSummaryDto:
-      type: object
-      properties:
-        added:
-          type: number
-          description: Number of added resources (workflows and steps)
-        modified:
-          type: number
-          description: Number of modified resources (workflows and steps)
-        deleted:
-          type: number
-          description: Number of deleted resources (workflows and steps)
-        unchanged:
-          type: number
-          description: Number of unchanged resources (workflows and steps)
-      required:
-      - added
-      - modified
-      - deleted
-      - unchanged
-    EnvironmentDiffSummaryDto:
-      type: object
-      properties:
-        totalEntities:
-          type: number
-          description: Total number of entities compared
-        totalChanges:
-          type: number
-          description: Total number of changes detected
-        hasChanges:
-          type: boolean
-          description: Whether any changes were detected
-      required:
-      - totalEntities
-      - totalChanges
-      - hasChanges
-    UpdateEnvironmentRequestDto:
-      type: object
-      properties:
-        name:
-          type: string
-        identifier:
-          type: string
-        parentId:
-          type: string
-        color:
-          type: string
-        dns:
-          $ref: '#/components/schemas/InBoundParseDomainDto'
-        bridge:
-          $ref: '#/components/schemas/BridgeConfigurationDto'
-    ApiKeyDto:
-      type: object
-      properties:
-        key:
-          type: string
-          description: API key
-          example: sk_test_1234567890abcdef
-        _userId:
-          type: string
-          description: User ID associated with the API key
-          example: 60d5ecb8b3b3a30015f3e1a4
-        hash:
-          type: string
-          description: Hashed representation of the API key
-          example: hash_value_here
-      required:
-      - key
-      - _userId
     PublishEnvironmentResponseDto:
       type: object
       properties:
@@ -2824,48 +2847,31 @@ components:
       required:
       - results
       - summary
-    DiffEnvironmentResponseDto:
-      type: object
-      properties:
-        sourceEnvironmentId:
-          type: string
-          description: Source environment ID
-        targetEnvironmentId:
-          type: string
-          description: Target environment ID
-        resources:
-          description: Diff resources by resource type
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceDiffResultDto'
-        summary:
-          description: Overall summary
-          allOf:
-          - $ref: '#/components/schemas/EnvironmentDiffSummaryDto'
-      required:
-      - sourceEnvironmentId
-      - targetEnvironmentId
-      - resources
-      - summary
   headers:
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
       schema:
         type: string
-      example: '100'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
+      example: application/json
     RateLimit-Remaining:
       required: false
       description: The number of requests remaining until the next window.
       schema:
         type: string
       example: '93'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
     RateLimit-Policy:
       required: false
       description: The rate limit policy that was used to evaluate the request.
@@ -2878,21 +2884,15 @@ components:
       schema:
         type: string
       example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
     Retry-After:
       required: false
       description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
       schema:
         type: string
       example: '8'
