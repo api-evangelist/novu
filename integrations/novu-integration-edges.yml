@@ -14,7 +14,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: apple.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: Discord
   partner: discord
   partner_match: domain
@@ -30,7 +30,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: discord.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: FCM
   partner: google-firebase
   partner_match: domain
@@ -46,7 +46,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: google.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: Microsoft Teams
   partner: microsoft-teams
   partner_match: domain
@@ -62,7 +62,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: microsoft.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: Slack
   partner: slack
   partner_match: domain
@@ -78,7 +78,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: slack.dev
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: Telegram
   partner: telegram
   partner_match: domain
@@ -94,7 +94,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: telegram.org
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: WhatsApp
   partner: whatsapp
   partner_match: domain
@@ -110,7 +110,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: whatsapp.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: africastalking
   partner: africastalking
   partner_match: domain
@@ -126,7 +126,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: africastalking.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: bandwidth
   partner: bandwidth
   partner_match: domain
@@ -142,7 +142,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: bandwidth.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: braze
   partner: braze
   partner_match: domain
@@ -158,7 +158,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: braze.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: brevo
   partner: brevo
   partner_match: domain
@@ -174,7 +174,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: brevo.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: clicksend
   partner: clicksend
   partner_match: domain
@@ -190,7 +190,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: clicksend.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: expo
   partner: expo
   partner_match: domain
@@ -206,7 +206,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: expo.dev
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: 46elks
   partner: 46elks
   partner_match: domain
@@ -222,7 +222,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: 46elks.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: getstream
   partner: getstream
   partner_match: domain
@@ -238,7 +238,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: getstream.io
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: gupshup
   partner: gupshup
   partner_match: domain
@@ -254,7 +254,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: gupshup.io
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: infobip
   partner: infobip
   partner_match: domain
@@ -270,7 +270,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: infobip.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: mailersend
   partner: mailersend
   partner_match: domain
@@ -286,7 +286,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mailersend.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: mailgun
   partner: mailgun
   partner_match: domain
@@ -302,7 +302,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mailgun.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: mailjet
   partner: mailjet
   partner_match: domain
@@ -318,7 +318,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mailjet.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: mailtrap
   partner: mailtrap
   partner_match: domain
@@ -334,7 +334,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mailtrap.io
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: mattermost
   partner: mattermost
   partner_match: domain
@@ -350,23 +350,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mattermost.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
-- partner_name: messagebird
-  partner: messagebird
-  partner_match: domain
-  type: contract
-  channel: contract-enum
-  relationship: delivery-provider
-  direction: provider-built
-  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
-  contract_reference:
-    repo: novu
-    spec_file: novu-channel-connections-api-openapi.yml
-    value: messagebird
-    property: schemas.GetChannelConnectionResponseDto.providerId
-    matched_domain: messagebird.com
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: vonage
   partner: vonage
   partner_match: domain
@@ -382,7 +366,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: vonage.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: onesignal
   partner: onesignal
   partner_match: domain
@@ -398,7 +382,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: plivo
   partner: plivo
   partner_match: domain
@@ -414,7 +398,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: plivo.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: plunk
   partner: plunk
   partner_match: domain
@@ -430,7 +414,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: useplunk.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: postmark
   partner: postmark
   partner_match: domain
@@ -446,7 +430,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: postmarkapp.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: pusher
   partner: pusher
   partner_match: domain
@@ -462,7 +446,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: pusher.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: resend
   partner: resend
   partner_match: domain
@@ -478,7 +462,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: resend.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: ringcentral
   partner: ringcentral
   partner_match: domain
@@ -494,7 +478,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: ringcentral.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: sendgrid
   partner: sendgrid
   partner_match: domain
@@ -510,7 +494,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sendgrid.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: sendinblue
   partner: sendinblue
   partner_match: domain
@@ -526,7 +510,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sendinblue.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: amazon-ses
   partner: amazon-ses
   partner_match: domain
@@ -542,7 +526,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: amazon.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: sinch
   partner: sinch
   partner_match: domain
@@ -558,7 +542,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sinch.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: amazon-sns
   partner: amazon-sns
   partner_match: domain
@@ -574,7 +558,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: amazon.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: sparkpost
   partner: sparkpost
   partner_match: domain
@@ -590,7 +574,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sparkpost.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: telnyx
   partner: telnyx
   partner_match: domain
@@ -606,7 +590,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: telnyx.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: termii
   partner: termii
   partner_match: domain
@@ -622,7 +606,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: termii.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: twilio
   partner: twilio
   partner_match: domain
@@ -638,7 +622,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: twilio.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: unifonic
   partner: unifonic
   partner_match: domain
@@ -654,7 +638,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: unifonic.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 - partner_name: zulip
   partner: zulip
   partner_match: domain
@@ -670,7 +654,7 @@ edges:
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: zulip.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
 generated: '2026-10-12'
 method: searched
 checked: []

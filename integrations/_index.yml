@@ -19,7 +19,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: apple.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-discord
@@ -38,7 +38,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: discord.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-fcm
@@ -57,7 +57,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: google.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-microsoft-teams
@@ -76,7 +76,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: microsoft.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-slack
@@ -95,7 +95,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: slack.dev
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-telegram
@@ -114,7 +114,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: telegram.org
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-whatsapp
@@ -133,7 +133,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: whatsapp.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-africastalking
@@ -152,7 +152,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: africastalking.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-bandwidth
@@ -171,7 +171,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: bandwidth.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-braze
@@ -190,7 +190,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: braze.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-brevo
@@ -209,7 +209,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: brevo.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-clicksend
@@ -228,7 +228,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: clicksend.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-expo
@@ -247,7 +247,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: expo.dev
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-46elks
@@ -266,7 +266,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: 46elks.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-getstream
@@ -285,7 +285,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: getstream.io
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-gupshup
@@ -304,7 +304,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: gupshup.io
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-infobip
@@ -323,7 +323,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: infobip.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-mailersend
@@ -342,7 +342,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mailersend.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-mailgun
@@ -361,7 +361,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mailgun.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-mailjet
@@ -380,7 +380,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mailjet.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-mailtrap
@@ -399,7 +399,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mailtrap.io
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-mattermost
@@ -418,26 +418,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mattermost.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
-  status: not-a-workflow
-  arazzo: null
-- slug: novu-messagebird
-  label: messagebird
-  partner: messagebird
-  partner_name: messagebird
-  type: contract
-  channel: contract-enum
-  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
-  source: edge
-  relationship: delivery-provider
-  contract_reference:
-    repo: novu
-    spec_file: novu-channel-connections-api-openapi.yml
-    value: messagebird
-    property: schemas.GetChannelConnectionResponseDto.providerId
-    matched_domain: messagebird.com
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-vonage
@@ -456,7 +437,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: vonage.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-onesignal
@@ -475,7 +456,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-plivo
@@ -494,7 +475,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: plivo.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-plunk
@@ -513,7 +494,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: useplunk.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-postmark
@@ -532,7 +513,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: postmarkapp.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-pusher
@@ -551,7 +532,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: pusher.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-resend
@@ -570,7 +551,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: resend.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-ringcentral
@@ -589,7 +570,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: ringcentral.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-sendgrid
@@ -608,7 +589,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sendgrid.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-sendinblue
@@ -627,7 +608,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sendinblue.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-amazon-ses
@@ -646,7 +627,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: amazon.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-sinch
@@ -665,7 +646,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sinch.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-amazon-sns
@@ -684,7 +665,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: amazon.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-sparkpost
@@ -703,7 +684,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sparkpost.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-telnyx
@@ -722,7 +703,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: telnyx.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-termii
@@ -741,7 +722,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: termii.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-twilio
@@ -760,7 +741,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: twilio.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-unifonic
@@ -779,7 +760,7 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: unifonic.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
 - slug: novu-zulip
@@ -798,6 +779,6 @@
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: zulip.com
     detected_by: sweep-cpaas.py
-    detected: '2026-10-12'
+    detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
