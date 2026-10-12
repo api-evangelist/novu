@@ -20,7 +20,7 @@
     matched_domain: apple.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-discord
   label: Discord
@@ -39,7 +39,7 @@
     matched_domain: discord.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-fcm
   label: FCM
@@ -58,7 +58,7 @@
     matched_domain: google.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-microsoft-teams
   label: Microsoft Teams
@@ -77,7 +77,7 @@
     matched_domain: microsoft.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-slack
   label: Slack
@@ -96,7 +96,7 @@
     matched_domain: slack.dev
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-telegram
   label: Telegram
@@ -115,7 +115,7 @@
     matched_domain: telegram.org
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-whatsapp
   label: WhatsApp
@@ -134,7 +134,7 @@
     matched_domain: whatsapp.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-africastalking
   label: africastalking
@@ -153,7 +153,7 @@
     matched_domain: africastalking.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-bandwidth
   label: bandwidth
@@ -172,7 +172,7 @@
     matched_domain: bandwidth.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-braze
   label: braze
@@ -191,7 +191,7 @@
     matched_domain: braze.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-brevo
   label: brevo
@@ -210,7 +210,7 @@
     matched_domain: brevo.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-clicksend
   label: clicksend
@@ -229,7 +229,7 @@
     matched_domain: clicksend.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-expo
   label: expo
@@ -248,7 +248,7 @@
     matched_domain: expo.dev
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-partner-spec
+  status: not-a-workflow
   arazzo: null
 - slug: novu-46elks
   label: 46elks
@@ -267,7 +267,7 @@
     matched_domain: 46elks.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-getstream
   label: getstream
@@ -286,7 +286,7 @@
     matched_domain: getstream.io
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-gupshup
   label: gupshup
@@ -305,7 +305,7 @@
     matched_domain: gupshup.io
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-infobip
   label: infobip
@@ -324,7 +324,7 @@
     matched_domain: infobip.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-mailersend
   label: mailersend
@@ -343,7 +343,7 @@
     matched_domain: mailersend.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-mailgun
   label: mailgun
@@ -362,7 +362,7 @@
     matched_domain: mailgun.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-mailjet
   label: mailjet
@@ -381,7 +381,7 @@
     matched_domain: mailjet.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-mailtrap
   label: mailtrap
@@ -400,7 +400,7 @@
     matched_domain: mailtrap.io
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-mattermost
   label: mattermost
@@ -419,7 +419,7 @@
     matched_domain: mattermost.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-messagebird
   label: messagebird
@@ -438,7 +438,7 @@
     matched_domain: messagebird.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-partner-spec
+  status: not-a-workflow
   arazzo: null
 - slug: novu-vonage
   label: vonage
@@ -457,7 +457,7 @@
     matched_domain: vonage.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-onesignal
   label: onesignal
@@ -476,7 +476,7 @@
     matched_domain: onesignal.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-plivo
   label: plivo
@@ -495,7 +495,7 @@
     matched_domain: plivo.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-plunk
   label: plunk
@@ -514,7 +514,7 @@
     matched_domain: useplunk.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-postmark
   label: postmark
@@ -533,7 +533,7 @@
     matched_domain: postmarkapp.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-pusher
   label: pusher
@@ -552,7 +552,7 @@
     matched_domain: pusher.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-resend
   label: resend
@@ -571,7 +571,7 @@
     matched_domain: resend.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-ringcentral
   label: ringcentral
@@ -590,7 +590,7 @@
     matched_domain: ringcentral.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-sendgrid
   label: sendgrid
@@ -609,7 +609,7 @@
     matched_domain: sendgrid.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-sendinblue
   label: sendinblue
@@ -628,7 +628,7 @@
     matched_domain: sendinblue.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-partner-spec
+  status: not-a-workflow
   arazzo: null
 - slug: novu-amazon-ses
   label: amazon-ses
@@ -647,7 +647,7 @@
     matched_domain: amazon.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-sinch
   label: sinch
@@ -666,7 +666,7 @@
     matched_domain: sinch.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-amazon-sns
   label: amazon-sns
@@ -685,7 +685,7 @@
     matched_domain: amazon.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-sparkpost
   label: sparkpost
@@ -704,7 +704,7 @@
     matched_domain: sparkpost.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-telnyx
   label: telnyx
@@ -723,7 +723,7 @@
     matched_domain: telnyx.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-termii
   label: termii
@@ -742,7 +742,7 @@
     matched_domain: termii.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-twilio
   label: twilio
@@ -761,7 +761,7 @@
     matched_domain: twilio.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-unifonic
   label: unifonic
@@ -780,7 +780,7 @@
     matched_domain: unifonic.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: novu-zulip
   label: zulip
@@ -799,5 +799,5 @@
     matched_domain: zulip.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-12'
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
