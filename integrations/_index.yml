@@ -212,6 +212,25 @@
     detected: '2026-10-13'
   status: not-a-workflow
   arazzo: null
+- slug: novu-clickatell
+  label: clickatell
+  partner: clickatell
+  partner_name: clickatell
+  type: contract
+  channel: contract-enum
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  source: edge
+  relationship: delivery-provider
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: clickatell
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: clickatell.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+  status: not-a-workflow
+  arazzo: null
 - slug: novu-clicksend
   label: clicksend
   partner: clicksend
@@ -227,6 +246,25 @@
     value: clicksend
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: clicksend.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+  status: not-a-workflow
+  arazzo: null
+- slug: novu-cm-com
+  label: cm-com
+  partner: cm-com
+  partner_name: cm-com
+  type: contract
+  channel: contract-enum
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  source: edge
+  relationship: delivery-provider
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: cm-telecom
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: cm.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-13'
   status: not-a-workflow
@@ -417,6 +455,25 @@
     value: mattermost
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mattermost.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+  status: not-a-workflow
+  arazzo: null
+- slug: novu-netcorecloud
+  label: netcorecloud
+  partner: netcorecloud
+  partner_name: netcorecloud
+  type: contract
+  channel: contract-enum
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  source: edge
+  relationship: delivery-provider
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: netcore
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: netcorecloud.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-13'
   status: not-a-workflow
@@ -645,6 +702,25 @@
     value: sinch
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sinch.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+  status: not-a-workflow
+  arazzo: null
+- slug: novu-seven-io
+  label: seven-io
+  partner: seven-io
+  partner_name: seven-io
+  type: contract
+  channel: contract-enum
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  source: edge
+  relationship: delivery-provider
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: sms77
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: seven.io
     detected_by: sweep-cpaas.py
     detected: '2026-10-13'
   status: not-a-workflow

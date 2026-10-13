@@ -175,6 +175,22 @@ edges:
     matched_domain: brevo.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-13'
+- partner_name: clickatell
+  partner: clickatell
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: delivery-provider
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: clickatell
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: clickatell.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
 - partner_name: clicksend
   partner: clicksend
   partner_match: domain
@@ -189,6 +205,22 @@ edges:
     value: clicksend
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: clicksend.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: cm-com
+  partner: cm-com
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: delivery-provider
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: cm-telecom
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: cm.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-13'
 - partner_name: expo
@@ -349,6 +381,22 @@ edges:
     value: mattermost
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: mattermost.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: netcorecloud
+  partner: netcorecloud
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: delivery-provider
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: netcore
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: netcorecloud.com
     detected_by: sweep-cpaas.py
     detected: '2026-10-13'
 - partner_name: vonage
@@ -541,6 +589,22 @@ edges:
     value: sinch
     property: schemas.GetChannelConnectionResponseDto.providerId
     matched_domain: sinch.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: seven-io
+  partner: seven-io
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: delivery-provider
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: sms77
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: seven.io
     detected_by: sweep-cpaas.py
     detected: '2026-10-13'
 - partner_name: amazon-sns
