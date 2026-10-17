@@ -1283,245 +1283,7 @@ paths:
       security:
       - secretKey: []
 components:
-  headers:
-    Content-Type:
-      required: true
-      description: The MIME type of the response body.
-      schema:
-        type: string
-      example: application/json
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Policy:
-      required: false
-      description: The rate limit policy that was used to evaluate the request.
-      schema:
-        type: string
-      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
-    Idempotency-Key:
-      required: false
-      description: The idempotency key used to evaluate the request.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
-    Retry-After:
-      required: false
-      description: The number of seconds after which the client may retry the request that was previously rejected.
-      schema:
-        type: string
-      example: '8'
   schemas:
-    ConstraintValidation:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type: object
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-      required:
-      - messages
-    EmailChannelOverrides:
-      type: object
-      properties:
-        layoutId:
-          type:
-          - string
-          - 'null'
-          description: Override or remove the layout for all email steps in the workflow
-          example: promotional-layout-2024
-    PayloadValidationExceptionDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-        type:
-          type: string
-          description: Type identifier for payload validation errors
-          example: PAYLOAD_VALIDATION_ERROR
-        errors:
-          description: Array of detailed validation errors
-          example:
-          - field: user.name
-            message: must have required property 'name'
-            value:
-              age: 25
-            schemaPath: '#/required'
-          type: array
-          items:
-            $ref: '#/components/schemas/PayloadValidationErrorDto'
-        schema:
-          type: object
-          description: The JSON schema that was used for validation
-          example:
-            type: object
-            properties:
-              name:
-                type: string
-              age:
-                type: number
-            required:
-            - name
-      required:
-      - statusCode
-      - timestamp
-      - path
-      - type
-      - errors
-    PayloadValidationErrorDto:
-      type: object
-      properties:
-        field:
-          type: string
-          description: Field path that failed validation
-          example: user.name
-        message:
-          type: string
-          description: Validation error message
-          example: must have required property 'name'
-        value:
-          description: The actual value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example:
-            age: 25
-        schemaPath:
-          type: string
-          description: JSON Schema path where the validation failed
-          example: '#/required'
-      required:
-      - field
-      - message
-    BulkTriggerEventDto:
-      type: object
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/TriggerEventRequestDto'
-      required:
-      - events
-    TopicPayloadDto:
-      type: object
-      properties:
-        topicKey:
-          type: string
-          minLength: 1
-        type:
-          $ref: '#/components/schemas/TriggerRecipientsTypeEnum'
-        exclude:
-          description: Optional array of subscriber IDs to exclude from the topic trigger
-          type: array
-          items:
-            type: string
-      required:
-      - topicKey
-      - type
     TriggerEventRequestDto:
       type: object
       properties:
@@ -1604,44 +1366,56 @@ components:
       required:
       - name
       - to
-    SubscriberChannelDto:
+    EmailChannelOverrides:
       type: object
       properties:
-        providerId:
-          type: string
-          description: The ID of the chat or push provider.
+        layoutId:
+          type:
+          - string
+          - 'null'
+          description: Override or remove the layout for all email steps in the workflow
+          example: promotional-layout-2024
+    TriggerEventResponseDto:
+      type: object
+      properties:
+        acknowledged:
+          type: boolean
+          description: Indicates whether the trigger was acknowledged or not
+        status:
           enum:
-          - slack
-          - discord
-          - msteams
-          - mattermost
-          - ryver
-          - zulip
-          - grafana-on-call
-          - getstream
-          - rocket-chat
-          - whatsapp-business
-          - chat-webhook
-          - novu-slack
-          - telegram
-          - fcm
-          - apns
-          - expo
-          - one-signal
-          - pushpad
-          - push-webhook
-          - pusher-beams
-          - appio
-        integrationIdentifier:
+          - error
+          - trigger_not_active
+          - no_workflow_active_steps_defined
+          - no_workflow_steps_defined
+          - processed
+          - no_tenant_found
+          - invalid_recipients
           type: string
-          description: An optional identifier for the integration.
-        credentials:
-          description: Credentials for the channel.
-          allOf:
-          - $ref: '#/components/schemas/ChannelCredentialsDto'
+          description: Status of the trigger
+        error:
+          description: In case of an error, this field will contain the error message(s)
+          type: array
+          items:
+            type: string
+        transactionId:
+          type: string
+          description: The returned transaction ID of the trigger
+        activityFeedLink:
+          type: string
+          description: Link to the activity feed for this trigger event
+        jobData:
+          type: object
       required:
-      - providerId
-      - credentials
+      - acknowledged
+      - status
+    SeverityLevelEnum:
+      type: string
+      description: Severity of the workflow
+      enum:
+      - high
+      - medium
+      - low
+      - none
     TriggerEventToAllRequestDto:
       type: object
       properties:
@@ -1707,14 +1481,141 @@ components:
       required:
       - name
       - payload
-    SeverityLevelEnum:
-      type: string
-      description: Severity of the workflow
-      enum:
-      - high
-      - medium
-      - low
-      - none
+    SubscriberChannelDto:
+      type: object
+      properties:
+        providerId:
+          type: string
+          description: The ID of the chat or push provider.
+          enum:
+          - slack
+          - discord
+          - msteams
+          - mattermost
+          - ryver
+          - zulip
+          - grafana-on-call
+          - getstream
+          - rocket-chat
+          - whatsapp-business
+          - chat-webhook
+          - novu-slack
+          - telegram
+          - fcm
+          - apns
+          - expo
+          - one-signal
+          - pushpad
+          - push-webhook
+          - pusher-beams
+          - appio
+        integrationIdentifier:
+          type: string
+          description: An optional identifier for the integration.
+        credentials:
+          description: Credentials for the channel.
+          allOf:
+          - $ref: '#/components/schemas/ChannelCredentialsDto'
+      required:
+      - providerId
+      - credentials
+    PayloadValidationExceptionDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        type:
+          type: string
+          description: Type identifier for payload validation errors
+          example: PAYLOAD_VALIDATION_ERROR
+        errors:
+          description: Array of detailed validation errors
+          example:
+          - field: user.name
+            message: must have required property 'name'
+            value:
+              age: 25
+            schemaPath: '#/required'
+          type: array
+          items:
+            $ref: '#/components/schemas/PayloadValidationErrorDto'
+        schema:
+          type: object
+          description: The JSON schema that was used for validation
+          example:
+            type: object
+            properties:
+              name:
+                type: string
+              age:
+                type: number
+            required:
+            - name
+      required:
+      - statusCode
+      - timestamp
+      - path
+      - type
+      - errors
+    TopicPayloadDto:
+      type: object
+      properties:
+        topicKey:
+          type: string
+          minLength: 1
+        type:
+          $ref: '#/components/schemas/TriggerRecipientsTypeEnum'
+        exclude:
+          description: Optional array of subscriber IDs to exclude from the topic trigger
+          type: array
+          items:
+            type: string
+      required:
+      - topicKey
+      - type
     StepsOverrides:
       type: object
       properties:
@@ -1733,13 +1634,17 @@ components:
           - 'null'
           description: Override the or remove the layout for this specific step
           example: welcome-email-layout
-    ChannelOverrides:
+    ChannelCredentialsDto:
       type: object
       properties:
-        email:
-          description: Email channel specific overrides
-          allOf:
-          - $ref: '#/components/schemas/EmailChannelOverrides'
+        webhookUrl:
+          type: string
+          description: The URL for the webhook associated with the channel.
+        deviceTokens:
+          description: An array of device tokens for push notifications.
+          type: array
+          items:
+            type: string
     ErrorDto:
       type: object
       properties:
@@ -1792,50 +1697,172 @@ components:
       - statusCode
       - timestamp
       - path
-    ChannelCredentialsDto:
+    PayloadValidationErrorDto:
       type: object
       properties:
-        webhookUrl:
+        field:
           type: string
-          description: The URL for the webhook associated with the channel.
-        deviceTokens:
-          description: An array of device tokens for push notifications.
-          type: array
-          items:
-            type: string
-    TriggerEventResponseDto:
-      type: object
-      properties:
-        acknowledged:
-          type: boolean
-          description: Indicates whether the trigger was acknowledged or not
-        status:
-          enum:
-          - error
-          - trigger_not_active
-          - no_workflow_active_steps_defined
-          - no_workflow_steps_defined
-          - processed
-          - no_tenant_found
-          - invalid_recipients
+          description: Field path that failed validation
+          example: user.name
+        message:
           type: string
-          description: Status of the trigger
-        error:
-          description: In case of an error, this field will contain the error message(s)
-          type: array
-          items:
-            type: string
-        transactionId:
+          description: Validation error message
+          example: must have required property 'name'
+        value:
+          description: The actual value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example:
+            age: 25
+        schemaPath:
           type: string
-          description: The returned transaction ID of the trigger
-        activityFeedLink:
-          type: string
-          description: Link to the activity feed for this trigger event
-        jobData:
-          type: object
+          description: JSON Schema path where the validation failed
+          example: '#/required'
       required:
-      - acknowledged
-      - status
+      - field
+      - message
+    TenantPayloadDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+        name:
+          type: string
+        data:
+          type: object
+    TriggerRecipientsTypeEnum:
+      type: string
+      enum:
+      - Subscriber
+      - Topic
+    ChannelOverrides:
+      type: object
+      properties:
+        email:
+          description: Email channel specific overrides
+          allOf:
+          - $ref: '#/components/schemas/EmailChannelOverrides'
+    BulkTriggerEventDto:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/TriggerEventRequestDto'
+      required:
+      - events
+    SubscriberPayloadDto:
+      type: object
+      properties:
+        firstName:
+          type:
+          - string
+          - 'null'
+          description: First name of the subscriber
+          example: John
+        lastName:
+          type:
+          - string
+          - 'null'
+          description: Last name of the subscriber
+          example: Doe
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email address of the subscriber
+          example: john.doe@example.com
+        phone:
+          type:
+          - string
+          - 'null'
+          description: Phone number of the subscriber
+          example: '+1234567890'
+        avatar:
+          type:
+          - string
+          - 'null'
+          description: Avatar URL or identifier
+          example: https://example.com/avatar.jpg
+        locale:
+          type:
+          - string
+          - 'null'
+          description: Locale of the subscriber
+          example: en-US
+        timezone:
+          type:
+          - string
+          - 'null'
+          description: Timezone of the subscriber
+          example: America/New_York
+        data:
+          type:
+          - object
+          - 'null'
+          description: Additional custom data associated with the subscriber
+          additionalProperties: true
+        subscriberId:
+          type: string
+          description: The internal identifier you used to create this subscriber, usually correlates to the id the user in your systems
+          minLength: 1
+        channels:
+          description: An optional array of subscriber channels.
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriberChannelDto'
+      required:
+      - subscriberId
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
     ValidationErrorDto:
       type: object
       properties:
@@ -1976,82 +2003,55 @@ components:
           deprecated: true
         severity:
           $ref: '#/components/schemas/SeverityLevelEnum'
-    TriggerRecipientsTypeEnum:
-      type: string
-      enum:
-      - Subscriber
-      - Topic
-    SubscriberPayloadDto:
-      type: object
-      properties:
-        firstName:
-          type:
-          - string
-          - 'null'
-          description: First name of the subscriber
-          example: John
-        lastName:
-          type:
-          - string
-          - 'null'
-          description: Last name of the subscriber
-          example: Doe
-        email:
-          type:
-          - string
-          - 'null'
-          description: Email address of the subscriber
-          example: john.doe@example.com
-        phone:
-          type:
-          - string
-          - 'null'
-          description: Phone number of the subscriber
-          example: '+1234567890'
-        avatar:
-          type:
-          - string
-          - 'null'
-          description: Avatar URL or identifier
-          example: https://example.com/avatar.jpg
-        locale:
-          type:
-          - string
-          - 'null'
-          description: Locale of the subscriber
-          example: en-US
-        timezone:
-          type:
-          - string
-          - 'null'
-          description: Timezone of the subscriber
-          example: America/New_York
-        data:
-          type:
-          - object
-          - 'null'
-          description: Additional custom data associated with the subscriber
-          additionalProperties: true
-        subscriberId:
-          type: string
-          description: The internal identifier you used to create this subscriber, usually correlates to the id the user in your systems
-          minLength: 1
-        channels:
-          description: An optional array of subscriber channels.
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriberChannelDto'
-      required:
-      - subscriberId
-    TenantPayloadDto:
-      type: object
-      properties:
-        identifier:
-          type: string
-        name:
-          type: string
-        data:
-          type: object
+  headers:
+    Content-Type:
+      required: true
+      description: The MIME type of the response body.
+      schema:
+        type: string
+      example: application/json
+    Retry-After:
+      required: false
+      description: The number of seconds after which the client may retry the request that was previously rejected.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    RateLimit-Policy:
+      required: false
+      description: The rate limit policy that was used to evaluate the request.
+      schema:
+        type: string
+      example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    Idempotency-Key:
+      required: false
+      description: The idempotency key used to evaluate the request.
+      schema:
+        type: string
+      example: '8'
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
   securitySchemes:
     secretKey:
       type: apiKey

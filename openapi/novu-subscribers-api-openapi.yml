@@ -11129,18 +11129,144 @@ paths:
       - secretKey: []
 components:
   schemas:
-    ConstraintValidation:
+    GetSubscriberPreferencesDto:
       type: object
       properties:
-        messages:
+        global:
+          description: Global preference settings
+          allOf:
+          - $ref: '#/components/schemas/SubscriberGlobalPreferenceDto'
+        workflows:
+          description: Workflow-specific preference settings
           type: array
           items:
-            type: string
-          description: List of validation error messages
-          example:
-          - Field is required
-          - Invalid format
-        value:
+            $ref: '#/components/schemas/SubscriberWorkflowPreferenceDto'
+      required:
+      - global
+      - workflows
+    DigestTimedMetadata:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+          enum:
+          - seconds
+          - minutes
+          - hours
+          - days
+          - weeks
+          - months
+        digestKey:
+          type: string
+        type:
+          type: string
+          enum:
+          - timed
+        timed:
+          $ref: '#/components/schemas/TimedConfig'
+      required:
+      - type
+    SubscriberDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The identifier of the subscriber
+          example: 64da692e9a94fb2e6449ad07
+        subscriberId:
+          type: string
+          description: The external identifier of the subscriber
+          example: user-123
+        avatar:
+          type:
+          - string
+          - 'null'
+          description: The avatar URL of the subscriber
+          example: https://example.com/avatar.png
+        firstName:
+          type:
+          - string
+          - 'null'
+          description: The first name of the subscriber
+          example: John
+        lastName:
+          type:
+          - string
+          - 'null'
+          description: The last name of the subscriber
+          example: Doe
+        email:
+          type:
+          - string
+          - 'null'
+          description: The email of the subscriber
+          example: john@example.com
+      required:
+      - _id
+      - subscriberId
+    BulkCreateSubscriberResponseDto:
+      type: object
+      properties:
+        updated:
+          description: An array of subscribers that were successfully updated.
+          type: array
+          items:
+            $ref: '#/components/schemas/UpdatedSubscriberDto'
+        created:
+          description: An array of subscribers that were successfully created.
+          type: array
+          items:
+            $ref: '#/components/schemas/CreatedSubscriberDto'
+        failed:
+          description: An array of failed operations with error messages and optional subscriber IDs.
+          type: array
+          items:
+            $ref: '#/components/schemas/FailedOperationDto'
+      required:
+      - updated
+      - created
+      - failed
+    EmailBlockStyles:
+      type: object
+      properties:
+        textAlign:
+          $ref: '#/components/schemas/TextAlignEnum'
+      required:
+      - textAlign
+    UpdateSubscriberOnlineFlagRequestDto:
+      type: object
+      properties:
+        isOnline:
+          type: boolean
+      required:
+      - isOnline
+    FailedOperationDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message associated with the failed operation.
+        subscriberId:
+          type: string
+          description: The subscriber ID associated with the failed operation. This field is optional.
+    ErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
           description: Value that failed validation
           oneOf:
           - type:
@@ -11148,7 +11274,9 @@ components:
             - 'null'
           - type: number
           - type: boolean
-          - type: object
+          - type:
+            - object
+            - 'null'
           - type: array
             items:
               anyOf:
@@ -11160,54 +11288,162 @@ components:
               - type: object
                 additionalProperties: true
           example: 'xx xx xx '
-      required:
-      - messages
-    SubscriberGlobalPreferenceDto:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether notifications are enabled globally
-        channels:
-          description: Channel-specific preference settings
-          allOf:
-          - $ref: '#/components/schemas/SubscriberPreferenceChannels'
-        schedule:
-          description: Subscriber schedule
-          allOf:
-          - $ref: '#/components/schemas/ScheduleDto'
-      required:
-      - enabled
-      - channels
-    MarkSubscriberNotificationsAsSeenDto:
-      type: object
-      properties:
-        notificationIds:
-          description: Specific notification IDs to mark as seen
-          type: array
-          items:
-            type: string
-        tags:
+        ctx:
           type: object
-          description: 'Filter notifications by workflow tags (OR for string[], or { and: [{ or: string[] }, ...] } for AND of OR-groups).'
-        data:
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
           type: string
-          description: Filter notifications by data attributes (JSON string)
-        contextKeys:
-          description: Context keys for filtering notifications
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+      required:
+      - statusCode
+      - timestamp
+      - path
+    SubscriberPreferenceChannels:
+      type: object
+      properties:
+        email:
+          type: boolean
+          description: Email channel preference
+          example: true
+        sms:
+          type: boolean
+          description: SMS channel preference
+          example: false
+        in_app:
+          type: boolean
+          description: In-app channel preference
+          example: true
+        chat:
+          type: boolean
+          description: Chat channel preference
+          example: false
+        push:
+          type: boolean
+          description: Push notification channel preference
+          example: true
+    InboxNotificationDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the notification
+        transactionId:
+          type: string
+          description: Transaction identifier of the notification
+        subject:
+          type: string
+          description: Subject of the notification
+        body:
+          type: string
+          description: Body content of the notification
+        to:
+          description: Subscriber this notification was sent to
+          allOf:
+          - $ref: '#/components/schemas/InboxSubscriberResponseDto'
+        isRead:
+          type: boolean
+          description: Whether the notification has been read
+        isSeen:
+          type: boolean
+          description: Whether the notification has been seen
+        isArchived:
+          type: boolean
+          description: Whether the notification has been archived
+        isSnoozed:
+          type: boolean
+          description: Whether the notification is snoozed
+        snoozedUntil:
+          type:
+          - string
+          - 'null'
+          description: ISO timestamp when the notification will be unsnoozed
+        deliveredAt:
+          description: Timestamps when the notification was delivered
           type: array
           items:
             type: string
-    SubscriberPreferenceOverrideDto:
-      type: object
-      properties:
-        channel:
+        createdAt:
+          type: string
+          description: ISO timestamp when the notification was created
+        readAt:
+          type:
+          - string
+          - 'null'
+          description: ISO timestamp when the notification was read
+        firstSeenAt:
+          type:
+          - string
+          - 'null'
+          description: ISO timestamp when the notification was first seen
+        archivedAt:
+          type:
+          - string
+          - 'null'
+          description: ISO timestamp when the notification was archived
+        avatar:
+          type: string
+          description: Avatar URL for the notification
+        primaryAction:
+          description: Primary action button for the notification
+          allOf:
+          - $ref: '#/components/schemas/InboxActionDto'
+        secondaryAction:
+          description: Secondary action button for the notification
+          allOf:
+          - $ref: '#/components/schemas/InboxActionDto'
+        channelType:
           $ref: '#/components/schemas/ChannelTypeEnum'
-        source:
-          $ref: '#/components/schemas/PreferenceOverrideSourceEnum'
+        tags:
+          description: Tags associated with the notification
+          type: array
+          items:
+            type: string
+        data:
+          type: object
+          additionalProperties: true
+          description: Custom data payload of the notification
+        redirect:
+          description: Redirect configuration for the notification
+          allOf:
+          - $ref: '#/components/schemas/RedirectDto'
+        workflow:
+          description: Workflow associated with the notification
+          allOf:
+          - $ref: '#/components/schemas/NotificationWorkflowDto'
+        severity:
+          $ref: '#/components/schemas/SeverityLevelEnum'
       required:
-      - channel
-      - source
+      - id
+      - transactionId
+      - body
+      - to
+      - isRead
+      - isSeen
+      - isArchived
+      - isSnoozed
+      - createdAt
+      - channelType
+      - severity
+    MessageActionStatusEnum:
+      type: string
+      description: Status of the message action
+      enum:
+      - pending
+      - done
+    PreferenceLevelEnum:
+      type: string
+      description: The level of the preference (global or template)
+      enum:
+      - global
+      - template
+    MessageTemplate:
+      type: object
+      properties: {}
     WorkflowResponse:
       type: object
       properties:
@@ -11276,40 +11512,973 @@ components:
       - deleted
       - deletedAt
       - deletedBy
-    ChannelTypeEnum:
-      type: string
-      description: Channel type through which the message is sent
-      enum:
-      - in_app
-      - email
-      - sms
-      - chat
-      - push
-    PreferenceLevelEnum:
-      type: string
-      description: The level of the preference (global or template)
-      enum:
-      - global
-      - template
-    TimeRangeDto:
+    PatchSubscriberPreferencesDto:
       type: object
       properties:
-        start:
+        channels:
+          description: Channel-specific preference settings
+          allOf:
+          - $ref: '#/components/schemas/PatchPreferenceChannelsDto'
+        workflowId:
           type: string
-          description: Start time
-          example: 09:00 AM
-        end:
+          description: Workflow internal _id, identifier or slug. If provided, update workflow specific preferences, otherwise update global preferences
+        schedule:
+          description: Subscriber schedule
+          allOf:
+          - $ref: '#/components/schemas/ScheduleDto'
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+    WorkflowDto:
+      type: object
+      properties:
+        id:
           type: string
-          description: End time
-          example: 05:00 PM
+          description: Unique identifier of the workflow
+          example: 64a1b2c3d4e5f6g7h8i9j0k1
+        identifier:
+          type: string
+          description: Workflow identifier used for triggering
+          example: welcome-email
+        name:
+          type: string
+          description: Human-readable name of the workflow
+          example: Welcome Email Workflow
+        critical:
+          type: boolean
+          description: Whether this workflow is marked as critical
+          example: false
+        tags:
+          description: Tags associated with the workflow
+          example:
+          - user-onboarding
+          - email
+          type: array
+          items:
+            type: string
+        data:
+          type: object
+          description: Custom data associated with the workflow
+          example:
+            category: onboarding
+            priority: high
+        severity:
+          $ref: '#/components/schemas/SeverityLevelEnum'
       required:
-      - start
-      - end
+      - id
+      - identifier
+      - name
+      - critical
+      - severity
+    ValidationErrorDto:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: HTTP status code of the error response.
+          example: 404
+        timestamp:
+          type: string
+          description: Timestamp of when the error occurred.
+          example: '2024-12-12T13:00:00Z'
+        path:
+          type: string
+          description: The path where the error occurred.
+          example: /api/v1/resource
+        message:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type:
+            - object
+            - 'null'
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+        ctx:
+          type: object
+          description: Optional context object for additional error details.
+          additionalProperties: true
+          example:
+            workflowId: some_wf_id
+            stepId: some_wf_id
+        errorId:
+          type: string
+          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
+          example: abc123
+        errors:
+          type: object
+          description: A record of validation errors keyed by field name
+          additionalProperties:
+            $ref: '#/components/schemas/ConstraintValidation'
+          example:
+            fieldName1:
+              messages:
+              - Field is required
+              - Must be a valid email address
+              value: invalidEmail
+            fieldName2:
+              messages:
+              - Must be at least 18 years old
+              value: 17
+            fieldName3:
+              messages:
+              - Must be a boolean value
+              value: true
+            fieldName4:
+              messages:
+              - Must be a valid object
+              value:
+                key: value
+            fieldName5:
+              messages:
+              - Field is missing
+              value: null
+            fieldName6:
+              messages:
+              - Undefined value
+      required:
+      - statusCode
+      - timestamp
+      - path
+      - errors
+    SubscriberGlobalPreferenceDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether notifications are enabled globally
+        channels:
+          description: Channel-specific preference settings
+          allOf:
+          - $ref: '#/components/schemas/SubscriberPreferenceChannels'
+        schedule:
+          description: Subscriber schedule
+          allOf:
+          - $ref: '#/components/schemas/ScheduleDto'
+      required:
+      - enabled
+      - channels
+    NotificationTriggerVariable:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the variable
+      required:
+      - name
+    MessageMarkAsRequestDto:
+      type: object
+      properties:
+        messageId:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        markAs:
+          enum:
+          - read
+          - seen
+          - unread
+          - unseen
+          type: string
+      required:
+      - messageId
+      - markAs
+    BulkUpdateSubscriberPreferencesDto:
+      type: object
+      properties:
+        preferences:
+          description: Array of workflow preferences to update (maximum 100 items)
+          maxItems: 100
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkUpdateSubscriberPreferenceItemDto'
+        context:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+              description: Simple context id
+              example: org-acme
+            - type: object
+              description: Rich context object with id and optional data
+              properties:
+                id:
+                  type: string
+                  example: org-acme
+                data:
+                  type: object
+                  description: Optional additional context data
+                  additionalProperties: true
+                  example:
+                    name: Acme Corp
+                    region: us-east-1
+              required:
+              - id
+      required:
+      - preferences
+    TopicSubscriptionResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The identifier of the subscription
+          example: 64da692e9a94fb2e6449ad08
+        identifier:
+          type: string
+          description: The identifier of the subscription
+          example: tk=product-updates:si=subscriber-123
+        createdAt:
+          type: string
+          description: The date and time the subscription was created
+          example: '2021-01-01T00:00:00.000Z'
+        topic:
+          description: Topic information
+          allOf:
+          - $ref: '#/components/schemas/TopicResponseDto'
+        subscriber:
+          description: Subscriber information
+          allOf:
+          - $ref: '#/components/schemas/SubscriberDto'
+        contextKeys:
+          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
+          example:
+          - tenant:org-a
+          - project:proj-123
+          type: array
+          items:
+            type: string
+      required:
+      - _id
+      - identifier
+      - createdAt
+      - topic
+      - subscriber
+    ButtonTypeEnum:
+      type: string
+      description: Type of button for the action result
+      enum:
+      - primary
+      - secondary
+    ActorTypeEnum:
+      type: string
+      description: The type of the actor, indicating the role in the notification process.
+      enum:
+      - none
+      - user
+      - system_icon
+      - system_custom
+    ListTopicSubscriptionsResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned Topic Subscriptions
+          type: array
+          items:
+            $ref: '#/components/schemas/TopicSubscriptionResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
+    MarkSubscriberNotificationsAsSeenDto:
+      type: object
+      properties:
+        notificationIds:
+          description: Specific notification IDs to mark as seen
+          type: array
+          items:
+            type: string
+        tags:
+          type: object
+          description: 'Filter notifications by workflow tags (OR for string[], or { and: [{ or: string[] }, ...] } for AND of OR-groups).'
+        data:
+          type: string
+          description: Filter notifications by data attributes (JSON string)
+        contextKeys:
+          description: Context keys for filtering notifications
+          type: array
+          items:
+            type: string
+    SeverityLevelEnum:
+      type: string
+      description: Severity of the workflow
+      enum:
+      - high
+      - medium
+      - low
+      - none
+    PreferenceOverrideSourceEnum:
+      type: string
+      description: The source of overrides
+      enum:
+      - subscriber
+      - template
+      - workflowOverride
+    TextAlignEnum:
+      type: string
+      description: Text alignment for the email block
+      enum:
+      - center
+      - left
+      - right
+    FieldFilterPartDto:
+      type: object
+      properties:
+        field:
+          type: string
+        value:
+          type: string
+        operator:
+          type: string
+          enum:
+          - LARGER
+          - SMALLER
+          - LARGER_EQUAL
+          - SMALLER_EQUAL
+          - EQUAL
+          - NOT_EQUAL
+          - ALL_IN
+          - ANY_IN
+          - NOT_IN
+          - BETWEEN
+          - NOT_BETWEEN
+          - LIKE
+          - NOT_LIKE
+          - IN
+        'on':
+          type: string
+          enum:
+          - subscriber
+          - payload
+      required:
+      - field
+      - value
+      - operator
+      - 'on'
+    BuilderFieldTypeEnum:
+      type: string
+      enum:
+      - BOOLEAN
+      - TEXT
+      - DATE
+      - NUMBER
+      - STATEMENT
+      - LIST
+      - MULTI_LIST
+      - GROUP
+    MessageAction:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/MessageActionStatusEnum'
+        buttons:
+          description: List of buttons associated with the message action
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageButton'
+        result:
+          description: Result of the message action
+          allOf:
+          - $ref: '#/components/schemas/MessageActionResult'
+    ChannelCredentials:
+      type: object
+      properties:
+        webhookUrl:
+          type: string
+          description: Webhook URL used by chat app integrations. The webhook should be obtained from the chat app provider.
+          example: https://example.com/webhook
+        channel:
+          type: string
+          description: Channel specification for Mattermost chat notifications.
+          example: general
+        deviceTokens:
+          description: Contains an array of the subscriber device tokens for a given provider. Used on Push integrations.
+          example:
+          - token1
+          - token2
+          - token3
+          type: array
+          items:
+            type: string
+        alertUid:
+          type: string
+          description: Alert UID for Grafana on-call webhook payload.
+          example: 12345-abcde
+        title:
+          type: string
+          description: Title to be used with Grafana on-call webhook.
+          example: Critical Alert
+        imageUrl:
+          type: string
+          description: Image URL property for Grafana on-call webhook.
+          example: https://example.com/image.png
+        state:
+          type: string
+          description: State property for Grafana on-call webhook.
+          example: resolved
+        externalUrl:
+          type: string
+          description: Link to upstream details property for Grafana on-call webhook.
+          example: https://example.com/details
+    WeeklyScheduleDto:
+      type: object
+      properties:
+        monday:
+          description: Monday schedule
+          example:
+            isEnabled: true
+            hours:
+            - start: 09:00 AM
+              end: 05:00 PM
+          allOf:
+          - $ref: '#/components/schemas/DayScheduleDto'
+        tuesday:
+          description: Tuesday schedule
+          example:
+            isEnabled: true
+            hours:
+            - start: 09:00 AM
+              end: 05:00 PM
+          allOf:
+          - $ref: '#/components/schemas/DayScheduleDto'
+        wednesday:
+          description: Wednesday schedule
+          example:
+            isEnabled: true
+            hours:
+            - start: 09:00 AM
+              end: 05:00 PM
+          allOf:
+          - $ref: '#/components/schemas/DayScheduleDto'
+        thursday:
+          description: Thursday schedule
+          example:
+            isEnabled: true
+            hours:
+            - start: 09:00 AM
+              end: 05:00 PM
+          allOf:
+          - $ref: '#/components/schemas/DayScheduleDto'
+        friday:
+          description: Friday schedule
+          example:
+            isEnabled: true
+            hours:
+            - start: 09:00 AM
+              end: 05:00 PM
+          allOf:
+          - $ref: '#/components/schemas/DayScheduleDto'
+        saturday:
+          description: Saturday schedule
+          example:
+            isEnabled: true
+            hours:
+            - start: 09:00 AM
+              end: 05:00 PM
+          allOf:
+          - $ref: '#/components/schemas/DayScheduleDto'
+        sunday:
+          description: Sunday schedule
+          example:
+            isEnabled: true
+            hours:
+            - start: 09:00 AM
+              end: 05:00 PM
+          allOf:
+          - $ref: '#/components/schemas/DayScheduleDto'
+    TopicResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The identifier of the topic
+          example: 64da692e9a94fb2e6449ad06
+        key:
+          type: string
+          description: The unique key of the topic
+          example: product-updates
+        name:
+          type: string
+          description: The name of the topic
+          example: Product Updates
+        createdAt:
+          type: string
+          description: The date the topic was created
+          example: '2023-08-15T00:00:00.000Z'
+        updatedAt:
+          type: string
+          description: The date the topic was last updated
+          example: '2023-08-15T00:00:00.000Z'
+      required:
+      - _id
+      - key
+    RedirectDto:
+      type: object
+      properties:
+        url:
+          type: string
+          description: URL to redirect to
+        target:
+          type: string
+          description: Target attribute for the redirect link
+          enum:
+          - _self
+          - _blank
+          - _parent
+          - _top
+          - _unfencedTop
+      required:
+      - url
+    DelayScheduledMetadata:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - scheduled
+        delayPath:
+          type: string
+      required:
+      - type
+      - delayPath
+    SubscriberPreferencesWorkflowInfoDto:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: Workflow slug
+        identifier:
+          type: string
+          description: Unique identifier of the workflow
+        name:
+          type: string
+          description: Display name of the workflow
+        updatedAt:
+          type: string
+          description: last updated date
+      required:
+      - slug
+      - identifier
+      - name
+    ConstraintValidation:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: List of validation error messages
+          example:
+          - Field is required
+          - Invalid format
+        value:
+          description: Value that failed validation
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type: number
+          - type: boolean
+          - type: object
+          - type: array
+            items:
+              anyOf:
+              - type:
+                - string
+                - 'null'
+              - type: number
+              - type: boolean
+              - type: object
+                additionalProperties: true
+          example: 'xx xx xx '
+      required:
+      - messages
     ChannelCTATypeEnum:
       type: string
       description: Type of call to action
       enum:
       - redirect
+    EmailBlock:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EmailBlockTypeEnum'
+        content:
+          type: string
+          description: Content of the email block
+        url:
+          type: string
+          description: URL associated with the email block, if any
+        styles:
+          description: Styles applied to the email block
+          allOf:
+          - $ref: '#/components/schemas/EmailBlockStyles'
+      required:
+      - type
+      - content
+    NotificationStepData:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the notification step.
+        uuid:
+          type: string
+          description: Universally unique identifier for the notification step.
+        name:
+          type: string
+          description: Name of the notification step.
+        _templateId:
+          type: string
+          description: ID of the template associated with this notification step.
+        active:
+          type: boolean
+          description: Indicates whether the notification step is active.
+        shouldStopOnFail:
+          type: boolean
+          description: Determines if the process should stop on failure.
+        template:
+          description: Message template used in this notification step.
+          allOf:
+          - $ref: '#/components/schemas/MessageTemplate'
+        filters:
+          description: Filters applied to this notification step.
+          type: array
+          items:
+            $ref: '#/components/schemas/StepFilterDto'
+        _parentId:
+          type: string
+          description: ID of the parent notification step, if applicable.
+        metadata:
+          description: Metadata associated with the workflow step. Can vary based on the type of step.
+          oneOf:
+          - $ref: '#/components/schemas/DigestRegularMetadata'
+          - $ref: '#/components/schemas/DigestTimedMetadata'
+          - $ref: '#/components/schemas/DelayRegularMetadata'
+          - $ref: '#/components/schemas/DelayScheduledMetadata'
+        replyCallback:
+          description: Callback information for replies, including whether it is active and the callback URL.
+          allOf:
+          - $ref: '#/components/schemas/ReplyCallback'
+    CreatedSubscriberDto:
+      type: object
+      properties:
+        subscriberId:
+          type: string
+          description: The ID of the subscriber that was created.
+      required:
+      - subscriberId
+    MessageCTAData:
+      type: object
+      properties:
+        url:
+          type: string
+          description: URL for the call to action
+    MessageButton:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ButtonTypeEnum'
+        content:
+          type: string
+          description: Content of the button
+        resultContent:
+          type: string
+          description: Content of the result when the button is clicked
+      required:
+      - type
+      - content
+    BulkSubscriberCreateDto:
+      type: object
+      properties:
+        subscribers:
+          description: An array of subscribers to be created in bulk.
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateSubscriberRequestDto'
+      required:
+      - subscribers
+    NotificationStepDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the notification step.
+        uuid:
+          type: string
+          description: Universally unique identifier for the notification step.
+        name:
+          type: string
+          description: Name of the notification step.
+        _templateId:
+          type: string
+          description: ID of the template associated with this notification step.
+        active:
+          type: boolean
+          description: Indicates whether the notification step is active.
+        shouldStopOnFail:
+          type: boolean
+          description: Determines if the process should stop on failure.
+        template:
+          description: Message template used in this notification step.
+          allOf:
+          - $ref: '#/components/schemas/MessageTemplate'
+        filters:
+          description: Filters applied to this notification step.
+          type: array
+          items:
+            $ref: '#/components/schemas/StepFilterDto'
+        _parentId:
+          type: string
+          description: ID of the parent notification step, if applicable.
+        metadata:
+          description: Metadata associated with the workflow step. Can vary based on the type of step.
+          oneOf:
+          - $ref: '#/components/schemas/DigestRegularMetadata'
+          - $ref: '#/components/schemas/DigestTimedMetadata'
+          - $ref: '#/components/schemas/DelayRegularMetadata'
+          - $ref: '#/components/schemas/DelayScheduledMetadata'
+        replyCallback:
+          description: Callback information for replies, including whether it is active and the callback URL.
+          allOf:
+          - $ref: '#/components/schemas/ReplyCallback'
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationStepData'
+    UnseenCountResponse:
+      type: object
+      properties:
+        count:
+          type: number
+      required:
+      - count
+    MessageStatusEnum:
+      type: string
+      description: Status of the message
+      enum:
+      - sent
+      - error
+      - warning
+    ChatOrPushProviderEnum:
+      type: string
+      description: The provider identifier for the credentials
+      enum:
+      - slack
+      - discord
+      - msteams
+      - mattermost
+      - ryver
+      - zulip
+      - grafana-on-call
+      - getstream
+      - rocket-chat
+      - whatsapp-business
+      - chat-webhook
+      - novu-slack
+      - telegram
+      - fcm
+      - apns
+      - expo
+      - one-signal
+      - pushpad
+      - push-webhook
+      - pusher-beams
+      - appio
+    MessageResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the message
+        _templateId:
+          type:
+          - string
+          - 'null'
+          description: Template ID associated with the message
+        _environmentId:
+          type: string
+          description: Environment ID where the message is sent
+        _messageTemplateId:
+          type:
+          - string
+          - 'null'
+          description: Message template ID
+        _organizationId:
+          type: string
+          description: Organization ID associated with the message
+        _notificationId:
+          type: string
+          description: Notification ID associated with the message
+        _subscriberId:
+          type: string
+          description: Subscriber ID associated with the message
+        subscriber:
+          description: Subscriber details, if available
+          allOf:
+          - $ref: '#/components/schemas/SubscriberResponseDto'
+        template:
+          description: Workflow template associated with the message
+          allOf:
+          - $ref: '#/components/schemas/WorkflowResponse'
+        templateIdentifier:
+          type: string
+          description: Identifier for the message template
+        createdAt:
+          type: string
+          description: Creation date of the message
+        deliveredAt:
+          description: Array of delivery dates for the message, if the message has multiple delivery dates, for example after being snoozed
+          type: array
+          items:
+            type: string
+        lastSeenDate:
+          type: string
+          description: Last seen date of the message, if available
+        lastReadDate:
+          type: string
+          description: Last read date of the message, if available
+        content:
+          oneOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/EmailBlock'
+          - type: string
+            description: String representation of the content
+          description: Content of the message, can be an email block or a string
+        transactionId:
+          type: string
+          description: Transaction ID associated with the message
+        subject:
+          type: string
+          description: Subject of the message, if applicable
+        channel:
+          $ref: '#/components/schemas/ChannelTypeEnum'
+        read:
+          type: boolean
+          description: Indicates if the message has been read
+        seen:
+          type: boolean
+          description: Indicates if the message has been seen
+        snoozedUntil:
+          type: string
+          description: Date when the message will be unsnoozed
+        email:
+          type: string
+          description: Email address associated with the message, if applicable
+        phone:
+          type: string
+          description: Phone number associated with the message, if applicable
+        directWebhookUrl:
+          type: string
+          description: Direct webhook URL for the message, if applicable
+        providerId:
+          type: string
+          description: Provider ID associated with the message, if applicable
+        deviceTokens:
+          description: Device tokens associated with the message, if applicable
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+          description: Title of the message, if applicable
+        cta:
+          description: Call to action associated with the message
+          allOf:
+          - $ref: '#/components/schemas/MessageCTA'
+        _feedId:
+          type:
+          - string
+          - 'null'
+          description: Feed ID associated with the message, if applicable
+        status:
+          $ref: '#/components/schemas/MessageStatusEnum'
+        errorId:
+          type: string
+          description: Error ID if the message has an error
+        errorText:
+          type: string
+          description: Error text if the message has an error
+        payload:
+          type: object
+          description: The payload that was used to send the notification trigger
+          additionalProperties: true
+        overrides:
+          type: object
+          description: Provider specific overrides used when triggering the notification
+          additionalProperties: true
+        contextKeys:
+          description: Context (single or multi) in which the message was sent
+          example:
+          - tenant:org-123
+          - region:us-east-1
+          type: array
+          items:
+            type: string
+      required:
+      - _environmentId
+      - _organizationId
+      - _notificationId
+      - _subscriberId
+      - createdAt
+      - transactionId
+      - channel
+      - read
+      - seen
+      - cta
+      - status
     NotificationFeedItemDto:
       type: object
       properties:
@@ -11481,171 +12650,7 @@ components:
       - archived
       - cta
       - status
-    ChannelSettingsDto:
-      type: object
-      properties:
-        providerId:
-          $ref: '#/components/schemas/ChatOrPushProviderEnum'
-        integrationIdentifier:
-          type: string
-          description: The integration identifier
-        credentials:
-          description: Credentials payload for the specified provider
-          allOf:
-          - $ref: '#/components/schemas/ChannelCredentials'
-        _integrationId:
-          type: string
-          description: The unique identifier of the integration associated with this channel.
-      required:
-      - providerId
-      - credentials
-      - _integrationId
-    NotificationStepData:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: Unique identifier for the notification step.
-        uuid:
-          type: string
-          description: Universally unique identifier for the notification step.
-        name:
-          type: string
-          description: Name of the notification step.
-        _templateId:
-          type: string
-          description: ID of the template associated with this notification step.
-        active:
-          type: boolean
-          description: Indicates whether the notification step is active.
-        shouldStopOnFail:
-          type: boolean
-          description: Determines if the process should stop on failure.
-        template:
-          description: Message template used in this notification step.
-          allOf:
-          - $ref: '#/components/schemas/MessageTemplate'
-        filters:
-          description: Filters applied to this notification step.
-          type: array
-          items:
-            $ref: '#/components/schemas/StepFilterDto'
-        _parentId:
-          type: string
-          description: ID of the parent notification step, if applicable.
-        metadata:
-          description: Metadata associated with the workflow step. Can vary based on the type of step.
-          oneOf:
-          - $ref: '#/components/schemas/DigestRegularMetadata'
-          - $ref: '#/components/schemas/DigestTimedMetadata'
-          - $ref: '#/components/schemas/DelayRegularMetadata'
-          - $ref: '#/components/schemas/DelayScheduledMetadata'
-        replyCallback:
-          description: Callback information for replies, including whether it is active and the callback URL.
-          allOf:
-          - $ref: '#/components/schemas/ReplyCallback'
-    MessageCTAData:
-      type: object
-      properties:
-        url:
-          type: string
-          description: URL for the call to action
-    EmailBlockStyles:
-      type: object
-      properties:
-        textAlign:
-          $ref: '#/components/schemas/TextAlignEnum'
-      required:
-      - textAlign
-    ReplyCallback:
-      type: object
-      properties:
-        active:
-          type: boolean
-          description: Indicates whether the reply callback is active.
-        url:
-          type: string
-          description: The URL to which replies should be sent.
-    FeedResponseDto:
-      type: object
-      properties:
-        totalCount:
-          type: number
-          description: Total number of notifications available.
-          example: 5
-        hasMore:
-          type: boolean
-          description: Indicates if there are more notifications to load.
-          example: true
-        data:
-          description: Array of notifications returned in the response.
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationFeedItemDto'
-        pageSize:
-          type: number
-          description: The number of notifications returned in this response.
-          example: 2
-        page:
-          type: number
-          description: The current page number of the notifications.
-          example: 1
-      required:
-      - hasMore
-      - data
-      - pageSize
-      - page
-    NotificationTriggerVariable:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the variable
-      required:
-      - name
-    BulkUpdateSubscriberPreferencesDto:
-      type: object
-      properties:
-        preferences:
-          description: Array of workflow preferences to update (maximum 100 items)
-          maxItems: 100
-          type: array
-          items:
-            $ref: '#/components/schemas/BulkUpdateSubscriberPreferenceItemDto'
-        context:
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: string
-              description: Simple context id
-              example: org-acme
-            - type: object
-              description: Rich context object with id and optional data
-              properties:
-                id:
-                  type: string
-                  example: org-acme
-                data:
-                  type: object
-                  description: Optional additional context data
-                  additionalProperties: true
-                  example:
-                    name: Acme Corp
-                    region: us-east-1
-              required:
-              - id
-      required:
-      - preferences
-    MessageActionResult:
-      type: object
-      properties:
-        payload:
-          type: object
-          description: Payload of the action result
-          additionalProperties: true
-        type:
-          $ref: '#/components/schemas/ButtonTypeEnum'
-    PatchSubscriberRequestDto:
+    CreateSubscriberRequestDto:
       type: object
       properties:
         firstName:
@@ -11696,179 +12701,240 @@ components:
           - 'null'
           description: Additional custom data associated with the subscriber
           additionalProperties: true
-    MessageTemplate:
-      type: object
-      properties: {}
-    GetSubscriberPreferencesDto:
+        subscriberId:
+          type: string
+          description: Unique identifier of the subscriber
+      required:
+      - subscriberId
+    BulkUpdateSubscriberPreferenceItemDto:
       type: object
       properties:
-        global:
-          description: Global preference settings
+        channels:
+          description: Channel-specific preference settings
           allOf:
-          - $ref: '#/components/schemas/SubscriberGlobalPreferenceDto'
-        workflows:
-          description: Workflow-specific preference settings
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriberWorkflowPreferenceDto'
+          - $ref: '#/components/schemas/PatchPreferenceChannelsDto'
+        workflowId:
+          type: string
+          description: Workflow internal _id, identifier or slug
       required:
-      - global
-      - workflows
-    InboxNotificationDto:
+      - channels
+      - workflowId
+    UpdateSubscriberChannelRequestDto:
+      type: object
+      properties:
+        providerId:
+          $ref: '#/components/schemas/ChatOrPushProviderEnum'
+        integrationIdentifier:
+          type: string
+          description: The integration identifier
+        credentials:
+          description: Credentials payload for the specified provider
+          allOf:
+          - $ref: '#/components/schemas/ChannelCredentials'
+      required:
+      - providerId
+      - credentials
+    DelayRegularMetadata:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+          enum:
+          - seconds
+          - minutes
+          - hours
+          - days
+          - weeks
+          - months
+        type:
+          type: string
+          enum:
+          - regular
+      required:
+      - type
+    RemoveSubscriberResponseDto:
+      type: object
+      properties:
+        acknowledged:
+          type: boolean
+          description: Indicates whether the operation was acknowledged by the server
+          example: true
+        status:
+          type: string
+          description: Status of the subscriber removal operation
+          example: success
+      required:
+      - acknowledged
+      - status
+    NotificationWorkflowDto:
       type: object
       properties:
         id:
           type: string
-          description: Unique identifier of the notification
-        transactionId:
+          description: Unique identifier of the workflow
+        identifier:
           type: string
-          description: Transaction identifier of the notification
-        subject:
+          description: Workflow identifier used for triggering
+        name:
           type: string
-          description: Subject of the notification
-        body:
-          type: string
-          description: Body content of the notification
-        to:
-          description: Subscriber this notification was sent to
-          allOf:
-          - $ref: '#/components/schemas/InboxSubscriberResponseDto'
-        isRead:
+          description: Human-readable name of the workflow
+        critical:
           type: boolean
-          description: Whether the notification has been read
-        isSeen:
-          type: boolean
-          description: Whether the notification has been seen
-        isArchived:
-          type: boolean
-          description: Whether the notification has been archived
-        isSnoozed:
-          type: boolean
-          description: Whether the notification is snoozed
-        snoozedUntil:
-          type:
-          - string
-          - 'null'
-          description: ISO timestamp when the notification will be unsnoozed
-        deliveredAt:
-          description: Timestamps when the notification was delivered
-          type: array
-          items:
-            type: string
-        createdAt:
-          type: string
-          description: ISO timestamp when the notification was created
-        readAt:
-          type:
-          - string
-          - 'null'
-          description: ISO timestamp when the notification was read
-        firstSeenAt:
-          type:
-          - string
-          - 'null'
-          description: ISO timestamp when the notification was first seen
-        archivedAt:
-          type:
-          - string
-          - 'null'
-          description: ISO timestamp when the notification was archived
-        avatar:
-          type: string
-          description: Avatar URL for the notification
-        primaryAction:
-          description: Primary action button for the notification
-          allOf:
-          - $ref: '#/components/schemas/InboxActionDto'
-        secondaryAction:
-          description: Secondary action button for the notification
-          allOf:
-          - $ref: '#/components/schemas/InboxActionDto'
-        channelType:
-          $ref: '#/components/schemas/ChannelTypeEnum'
+          description: Whether this workflow is marked as critical
         tags:
-          description: Tags associated with the notification
+          description: Tags associated with the workflow
           type: array
           items:
             type: string
         data:
           type: object
           additionalProperties: true
-          description: Custom data payload of the notification
-        redirect:
-          description: Redirect configuration for the notification
-          allOf:
-          - $ref: '#/components/schemas/RedirectDto'
-        workflow:
-          description: Workflow associated with the notification
-          allOf:
-          - $ref: '#/components/schemas/NotificationWorkflowDto'
+          description: Custom data associated with the workflow
         severity:
           $ref: '#/components/schemas/SeverityLevelEnum'
       required:
       - id
-      - transactionId
-      - body
-      - to
-      - isRead
-      - isSeen
-      - isArchived
-      - isSnoozed
-      - createdAt
-      - channelType
+      - identifier
+      - name
+      - critical
       - severity
-    PatchPreferenceChannelsDto:
+    UpdatedSubscriberDto:
       type: object
       properties:
-        email:
-          type: boolean
-          description: Email channel preference
-        sms:
-          type: boolean
-          description: SMS channel preference
-        in_app:
-          type: boolean
-          description: In-app channel preference
-        push:
-          type: boolean
-          description: Push channel preference
-        chat:
-          type: boolean
-          description: Chat channel preference
-    FieldFilterPartDto:
-      type: object
-      properties:
-        field:
+        subscriberId:
           type: string
-        value:
-          type: string
-        operator:
-          type: string
-          enum:
-          - LARGER
-          - SMALLER
-          - LARGER_EQUAL
-          - SMALLER_EQUAL
-          - EQUAL
-          - NOT_EQUAL
-          - ALL_IN
-          - ANY_IN
-          - NOT_IN
-          - BETWEEN
-          - NOT_BETWEEN
-          - LIKE
-          - NOT_LIKE
-          - IN
-        'on':
-          type: string
-          enum:
-          - subscriber
-          - payload
+          description: The ID of the subscriber that was updated.
       required:
-      - field
-      - value
-      - operator
-      - 'on'
+      - subscriberId
+    InboxSubscriberResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the subscriber
+        firstName:
+          type: string
+          description: First name of the subscriber
+        lastName:
+          type: string
+          description: Last name of the subscriber
+        avatar:
+          type: string
+          description: Avatar URL of the subscriber
+        subscriberId:
+          type: string
+          description: External subscriber identifier
+      required:
+      - id
+      - subscriberId
+    SubscriberPreferenceOverrideDto:
+      type: object
+      properties:
+        channel:
+          $ref: '#/components/schemas/ChannelTypeEnum'
+        source:
+          $ref: '#/components/schemas/PreferenceOverrideSourceEnum'
+      required:
+      - channel
+      - source
+    TimedConfig:
+      type: object
+      properties:
+        atTime:
+          type: string
+        weekDays:
+          type: array
+          items:
+            type: string
+            enum:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+            - sunday
+        monthDays:
+          type: array
+          items:
+            type: string
+        ordinal:
+          type: string
+          enum:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - last
+        ordinalValue:
+          type: string
+          enum:
+          - day
+          - weekday
+          - weekend
+          - sunday
+          - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+        monthlyType:
+          type: string
+          enum:
+          - each
+          - 'on'
+    InboxActionDto:
+      type: object
+      properties:
+        label:
+          type: string
+          description: Label of the action button
+        isCompleted:
+          type: boolean
+          description: Whether the action has been completed
+        redirect:
+          description: Redirect configuration for the action
+          allOf:
+          - $ref: '#/components/schemas/RedirectDto'
+      required:
+      - label
+      - isCompleted
+    GetSubscriberNotificationsResponseDto:
+      type: object
+      properties:
+        data:
+          description: Array of notifications
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxNotificationDto'
+        hasMore:
+          type: boolean
+          description: Indicates if there are more notifications available
+        filter:
+          type: object
+          description: The filter applied to the notifications
+      required:
+      - data
+      - hasMore
+      - filter
+    MarkMessageActionAsSeenDto:
+      type: object
+      properties:
+        status:
+          enum:
+          - pending
+          - done
+          type: string
+          description: Message action status
+        payload:
+          type: object
+          description: Message action payload
+      required:
+      - status
     SnoozeSubscriberNotificationDto:
       type: object
       properties:
@@ -11879,59 +12945,6 @@ components:
           example: '2026-03-01T10:00:00Z'
       required:
       - snoozeUntil
-    FailedOperationDto:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The error message associated with the failed operation.
-        subscriberId:
-          type: string
-          description: The subscriber ID associated with the failed operation. This field is optional.
-    PreferenceOverrideSourceEnum:
-      type: string
-      description: The source of overrides
-      enum:
-      - subscriber
-      - template
-      - workflowOverride
-    MessageStatusEnum:
-      type: string
-      description: Status of the message
-      enum:
-      - sent
-      - error
-      - warning
-    ListTopicSubscriptionsResponseDto:
-      type: object
-      properties:
-        data:
-          description: List of returned Topic Subscriptions
-          type: array
-          items:
-            $ref: '#/components/schemas/TopicSubscriptionResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
-          type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
-      required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
     SubscriberResponseDto:
       type: object
       properties:
@@ -12028,7 +13041,99 @@ components:
       - deleted
       - createdAt
       - updatedAt
-    CreateSubscriberRequestDto:
+    MarkAllMessageAsRequestDto:
+      type: object
+      properties:
+        feedIdentifier:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+          description: Optional feed identifier or array of feed identifiers
+        markAs:
+          enum:
+          - read
+          - seen
+          - unread
+          - unseen
+          type: string
+          description: Mark all subscriber messages as read, unread, seen or unseen
+      required:
+      - markAs
+    ListSubscribersResponseDto:
+      type: object
+      properties:
+        data:
+          description: List of returned Subscribers
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriberResponseDto'
+        next:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the next page of results, or null if there are no more pages.
+        previous:
+          type:
+          - string
+          - 'null'
+          description: The cursor for the previous page of results, or null if this is the first page.
+        totalCount:
+          type: number
+          description: The total count of items (up to 50,000)
+        totalCountCapped:
+          type: boolean
+          description: Whether there are more than 50,000 results available
+      required:
+      - data
+      - next
+      - previous
+      - totalCount
+      - totalCountCapped
+    FeedResponseDto:
+      type: object
+      properties:
+        totalCount:
+          type: number
+          description: Total number of notifications available.
+          example: 5
+        hasMore:
+          type: boolean
+          description: Indicates if there are more notifications to load.
+          example: true
+        data:
+          description: Array of notifications returned in the response.
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationFeedItemDto'
+        pageSize:
+          type: number
+          description: The number of notifications returned in this response.
+          example: 2
+        page:
+          type: number
+          description: The current page number of the notifications.
+          example: 1
+      required:
+      - hasMore
+      - data
+      - pageSize
+      - page
+    GetSubscriberNotificationsCountResponseDto:
+      type: object
+      properties:
+        count:
+          type: number
+          description: The count of notifications matching the filter
+        filter:
+          type: object
+          description: The filter applied
+          additionalProperties: true
+      required:
+      - count
+      - filter
+    PatchSubscriberRequestDto:
       type: object
       properties:
         firstName:
@@ -12079,345 +13184,24 @@ components:
           - 'null'
           description: Additional custom data associated with the subscriber
           additionalProperties: true
-        subscriberId:
-          type: string
-          description: Unique identifier of the subscriber
-      required:
-      - subscriberId
-    DigestTimedMetadata:
-      type: object
-      properties:
-        amount:
-          type: number
-        unit:
-          type: string
-          enum:
-          - seconds
-          - minutes
-          - hours
-          - days
-          - weeks
-          - months
-        digestKey:
-          type: string
-        type:
-          type: string
-          enum:
-          - timed
-        timed:
-          $ref: '#/components/schemas/TimedConfig'
-      required:
-      - type
-    TopicResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The identifier of the topic
-          example: 64da692e9a94fb2e6449ad06
-        key:
-          type: string
-          description: The unique key of the topic
-          example: product-updates
-        name:
-          type: string
-          description: The name of the topic
-          example: Product Updates
-        createdAt:
-          type: string
-          description: The date the topic was created
-          example: '2023-08-15T00:00:00.000Z'
-        updatedAt:
-          type: string
-          description: The date the topic was last updated
-          example: '2023-08-15T00:00:00.000Z'
-      required:
-      - _id
-      - key
-    BulkSubscriberCreateDto:
-      type: object
-      properties:
-        subscribers:
-          description: An array of subscribers to be created in bulk.
-          type: array
-          items:
-            $ref: '#/components/schemas/CreateSubscriberRequestDto'
-      required:
-      - subscribers
-    MarkAllMessageAsRequestDto:
-      type: object
-      properties:
-        feedIdentifier:
-          oneOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-          description: Optional feed identifier or array of feed identifiers
-        markAs:
-          enum:
-          - read
-          - seen
-          - unread
-          - unseen
-          type: string
-          description: Mark all subscriber messages as read, unread, seen or unseen
-      required:
-      - markAs
-    MessageCTA:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ChannelCTATypeEnum'
-        data:
-          description: Data associated with the call to action
-          allOf:
-          - $ref: '#/components/schemas/MessageCTAData'
-        action:
-          description: Action associated with the call to action
-          allOf:
-          - $ref: '#/components/schemas/MessageAction'
-    MessageButton:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/ButtonTypeEnum'
-        content:
-          type: string
-          description: Content of the button
-        resultContent:
-          type: string
-          description: Content of the result when the button is clicked
-      required:
-      - type
-      - content
-    BulkUpdateSubscriberPreferenceItemDto:
-      type: object
-      properties:
-        channels:
-          description: Channel-specific preference settings
-          allOf:
-          - $ref: '#/components/schemas/PatchPreferenceChannelsDto'
-        workflowId:
-          type: string
-          description: Workflow internal _id, identifier or slug
-      required:
-      - channels
-      - workflowId
-    DelayScheduledMetadata:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - scheduled
-        delayPath:
-          type: string
-      required:
-      - type
-      - delayPath
-    BulkCreateSubscriberResponseDto:
-      type: object
-      properties:
-        updated:
-          description: An array of subscribers that were successfully updated.
-          type: array
-          items:
-            $ref: '#/components/schemas/UpdatedSubscriberDto'
-        created:
-          description: An array of subscribers that were successfully created.
-          type: array
-          items:
-            $ref: '#/components/schemas/CreatedSubscriberDto'
-        failed:
-          description: An array of failed operations with error messages and optional subscriber IDs.
-          type: array
-          items:
-            $ref: '#/components/schemas/FailedOperationDto'
-      required:
-      - updated
-      - created
-      - failed
-    NotificationStepDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: Unique identifier for the notification step.
-        uuid:
-          type: string
-          description: Universally unique identifier for the notification step.
-        name:
-          type: string
-          description: Name of the notification step.
-        _templateId:
-          type: string
-          description: ID of the template associated with this notification step.
-        active:
-          type: boolean
-          description: Indicates whether the notification step is active.
-        shouldStopOnFail:
-          type: boolean
-          description: Determines if the process should stop on failure.
-        template:
-          description: Message template used in this notification step.
-          allOf:
-          - $ref: '#/components/schemas/MessageTemplate'
-        filters:
-          description: Filters applied to this notification step.
-          type: array
-          items:
-            $ref: '#/components/schemas/StepFilterDto'
-        _parentId:
-          type: string
-          description: ID of the parent notification step, if applicable.
-        metadata:
-          description: Metadata associated with the workflow step. Can vary based on the type of step.
-          oneOf:
-          - $ref: '#/components/schemas/DigestRegularMetadata'
-          - $ref: '#/components/schemas/DigestTimedMetadata'
-          - $ref: '#/components/schemas/DelayRegularMetadata'
-          - $ref: '#/components/schemas/DelayScheduledMetadata'
-        replyCallback:
-          description: Callback information for replies, including whether it is active and the callback URL.
-          allOf:
-          - $ref: '#/components/schemas/ReplyCallback'
-        variants:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationStepData'
-    UpdateSubscriberOnlineFlagRequestDto:
-      type: object
-      properties:
-        isOnline:
-          type: boolean
-      required:
-      - isOnline
-    SubscriberDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The identifier of the subscriber
-          example: 64da692e9a94fb2e6449ad07
-        subscriberId:
-          type: string
-          description: The external identifier of the subscriber
-          example: user-123
-        avatar:
-          type:
-          - string
-          - 'null'
-          description: The avatar URL of the subscriber
-          example: https://example.com/avatar.png
-        firstName:
-          type:
-          - string
-          - 'null'
-          description: The first name of the subscriber
-          example: John
-        lastName:
-          type:
-          - string
-          - 'null'
-          description: The last name of the subscriber
-          example: Doe
-        email:
-          type:
-          - string
-          - 'null'
-          description: The email of the subscriber
-          example: john@example.com
-      required:
-      - _id
-      - subscriberId
-    SubscriberWorkflowPreferenceDto:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: Whether notifications are enabled for this workflow
-        channels:
-          description: Channel-specific preference settings for this workflow
-          allOf:
-          - $ref: '#/components/schemas/SubscriberPreferenceChannels'
-        overrides:
-          description: List of preference overrides
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriberPreferenceOverrideDto'
-        workflow:
-          description: Workflow information
-          allOf:
-          - $ref: '#/components/schemas/SubscriberPreferencesWorkflowInfoDto'
-        updatedAt:
-          type: string
-          description: Timestamp when the subscriber last updated their preference. Only present if subscriber explicitly set preferences.
-      required:
-      - enabled
-      - channels
-      - overrides
-      - workflow
-    DelayRegularMetadata:
-      type: object
-      properties:
-        amount:
-          type: number
-        unit:
-          type: string
-          enum:
-          - seconds
-          - minutes
-          - hours
-          - days
-          - weeks
-          - months
-        type:
-          type: string
-          enum:
-          - regular
-      required:
-      - type
-    SubscriberPreferenceChannels:
+    PatchPreferenceChannelsDto:
       type: object
       properties:
         email:
           type: boolean
           description: Email channel preference
-          example: true
         sms:
           type: boolean
           description: SMS channel preference
-          example: false
         in_app:
           type: boolean
           description: In-app channel preference
-          example: true
+        push:
+          type: boolean
+          description: Push channel preference
         chat:
           type: boolean
           description: Chat channel preference
-          example: false
-        push:
-          type: boolean
-          description: Push notification channel preference
-          example: true
-    RedirectDto:
-      type: object
-      properties:
-        url:
-          type: string
-          description: URL to redirect to
-        target:
-          type: string
-          description: Target attribute for the redirect link
-          enum:
-          - _self
-          - _blank
-          - _parent
-          - _top
-          - _unfencedTop
-      required:
-      - url
     DayScheduleDto:
       type: object
       properties:
@@ -12435,6 +13219,35 @@ components:
             $ref: '#/components/schemas/TimeRangeDto'
       required:
       - isEnabled
+    SubscriberFeedResponseDto:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The internal ID generated by Novu for your subscriber. This ID does not match the `subscriberId` used in your queries. Refer to `subscriberId` for that identifier.
+        firstName:
+          type: string
+          description: The first name of the subscriber.
+        lastName:
+          type: string
+          description: The last name of the subscriber.
+        avatar:
+          type: string
+          description: The URL of the subscriber's avatar image.
+        subscriberId:
+          type: string
+          description: The identifier used to create this subscriber, which typically corresponds to the user ID in your system.
+      required:
+      - subscriberId
+    MessageActionResult:
+      type: object
+      properties:
+        payload:
+          type: object
+          description: Payload of the action result
+          additionalProperties: true
+        type:
+          $ref: '#/components/schemas/ButtonTypeEnum'
     StepFilterDto:
       type: object
       properties:
@@ -12456,48 +13269,6 @@ components:
       - type
       - value
       - children
-    EmailBlockTypeEnum:
-      type: string
-      description: Type of the email block
-      enum:
-      - button
-      - text
-    PatchSubscriberPreferencesDto:
-      type: object
-      properties:
-        channels:
-          description: Channel-specific preference settings
-          allOf:
-          - $ref: '#/components/schemas/PatchPreferenceChannelsDto'
-        workflowId:
-          type: string
-          description: Workflow internal _id, identifier or slug. If provided, update workflow specific preferences, otherwise update global preferences
-        schedule:
-          description: Subscriber schedule
-          allOf:
-          - $ref: '#/components/schemas/ScheduleDto'
-        context:
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: string
-              description: Simple context id
-              example: org-acme
-            - type: object
-              description: Rich context object with id and optional data
-              properties:
-                id:
-                  type: string
-                  example: org-acme
-                data:
-                  type: object
-                  description: Optional additional context data
-                  additionalProperties: true
-                  example:
-                    name: Acme Corp
-                    region: us-east-1
-              required:
-              - id
     ScheduleDto:
       type: object
       properties:
@@ -12547,191 +13318,42 @@ components:
           - $ref: '#/components/schemas/WeeklyScheduleDto'
       required:
       - isEnabled
-    TopicSubscriptionResponseDto:
+    EmailBlockTypeEnum:
+      type: string
+      description: Type of the email block
+      enum:
+      - button
+      - text
+    NotificationGroup:
       type: object
       properties:
         _id:
           type: string
-          description: The identifier of the subscription
-          example: 64da692e9a94fb2e6449ad08
-        identifier:
+        name:
           type: string
-          description: The identifier of the subscription
-          example: tk=product-updates:si=subscriber-123
-        createdAt:
+        _environmentId:
           type: string
-          description: The date and time the subscription was created
-          example: '2021-01-01T00:00:00.000Z'
-        topic:
-          description: Topic information
-          allOf:
-          - $ref: '#/components/schemas/TopicResponseDto'
-        subscriber:
-          description: Subscriber information
-          allOf:
-          - $ref: '#/components/schemas/SubscriberDto'
-        contextKeys:
-          description: Context keys that scope this subscription (e.g., tenant:org-a, project:proj-123)
-          example:
-          - tenant:org-a
-          - project:proj-123
-          type: array
-          items:
-            type: string
+        _organizationId:
+          type: string
+        _parentId:
+          type: string
       required:
-      - _id
-      - identifier
-      - createdAt
-      - topic
-      - subscriber
-    MessageAction:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/MessageActionStatusEnum'
-        buttons:
-          description: List of buttons associated with the message action
-          type: array
-          items:
-            $ref: '#/components/schemas/MessageButton'
-        result:
-          description: Result of the message action
-          allOf:
-          - $ref: '#/components/schemas/MessageActionResult'
-    TextAlignEnum:
-      type: string
-      description: Text alignment for the email block
-      enum:
-      - center
-      - left
-      - right
-    EmailBlock:
+      - name
+      - _environmentId
+      - _organizationId
+    MessageCTA:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/EmailBlockTypeEnum'
-        content:
-          type: string
-          description: Content of the email block
-        url:
-          type: string
-          description: URL associated with the email block, if any
-        styles:
-          description: Styles applied to the email block
-          allOf:
-          - $ref: '#/components/schemas/EmailBlockStyles'
-      required:
-      - type
-      - content
-    ChannelCredentials:
-      type: object
-      properties:
-        webhookUrl:
-          type: string
-          description: Webhook URL used by chat app integrations. The webhook should be obtained from the chat app provider.
-          example: https://example.com/webhook
-        channel:
-          type: string
-          description: Channel specification for Mattermost chat notifications.
-          example: general
-        deviceTokens:
-          description: Contains an array of the subscriber device tokens for a given provider. Used on Push integrations.
-          example:
-          - token1
-          - token2
-          - token3
-          type: array
-          items:
-            type: string
-        alertUid:
-          type: string
-          description: Alert UID for Grafana on-call webhook payload.
-          example: 12345-abcde
-        title:
-          type: string
-          description: Title to be used with Grafana on-call webhook.
-          example: Critical Alert
-        imageUrl:
-          type: string
-          description: Image URL property for Grafana on-call webhook.
-          example: https://example.com/image.png
-        state:
-          type: string
-          description: State property for Grafana on-call webhook.
-          example: resolved
-        externalUrl:
-          type: string
-          description: Link to upstream details property for Grafana on-call webhook.
-          example: https://example.com/details
-    NotificationWorkflowDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the workflow
-        identifier:
-          type: string
-          description: Workflow identifier used for triggering
-        name:
-          type: string
-          description: Human-readable name of the workflow
-        critical:
-          type: boolean
-          description: Whether this workflow is marked as critical
-        tags:
-          description: Tags associated with the workflow
-          type: array
-          items:
-            type: string
+          $ref: '#/components/schemas/ChannelCTATypeEnum'
         data:
-          type: object
-          additionalProperties: true
-          description: Custom data associated with the workflow
-        severity:
-          $ref: '#/components/schemas/SeverityLevelEnum'
-      required:
-      - id
-      - identifier
-      - name
-      - critical
-      - severity
-    BuilderFieldTypeEnum:
-      type: string
-      enum:
-      - BOOLEAN
-      - TEXT
-      - DATE
-      - NUMBER
-      - STATEMENT
-      - LIST
-      - MULTI_LIST
-      - GROUP
-    GetPreferencesResponseDto:
-      type: object
-      properties:
-        level:
-          $ref: '#/components/schemas/PreferenceLevelEnum'
-        workflow:
-          description: Workflow information if this is a template-level preference
+          description: Data associated with the call to action
           allOf:
-          - $ref: '#/components/schemas/WorkflowDto'
-        enabled:
-          type: boolean
-          description: Whether the preference is enabled
-          example: true
-        channels:
-          description: Channel-specific preference settings
+          - $ref: '#/components/schemas/MessageCTAData'
+        action:
+          description: Action associated with the call to action
           allOf:
-          - $ref: '#/components/schemas/SubscriberPreferenceChannels'
-        condition:
-          type:
-          - object
-          - 'null'
-          description: Condition using JSON Logic rules
-      required:
-      - level
-      - enabled
-      - channels
+          - $ref: '#/components/schemas/MessageAction'
     DigestRegularMetadata:
       type: object
       properties:
@@ -12770,565 +13392,25 @@ components:
           type: boolean
       required:
       - type
-    WorkflowDto:
+    ChannelSettingsDto:
       type: object
       properties:
-        id:
-          type: string
-          description: Unique identifier of the workflow
-          example: 64a1b2c3d4e5f6g7h8i9j0k1
-        identifier:
-          type: string
-          description: Workflow identifier used for triggering
-          example: welcome-email
-        name:
-          type: string
-          description: Human-readable name of the workflow
-          example: Welcome Email Workflow
-        critical:
-          type: boolean
-          description: Whether this workflow is marked as critical
-          example: false
-        tags:
-          description: Tags associated with the workflow
-          example:
-          - user-onboarding
-          - email
-          type: array
-          items:
-            type: string
-        data:
-          type: object
-          description: Custom data associated with the workflow
-          example:
-            category: onboarding
-            priority: high
-        severity:
-          $ref: '#/components/schemas/SeverityLevelEnum'
-      required:
-      - id
-      - identifier
-      - name
-      - critical
-      - severity
-    WeeklyScheduleDto:
-      type: object
-      properties:
-        monday:
-          description: Monday schedule
-          example:
-            isEnabled: true
-            hours:
-            - start: 09:00 AM
-              end: 05:00 PM
-          allOf:
-          - $ref: '#/components/schemas/DayScheduleDto'
-        tuesday:
-          description: Tuesday schedule
-          example:
-            isEnabled: true
-            hours:
-            - start: 09:00 AM
-              end: 05:00 PM
-          allOf:
-          - $ref: '#/components/schemas/DayScheduleDto'
-        wednesday:
-          description: Wednesday schedule
-          example:
-            isEnabled: true
-            hours:
-            - start: 09:00 AM
-              end: 05:00 PM
-          allOf:
-          - $ref: '#/components/schemas/DayScheduleDto'
-        thursday:
-          description: Thursday schedule
-          example:
-            isEnabled: true
-            hours:
-            - start: 09:00 AM
-              end: 05:00 PM
-          allOf:
-          - $ref: '#/components/schemas/DayScheduleDto'
-        friday:
-          description: Friday schedule
-          example:
-            isEnabled: true
-            hours:
-            - start: 09:00 AM
-              end: 05:00 PM
-          allOf:
-          - $ref: '#/components/schemas/DayScheduleDto'
-        saturday:
-          description: Saturday schedule
-          example:
-            isEnabled: true
-            hours:
-            - start: 09:00 AM
-              end: 05:00 PM
-          allOf:
-          - $ref: '#/components/schemas/DayScheduleDto'
-        sunday:
-          description: Sunday schedule
-          example:
-            isEnabled: true
-            hours:
-            - start: 09:00 AM
-              end: 05:00 PM
-          allOf:
-          - $ref: '#/components/schemas/DayScheduleDto'
-    ErrorDto:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
-          type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-      required:
-      - statusCode
-      - timestamp
-      - path
-    SubscriberPreferencesWorkflowInfoDto:
-      type: object
-      properties:
-        slug:
-          type: string
-          description: Workflow slug
-        identifier:
-          type: string
-          description: Unique identifier of the workflow
-        name:
-          type: string
-          description: Display name of the workflow
-        updatedAt:
-          type: string
-          description: last updated date
-      required:
-      - slug
-      - identifier
-      - name
-    SubscriberFeedResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The internal ID generated by Novu for your subscriber. This ID does not match the `subscriberId` used in your queries. Refer to `subscriberId` for that identifier.
-        firstName:
-          type: string
-          description: The first name of the subscriber.
-        lastName:
-          type: string
-          description: The last name of the subscriber.
-        avatar:
-          type: string
-          description: The URL of the subscriber's avatar image.
-        subscriberId:
-          type: string
-          description: The identifier used to create this subscriber, which typically corresponds to the user ID in your system.
-      required:
-      - subscriberId
-    ChatOrPushProviderEnum:
-      type: string
-      description: The provider identifier for the credentials
-      enum:
-      - slack
-      - discord
-      - msteams
-      - mattermost
-      - ryver
-      - zulip
-      - grafana-on-call
-      - getstream
-      - rocket-chat
-      - whatsapp-business
-      - chat-webhook
-      - novu-slack
-      - telegram
-      - fcm
-      - apns
-      - expo
-      - one-signal
-      - pushpad
-      - push-webhook
-      - pusher-beams
-      - appio
-    ActorFeedItemDto:
-      type: object
-      properties:
-        data:
-          type:
-          - string
-          - 'null'
-          description: The data associated with the actor, can be null if not applicable.
-          example: null
-        type:
-          $ref: '#/components/schemas/ActorTypeEnum'
-      required:
-      - data
-      - type
-    MessageResponseDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: Unique identifier for the message
-        _templateId:
-          type:
-          - string
-          - 'null'
-          description: Template ID associated with the message
-        _environmentId:
-          type: string
-          description: Environment ID where the message is sent
-        _messageTemplateId:
-          type:
-          - string
-          - 'null'
-          description: Message template ID
-        _organizationId:
-          type: string
-          description: Organization ID associated with the message
-        _notificationId:
-          type: string
-          description: Notification ID associated with the message
-        _subscriberId:
-          type: string
-          description: Subscriber ID associated with the message
-        subscriber:
-          description: Subscriber details, if available
-          allOf:
-          - $ref: '#/components/schemas/SubscriberResponseDto'
-        template:
-          description: Workflow template associated with the message
-          allOf:
-          - $ref: '#/components/schemas/WorkflowResponse'
-        templateIdentifier:
-          type: string
-          description: Identifier for the message template
-        createdAt:
-          type: string
-          description: Creation date of the message
-        deliveredAt:
-          description: Array of delivery dates for the message, if the message has multiple delivery dates, for example after being snoozed
-          type: array
-          items:
-            type: string
-        lastSeenDate:
-          type: string
-          description: Last seen date of the message, if available
-        lastReadDate:
-          type: string
-          description: Last read date of the message, if available
-        content:
-          oneOf:
-          - type: array
-            items:
-              $ref: '#/components/schemas/EmailBlock'
-          - type: string
-            description: String representation of the content
-          description: Content of the message, can be an email block or a string
-        transactionId:
-          type: string
-          description: Transaction ID associated with the message
-        subject:
-          type: string
-          description: Subject of the message, if applicable
-        channel:
-          $ref: '#/components/schemas/ChannelTypeEnum'
-        read:
-          type: boolean
-          description: Indicates if the message has been read
-        seen:
-          type: boolean
-          description: Indicates if the message has been seen
-        snoozedUntil:
-          type: string
-          description: Date when the message will be unsnoozed
-        email:
-          type: string
-          description: Email address associated with the message, if applicable
-        phone:
-          type: string
-          description: Phone number associated with the message, if applicable
-        directWebhookUrl:
-          type: string
-          description: Direct webhook URL for the message, if applicable
         providerId:
+          $ref: '#/components/schemas/ChatOrPushProviderEnum'
+        integrationIdentifier:
           type: string
-          description: Provider ID associated with the message, if applicable
-        deviceTokens:
-          description: Device tokens associated with the message, if applicable
-          type: array
-          items:
-            type: string
-        title:
-          type: string
-          description: Title of the message, if applicable
-        cta:
-          description: Call to action associated with the message
+          description: The integration identifier
+        credentials:
+          description: Credentials payload for the specified provider
           allOf:
-          - $ref: '#/components/schemas/MessageCTA'
-        _feedId:
-          type:
-          - string
-          - 'null'
-          description: Feed ID associated with the message, if applicable
-        status:
-          $ref: '#/components/schemas/MessageStatusEnum'
-        errorId:
+          - $ref: '#/components/schemas/ChannelCredentials'
+        _integrationId:
           type: string
-          description: Error ID if the message has an error
-        errorText:
-          type: string
-          description: Error text if the message has an error
-        payload:
-          type: object
-          description: The payload that was used to send the notification trigger
-          additionalProperties: true
-        overrides:
-          type: object
-          description: Provider specific overrides used when triggering the notification
-          additionalProperties: true
-        contextKeys:
-          description: Context (single or multi) in which the message was sent
-          example:
-          - tenant:org-123
-          - region:us-east-1
-          type: array
-          items:
-            type: string
+          description: The unique identifier of the integration associated with this channel.
       required:
-      - _environmentId
-      - _organizationId
-      - _notificationId
-      - _subscriberId
-      - createdAt
-      - transactionId
-      - channel
-      - read
-      - seen
-      - cta
-      - status
-    RemoveSubscriberResponseDto:
-      type: object
-      properties:
-        acknowledged:
-          type: boolean
-          description: Indicates whether the operation was acknowledged by the server
-          example: true
-        status:
-          type: string
-          description: Status of the subscriber removal operation
-          example: success
-      required:
-      - acknowledged
-      - status
-    ButtonTypeEnum:
-      type: string
-      description: Type of button for the action result
-      enum:
-      - primary
-      - secondary
-    ActorTypeEnum:
-      type: string
-      description: The type of the actor, indicating the role in the notification process.
-      enum:
-      - none
-      - user
-      - system_icon
-      - system_custom
-    UnseenCountResponse:
-      type: object
-      properties:
-        count:
-          type: number
-      required:
-      - count
-    NotificationGroup:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        _environmentId:
-          type: string
-        _organizationId:
-          type: string
-        _parentId:
-          type: string
-      required:
-      - name
-      - _environmentId
-      - _organizationId
-    ListSubscribersResponseDto:
-      type: object
-      properties:
-        data:
-          description: List of returned Subscribers
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriberResponseDto'
-        next:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the next page of results, or null if there are no more pages.
-        previous:
-          type:
-          - string
-          - 'null'
-          description: The cursor for the previous page of results, or null if this is the first page.
-        totalCount:
-          type: number
-          description: The total count of items (up to 50,000)
-        totalCountCapped:
-          type: boolean
-          description: Whether there are more than 50,000 results available
-      required:
-      - data
-      - next
-      - previous
-      - totalCount
-      - totalCountCapped
-    UpdatedSubscriberDto:
-      type: object
-      properties:
-        subscriberId:
-          type: string
-          description: The ID of the subscriber that was updated.
-      required:
-      - subscriberId
-    UpdateAllSubscriberNotificationsDto:
-      type: object
-      properties:
-        tags:
-          type: object
-          description: 'Filter notifications by workflow tags (OR for string[], or { and: [{ or: string[] }, ...] } for AND of OR-groups).'
-        data:
-          type: string
-          description: Filter notifications by data attributes (JSON string)
-        contextKeys:
-          description: Context keys for filtering notifications
-          type: array
-          items:
-            type: string
-    CreatedSubscriberDto:
-      type: object
-      properties:
-        subscriberId:
-          type: string
-          description: The ID of the subscriber that was created.
-      required:
-      - subscriberId
-    GetSubscriberNotificationsResponseDto:
-      type: object
-      properties:
-        data:
-          description: Array of notifications
-          type: array
-          items:
-            $ref: '#/components/schemas/InboxNotificationDto'
-        hasMore:
-          type: boolean
-          description: Indicates if there are more notifications available
-        filter:
-          type: object
-          description: The filter applied to the notifications
-      required:
-      - data
-      - hasMore
-      - filter
-    MessageActionStatusEnum:
-      type: string
-      description: Status of the message action
-      enum:
-      - pending
-      - done
-    InboxSubscriberResponseDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the subscriber
-        firstName:
-          type: string
-          description: First name of the subscriber
-        lastName:
-          type: string
-          description: Last name of the subscriber
-        avatar:
-          type: string
-          description: Avatar URL of the subscriber
-        subscriberId:
-          type: string
-          description: External subscriber identifier
-      required:
-      - id
-      - subscriberId
-    MarkMessageActionAsSeenDto:
-      type: object
-      properties:
-        status:
-          enum:
-          - pending
-          - done
-          type: string
-          description: Message action status
-        payload:
-          type: object
-          description: Message action payload
-      required:
-      - status
-    SeverityLevelEnum:
-      type: string
-      description: Severity of the workflow
-      enum:
-      - high
-      - medium
-      - low
-      - none
+      - providerId
+      - credentials
+      - _integrationId
     NotificationTrigger:
       type: object
       properties:
@@ -13350,238 +13432,144 @@ components:
       - type
       - identifier
       - variables
-    UpdateSubscriberChannelRequestDto:
+    GetPreferencesResponseDto:
       type: object
       properties:
-        providerId:
-          $ref: '#/components/schemas/ChatOrPushProviderEnum'
-        integrationIdentifier:
-          type: string
-          description: The integration identifier
-        credentials:
-          description: Credentials payload for the specified provider
+        level:
+          $ref: '#/components/schemas/PreferenceLevelEnum'
+        workflow:
+          description: Workflow information if this is a template-level preference
           allOf:
-          - $ref: '#/components/schemas/ChannelCredentials'
-      required:
-      - providerId
-      - credentials
-    InboxActionDto:
-      type: object
-      properties:
-        label:
-          type: string
-          description: Label of the action button
-        isCompleted:
+          - $ref: '#/components/schemas/WorkflowDto'
+        enabled:
           type: boolean
-          description: Whether the action has been completed
-        redirect:
-          description: Redirect configuration for the action
+          description: Whether the preference is enabled
+          example: true
+        channels:
+          description: Channel-specific preference settings
           allOf:
-          - $ref: '#/components/schemas/RedirectDto'
+          - $ref: '#/components/schemas/SubscriberPreferenceChannels'
+        condition:
+          type:
+          - object
+          - 'null'
+          description: Condition using JSON Logic rules
       required:
-      - label
-      - isCompleted
-    GetSubscriberNotificationsCountResponseDto:
+      - level
+      - enabled
+      - channels
+    TimeRangeDto:
       type: object
       properties:
-        count:
-          type: number
-          description: The count of notifications matching the filter
-        filter:
-          type: object
-          description: The filter applied
-          additionalProperties: true
-      required:
-      - count
-      - filter
-    TimedConfig:
-      type: object
-      properties:
-        atTime:
+        start:
           type: string
-        weekDays:
+          description: Start time
+          example: 09:00 AM
+        end:
+          type: string
+          description: End time
+          example: 05:00 PM
+      required:
+      - start
+      - end
+    SubscriberWorkflowPreferenceDto:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether notifications are enabled for this workflow
+        channels:
+          description: Channel-specific preference settings for this workflow
+          allOf:
+          - $ref: '#/components/schemas/SubscriberPreferenceChannels'
+        overrides:
+          description: List of preference overrides
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriberPreferenceOverrideDto'
+        workflow:
+          description: Workflow information
+          allOf:
+          - $ref: '#/components/schemas/SubscriberPreferencesWorkflowInfoDto'
+        updatedAt:
+          type: string
+          description: Timestamp when the subscriber last updated their preference. Only present if subscriber explicitly set preferences.
+      required:
+      - enabled
+      - channels
+      - overrides
+      - workflow
+    ChannelTypeEnum:
+      type: string
+      description: Channel type through which the message is sent
+      enum:
+      - in_app
+      - email
+      - sms
+      - chat
+      - push
+    UpdateAllSubscriberNotificationsDto:
+      type: object
+      properties:
+        tags:
+          type: object
+          description: 'Filter notifications by workflow tags (OR for string[], or { and: [{ or: string[] }, ...] } for AND of OR-groups).'
+        data:
+          type: string
+          description: Filter notifications by data attributes (JSON string)
+        contextKeys:
+          description: Context keys for filtering notifications
           type: array
           items:
             type: string
-            enum:
-            - monday
-            - tuesday
-            - wednesday
-            - thursday
-            - friday
-            - saturday
-            - sunday
-        monthDays:
-          type: array
-          items:
-            type: string
-        ordinal:
-          type: string
-          enum:
-          - '1'
-          - '2'
-          - '3'
-          - '4'
-          - '5'
-          - last
-        ordinalValue:
-          type: string
-          enum:
-          - day
-          - weekday
-          - weekend
-          - sunday
-          - monday
-          - tuesday
-          - wednesday
-          - thursday
-          - friday
-          - saturday
-        monthlyType:
-          type: string
-          enum:
-          - each
-          - 'on'
-    ValidationErrorDto:
+    ReplyCallback:
       type: object
       properties:
-        statusCode:
-          type: number
-          description: HTTP status code of the error response.
-          example: 404
-        timestamp:
+        active:
+          type: boolean
+          description: Indicates whether the reply callback is active.
+        url:
           type: string
-          description: Timestamp of when the error occurred.
-          example: '2024-12-12T13:00:00Z'
-        path:
-          type: string
-          description: The path where the error occurred.
-          example: /api/v1/resource
-        message:
-          description: Value that failed validation
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type: number
-          - type: boolean
-          - type:
-            - object
-            - 'null'
-          - type: array
-            items:
-              anyOf:
-              - type:
-                - string
-                - 'null'
-              - type: number
-              - type: boolean
-              - type: object
-                additionalProperties: true
-          example: 'xx xx xx '
-        ctx:
-          type: object
-          description: Optional context object for additional error details.
-          additionalProperties: true
-          example:
-            workflowId: some_wf_id
-            stepId: some_wf_id
-        errorId:
-          type: string
-          description: "Optional unique identifier for the error, useful for tracking using Sentry and \n      New Relic, only available for 500."
-          example: abc123
-        errors:
-          type: object
-          description: A record of validation errors keyed by field name
-          additionalProperties:
-            $ref: '#/components/schemas/ConstraintValidation'
-          example:
-            fieldName1:
-              messages:
-              - Field is required
-              - Must be a valid email address
-              value: invalidEmail
-            fieldName2:
-              messages:
-              - Must be at least 18 years old
-              value: 17
-            fieldName3:
-              messages:
-              - Must be a boolean value
-              value: true
-            fieldName4:
-              messages:
-              - Must be a valid object
-              value:
-                key: value
-            fieldName5:
-              messages:
-              - Field is missing
-              value: null
-            fieldName6:
-              messages:
-              - Undefined value
-      required:
-      - statusCode
-      - timestamp
-      - path
-      - errors
-    MessageMarkAsRequestDto:
+          description: The URL to which replies should be sent.
+    ActorFeedItemDto:
       type: object
       properties:
-        messageId:
-          oneOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-        markAs:
-          enum:
-          - read
-          - seen
-          - unread
-          - unseen
-          type: string
+        data:
+          type:
+          - string
+          - 'null'
+          description: The data associated with the actor, can be null if not applicable.
+          example: null
+        type:
+          $ref: '#/components/schemas/ActorTypeEnum'
       required:
-      - messageId
-      - markAs
+      - data
+      - type
   headers:
-    RateLimit-Remaining:
-      required: false
-      description: The number of requests remaining until the next window.
-      schema:
-        type: string
-      example: '93'
-    Idempotency-Replay:
-      required: false
-      description: Whether the request was a replay of a previous request.
-      schema:
-        type: string
-      example: 'true'
     Retry-After:
       required: false
       description: The number of seconds after which the client may retry the request that was previously rejected.
       schema:
         type: string
       example: '8'
-    RateLimit-Reset:
-      required: false
-      description: The remaining seconds until a request of the same cost will be refreshed.
-      schema:
-        type: string
-      example: '8'
-    RateLimit-Limit:
-      required: false
-      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
-      schema:
-        type: string
-      example: '100'
     RateLimit-Policy:
       required: false
       description: The rate limit policy that was used to evaluate the request.
       schema:
         type: string
       example: 100;w=1;burst=110;comment="token bucket";category="trigger";cost="single"
+    Idempotency-Replay:
+      required: false
+      description: Whether the request was a replay of a previous request.
+      schema:
+        type: string
+      example: 'true'
+    RateLimit-Reset:
+      required: false
+      description: The remaining seconds until a request of the same cost will be refreshed.
+      schema:
+        type: string
+      example: '8'
     Idempotency-Key:
       required: false
       description: The idempotency key used to evaluate the request.
@@ -13594,6 +13582,18 @@ components:
       schema:
         type: string
       example: application/json
+    RateLimit-Limit:
+      required: false
+      description: The number of requests that the client is permitted to make per second. The actual maximum may differ when burst is enabled.
+      schema:
+        type: string
+      example: '100'
+    RateLimit-Remaining:
+      required: false
+      description: The number of requests remaining until the next window.
+      schema:
+        type: string
+      example: '93'
   securitySchemes:
     secretKey:
       type: apiKey
