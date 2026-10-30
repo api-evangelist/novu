@@ -1,4 +1,4 @@
-# Novu (novu)
+# Novu
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,287 +66,301 @@
 
 Novu is the open-source notification infrastructure for developers. A single REST API and workflow engine route a triggered event across in-app inbox, email, SMS, push, chat (Slack / Discord / MS Teams / WhatsApp) and custom channels — with subscriber preferences, topics, digest, snooze, and full workflow orchestration on top. Ships with the embeddable React Inbox component, the Novu Framework for code-first workflow authoring, language SDKs for nine ecosystems, a Postman collection, an MCP server, GitHub Action sync, the Maily block-based email editor, framework starters for Next.js / Remix / Nuxt / SvelteKit, and webhook bridges for Stripe / Clerk / Segment.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/novu/refs/heads/main/apis.yml)
+**Areas:** Notification · Messaging · In-App · Email · SMS · Push · Chat · Workflows · Open Source · Subscribers · Topic · Inbox
 
-## Scope
+## Novu on APIs.io
 
-- **Type:** Index
+Everything profiled for Novu is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/novu/](https://apis.io/providers/novu/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (20)
 
-- Notifications
-- Messaging
-- In App
-- Email
-- SMS
-- Push
-- Chat
-- Workflows
-- Open Source
-- Subscribers
-- Topics
-- Inbox
-- Workflow Orchestration
-- Multi Channel
-- Digest
-- MCP
-- Framework
-- React
+- [Novu Inbox / In-App API](https://apis.io/apis/novu/inbox-api/) — Client-side API and React Inbox component for rendering an embedded in-app notification center, marking notifications as read / archived / snoozed, and…
+- [Novu Framework (Code-First Workflows)](https://apis.io/apis/novu/framework/) — Code-first workflow framework that lets developers define notification workflows in TypeScript / JavaScript using `@novu/framework`, then sync them to Novu…
+- [Novu MCP Server](https://apis.io/apis/novu/mcp-server/) — Official Model Context Protocol server exposing the Novu REST API surface as MCP tools so AI agents (Claude Desktop, Cursor, agent frameworks) can trigger…
+- [Novu Activity API](https://apis.io/apis/novu/novu-activity-api/) — The Activity API from Novu — 1 operation(s) for activity.
+- [Novu Channel Connections API](https://apis.io/apis/novu/novu-channel-connections-api/) — The Channel Connections API from Novu — 2 operation(s) for channel connections.
+- [Novu Channel Endpoints API](https://apis.io/apis/novu/novu-channel-endpoints-api/) — The Channel Endpoints API from Novu — 2 operation(s) for channel endpoints.
+- [Novu Contexts API](https://apis.io/apis/novu/novu-contexts-api/) — The Contexts API from Novu — 2 operation(s) for contexts.
+- [Novu Domains API](https://apis.io/apis/novu/novu-domains-api/) — Used to manage your inbound email domains.
+- [Novu Environment Variables API](https://apis.io/apis/novu/novu-environment-variables-api/) — The Environment Variables API from Novu — 3 operation(s) for environment variables.
+- [Novu Environments API](https://apis.io/apis/novu/novu-environments-api/) — Environments allow you to manage different stages of your application development lifecycle. Each environment has its own set of API keys and…
+- [Novu Events API](https://apis.io/apis/novu/novu-events-api/) — Events represent a change in state of a subscriber. They are used to trigger workflows, and enable you to send notifications to subscribers based on their…
+- [Novu Integrations API](https://apis.io/apis/novu/novu-integrations-api/) — With the help of the Integration Store, you can easily integrate your favorite delivery provider. During the runtime of the API, the Integrations Store is…
+- [Novu Layouts API](https://apis.io/apis/novu/novu-layouts-api/) — Layouts are reusable wrappers for your email notifications.
+- [Novu Messages API](https://apis.io/apis/novu/novu-messages-api/) — A message in Novu represents a notification delivered to a recipient on a particular channel. Messages contain information about the request that triggered…
+- [Novu Notifications API](https://apis.io/apis/novu/novu-notifications-api/) — The Notifications API from Novu — 2 operation(s) for notifications.
+- [Novu Subscribers API](https://apis.io/apis/novu/novu-subscribers-api/) — A subscriber in Novu represents someone who should receive a message. A subscriber's profile information contains important attributes about the subscriber…
+- [Novu Topics API](https://apis.io/apis/novu/novu-topics-api/) — Topics are a way to group subscribers together so that they can be notified of events at once. A topic is identified by a custom key. This can be helpful…
+- [Novu Translations API](https://apis.io/apis/novu/novu-translations-api/) — Used to localize your notifications to different languages.
+- [Novu Workflows API](https://apis.io/apis/novu/novu-workflows-api/) — All notifications are sent via a workflow. Each workflow acts as a container for the logic and blueprint that are associated with a type of notification in…
+- [Novu Webhooks API](https://apis.io/apis/novu/novu-webhooks-api/) — The Webhooks API from Novu — 0 operation(s) for webhooks.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-23
-- **Modified:** 2026-05-29
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Arazzo workflows (12)
 
-### Novu REST API
+Multi-step workflows that chain operations into a business task.
 
-Server-side REST API exposing 135 operations across Events, Subscribers, Workflows, Topics, Integrations, Layouts, Messages, Notifications, Environments, Environment Variables, Domains, Channel Connections, Channel Endpoints, Translations, Activity, and Contexts. Authenticated with an ApiKey scheme delivered in the Authorization header. Honors IETF RateLimit-* headers, Idempotency-Key, and a published OpenAPI 3 document available at /openapi.json on every region.
+- [Novu Bulk Onboard Subscribers and Broadcast an Announcement](https://apis.io/arazzos/novu/novu-bulk-onboard-and-broadcast-workflow/)
+- [Novu Create a Workflow and Trigger It](https://apis.io/arazzos/novu/novu-create-workflow-and-trigger-workflow/)
+- [Novu Offboard a Subscriber](https://apis.io/arazzos/novu/novu-offboard-subscriber-workflow/)
+- [Novu Onboard a Subscriber and Send Their First Notification](https://apis.io/arazzos/novu/novu-onboard-subscriber-and-notify-workflow/)
+- [Novu Provision a Delivery Integration and Make It Primary](https://apis.io/arazzos/novu/novu-provision-integration-and-set-primary-workflow/)
+- [Novu Set Subscriber Preferences Then Notify](https://apis.io/arazzos/novu/novu-set-preferences-then-notify-workflow/)
+- [Novu Subscribe an Existing Subscriber to a Topic](https://apis.io/arazzos/novu/novu-subscribe-existing-to-topic-workflow/)
+- [Novu Subscriber Inbox Triage](https://apis.io/arazzos/novu/novu-subscriber-inbox-triage-workflow/)
+- [Novu Topic Broadcast Campaign](https://apis.io/arazzos/novu/novu-topic-broadcast-campaign-workflow/)
+- [Novu Trigger a Notification and Verify Delivery](https://apis.io/arazzos/novu/novu-trigger-and-verify-delivery-workflow/)
+- [Novu Trigger a Deferred Notification and Cancel It](https://apis.io/arazzos/novu/novu-trigger-then-cancel-workflow/)
+- [Novu Unsubscribe Subscribers From a Topic](https://apis.io/arazzos/novu/novu-unsubscribe-from-topic-workflow/)
 
-- **Human URL:** [https://docs.novu.co/api-reference/overview](https://docs.novu.co/api-reference/overview)
-- **Base URL:** `https://api.novu.co`
+#### AsyncAPI (1)
 
-#### Tags
+Event-driven and webhook contracts.
 
-- REST
-- Events
-- Subscribers
-- Workflows
-- Topics
-- Integrations
-- Messages
-- Notifications
-- Environments
-- Domains
-- Idempotency
-- Rate Limits
+- [Novu Notification Center WebSocket API](https://apis.io/asyncapis/novu/novu-asyncapi/)
 
-#### Properties
+#### Event channels (1)
 
-- [Documentation](https://docs.novu.co/api-reference/overview)
-- [API Reference](https://docs.novu.co/api-reference/overview)
-- [OpenAPI](openapi/novu-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/novu.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/novu.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [OpenAPI](https://api.novu.co/openapi.json) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Swagger](https://api.novu.co/api)
-- [Postman](https://github.com/novuhq/novu-postman) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Authentication](https://docs.novu.co/api-reference/overview#authentication)
-- [Rate Limits](rate-limits/novu-rate-limits.yml)
-- [Quickstart](https://docs.novu.co/platform/quickstart/nextjs)
-- [SDK](https://www.npmjs.com/package/@novu/api)
-- [SDK](https://pypi.org/project/novu-py/)
-- [SDK](https://github.com/novuhq/novu-go)
-- [SDK](https://github.com/novuhq/php-novu)
-- [SDK](https://github.com/novuhq/novu-csharp)
-- [SDK](https://github.com/novuhq/novu-java)
-- [SDK](https://github.com/novuhq/novu-elixir)
-- [SDK](https://github.com/novuhq/novu-kotlin)
-- [SDK](https://github.com/novuhq/novu-ruby)
-- [SDK](https://github.com/novuhq/novu-rust)
-- [SDK](https://github.com/novuhq/novu-dotnet)
-- [Code Examples](https://github.com/novuhq/examples)
-- [JSON Schema](json-schema/novu-trigger-event-request-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-trigger-event-response-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-bulk-trigger-event-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-subscriber-response-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-create-subscriber-request-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-bulk-subscriber-create-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-create-environment-request-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-update-environment-request-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-environment-response-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-topic-response-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-create-integration-request-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-update-integration-request-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-integration-response-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-message-response-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-create-workflow-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-update-workflow-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-workflow-response-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-layout-response-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-subscriber-payload-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/novu-error-dto-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Structure](json-structure/novu-trigger-event-request-dto-structure.json)
-- [JSON Structure](json-structure/novu-subscriber-response-dto-structure.json)
-- [JSON Structure](json-structure/novu-workflow-response-dto-structure.json)
-- [JSON Structure](json-structure/novu-message-response-dto-structure.json)
-- [JSON Structure](json-structure/novu-topic-response-dto-structure.json)
-- [JSON Structure](json-structure/novu-integration-response-dto-structure.json)
-- [Example](examples/novu-trigger-event-example.json)
-- [Example](examples/novu-trigger-event-bulk-example.json)
-- [Example](examples/novu-broadcast-event-example.json)
-- [Example](examples/novu-create-subscriber-example.json)
-- [Example](examples/novu-bulk-create-subscribers-example.json)
-- [Example](examples/novu-create-topic-example.json)
-- [Example](examples/novu-add-subscribers-to-topic-example.json)
-- [Example](examples/novu-create-environment-example.json)
-- [Example](examples/novu-create-integration-example.json)
-- [Example](examples/novu-workflow-response-example.json)
-- [Example](examples/novu-list-messages-example.json)
-- [Example](examples/novu-error-response-example.json)
+Individual events and webhooks the provider emits.
 
-### Novu REST API (EU Region)
+- [/](https://apis.io/channels/novu/untitled/)
 
-EU-hosted instance of the Novu REST API for customers requiring data residency in the European Union. Exposes the same 135 operations, schemas, security, and rate-limit policy as the global instance. Enterprise data residency can extend to UK, Singapore, Australia, Japan, and South Korea.
+#### MCP servers (1)
 
-- **Human URL:** [https://docs.novu.co/api-reference/overview](https://docs.novu.co/api-reference/overview)
-- **Base URL:** `https://eu.api.novu.co`
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags
+- [novu](https://apis.io/servers/novu/novu/)
 
-- REST
-- EU
-- Data Residency
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Documentation](https://docs.novu.co/api-reference/overview)
-- [OpenAPI](openapi/novu-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/novu.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/novu.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Authentication](https://docs.novu.co/api-reference/overview#authentication)
-- [Rate Limits](rate-limits/novu-rate-limits.yml)
+- [Novu Agentic Access](https://apis.io/agentic-access/novu/novu-agentic-access/)
 
-### Novu Inbox / In-App API
+#### JSON Schema (20)
 
-Client-side API and React Inbox component for rendering an embedded in-app notification center, marking notifications as read / archived / snoozed, and managing per-user notification preferences directly in the browser. Ships with @novu/react, @novu/react-native, and @novu/js (vanilla) packages, plus pre-built Notion / Linear / Novu themes and full headless API access.
+The data models the API reads and writes.
 
-- **Human URL:** [https://docs.novu.co/platform/inbox/overview](https://docs.novu.co/platform/inbox/overview)
-- **Base URL:** `https://api.novu.co`
+- [BulkSubscriberCreateDto](https://apis.io/schemas/novu/novu-bulk-subscriber-create-dto/)
+- [BulkTriggerEventDto](https://apis.io/schemas/novu/novu-bulk-trigger-event-dto/)
+- [CreateEnvironmentRequestDto](https://apis.io/schemas/novu/novu-create-environment-request-dto/)
+- [CreateIntegrationRequestDto](https://apis.io/schemas/novu/novu-create-integration-request-dto/)
+- [CreateSubscriberRequestDto](https://apis.io/schemas/novu/novu-create-subscriber-request-dto/)
+- [CreateWorkflowDto](https://apis.io/schemas/novu/novu-create-workflow-dto/)
+- [EnvironmentResponseDto](https://apis.io/schemas/novu/novu-environment-response-dto/)
+- [ErrorDto](https://apis.io/schemas/novu/novu-error-dto/)
+- [IntegrationResponseDto](https://apis.io/schemas/novu/novu-integration-response-dto/)
+- [LayoutResponseDto](https://apis.io/schemas/novu/novu-layout-response-dto/)
+- [MessageResponseDto](https://apis.io/schemas/novu/novu-message-response-dto/)
+- [SubscriberPayloadDto](https://apis.io/schemas/novu/novu-subscriber-payload-dto/)
+- [SubscriberResponseDto](https://apis.io/schemas/novu/novu-subscriber-response-dto/)
+- [TopicResponseDto](https://apis.io/schemas/novu/novu-topic-response-dto/)
+- [TriggerEventRequestDto](https://apis.io/schemas/novu/novu-trigger-event-request-dto/)
+- [TriggerEventResponseDto](https://apis.io/schemas/novu/novu-trigger-event-response-dto/)
+- [UpdateEnvironmentRequestDto](https://apis.io/schemas/novu/novu-update-environment-request-dto/)
+- [UpdateIntegrationRequestDto](https://apis.io/schemas/novu/novu-update-integration-request-dto/)
+- [UpdateWorkflowDto](https://apis.io/schemas/novu/novu-update-workflow-dto/)
+- [WorkflowResponseDto](https://apis.io/schemas/novu/novu-workflow-response-dto/)
 
-#### Tags
+#### JSON Structure (20)
 
-- In App
-- Inbox
-- React
-- React Native
-- Client SDK
-- Headless
+Data models expressed in JSON Structure.
 
-#### Properties
+- [Novu Bulk Subscriber Create Dto Structure](https://apis.io/json-structure/novu/novu-bulk-subscriber-create-dto-structure/)
+- [Novu Bulk Trigger Event Dto Structure](https://apis.io/json-structure/novu/novu-bulk-trigger-event-dto-structure/)
+- [Novu Create Environment Request Dto Structure](https://apis.io/json-structure/novu/novu-create-environment-request-dto-structure/)
+- [Novu Create Integration Request Dto Structure](https://apis.io/json-structure/novu/novu-create-integration-request-dto-structure/)
+- [Novu Create Subscriber Request Dto Structure](https://apis.io/json-structure/novu/novu-create-subscriber-request-dto-structure/)
+- [Novu Create Workflow Dto Structure](https://apis.io/json-structure/novu/novu-create-workflow-dto-structure/)
+- [Novu Environment Response Dto Structure](https://apis.io/json-structure/novu/novu-environment-response-dto-structure/)
+- [Novu Error Dto Structure](https://apis.io/json-structure/novu/novu-error-dto-structure/)
+- [Novu Integration Response Dto Structure](https://apis.io/json-structure/novu/novu-integration-response-dto-structure/)
+- [Novu Layout Response Dto Structure](https://apis.io/json-structure/novu/novu-layout-response-dto-structure/)
+- [Novu Message Response Dto Structure](https://apis.io/json-structure/novu/novu-message-response-dto-structure/)
+- [Novu Subscriber Payload Dto Structure](https://apis.io/json-structure/novu/novu-subscriber-payload-dto-structure/)
+- [Novu Subscriber Response Dto Structure](https://apis.io/json-structure/novu/novu-subscriber-response-dto-structure/)
+- [Novu Topic Response Dto Structure](https://apis.io/json-structure/novu/novu-topic-response-dto-structure/)
+- [Novu Trigger Event Request Dto Structure](https://apis.io/json-structure/novu/novu-trigger-event-request-dto-structure/)
+- [Novu Trigger Event Response Dto Structure](https://apis.io/json-structure/novu/novu-trigger-event-response-dto-structure/)
+- [Novu Update Environment Request Dto Structure](https://apis.io/json-structure/novu/novu-update-environment-request-dto-structure/)
+- [Novu Update Integration Request Dto Structure](https://apis.io/json-structure/novu/novu-update-integration-request-dto-structure/)
+- [Novu Update Workflow Dto Structure](https://apis.io/json-structure/novu/novu-update-workflow-dto-structure/)
+- [Novu Workflow Response Dto Structure](https://apis.io/json-structure/novu/novu-workflow-response-dto-structure/)
 
-- [Documentation](https://docs.novu.co/platform/inbox/overview)
-- [AsyncAPI](asyncapi/novu-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [Quickstart](https://docs.novu.co/platform/quickstart/react)
-- [SDK](https://www.npmjs.com/package/@novu/react)
-- [SDK](https://www.npmjs.com/package/@novu/react-native)
-- [SDK](https://www.npmjs.com/package/@novu/js)
-- [SDK](https://www.npmjs.com/package/@novu/nextjs)
-- [Code Examples](https://github.com/novuhq/inbox-playground)
-- [Postman Collection](collections/novu.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/novu.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### JSON-LD (1)
 
-### Novu Framework (Code-First Workflows)
+Linked-data contexts for the provider's vocabulary.
 
-Code-first workflow framework that lets developers define notification workflows in TypeScript / JavaScript using `@novu/framework`, then sync them to Novu Cloud (or a self-hosted instance) via the `npx novu-sync` CLI or the `novuhq/actions-novu-sync` GitHub Action. Supports Express, Next.js, NestJS, Remix, SvelteKit, Nuxt, H3, AWS Lambda, and any node-runtime HTTP handler. The framework owns the workflow source-of-truth — the Dashboard editor stays in sync via a deterministic bridge URL.
+- [Novu Context](https://apis.io/jsonld/novu/novu-context/)
 
-- **Human URL:** [https://docs.novu.co/framework/overview](https://docs.novu.co/framework/overview)
-- **Base URL:** `https://docs.novu.co/framework`
+#### Vocabulary (1)
 
-#### Tags
+The provider's domain terms, defined.
 
-- Framework
-- Code First
-- Workflows
-- TypeScript
-- Next.js
-- Express
-- NestJS
-- Remix
-- SvelteKit
-- Nuxt
-- AWS Lambda
+- [Novu Vocabulary](https://apis.io/vocabularies/novu/novu-vocabulary/)
 
-#### Properties
+#### Examples (12)
 
-- [Documentation](https://docs.novu.co/framework/overview)
-- [Quickstart](https://docs.novu.co/framework/quickstart/nextjs)
-- [SDK](https://www.npmjs.com/package/@novu/framework)
-- [C L I](https://www.npmjs.com/package/novu)
-- [Code Examples](https://github.com/novuhq/novu-framework-nextjs-react-email-example)
-- [Code Examples](https://github.com/novuhq/novu-framework-remix-example)
-- [Code Examples](https://github.com/novuhq/novu-framework-nuxt-example)
-- [Code Examples](https://github.com/novuhq/novu-framework-nuxt-vue-email-example)
-- [Code Examples](https://github.com/novuhq/novu-framework-newsletter-app-example)
-- [Postman Collection](collections/novu.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/novu.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Example requests and responses.
 
-### Novu MCP Server
+- [Novu Add Subscribers To Topic Example](https://apis.io/examples/novu/novu-add-subscribers-to-topic-example/)
+- [Novu Broadcast Event Example](https://apis.io/examples/novu/novu-broadcast-event-example/)
+- [Novu Bulk Create Subscribers Example](https://apis.io/examples/novu/novu-bulk-create-subscribers-example/)
+- [Novu Create Environment Example](https://apis.io/examples/novu/novu-create-environment-example/)
+- [Novu Create Integration Example](https://apis.io/examples/novu/novu-create-integration-example/)
+- [Novu Create Subscriber Example](https://apis.io/examples/novu/novu-create-subscriber-example/)
+- [Novu Create Topic Example](https://apis.io/examples/novu/novu-create-topic-example/)
+- [Novu Error Response Example](https://apis.io/examples/novu/novu-error-response-example/)
+- [Novu List Messages Example](https://apis.io/examples/novu/novu-list-messages-example/)
+- [Novu Trigger Event Bulk Example](https://apis.io/examples/novu/novu-trigger-event-bulk-example/)
+- [Novu Trigger Event Example](https://apis.io/examples/novu/novu-trigger-event-example/)
+- [Novu Workflow Response Example](https://apis.io/examples/novu/novu-workflow-response-example/)
 
-Official Model Context Protocol server exposing the Novu REST API surface as MCP tools so AI agents (Claude Desktop, Cursor, agent frameworks) can trigger workflows, manage subscribers, list workflows, and inspect activity without bespoke wrapping. Distributed as a stdio server runnable via `npx @novu/mcp-server`.
+#### Collections (18)
 
-- **Human URL:** [https://github.com/novuhq/novu-mcp-server](https://github.com/novuhq/novu-mcp-server)
-- **Base URL:** `https://github.com/novuhq/novu-mcp-server`
+Postman and Open Collection request collections.
 
-#### Tags
+- [Novu API](https://apis.io/collections/novu/open-novu/)
+- [Novu Activity API](https://apis.io/collections/novu/open-novu-activity-api/)
+- [Novu Activity Channel Connections API](https://apis.io/collections/novu/open-novu-channel-connections-api/)
+- [Novu Activity Channel Endpoints API](https://apis.io/collections/novu/open-novu-channel-endpoints-api/)
+- [Novu Activity Contexts API](https://apis.io/collections/novu/open-novu-contexts-api/)
+- [Novu Activity Domains API](https://apis.io/collections/novu/open-novu-domains-api/)
+- [Novu Activity Environment Variables API](https://apis.io/collections/novu/open-novu-environment-variables-api/)
+- [Novu Activity Environments API](https://apis.io/collections/novu/open-novu-environments-api/)
+- [Novu Activity Events API](https://apis.io/collections/novu/open-novu-events-api/)
+- [Novu Activity Integrations API](https://apis.io/collections/novu/open-novu-integrations-api/)
+- [Novu Activity Layouts API](https://apis.io/collections/novu/open-novu-layouts-api/)
+- [Novu Activity Messages API](https://apis.io/collections/novu/open-novu-messages-api/)
+- [Novu Activity Notifications API](https://apis.io/collections/novu/open-novu-notifications-api/)
+- [Novu Activity Subscribers API](https://apis.io/collections/novu/open-novu-subscribers-api/)
+- [Novu Activity Topics API](https://apis.io/collections/novu/open-novu-topics-api/)
+- [Novu Activity Translations API](https://apis.io/collections/novu/open-novu-translations-api/)
+- [Novu Activity Workflows API](https://apis.io/collections/novu/open-novu-workflows-api/)
+- [Novu API](https://apis.io/collections/novu/postman-novu/)
 
-- MCP
-- AI Agents
-- LLM
-- Tools
-- Notifications
+#### Overlays (16)
 
-#### Properties
+OpenAPI overlays, including conversational phrasing for each operation.
 
-- [Documentation](https://github.com/novuhq/novu-mcp-server)
-- [Source Code](https://github.com/novuhq/novu-mcp-server)
-- [Postman Collection](collections/novu.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/novu.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Novu Activity Api Phrasing Overlay](https://apis.io/overlays/novu/novu-activity-api-phrasing-overlay/)
+- [Novu Channel Connections Api Phrasing Overlay](https://apis.io/overlays/novu/novu-channel-connections-api-phrasing-overlay/)
+- [Novu Channel Endpoints Api Phrasing Overlay](https://apis.io/overlays/novu/novu-channel-endpoints-api-phrasing-overlay/)
+- [Novu Contexts Api Phrasing Overlay](https://apis.io/overlays/novu/novu-contexts-api-phrasing-overlay/)
+- [Novu Domains Api Phrasing Overlay](https://apis.io/overlays/novu/novu-domains-api-phrasing-overlay/)
+- [Novu Environment Variables Api Phrasing Overlay](https://apis.io/overlays/novu/novu-environment-variables-api-phrasing-overlay/)
+- [Novu Environments Api Phrasing Overlay](https://apis.io/overlays/novu/novu-environments-api-phrasing-overlay/)
+- [Novu Events Api Phrasing Overlay](https://apis.io/overlays/novu/novu-events-api-phrasing-overlay/)
+- [Novu Integrations Api Phrasing Overlay](https://apis.io/overlays/novu/novu-integrations-api-phrasing-overlay/)
+- [Novu Layouts Api Phrasing Overlay](https://apis.io/overlays/novu/novu-layouts-api-phrasing-overlay/)
+- [Novu Messages Api Phrasing Overlay](https://apis.io/overlays/novu/novu-messages-api-phrasing-overlay/)
+- [Novu Notifications Api Phrasing Overlay](https://apis.io/overlays/novu/novu-notifications-api-phrasing-overlay/)
+- [Novu Subscribers Api Phrasing Overlay](https://apis.io/overlays/novu/novu-subscribers-api-phrasing-overlay/)
+- [Novu Topics Api Phrasing Overlay](https://apis.io/overlays/novu/novu-topics-api-phrasing-overlay/)
+- [Novu Translations Api Phrasing Overlay](https://apis.io/overlays/novu/novu-translations-api-phrasing-overlay/)
+- [Novu Workflows Api Phrasing Overlay](https://apis.io/overlays/novu/novu-workflows-api-phrasing-overlay/)
 
-## Common Properties
+#### Governance rules (3)
 
-- [Arazzo Workflows](arazzo/) — [Arazzo Specification](https://spec.openapis.org/arazzo/latest.html)
+Spectral rulesets for the provider's contracts.
+
+- [Novu — asyncapi rules](https://apis.io/rules/novu/novu-asyncapi-spectral-rules/)
+- [Novu — jsonschema rules](https://apis.io/rules/novu/novu-jsonschema-spectral-rules/)
+- [Novu API Rules](https://apis.io/rules/novu/novu-spectral-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Novu Authentication](https://apis.io/security/novu/novu-authentication/)
+- [Novu Domain Security](https://apis.io/security/novu/novu-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Novu Plans Pricing](https://apis.io/plans/novu/novu-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Novu Rate Limits](https://apis.io/rate-limits/novu/novu-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Novu Finops](https://apis.io/finops/novu/novu-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://novu.co)
-- [Portal](https://docs.novu.co)
 - [Documentation](https://docs.novu.co)
-- [Sign Up](https://web.novu.co/auth/signup)
-- [Login](https://web.novu.co)
 - [Pricing](https://novu.co/pricing)
-- [Plans](plans/novu-plans-pricing.yml)
-- [Fin Ops](finops/novu-finops.yml)
-- [Rate Limits](rate-limits/novu-rate-limits.yml)
-- [Blog](https://novu.co/blog)
-- [Git Hub](https://github.com/novuhq)
-- [GitHub Organization](https://github.com/novuhq)
-- [GitHub Repository](https://github.com/novuhq/novu)
-- [Source Code](https://github.com/novuhq/novu)
-- [License](https://github.com/novuhq/novu/blob/next/LICENSE)
-- [SDK](https://docs.novu.co/sdks/introduction)
-- [C L I](https://docs.novu.co/community/run-in-local-machine)
-- [Framework](https://docs.novu.co/framework/overview)
-- [Inbox](https://docs.novu.co/platform/inbox/overview)
-- [Integrations](https://docs.novu.co/platform/integrations)
 - [Changelog](https://novu.co/changelog)
-- [Release Notes](https://github.com/novuhq/novu/releases)
-- [Status Page](https://status.novu.co)
-- [Terms of Service](https://novu.co/terms)
-- [Privacy Policy](https://novu.co/privacy)
-- [Community](https://discord.gg/novu)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/novu)
-- [YouTube](https://www.youtube.com/@novuhq)
-- [L L Ms Txt](https://docs.novu.co/llms.txt)
-- [Spectral Rules](rules/novu-spectral-rules.yml)
-- [Vocabulary](vocabulary/novu-vocabulary.yml)
-- [J S O N- L D](json-ld/novu-context.jsonld)
-- [Tools](https://github.com/novuhq/novu-mcp-server)
-- [Tools](https://github.com/novuhq/maily.to)
-- [Tools](https://github.com/novuhq/actions-novu-sync)
-- [Tools](https://github.com/novuhq/stripe-to-novu-webhooks)
-- [Tools](https://github.com/novuhq/clerk-to-novu-webhooks)
-- [Tools](https://github.com/novuhq/segment-to-novu-webhooks)
-- [Tools](https://github.com/novuhq/community-k8s)
-- [Tutorials](https://github.com/novuhq/inbox-playground)
-- [Tutorials](https://github.com/novuhq/examples)
-- [Tutorials](https://github.com/novuhq/awesome-novu)
-- [Tutorials](https://docs.novu.co/guides)
-- [Skills](https://github.com/novuhq/skills)
-- [Features](undefined)
-- [Use Cases](undefined)
-- [Integrations](undefined)
-- [Solutions](undefined)
+- [Blog](https://www.novu.co/blog/)
+- [Terms of service](https://novu.co/terms)
+- [Privacy policy](https://novu.co/privacy)
+- [GitHub](https://github.com/novuhq)
+- [Status](https://status.novu.co)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kinlane@gmail.com
+**Kin Score 63.4** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 78.5 |
+| Contract governance | 27.3 |
+| Operational transparency | 34.2 |
+| Developer ergonomics | 83.3 |
+| Access clarity | 46.1 |
+
+**Agent readiness 58.4** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | verified |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | mostly |
+
+**Regulatory alignment 20.8** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/novu/](https://apis.io/providers/novu/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Novu: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/novu/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
